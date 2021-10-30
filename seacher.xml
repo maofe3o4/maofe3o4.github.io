@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hexo 常用指令</title>
+    <url>/2021/10/29/hexo%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h2><h3 id="创建新帖子"><a href="#创建新帖子" class="headerlink" title="创建新帖子"></a>创建新帖子</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="运行本地博客（可进行本地预览）"><a href="#运行本地博客（可进行本地预览）" class="headerlink" title="运行本地博客（可进行本地预览）"></a>运行本地博客（可进行本地预览）</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure>
+
+<h3 id="生成网页"><a href="#生成网页" class="headerlink" title="生成网页"></a>生成网页</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
+
+<h3 id="上传网页"><a href="#上传网页" class="headerlink" title="上传网页"></a>上传网页</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>
+
+<h3 id="生成并上传"><a href="#生成并上传" class="headerlink" title="生成并上传"></a>生成并上传</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo g -d</span><br></pre></td></tr></table></figure>
+
+<p>ps:如果上传失败，重复几次上传</p>
+]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo指令</tag>
+      </tags>
+  </entry>
+</search>
