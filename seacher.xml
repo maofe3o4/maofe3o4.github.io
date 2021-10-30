@@ -33,8 +33,16 @@
 <h2 id="三、段落换行"><a href="#三、段落换行" class="headerlink" title="三、段落换行"></a>三、段落换行</h2><p>段落没什么特别的，回车键换行即可；但是有几个点提一下：</p>
 <ul>
 <li><p>行间距：正常回车是双倍间距，单倍换行可以用Enter+shift或者在后面用</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">  &lt;br&gt;</span><br><span class="line"></span><br><span class="line">- 换行格式：正常回车会和上一行相同，可以直接按down(向下箭头)</span><br><span class="line"></span><br><span class="line">- 首行缩进：可以但不建议</span><br><span class="line"></span><br><span class="line">## 四、字体强调</span><br><span class="line"></span><br><span class="line">加粗、斜体、下划线，删除线</span><br><span class="line"></span><br><span class="line">markdown语法：</span><br><span class="line"></span><br><span class="line">```markdown</span><br><span class="line">**我被加粗了**</span><br><span class="line">*我是斜体*</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;br&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>换行格式：正常回车会和上一行相同，可以直接按down(向下箭头)</p>
+</li>
+<li><p>首行缩进：可以但不建议</p>
+</li>
 </ul>
+<h2 id="四、字体强调"><a href="#四、字体强调" class="headerlink" title="四、字体强调"></a>四、字体强调</h2><p>加粗、斜体、下划线，删除线</p>
+<p>markdown语法：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line"><span class="strong">**我被加粗了**</span></span><br><span class="line"><span class="emphasis">*我是斜体*</span></span><br></pre></td></tr></table></figure>
+
 <p>也可用快捷键</p>
 <h2 id="五、引用"><a href="#五、引用" class="headerlink" title="五、引用"></a>五、引用</h2><p>先来看一下引用的效果：</p>
 <blockquote>
@@ -67,8 +75,14 @@
 <ul>
 <li></li>
 </ul>
+<ul>
+<li></li>
+</ul>
+<ul>
+<li></li>
+</ul>
 <p>markdown语法：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 一个列表</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 一个列表</span><br><span class="line">+ 列表</span><br><span class="line">* 列表</span><br></pre></td></tr></table></figure>
 
 <p>如果要在列表里面使用列表、引用、图片等等的嵌套，换行即可（换行请回头看bushi）<br>效果：</p>
 <ul>
