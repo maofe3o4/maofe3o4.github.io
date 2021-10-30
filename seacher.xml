@@ -75,12 +75,6 @@
 <ul>
 <li></li>
 </ul>
-<ul>
-<li></li>
-</ul>
-<ul>
-<li></li>
-</ul>
 <p>markdown语法：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 一个列表</span><br><span class="line">+ 列表</span><br><span class="line">* 列表</span><br></pre></td></tr></table></figure>
 
