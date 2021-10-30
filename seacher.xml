@@ -22,4 +22,70 @@
         <tag>hexo指令</tag>
       </tags>
   </entry>
+  <entry>
+    <title>初识markdown</title>
+    <url>/2021/10/30/%E5%88%9D%E8%AF%86markdown/</url>
+    <content><![CDATA[<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><span id="more"></span>
+
+<h2 id="二、标题"><a href="#二、标题" class="headerlink" title="二、标题"></a>二、标题</h2><p>#加空格表示标题，使用几个#表示几级标题，一级标题最大。<br>比如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#### 这是四级标题</span><br><span class="line">###### 这是六级标题</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、段落换行"><a href="#三、段落换行" class="headerlink" title="三、段落换行"></a>三、段落换行</h2><p>段落没什么特别的，回车键换行即可；但是有几个点提一下：</p>
+<ul>
+<li><p>行间距：正常回车是双倍间距，单倍换行可以用Enter+shift或者在后面用</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">  <span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line"></span><br><span class="line">- 换行格式：正常回车会和上一行相同，可以直接按down(向下箭头)</span><br><span class="line"></span><br><span class="line">- 首行缩进：可以但不建议</span><br><span class="line"></span><br><span class="line">## 四、字体强调</span><br><span class="line"></span><br><span class="line">加粗、斜体、下划线，删除线</span><br><span class="line"></span><br><span class="line">markdown语法：</span><br><span class="line"></span><br><span class="line">```markdown</span><br><span class="line">**我被加粗了**</span><br><span class="line">*我是斜体*</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>也可用快捷键</p>
+<h2 id="五、引用"><a href="#五、引用" class="headerlink" title="五、引用"></a>五、引用</h2><p>先来看一下引用的效果：</p>
+<blockquote>
+<p>这就是一个引用</p>
+</blockquote>
+<p>用markdown就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt;这是一个引用</span><br></pre></td></tr></table></figure>
+
+<p>使用方法：</p>
+<blockquote>
+<p>我在外面</p>
+<blockquote>
+<p>我在里面</p>
+</blockquote>
+</blockquote>
+<p>用markdown就是：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&gt;我在外面</span><br><span class="line">&gt;</span><br><span class="line">&gt;&gt;我在里面</span><br></pre></td></tr></table></figure>
+
+<p>如果没有中间的符号就是这样的：</p>
+<blockquote>
+<p>我在外面</p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>我在里面</p>
+</blockquote>
+</blockquote>
+<p>当然你在写的时候直接回车就回有中间的符号了。</p>
+<h2 id="六、列表"><a href="#六、列表" class="headerlink" title="六、列表"></a>六、列表</h2><p>其实就是序号123或者-/+/*加空格。<br>后者效果：</p>
+<ul>
+<li></li>
+</ul>
+<p>markdown语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">- 一个列表</span><br></pre></td></tr></table></figure>
+
+<p>如果要在列表里面使用列表、引用、图片等等的嵌套，换行即可（换行请回头看bushi）<br>效果：</p>
+<ul>
+<li>第一行<ul>
+<li>第二行</li>
+</ul>
+</li>
+</ul>
+<h2 id="七、代码"><a href="#七、代码" class="headerlink" title="七、代码"></a>七、代码</h2><p>代码有两种表示，一种是直接在文本中表示只要加反引号包裹即可<br>效果:<code>hello world</code>   反引号是英文状态下键盘左上角。<br>markdown语法：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line"><span class="code">`hello world`</span></span><br></pre></td></tr></table></figure>
+
+<p>另一种也就是上面的黑框框，效果就不说了，markdown表示是三个反引号加代码语言，然后回车即可，实际上后面自动生成了对应的三个反引号。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">```markdown</span><br><span class="line">```</span><br></pre></td></tr></table></figure>
+
+<h2 id="八、分割线"><a href="#八、分割线" class="headerlink" title="八、分割线"></a>八、分割线</h2>]]></content>
+      <tags>
+        <tag>markdown</tag>
+      </tags>
+  </entry>
 </search>
