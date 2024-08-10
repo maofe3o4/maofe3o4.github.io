@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"maofe3o4.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="跟着黑马的mysql自己做的笔记(不全是hei&#39;ma)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql基础篇+进阶篇+运维篇">
+<meta property="og:url" content="https://maofe3o4.github.io/2024/05/10/sql/MYSQL/">
+<meta property="og:site_name" content="我真不是雪上加霜">
+<meta property="og:description" content="跟着黑马的mysql自己做的笔记(不全是hei&#39;ma)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="d:\admin_file\%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0\%E5%B9%BB%E8%AF%BB%E5%9C%BA%E6%99%AF1.png">
+<meta property="og:image" content="d:\admin_file\%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0\%E5%B9%BB%E8%AF%BB%E5%9C%BA%E6%99%AF2.png">
+<meta property="og:image" content="d:\admin_file\%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0\innodb.png">
+<meta property="og:image" content="d:\admin_file\%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0\innodb%E6%9E%B6%E6%9E%84.png">
+<meta property="og:image" content="d:\admin_file\%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0\%E7%89%88%E6%9C%AC%E9%93%BE%E6%95%B0%E6%8D%AE%E8%AE%BF%E9%97%AE%E8%A7%84%E5%88%99.png">
+<meta property="og:image" content="d:\admin_file\%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0\%E6%85%A2%E6%9F%A5%E8%AF%A2.png">
+<meta property="og:image" content="d:\admin_file\%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0\load%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE.png">
+<meta property="og:image" content="d:\admin_file\%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0\%E6%85%A2%E6%9F%A5%E8%AF%A2.png">
+<meta property="article:published_time" content="2024-05-10T04:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-10T05:48:25.322Z">
+<meta property="article:author" content="我真不是雪上加霜">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:\admin_file\%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0\%E5%B9%BB%E8%AF%BB%E5%9C%BA%E6%99%AF1.png">
+
+<link rel="canonical" href="https://maofe3o4.github.io/2024/05/10/sql/MYSQL/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>mysql基础篇+进阶篇+运维篇 | 我真不是雪上加霜</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">我真不是雪上加霜</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://maofe3o4.github.io/2024/05/10/sql/MYSQL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%85%AD%E8%8A%B1.gif">
+      <meta itemprop="name" content="我真不是雪上加霜">
+      <meta itemprop="description" content="失败总是贯穿人生始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我真不是雪上加霜">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mysql基础篇+进阶篇+运维篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-05-10 12:00:00" itemprop="dateCreated datePublished" datetime="2024-05-10T12:00:00+08:00">2024-05-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-08-10 13:48:25" itemprop="dateModified" datetime="2024-08-10T13:48:25+08:00">2024-08-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>20k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>19 分钟</span>
+            </span>
+            <div class="post-description">跟着黑马的mysql自己做的笔记(不全是hei'ma)</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><span id="jump1">目录</span></p>
+<p>[TOC]</p>
+<h1 id="基础篇"><a href="#基础篇" class="headerlink" title="基础篇"></a>基础篇</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a href="#jump1">回到目录</a></p>
+<p>进Mysql配置文件设置客户端和服务端的字符集编码<br>路径：找到Mysql安装路径，*&#x2F;data&#x2F;my.ini        也可能是mysql.ini</p>
+<p># 设置客户端字符集编码<br>default-character-set&#x3D;gbk</p>
+<p># 设置服务端字符集编码<br>character-set-server&#x3D;utf8</p>
+<p>Mysql关系型数据库（由多张互相连接的二维表），SQL，结构化查询语言<br>DMQC:definition定义，manipulation操作，query查询，control控制<br>DDL:对库、表创建修改删除  DML：对表内数据增删改   DQL：对数据表查询 DCL：权限，安全，用户<br>登录：mysql -uroot -p123456 [-h192.168.181.3]</p>
+<table>
+<thead>
+<tr>
+<th>常用指令(不用登录mysql)</th>
+<th>解释说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mysql</td>
+<td>mysql客户端工具</td>
+</tr>
+<tr>
+<td>mysqladmin</td>
+<td>mysql管理工具</td>
+</tr>
+<tr>
+<td>mysqlbinlog</td>
+<td>二进制日志查看工具</td>
+</tr>
+<tr>
+<td>mysqlshow</td>
+<td>查看库表字段的统计信息</td>
+</tr>
+<tr>
+<td>mysqldump</td>
+<td>数据备份工具</td>
+</tr>
+<tr>
+<td>mysqlimport&#x2F;source</td>
+<td>数据导入工具(mysqldump导出的txt)&#x2F;sql文件导入</td>
+</tr>
+</tbody></table>
+<h3 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h3><p>备份：mysqldump -uroot -p 库名&gt;路径\自命名.sql        路径不能有空格<br>还原：mysql -uroot -p 库名&lt;路径\自命名.sql<br>备份所有库–all-databases</p>
+<p>数据库基本数据类型：<br>设置时区：set time zone&#x3D;’+8:00’ </p>
+<table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th align="center">范围</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">int</td>
+<td align="center">4字节</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">float</td>
+<td align="center">4字节</td>
+<td align="center">6位有效</td>
+</tr>
+<tr>
+<td align="center">double</td>
+<td align="center">8字节</td>
+<td align="center">16位有效</td>
+</tr>
+<tr>
+<td align="center">varchar可变长度</td>
+<td align="center">65535个字符</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">char定长</td>
+<td align="center">255个字符</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">date</td>
+<td align="center">3字节yy-mm-dd</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">datetime不受时区影响</td>
+<td align="center">5字节</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">datestamp受时区影响</td>
+<td align="center">4字节</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">enum枚举</td>
+<td align="center"></td>
+<td align="center">存储单一值</td>
+</tr>
+<tr>
+<td align="center">set集合</td>
+<td align="center"></td>
+<td align="center">存储多个值</td>
+</tr>
+</tbody></table>
+<h3 id="MySQL的系统库"><a href="#MySQL的系统库" class="headerlink" title="MySQL的系统库"></a>MySQL的系统库</h3><h4 id="performance-schema"><a href="#performance-schema" class="headerlink" title="performance_schema"></a>performance_schema</h4><p>保存MySQL服务器运行过程时的状态信息，算是对MySQL服务器的一个性能监控。包括统计最近执行了哪些语句，在执行过程的每个阶段都花费了多长时间，内存的使用情况等等信息。</p>
+<h4 id="information-schema"><a href="#information-schema" class="headerlink" title="information_schema"></a>information_schema</h4><p>保存所有其他数据库的信息，比如有哪些表、哪些视图、哪些触发器、哪些列、哪些索引。这些是一些描述性信息，称之为元数据。</p>
+<h4 id="sys"><a href="#sys" class="headerlink" title="sys"></a>sys</h4><p>通过视图把information_schema和performance_schema结合起来，让程序员可以更方便的了解MySQL服务器的一些性能信息。</p>
+<h4 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h4><p>存储MySQL用户账户和权限信息，还有一些存储过程、事件的定义信息，一些运行过程中产生的日志信息，一些帮助信息以及时区信息等。</p>
+<h2 id="DDL"><a href="#DDL" class="headerlink" title="DDL"></a>DDL</h2><p><a href="#jump1">回到目录</a></p>
+<h3 id="对库定义"><a href="#对库定义" class="headerlink" title="对库定义"></a>对库定义</h3><p>–查看数据库<br>show DATABASES;<br>–创建数据库<br>create database <code>数据库名</code>;<br>create database if no exists <code>数据库名</code>;<br>复制表结构和数据：<strong>create table</strong> 新表 <strong>as</strong> (select * from 旧表);<br>复制表结构：<strong>create table</strong> 新表 <strong>as</strong> (select * from 旧表 where 1&#x3D;2);<br>复制表数据:insert into 新表 (column1,column2…) select column1,column2… from table_name_old;<br>sql server：select * into 新表 from 旧表</p>
+<p>–删除数据库<br>drop database <code>数据库名</code>;<br>drop database if exists <code>数据库名</code>;<br>–查看当前使用的哪个数据库<br>select database();<br>–切换数据库<br>use <code>数据库名</code>;</p>
+<h3 id="对表定义"><a href="#对表定义" class="headerlink" title="对表定义"></a>对表定义</h3><p>–查看当前数据库下所有表<br>show tables;<br>–查看表结构<br>desc <code>表名</code>;<br>–创建表<br>create table <code>表名</code>(<br><code>字段名</code> 数据类型,<br><code>字段名</code> 数据类型，<br>primary key(<code>列</code>),<br>foreign key(<code>列</code>) references 主表(列)<br>);<br>–删除表<br>drop table <code>表名</code>；<br>drop table if exists <code>表名</code>;</p>
+<p>开发时使用DDL里面的：truncate table 表名;<br>delete支持回滚，truncate不支持回滚<br>–<strong>修改表的数据类型表名，（修改数据用update）</strong><br>–修改名字，新增一列，修改数据类型，修改列名和数据类型，删除列<br>alter table <code>表名</code> rename to <code>表名</code>;<br>alter table <code>表名</code> add <code>列名</code> <code>数据类型</code>;<br>alter table <code>表名</code> modify <code>列名</code> <code>新数据类型</code>;<br>alter table <code>表名</code> change <code>列名</code> <code>新列名</code> <code>新数据类型</code>;也可以保持数据类型不动<br>alter table <code>表名</code> drop <code>列名</code>;</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>添加列和约束</td>
+<td>add</td>
+</tr>
+<tr>
+<td>重命名表名</td>
+<td>rename to</td>
+</tr>
+<tr>
+<td>修改列数据类型</td>
+<td>modify</td>
+</tr>
+<tr>
+<td>修改列名或数据类型</td>
+<td>change</td>
+</tr>
+<tr>
+<td>删除一列和约束</td>
+<td>drop</td>
+</tr>
+</tbody></table>
+<h2 id="DML"><a href="#DML" class="headerlink" title="DML"></a>DML</h2><p><a href="#jump1">回到目录</a></p>
+<p>–添加数据insert<br>1.指定列添加<br>insert into 表名 (列名1,列名3) values (数据1,数据3);<br>2.所有列添加数据<br>insert into 表名 values (数据1,数据2,数据3);<br>3.批量添加数据<br>insert into 表名(列名1，列名3)  values (数据1,数据3)，(数据1,数据3)，(数据1,数据3);<br>4.通过复制来插入数据<br>复制表数据:insert into 表名(列1,列2…) select 列1,列2… from 表名;</p>
+<p>–修改数据update<br>–不设条件会改全部，不建议<br>修改整个表：update 表名 set 列名1&#x3D;新值,列名2&#x3D;新值….;       可以撤回<br>修改指定行数据：update 表名 set 列名1&#x3D;新值,列名2&#x3D;新值…. where 条件；</p>
+<p>–删除数据delete from<br>–删除满足条件的行记录<br>delete from 表名 where 条件:<br>–删除所有行,两者区别,前者一行行删,后者先drop再create<br>delete from 表名 where 真;<br>开发时使用DDL里面的：truncate table 表名;<br>delete支持回滚,truncate不支持回滚（sqlsever可以回滚）</p>
+<h2 id="DQL"><a href="#DQL" class="headerlink" title="DQL"></a>DQL</h2><p><a href="#jump1">回到目录</a></p>
+<p>![条件符号](D:\admin_file\自学笔记\屏幕截图 2024-05-14 154402.png)</p>
+<p>!!! like模糊查询：%表示0个或1个或多个任意字符,_表示一个字符；比如姓马的人like ‘马%’,<strong>如果要直接查询含有%的”%“</strong></p>
+<p>在sql server中还有范围匹配[]         [0-9a-zA-Z] 为数字大小写字母</p>
+<p>自定义转义字符：like ‘!%!%’ ESCAPE ‘!’         – 自定义转义字符！</p>
+<p>聚合函数不能对NULL进行计算，使用时可以**avg(ifnull(列名，0))**，如果为，设置为0</p>
+<p>![聚合函数](D:\admin_file\自学笔记\屏幕截图 2024-05-14 162024.png)</p>
+<p>[]里面可写可不写，<strong>当有多个排序条件时，当前边的条件值一样时，才会根据第二个条件排序</strong>。</p>
+<p>变量：用户变量，@变量名<br>赋值：set 变量名&#x3D;值       select 变量名:&#x3D;值</p>
+<p>select [distinct]（去除重复记录）<br>    字段列表 [as]  别名<br>from [as]  别名<br>    表名列表<br>where         –条件查询<br>    条件<br>group by    –分组查询（select什么就分什么组，其他用聚合函数，按唯一值分组可以写所有列，group_concat(字段[order by 字段]) 将未分组的列拼接）<br>    分组列表<br>having    –注意和where的区别，where中不能使用聚合函数<br>    分组后条件<br>[with rollup] 分组后在最后一行加一个汇总行<br>order by   –排序查询<br>    排序字段1 [desc|asc]（默认升序，desc降序），排序字段2 [desc|asc]（默认升序，desc降序）<br>limit  n,m  –分页查询     1，3查询结果为第234条    0，5简写5<br>    起始索引，查询行数</p>
+<p>！mysql分页查询limit，Oracle分页查询rownumber，sql sever分页查询top</p>
+<p> <strong>sql执行顺序：</strong><br>from-where-group by-having-select-order by-limit</p>
+<h2 id="DCL"><a href="#DCL" class="headerlink" title="DCL"></a>DCL</h2><h3 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h3><p>查询：use mysql;select * from user;<br>创建：create user ‘用户名‘@’主机名’ identified by ‘密码’；<br>修改密码：<br>alter user ‘用户名‘@’主机名’ identified by ‘新密码’；<br>alter user  ‘用户名‘@’主机名’  identified with my_native_password by ‘新密码’；<br>删除用户：drop user  ‘用户名‘@’主机名’ </p>
+<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h3><p>查询权限：show grants for  ‘用户名‘@’主机名’;<br>授予权限：grant 权限列表 on 数据库名.表名 to ‘用户名‘@’主机名’ [with grant option];<br>with grant opion允许被授权方给予他人权限<br>撤销权限：revoke 权限列表 on 数据库名.表名 from 用户名‘@’主机名’;</p>
+<p>权限列表：all，all privileges，select，insert，update，delete，alter，drop，create<br>所有数据库.所有表：* . *</p>
+<p>刷新权限：flush pivileges;</p>
+<h2 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h2><p><a href="#jump1">回到目录</a></p>
+<p><strong>《维护和保证数据一致性和完整性》，mysql5个约束+Oracle check检查约束</strong></p>
+<p>约束可以在创建表的时候在字段后添加，也可以使用alter添加<br><strong>主键约束：primary key  [auto_increment]</strong>      					<br>auto_increment&#x3D;起始值 设置起始值</p>
+<p>添加主键：alter table 表名 add prinmary key（字段）;<br>删除主键：alter table 表名 drop primary key;</p>
+<p><strong>唯一约束：unique</strong>      不能重复</p>
+<p>添加唯一约束：alter table 表名 add unique（字段）</p>
+<p>*<strong>非空约束：not null</strong>      不能为空</p>
+<p>添加唯一约束：alter table 表名 modify 字段 类型 not null<br>sql sever：alter table 表名 alter column 列名 数据类型 not null</p>
+<p>*<strong>默认值约束：default</strong>      设置默认值，now()mysql函数获取当前系统时间</p>
+<p>添加唯一约束：alter table 表名 modify 字段 类型 default 默认值<br>sql sever添加默认值约束：alter table 表名 add constraint default 默认值 for 列名</p>
+<p><strong>外键约束：constraint 外键名 foreign key(字段) references 主表名(主表主键)</strong>       限制外键中数据来自主键</p>
+<p>表关系：<strong>一对多</strong>，多方表设外键指向另一表的主键；<strong>多对多</strong>，创建第三张表作为中间表，设置两个外键分别指向各自主键；<strong>一对一</strong>，合并或者设置任意一个外键指向另一个主键</p>
+<p>主键外键关系：添加先主再从；删除先从再主；修改主键被引用不能修改(外键级联：on update&#x2F;delete cascade设置外键时设置该项)</p>
+<p>添加外键约束：alter table 表名 add constraint 外键名 froeign key(当前表外键字段) references 主表(主表主键)</p>
+<h2 id="多表查询"><a href="#多表查询" class="headerlink" title="多表查询"></a>多表查询</h2><p><a href="#jump1">回到目录</a></p>
+<h3 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h3><p>笛卡尔积是两张表每一项互相交叉组合的结果。<strong>消除笛卡尔积：主表.主键字段&#x3D;从表.外键字段</strong></p>
+<h3 id="内连接join和inner-join和where"><a href="#内连接join和inner-join和where" class="headerlink" title="内连接join和inner join和where"></a>内连接join和inner join和where</h3><p>隐式内连接:select 列名 from 左表，右表 where 主表.主键&#x3D;从表.外键</p>
+<p><strong>显式内连接</strong>:select 列名 from 左表 inner join 右表 on 主表.主键&#x3D;从表.外键<br>                                           from 表1 join 表2 using(同名的列名)</p>
+<p>区别：隐式内连接先做笛卡尔积再过滤不匹配的行；显示内连接先匹配连接条件再返回匹配的行。</p>
+<h3 id="外连接"><a href="#外连接" class="headerlink" title="外连接"></a>外连接</h3><p><strong>左外连接</strong>：左表所有记录都出现在结果中，如果右表没有匹配的记录，使用NULL填充，</p>
+<p>select 列名 from 左表 left join 右表 on 主表.主键&#x3D;从表.外键</p>
+<p><strong>右外连接</strong>：同上，改为右表</p>
+<p>select 列名 from 左表 right join 右表 on 主表.主键&#x3D;从表.外键</p>
+<p><strong>全外连接</strong></p>
+<p>mysql不支持，既左右外连接</p>
+<h3 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h3><p>子查询结果为<strong>单行单列</strong>，父查询使用比较运算符**&lt;&gt;&#x3D;<strong>;<strong>多行单列</strong>，父查询使用</strong>in、any、all<strong>；</strong>多行多列<strong>，需要</strong>取别名**当作临时表来使用该子查询的表格</p>
+<p>查询工资大于5000的员工信息<br>select id，name，gender，salary，dept_id from emp<br>where salary&gt;5000；<br>基于以上结果，关联dept表进行多表查询<br>实现方式一：select emp.id,emp.name.emp.gender,emp.salary<br>from dept inner join (select id，name，gender，salary，dept_id from emp<br>where salary&gt;5000；) as emp<br>on dept.id&#x3D;emp.dept_id<br>实现方式二：select emp.id,emp.name,emp.gender,emp.salary,dept.id,dept.name<br>from dept right join emp<br>    on dept.id&#x3D;emp.dept_id<br>where emp.salary in (select salary from emp where salary&gt;5000)</p>
+<h3 id="联合查询union"><a href="#联合查询union" class="headerlink" title="联合查询union"></a>联合查询union</h3><p>select ……union [all] select …..<br>前后列数和[数据类型]要一致,all是不去重</p>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><p><a href="#jump1">回到目录</a></p>
+<p>一种机制，操作序列，包含多个步骤的业务操作，通过临时事务日志实现</p>
+<p>四个标准属性ACID：一个不可分割的工作逻辑单元<br><strong>原子性atom</strong>（要么全部执行成功，要么全部执行失败）；<br><strong>一致性consist</strong>（<strong>在事务开始之前和事务结束以后</strong>，<strong>数据库的完整性</strong>没有被破坏）；<br><strong>隔离性isolation</strong>（数据库允许<strong>多个并发事务同时对其数据进行读写和修改</strong>的能力，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致）；<br><strong>持久性durability</strong>(事务处理结束后，<strong>对数据的修改就是永久</strong>的，即便系统故障也不会丢失)</p>
+<p>与事务控制有关的 SQL 命令包括：</p>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BEGIN 或者 START TRANSACTION</td>
+<td>开始事务</td>
+</tr>
+<tr>
+<td>COMMIT</td>
+<td>提交事务；将临时日志文件同步到数据库</td>
+</tr>
+<tr>
+<td>ROLLBACK</td>
+<td>回滚事务；将临时日志文件清空</td>
+</tr>
+<tr>
+<td>SAVEPOINT</td>
+<td>在事务内部设置回滚标记点；</td>
+</tr>
+<tr>
+<td>RELEASE SAVEPOINT</td>
+<td>删除回滚标记点；</td>
+</tr>
+<tr>
+<td>ROLLBACK TO</td>
+<td>将事务回滚到标记点（ROLLBACK 命令的一种变形写法）。</td>
+</tr>
+</tbody></table>
+<p>一个事务要么提交（Commit），要么回滚（Rollback），提交意味着成功，回滚意味着失败。编写事务代码时，以 BEGIN 命令开头，后跟一条或者多条 SQL 语句，最后书写 COMMIT 或者 ROLLBACK 命令；<strong>COMMIT 和 ROLLBACK 对应事务的两种状态，只能出现一个</strong>。</p>
+<p>事务控制命令仅能与 INSERT、UPDATE、DELETE 和 SELECT一起使用，在创建或者删除表时不能使用事务，因为这些操作在数据库中是自动提交的。</p>
+<h3 id="系统设置"><a href="#系统设置" class="headerlink" title="系统设置"></a>系统设置</h3><p>select @@autocommit；查看mysql的事务默认提交方式<br>set autocommit&#x3D;0;           修改mysql默认提交方式，改为手动</p>
+<h3 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h3><p>安全：串行化&gt;可重复读&gt;读已提交&gt;读未提交    性能相反<br>查看隔离级别：show variables like ‘%isolation%’<br>设置隔离级别（<strong>设置全局事务隔离水平</strong>）：set [session|global] transcation isolation level [read uncommitted|…..] </p>
+<ul>
+<li>脏读：读到其他事务未提交(回滚 )的数据；</li>
+<li>不可重复读：同一人前后读取的数据不一致；</li>
+<li>幻读：同一人前后读取的记录数量不一致。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">级别</th>
+<th>脏读</th>
+<th align="center">不可重复读</th>
+<th align="center">幻读</th>
+<th align="center">数据库默认隔离级别</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">读未提交read uncommitted</td>
+<td>是</td>
+<td align="center">是</td>
+<td align="center">是</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">读已提交read committed</td>
+<td>否</td>
+<td align="center">是</td>
+<td align="center">是</td>
+<td align="center">Oracle和SQL sever</td>
+</tr>
+<tr>
+<td align="center">可重复读repeatable read</td>
+<td>否</td>
+<td align="center">否</td>
+<td align="center">是</td>
+<td align="center">Mysql</td>
+</tr>
+<tr>
+<td align="center">串行化serializable</td>
+<td>否</td>
+<td align="center">否</td>
+<td align="center">否</td>
+<td align="center">否</td>
+</tr>
+</tbody></table>
+<p>mysql在可重复读下幻读的场景1</p>
+<p><img src="D:\admin_file\自学笔记\幻读场景1.png" alt="聚合函数"></p>
+<p>场景2<br><img src="D:\admin_file\自学笔记\幻读场景2.png" alt="聚合函数"></p>
+<p><a href="#jump2">innodb事务原理</a></p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p><a href="#jump1">回到目录</a></p>
+<h3 id="日期函数"><a href="#日期函数" class="headerlink" title="日期函数"></a>日期函数</h3><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>语法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>返回当前日期&#x2F;时间&#x2F;日期和时间</td>
+<td>current_date<br />current_time<br />current_timestamp</td>
+<td></td>
+</tr>
+<tr>
+<td>返回月&#x2F;周&#x2F;年的第几天</td>
+<td>dayofmonth()<br />dayofweek()<br />dayofyear()</td>
+<td></td>
+</tr>
+<tr>
+<td>从时间d中返回type</td>
+<td>extract(type FROM d)</td>
+<td></td>
+</tr>
+<tr>
+<td>日期 d 加上一个时间段后的日期</td>
+<td>date_add(d,INTERVAL 值 type)<br />date_sub()</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="字符函数"><a href="#字符函数" class="headerlink" title="字符函数"></a>字符函数</h3><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>语法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>返回字符串 s 的字符数</td>
+<td>CHAR_LENGTH(“RUNOOB”)</td>
+<td>5</td>
+</tr>
+<tr>
+<td>合并多个字符串，并添加分隔符</td>
+<td>CONCAT_WS(“-“, “SQL”,  “is”, “fun!”)</td>
+<td>SQL-IS-is-fun</td>
+</tr>
+<tr>
+<td>从字符串第一个位置开始的 6 个字符替换为 runoob</td>
+<td>INSERT(“com”, 1, 2, “www”)</td>
+<td>cwww</td>
+</tr>
+<tr>
+<td>获取 b 在字符串 abc 中的位置</td>
+<td>LOCATE(‘st’,’myteststring’)</td>
+<td>5</td>
+</tr>
+<tr>
+<td>将字符串 s2 替代字符串 s 中的字符串 s1</td>
+<td>REPLACE(‘abc’,’a’,’x’)</td>
+<td>xbc</td>
+</tr>
+<tr>
+<td>从字符串 RUNOOB 中的第 2 个位置截取 3个 字符</td>
+<td>SUBSTRING(“RUNOOB”, 2, 3)</td>
+<td>UNO</td>
+</tr>
+<tr>
+<td>去掉字符串 RUNOOB 的首尾空格</td>
+<td>TRIM(‘    RUNOOB    ‘)</td>
+<td>RUNOOB</td>
+</tr>
+</tbody></table>
+<h3 id="数学函数"><a href="#数学函数" class="headerlink" title="数学函数"></a>数学函数</h3><table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>返回离 x 最近的整数，可选参数 y 表示要四舍五入的小数位数，如果省略，则返回整数</td>
+<td>round’(345.156, 2)</td>
+<td>345.16</td>
+</tr>
+<tr>
+<td>返回数值 x 保留到小数点后 y 位的值</td>
+<td>TRUNCATE(1.23456,3)</td>
+<td>1.234</td>
+</tr>
+</tbody></table>
+<h3 id="高级函数"><a href="#高级函数" class="headerlink" title="高级函数"></a>高级函数</h3><table>
+<thead>
+<tr>
+<th>排序函数&#x2F;分布函数&#x2F;聚合函数</th>
+<th>高级函数</th>
+<th>内置参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>rank() 并列跳跃</td>
+<td>窗口函数over()</td>
+<td>分区 partition by</td>
+</tr>
+<tr>
+<td>dense_rank() 并列不跳跃</td>
+<td></td>
+<td>排序order by</td>
+</tr>
+<tr>
+<td>row_number() 记行号</td>
+<td></td>
+<td>rows between 开始行 and 结束行</td>
+</tr>
+<tr>
+<td>percent_rank() 每行(rank-1) &#x2F; (rows-1)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>cume_dist() 分组内&lt;&#x3D;当前 rank 值的行数 &#x2F; 分组内总行数</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>低版本的mysql没有窗口函数，通过用户变量@来添加行号<br>set @i&#x3D;0;<br>select @i:&#x3D;@i+1</p>
+<h1 id="进阶篇"><a href="#进阶篇" class="headerlink" title="进阶篇"></a>进阶篇</h1><h2 id="innodb存储引擎"><a href="#innodb存储引擎" class="headerlink" title="innodb存储引擎"></a>innodb存储引擎</h2><p><a href="#jump1">回到目录</a></p>
+<p>innoDB存储逻辑:支持事务，外键，行级锁提高并发性能</p>
+<h3 id="逻辑存储结果"><a href="#逻辑存储结果" class="headerlink" title="逻辑存储结果"></a>逻辑存储结果</h3><img src="D:\admin_file\自学笔记\innodb.png" alt="innodb" style="zoom: 200%;" />
+
+<table>
+<thead>
+<tr>
+<th>存储空间</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>表空间</td>
+<td>ibd文件</td>
+<td></td>
+</tr>
+<tr>
+<td>段</td>
+<td>包括数据段(叶子节点)、索引段、回滚段</td>
+<td></td>
+</tr>
+<tr>
+<td>区</td>
+<td>每个区1M，默认一页16K，所以一个区有64页</td>
+<td></td>
+</tr>
+<tr>
+<td>页</td>
+<td>存储引擎磁盘管理的最小单元，为保持页的连续性，引擎每次申请4-5页</td>
+<td></td>
+</tr>
+<tr>
+<td>行</td>
+<td>按行数据存放</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><img src="D:\admin_file\自学笔记\innodb架构.png" alt="innodb" style="zoom: 200%;" />
+
+<p>内存结构：缓冲池、更改缓冲区、日志缓冲区、自适应哈希索引<br>磁盘结构：系统表空间、每个表的表空间、通用表空间、撤销(undo)表空间、临时表空间、双写缓冲区、重做日志redo(重做日志缓冲(内存中)+重做日志文件(磁盘中))<br>后台线程：master thread、IO thread、purge thread回收已提交的撤销日志、page cleaner thread协助master thread刷新脏页到磁盘</p>
+<h3 id="事务原理"><a href="#事务原理" class="headerlink" title="事务原理 "></a>事务原理<span id="jump2"> </span></h3><p>redo log+undo log负责acd     原子，一致，持久<br>锁机制+MVCC负责i        隔离</p>
+<h3 id="MVCC-多版本并发控制"><a href="#MVCC-多版本并发控制" class="headerlink" title="MVCC(多版本并发控制)"></a>MVCC(多版本并发控制)</h3><p>当前读：对读取的记录加锁<br>select…lock in share mode(S)    select…for update、update、insert、delete(X)</p>
+<p>快照读：不加锁读取<br>read committed：每次select生成一个快照读<br>repeatable read：开启事务后，第一个select为快照读<br>serializable：快照读变成当前读</p>
+<h4 id="实现原理-隐藏字段-undo-log-readview"><a href="#实现原理-隐藏字段-undo-log-readview" class="headerlink" title="实现原理(隐藏字段+undo log+readview)"></a>实现原理(隐藏字段+undo log+readview)</h4><table>
+<thead>
+<tr>
+<th>隐藏字段(建表时会自动生成)</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DB_TRX_ID</td>
+<td>最近修改的事务ID</td>
+</tr>
+<tr>
+<td>DB_ROLL_PTR</td>
+<td>回滚指针，配合undo log</td>
+</tr>
+<tr>
+<td>DB_ROW_ID</td>
+<td>隐藏主键，如果表结构没有主键生成</td>
+</tr>
+</tbody></table>
+<p>查看方法 ：idb2sdi idb文件名</p>
+<p>undo log日志：通过隐藏字段的回滚指针形成<strong>版本链</strong>来确定回滚到哪个事务<br>insert事务提交后undo log可立即删除；update和delete不会</p>
+<p>readview(读视图)：快照读执行时MVCC提取数据的依据</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>m_ids</td>
+<td>当前活跃事务的id集合</td>
+</tr>
+<tr>
+<td>min_trx_id</td>
+<td>最小活跃事务id</td>
+</tr>
+<tr>
+<td>max_trx_id</td>
+<td>预分配事务id，当前最大事务id+1</td>
+</tr>
+<tr>
+<td>creator_trx_id</td>
+<td>readview创建者的事务id</td>
+</tr>
+</tbody></table>
+<img src="D:\admin_file\自学笔记\版本链数据访问规则.png" alt="innodb" style="zoom: 200%;" />
+
+<p>不同的隔离级别，生成readview的时机不同：<br>read committed：事务每次执行快照读时生成<br>repeatable read：仅在事务第一次执行快照读时生成</p>
+<h2 id="索引-数据结构，B-tree"><a href="#索引-数据结构，B-tree" class="headerlink" title="索引(数据结构，B+tree)"></a>索引(数据结构，B+tree)</h2><p><a href="#jump1">回到目录</a></p>
+<p><strong>索引大大提高查询效率，但是降低更新表的速度</strong><br>查询当前数据库是查询密集型还是修改密集型(查询或修改语句执行次数多)<br>show global status like ‘Com_ _ _ _ _ _ _’   七条下划线</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>主键索引，唯一索引，普通索引，组合索引，全文索引，hash索引<br>创建索引：create [unique|fulltext] index 索引名 on 表名(字段1，字段2…..)<br>查看索引：show index from 表名<br>添加索引：alter table 表名 add index(字段)<br>删除索引：drop index 索引名 on 表名<br>对于约束会自动创建索引</p>
+<p>按存储结构分类：</p>
+<ul>
+<li>聚集索引：叶子节点保存行数据</li>
+<li>二级索引：叶子节点保存主键(索引结构和数据分开存放的索引)</li>
+</ul>
+<p>按数据结构分类：B+tree、hash索引、T-tree……</p>
+<h3 id="使用规则"><a href="#使用规则" class="headerlink" title="使用规则"></a>使用规则</h3><ul>
+<li>最左前缀匹配原则</li>
+<li>频繁查找，不频繁修改</li>
+<li>能够有效区分数据</li>
+<li>扩展索引不新建索引，索引扩展成(a,b),而不是创建a和b</li>
+<li>外键</li>
+<li>text，image，bit数据不建</li>
+</ul>
+<p><strong>索引失效</strong>：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1992920">https://cloud.tencent.com/developer/article/1992920</a></p>
+<h2 id="sql性能分析"><a href="#sql性能分析" class="headerlink" title="sql性能分析"></a>sql性能分析</h2><p><a href="#jump1">回到目录</a></p>
+<h3 id="慢查询日志"><a href="#慢查询日志" class="headerlink" title="慢查询日志"></a>慢查询日志</h3><p>来分析哪些语句的执行时间过长<br>开启方式：linux下mysql配置文件&#x2F;etc&#x2F;my.cnf<br>                     windows下mysql配置文件my.ini或者mysql.ini<br><img src="D:\admin_file\自学笔记\慢查询.png" alt="innodb" style="zoom: 200%;" /></p>
+<p>慢查询日志：linux下的路径&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;localhost-slow.log</p>
+<h3 id="profile"><a href="#profile" class="headerlink" title="profile"></a>profile</h3><p>分析时间耗费情况<br>查看是否有该功能：select @@have_profiling<br>开启：set profiling &#x3D; 1<br>查看sql’耗时情况:show profiles<br>查看指定query_id的sql语句各阶段的耗时情况：show profile for query 查询id<br>查看该查询的cpu占比：show profile cpu for query 查询id</p>
+<h3 id="explain"><a href="#explain" class="headerlink" title="explain"></a>explain</h3><p>explain&#x2F;desc 来提前预览select语句的执行过程<br>explain select ………</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>操作表的顺序，id越大越先执行</td>
+</tr>
+<tr>
+<td>select_type</td>
+<td>simple,primary,union,subquery</td>
+</tr>
+<tr>
+<td>type</td>
+<td>性能null&gt;system&gt;const&gt;eq_ref,ref,range,index,all</td>
+</tr>
+<tr>
+<td>possible_key</td>
+<td>可能用到的索引</td>
+</tr>
+<tr>
+<td>key</td>
+<td>实际用到的索引</td>
+</tr>
+<tr>
+<td>key_len</td>
+<td>使用到的索引字节数</td>
+</tr>
+<tr>
+<td>rows</td>
+<td>执行查询的行数(预估值)</td>
+</tr>
+<tr>
+<td>filtered</td>
+<td>返回结果行数占需读取行数的百分比，越大越好</td>
+</tr>
+</tbody></table>
+<h2 id="sql优化"><a href="#sql优化" class="headerlink" title="sql优化"></a>sql优化</h2><p><a href="#jump1">回到目录</a></p>
+<h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><ul>
+<li>单次插入-&gt;批量插入</li>
+<li>自动提交事务-&gt;手动提交事务</li>
+<li>主键乱序插入-&gt;主键顺序插入</li>
+<li>大批量插入insert-&gt;load</li>
+</ul>
+<p>load使用</p>
+<img src="D:\admin_file\自学笔记\load插入数据.png" alt="innodb" style="zoom: 200%;" />
+
+<h3 id="主键优化"><a href="#主键优化" class="headerlink" title="主键优化"></a>主键优化</h3><ul>
+<li>尽量降低主键长度</li>
+<li>插入时尽量顺序插入auto_increment</li>
+<li>尽量不要使用uuid或其他自然主键(如身份证)做主键</li>
+<li>业务操作时避免对主键的修改(会动主键索引结构)</li>
+</ul>
+<h3 id="order-by优化"><a href="#order-by优化" class="headerlink" title="order by优化"></a>order by优化</h3><p>order by有两种排序：using filesort(全表扫描后在缓冲区排序)；using index(有序索引顺序扫描，效率高)</p>
+<ul>
+<li>根据排序字段建立索引，多字段时遵循最左前缀法则</li>
+<li>尽量使用覆盖索引(避免select *)</li>
+<li>对于不可避免的using filesort，可以适当增加缓冲区sort_buffer_size大小</li>
+</ul>
+<h3 id="group-by优化"><a href="#group-by优化" class="headerlink" title="group by优化"></a>group by优化</h3><p>using tempory和using index</p>
+<ul>
+<li>通过索引提高效率</li>
+<li>索引满足最左前缀法则</li>
+</ul>
+<h3 id="limit优化"><a href="#limit优化" class="headerlink" title="limit优化"></a>limit优化</h3><p>当查询limit a,b，对于a过大，而b较小时,例如limit 20000000,10<br>优化思路覆盖索引+子查询</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- 优化前</span><br><span class="line">select * from table limit 900000,10;</span><br><span class="line">-- 优化后（id有索引）</span><br><span class="line">select t.*,(select id from table order by id limit 9000000,10) a from table t where s.id=a.id </span><br></pre></td></tr></table></figure>
+
+<h3 id="count优化"><a href="#count优化" class="headerlink" title="count优化"></a>count优化</h3><p>没有较好的方法，一般通过redis自己计数<br>效率：count(字段)&lt;count(主键id)&lt;count(1)≈count(*)</p>
+<h3 id="update优化"><a href="#update优化" class="headerlink" title="update优化"></a>update优化</h3><p>由于innodb支持行锁，在update行数据时，如果更新条件有索引，则为行锁；如果没有索引，则为表锁(并发性能降低)。因此避免更新条件没有索引</p>
+<h2 id="视图-虚拟表"><a href="#视图-虚拟表" class="headerlink" title="视图(虚拟表)"></a>视图(虚拟表)</h2><p><a href="#jump1">回到目录</a></p>
+<p>视图的作用：</p>
+<ul>
+<li>简单：简化用户对数据的理解和操作，经常使用的查询可以被定义为视图；</li>
+<li>安全：通过视图，用户只能查询和修改他们见到的数据，保证了安全性；</li>
+<li>数据独立：帮助用户屏蔽真实表结构变化带来的影响</li>
+</ul>
+<h3 id="基础语法"><a href="#基础语法" class="headerlink" title="基础语法"></a>基础语法</h3><p>创建视图：create [or replace] view 视图名 as select …….<br>查询视图：show create view 视图名<br>                    select * from 视图名<br>修改视图：create or replace view 视图名 as select …….;<br>                    alter view 视图名 as select…….;<br>                    update 视图名 set … where …;<br>删除视图：drop view [if exists] 视图名称</p>
+<h3 id="检查选项"><a href="#检查选项" class="headerlink" title="检查选项"></a>检查选项</h3><p>with [默认cascaded|local] check option<br>往视图中插入数据，实际会插入到该视图创建时，所依赖的表中<br>mysql允许基于另一个视图创建视图，并检查依赖视图中的规则来保持一致性<br>cascaded级联检查条件；local递归检查条件(检查取决于是否添加了check)</p>
+<h3 id="视图的更新"><a href="#视图的更新" class="headerlink" title="视图的更新"></a>视图的更新</h3><p>insert，update，delete都是更新<br>视图中的行与基础表中的行一对一<br>创建视图时，select中不能包含聚合函数、窗口函数、distinct、group by、having、union，不然无法更新视图</p>
+<h2 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a>存储过程</h2><p><a href="#jump1">回到目录</a></p>
+<p>一组经过预先编译的sql，来完成特定的事情。当存储过程执行一次后，可以将语句<strong>缓存在内存</strong>中，这样下次执行的时候直接使用缓存中的语句。这样就可以提高存储过程的性能。</p>
+<p>优点：</p>
+<ul>
+<li>减少sql重用率</li>
+<li>减少网络传输量(在开发架构中只需要向sql发送存储过程即可获取持久化数据)</li>
+<li>提高安全性(不会暴露sql)</li>
+</ul>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>设置&#x2F;声明</th>
+<th>查看</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>系统变量[全局变量&#x2F;会话变量]</td>
+<td>set <strong>[global|session]</strong> 变量名&#x3D;值<br>重启服务后全局变量恢复默认值，永久更改需更改配置文件</td>
+<td>show <strong>[global|session]</strong> variables [like ‘…’]<br>select @@<strong>[global|session]</strong>.变量名</td>
+</tr>
+<tr>
+<td>用户变量</td>
+<td>set|select @名称:&#x3D;值<br>select 字段名 into @名称 from 表</td>
+<td>select @名称</td>
+</tr>
+<tr>
+<td>局部变量(begin-end范围内有效)</td>
+<td>create procedure 存储过程名()<br>begin <br>declare 变量名 类型[default…]<br>set 变量名:&#x3D;值<br>end</td>
+<td>同上</td>
+</tr>
+</tbody></table>
+<h3 id="创建、调用、查看和删除"><a href="#创建、调用、查看和删除" class="headerlink" title="创建、调用、查看和删除"></a>创建、调用、查看和删除</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">在命令行中把语句结束符号换成自定义符号，避免存储过程创建中断(图形化界面不用)</span><br><span class="line">delimiter //     自定义//为结束符</span><br><span class="line">-- 创建</span><br><span class="line">create precedure 存储过程名称([in|out|inout 参数 参数类型])</span><br><span class="line">约束</span><br><span class="line">begin</span><br><span class="line">declare 变量名 数据类型 [default 值];</span><br><span class="line">set @变量名=值</span><br><span class="line">.....</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">约束：</span><br><span class="line"></span><br><span class="line">-- 调用(in参数直接写值，out参数@变量名，inout参数提前设好值然后@变量名)</span><br><span class="line">call 名称([参数])</span><br><span class="line"></span><br><span class="line">-- 查看</span><br><span class="line">-- 查询指定数据库xxx的存储过程及状态信息</span><br><span class="line">select * from information_schema.routines where routine_schema=&#x27;xxx&#x27;</span><br><span class="line">-- 查询你某个存储过程的定义</span><br><span class="line">show create procedure</span><br><span class="line"></span><br><span class="line">-- 删除</span><br><span class="line">drop procedure [if exists] 名称</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="关键词用法"><a href="#关键词用法" class="headerlink" title="关键词用法"></a>关键词用法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">-- if</span><br><span class="line">if 条件 then ...;</span><br><span class="line">elseif 条件 then ...;</span><br><span class="line">else ...;</span><br><span class="line">end if;</span><br><span class="line"></span><br><span class="line">-- case</span><br><span class="line">case [表达式]</span><br><span class="line">	when 情况1 then ...</span><br><span class="line">	when 情况2 then ...</span><br><span class="line">	else ...</span><br><span class="line">end case</span><br><span class="line"></span><br><span class="line">-- while</span><br><span class="line">[标记:]while 条件 do</span><br><span class="line">	...</span><br><span class="line">end while [标记]</span><br><span class="line"></span><br><span class="line">-- repeat</span><br><span class="line">[标记:]repeat</span><br><span class="line">	...</span><br><span class="line">	until 条件</span><br><span class="line">end repeat [标记]</span><br><span class="line"></span><br><span class="line">-- loop</span><br><span class="line">-- 标记就是给这个循环取个名字</span><br><span class="line">[标记:] loop</span><br><span class="line">	...</span><br><span class="line">end loop [标记]</span><br><span class="line"></span><br><span class="line">-- 跳出循环 leave(退出循环)和iterate(跳过此次循环)</span><br><span class="line">	leave 标记;</span><br><span class="line">	iterate 标记;</span><br><span class="line"></span><br><span class="line">-- 条件处理程序hander(自定义异常处理)</span><br><span class="line">-- 声明</span><br><span class="line">declare [continue继续|exit退出] hander for 情况 [应对操作]</span><br><span class="line">-- 情况有一下几种</span><br><span class="line">sqlstate 状态码;</span><br><span class="line">sqlwarning;01开头的状态码</span><br><span class="line">not found;02开头的状态码</span><br><span class="line">sqlexception;非01和02的状态码</span><br></pre></td></tr></table></figure>
+
+<h3 id="游标"><a href="#游标" class="headerlink" title="游标"></a>游标</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 游标cursor(用来存储查询结果集的数据类型)</span></span><br><span class="line"><span class="comment">-- 声明(游标的声明要在普通变量之后)</span></span><br><span class="line"><span class="keyword">declare</span> 游标名称 <span class="keyword">cursor</span> <span class="keyword">for</span> 查询语句</span><br><span class="line"><span class="comment">-- 打开</span></span><br><span class="line"><span class="keyword">open</span> 游标名称</span><br><span class="line"><span class="comment">-- 获取游标记录(把查询结果里面的列分别赋值给对应的变量名)</span></span><br><span class="line"><span class="keyword">fetch</span> 游标名称 <span class="keyword">into</span> 变量<span class="number">1</span>,变量<span class="number">2.</span>..</span><br><span class="line"><span class="comment">-- 关闭游标</span></span><br><span class="line"><span class="keyword">close</span> 游标名称</span><br></pre></td></tr></table></figure>
+
+<h2 id="存储函数"><a href="#存储函数" class="headerlink" title="存储函数"></a>存储函数</h2><p><a href="#jump1">回到目录</a></p>
+<p>有返回值的存储过程，且参数只有in类型(无须声明，默认就是in)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">create function 函数名([参数])</span><br><span class="line">returns 返回值的数据类型 </span><br><span class="line">[特征]</span><br><span class="line">begin</span><br><span class="line">	...</span><br><span class="line">	return ...;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">特征说明(在开启二进制日志时，此选项必须填写)：</span><br><span class="line">deterministic:与输入参数类型相同</span><br><span class="line">no sql:不含sql语句</span><br><span class="line">reads sql data:只包含select</span><br><span class="line">modifies sql data:只包含update，delete</span><br><span class="line"></span><br><span class="line">LANGUAGE SQL</span><br><span class="line">存储过程语言，默认是sql，说明存储过程中使用的是sql语言编写的，暂时只支持sql，后续可能会支持其他语言</span><br><span class="line"></span><br><span class="line">NOT DETERMINISTIC</span><br><span class="line">默认是NOT DETERMINISTIC，只对于同样的输入，输出也是一样的，当前这个值还没有使用</span><br><span class="line"></span><br><span class="line">CONTAINS SQL</span><br><span class="line">包括以下四种选择</span><br><span class="line">1.CONTAINS SQL：不包含读写</span><br><span class="line">2.NO SQL：不包含sql</span><br><span class="line">3.READS SQL DATA：包含读，不包含写</span><br><span class="line">4.MODIFIES SQL DATA：包含写</span><br></pre></td></tr></table></figure>
+
+<h2 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h2><p><a href="#jump1">回到目录</a></p>
+<p>在insert&#x2F;update&#x2F;delete之前或之后，出发并执行触发器中定义的sql语句集合；<br>协助应用在数据库端确保数据的完整性，日志记录，数据校验等操作</p>
+<table>
+<thead>
+<tr>
+<th>触发器类型</th>
+<th>new和old</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>insert型触发器</td>
+<td>new表示新增数据</td>
+</tr>
+<tr>
+<td>update型触发器</td>
+<td>old表示修改前的数据，new表示将要或已更新的数据</td>
+</tr>
+<tr>
+<td>delete型触发器</td>
+<td>old表示将要或已删除的数据</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-- 创建</span><br><span class="line">create trigger 名称</span><br><span class="line">	before|after insert|update|delete </span><br><span class="line">	on 表名 for each row -- 行级触发器</span><br><span class="line">begin</span><br><span class="line">	...</span><br><span class="line">	new.列名 就表示新的某一数据</span><br><span class="line">	old.列名 就表示旧的某一数据</span><br><span class="line">end</span><br><span class="line">-- 查看</span><br><span class="line">show triggers</span><br><span class="line">-- 删除</span><br><span class="line">drop trigger [数据库名.]触发器名 -- 默认为当前数据库</span><br></pre></td></tr></table></figure>
+
+<h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><p><a href="#jump1">回到目录</a></p>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1po4y1M7k5?p=2&vd_source=c75d57452dfe6d1e8dca457f1ab7a2ac">这一章很乱建议看视频</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">锁--&gt; 粒度分类</span><br><span class="line">粒度分类--&gt; 全局锁</span><br><span class="line">粒度分类--&gt; 表锁锁</span><br><span class="line">粒度分类--&gt; 行锁</span><br><span class="line">锁--&gt; 模式分类</span><br><span class="line">模式分类--&gt; 乐观锁</span><br><span class="line">模式分类--&gt; 悲观锁</span><br><span class="line">锁--&gt; 属性分类</span><br><span class="line">属性分类--&gt; 共享锁</span><br><span class="line">属性分类--&gt; 排他锁</span><br><span class="line">锁--&gt; 状态分类</span><br><span class="line">状态分类--&gt; 意向共享锁</span><br><span class="line">状态分类--&gt; 意向排他锁</span><br><span class="line">锁--&gt; 算法分类</span><br><span class="line">算法分类--&gt; 间隙锁</span><br><span class="line">算法分类--&gt; 记录锁</span><br><span class="line">算法分类--&gt; 临键锁</span><br></pre></td></tr></table></figure>
+
+<h3 id="全局锁-一致性数据备份"><a href="#全局锁-一致性数据备份" class="headerlink" title="全局锁(一致性数据备份)"></a>全局锁(一致性数据备份)</h3><p>1.为当前数据库加全局锁：flush tables with read lock</p>
+<p>2.备份:mysqldump -h[数据库服务器主机ip] -uroot -p[密码] 库名&gt;[备份的存储路径文件.sql]<br>备份语句不用在登录mysql服务器后执行</p>
+<p>3.释放全局锁：unlock tables</p>
+<p>不加锁的一致性数据备份(innodb通过快照读实现):mysqldump <strong>[–single-transaction]</strong> -h[数据库服务器主机ip] -uroot -p[密码] 库名&gt;[备份的存储路径文件.sql]</p>
+<h3 id="表级锁"><a href="#表级锁" class="headerlink" title="表级锁"></a>表级锁</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">表级锁--&gt; 表锁</span><br><span class="line">表锁--&gt; 表共享读锁readlock--&gt; 读锁皆可读</span><br><span class="line">表锁--&gt; 表独占写锁writelock--&gt; 写锁我读写</span><br><span class="line">表级锁--&gt; 元数据锁DML</span><br><span class="line">元数据锁DML--&gt; 增删改查时读锁--&gt; 共享写锁shared_write</span><br><span class="line">增删改查时读锁--&gt; 共享读锁shared_read</span><br><span class="line">元数据锁DML--&gt; 表结构变更时写锁--&gt; 排他锁exclusive</span><br><span class="line">表级锁--&gt; 意向锁--&gt; 意向共共享锁IS</span><br><span class="line">意向锁--&gt; 意向共排他锁IX</span><br></pre></td></tr></table></figure>
+
+<h4 id="表锁-避免DML和DDL冲突"><a href="#表锁-避免DML和DDL冲突" class="headerlink" title="表锁(避免DML和DDL冲突)"></a>表锁(避免DML和DDL冲突)</h4><p>加锁：lock tables 表名 read|write<br>释放锁：unlock tables&#x2F;客户端连接关闭</p>
+<h4 id="元数据锁"><a href="#元数据锁" class="headerlink" title="元数据锁"></a>元数据锁</h4><p>系统自动控制，维护元数据的数据一致性；表上有事务时不可对元数据进行写入<br>增删改查时加读锁(共享读和共享写)；改变表结果时加写锁(排他)</p>
+<p>查看元数据锁：<br>select object_type,object_schema,object_name,lock_type,lock_duration from performance_schema.metadata_locks</p>
+<h4 id="意向锁"><a href="#意向锁" class="headerlink" title="意向锁"></a>意向锁</h4><p>当<strong>加行锁</strong>时，为了不和**[想要加表锁的另一方]<strong>冲突，会</strong>默认加意向锁**，这样加表锁的一方可以通过检测意向锁来确顶此时是否可以加表锁<br>意向共享锁IS：select…lock in share mode<br>意向排他锁IX：insert&#x2F;update&#x2F;delete&#x2F;select…for update</p>
+<h3 id="行级锁"><a href="#行级锁" class="headerlink" title="行级锁"></a>行级锁</h3><p>通过对索引上的索引项加锁来实现</p>
+<h4 id="行锁-Record-lock"><a href="#行锁-Record-lock" class="headerlink" title="行锁(Record lock)"></a>行锁(Record lock)</h4><p>锁定单个行记录，防止update和delete，在Read Commited，Repeat Read隔离级别下支持</p>
+<p>当通过没有索引的条件检索数据时,行锁会自动升级成表锁</p>
+<p>共享S：兼容S，冲突X<br>排他X：冲突S和X</p>
+<h4 id="间隙锁-Gap-lock"><a href="#间隙锁-Gap-lock" class="headerlink" title="间隙锁(Gap lock)"></a>间隙锁(Gap lock)</h4><p>锁定索引记录间隙，防止在事务间隙insert，产生幻读，在RR隔离级别下支持</p>
+<h4 id="临键锁-Next-key-lock"><a href="#临键锁-Next-key-lock" class="headerlink" title="临键锁(Next-key lock)"></a>临键锁(Next-key lock)</h4><p>行锁和间隙锁组合，锁行数据和数据前的间隙，在RR隔离级别下支持<br>innodb在rr隔离级别下使用临键锁进行搜索和索引扫面，防止幻读</p>
+<ul>
+<li>等值查询(唯一索引)时，对不存在的记录加锁会优化成间隙锁</li>
+<li>等值查询(普通索引)时，不满足查询需求，临键锁退化成间隙锁</li>
+<li>范围查询(唯一索引)时，访问不满足第一个条件的值</li>
+</ul>
+<h1 id="运维篇"><a href="#运维篇" class="headerlink" title="运维篇"></a>运维篇</h1><h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><p><a href="#jump1">回到目录</a></p>
+<h3 id="错误日志"><a href="#错误日志" class="headerlink" title="错误日志"></a>错误日志</h3><p>show variables like ‘%log_error%’<br>linux存放路径：&#x2F;var&#x2F;log&#x2F;mysqld.log<br>刷新错误日志文件：flush logs;</p>
+<p>配置文件mysqld：log-error&#x3D;&#x2F;</p>
+<h3 id="二进制日志"><a href="#二进制日志" class="headerlink" title="二进制日志"></a>二进制日志</h3><p>show variables ‘%log_bin%’</p>
+<p>记录所有的DDL和DML数据变更，不包括数据查询语言</p>
+<ul>
+<li><p>灾难时的<strong>数据恢复</strong></p>
+</li>
+<li><p>mysql的<strong>主从复制</strong>,mysql8二进制日志默认开启</p>
+</li>
+</ul>
+<p>show variables ‘%binlog_format%’<br>更改格式：vim &#x2F;etc&#x2F;my.cnf</p>
+<table>
+<thead>
+<tr>
+<th>日志格式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>statement</td>
+<td>基于sql语句的日志记录，对数据进行修改的sql都会记录</td>
+</tr>
+<tr>
+<td>row</td>
+<td>基于行的记录，记录没一行的数据变更(默认)</td>
+</tr>
+<tr>
+<td>mixed</td>
+<td>混合上两种，某些情况下自动切换为row格式</td>
+</tr>
+</tbody></table>
+<p>二进制日志查询工具<br>mysqlbinlog [参数选项] 二进制日志文件名<br>参数选项：</p>
+<ul>
+<li>-d     指定数据库名称，只列出指定数据库的日志文件</li>
+<li>-o     忽略掉日志中的前n行命令</li>
+<li>-v     将行事件重构为sql语句</li>
+<li>-w    将行事件重构为sql语句，并输出注释</li>
+</ul>
+<p>日志删除</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>含义</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>reset master</td>
+<td>删除全部binloog日志，删除后日志编号从000001重新开始</td>
+<td></td>
+</tr>
+<tr>
+<td>purge master logs to ‘binlog.xxxxxx’</td>
+<td>删除xxxxxx编号之前的所有日志</td>
+<td></td>
+</tr>
+<tr>
+<td>purge master logs before ‘yyyy-mm-dd hh24:mi:ss’</td>
+<td>删除日志为’yyyy-mm-dd hh24:mi:ss’之前的所有日志</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>配置二进制日志过期时间：show variables like ‘%binlog_expire%’</p>
+<h3 id="查询日志"><a href="#查询日志" class="headerlink" title="查询日志"></a>查询日志</h3><p>默认情况下，查询日志未开启<br>开启：set global general_log&#x3D;on<br>默认文件名:general_log_file&#x3D;host_name.log<br>show variables like ‘%general%’</p>
+<h3 id="慢查询日志-1"><a href="#慢查询日志-1" class="headerlink" title="慢查询日志"></a>慢查询日志</h3><p>默认未开启，记录执行时间超过long_query_time并且扫面记录数不小于min_examined_row_limit的所有sql语句日志</p>
+<p>开启方式：linux下mysql配置文件&#x2F;etc&#x2F;my.cnf<br>                     windows下mysql配置文件my.ini或者mysql.ini<br><img src="D:\admin_file\自学笔记\慢查询.png" alt="innodb" style="zoom: 200%;" /></p>
+<p>慢查询日志：linux下的路径&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;localhost-slow.log</p>
+<p>记录执行<strong>较慢的管理</strong>语句：log_slow_admin_statements&#x3D;1<br>记录执行较慢的<strong>未使用索引</strong>的语句：log_queries_not_using_indexs&#x3D;1</p>
+<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><p><a href="#jump1">回到目录</a></p>
+<p>将主库master的DDL和DML操作通过二进制日志传到从库，然后在从库slave上重做</p>
+<ul>
+<li>主库出现问题，快速切换到从库提供服务</li>
+<li>实现读写分离，降低主库的访问压力</li>
+<li>在从库中执行备份，避免备份期间影响主库服务</li>
+</ul>
+<h3 id="过程原理"><a href="#过程原理" class="headerlink" title="过程原理"></a>过程原理</h3><p>1.master主库提交事务时，把数据变更记录在二进制日志文件里binlog<br>2.从库用IOthread读取主库的二进制日志binlog文件，写入从库的中继日志relaylog中<br>3.salve从库用SQLthread执行中继日志relaylog中的事件，改变它自己的数据</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>开放指定的3306端口号：<br>firewall-cmd –zone&#x3D;public –add-port&#x3D;3306&#x2F;tcp-permanent<br>firewall-cmd-reload<br>关闭防火墙和开机自启<br>systemctl stop firewalld<br>systemctl disable firewalld</p>
+<p><strong>主库master配置</strong></p>
+<p>1.修改配置<br>[mysqld]<br>#mysql服务ID，保证整个集群环境中唯一<br>server-id&#x3D;1<br>#是否只读,1表示该数据库只能读(select)<br>read-only&#x3D;0<br>#启用二进制日志<br>log-bin&#x3D;mysql-bin<br>#不需要同步的数据库<br>binlog-ignore-db&#x3D;mysql<br>#要同步的数据库<br>#binlog-do-db&#x3D;数据库名</p>
+<p>2.重启mysql服务器<br>systemctl restart mysqld</p>
+<p>3.登录mysql，创建远程连接的账号，并授权主从复制权限<br>#创建用户，设置密码，该用户可在任意主机连接该mysql服务<br>create user ‘用户名‘@’%’ identified by ‘密码’<br>#为该用户分配主从复制权限<br>grant replication slave on * . * to ‘从库‘@’%’</p>
+<p>4.查看二进制日志坐标<br>show master status</p>
+<p><strong>从库slave配置</strong></p>
+<p>1.修改配置<br>server-id&#x3D;2        只要和主库不一样就行<br>read-only&#x3D;1       可以读写</p>
+<p>2.重启systemctl restart mysqld</p>
+<p>3，登录mysql，设置主库配置<br>change master to master_host&#x3D;’xxx.xxx’,master_user&#x3D;’xxx’,master_password&#x3D;’xxx’,<br>master_log_file&#x3D;’xxx’,master_log_pos&#x3D;xxx<br><strong>mysql8.0.23后的版本</strong><br>change republication source to source_host&#x3D;’xxx.xxx’,source_user&#x3D;’xxx’,source_password&#x3D;’xxx’,<br>source_log_file&#x3D;’xxx’,source_log_pos&#x3D;xxx</p>
+<table>
+<thead>
+<tr>
+<th>8.0.23前的参数</th>
+<th>8.0.23及之后的参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>master_host</td>
+<td>source_host</td>
+<td>主库ip地址</td>
+</tr>
+<tr>
+<td>master_user</td>
+<td>source_user</td>
+<td>连接主库的用户名</td>
+</tr>
+<tr>
+<td>master_password</td>
+<td>source_password</td>
+<td>连接主库的密码</td>
+</tr>
+<tr>
+<td>master_log_file</td>
+<td>source_log_file</td>
+<td>binlog日志文件名</td>
+</tr>
+<tr>
+<td>master_log_pos</td>
+<td>source_log_pos</td>
+<td>binlog日志文件当前位置</td>
+</tr>
+</tbody></table>
+<p>4.开启同步操作<br>start replica；   8.0.22后<br>start slave；      8.0.22前</p>
+<p>5.查看主从同步状态<br>show replica status\G；   8.0.22之后    \G由列换成行显示<br>关键字Replica_IO_Running和Replica_SQL_Running</p>
+<p>show slave status；    8.0.22之前</p>
+<h2 id="docker实现主从复制"><a href="#docker实现主从复制" class="headerlink" title="docker实现主从复制"></a>docker实现主从复制</h2><p>修改主机名：hostnamectl set-hostname 新名称<br>ip和主机名映射：修改文件&#x2F;etc&#x2F;hosts</p>
+<p>多台虚拟机之间建立免密登录：</p>
+<ul>
+<li>ssh-keygen 三次回车生成密钥</li>
+<li>ssh-copy-id 主机账号名root@主机名</li>
+<li>测试，ssh root@主机名</li>
+</ul>
+<h3 id="启动主服务器"><a href="#启动主服务器" class="headerlink" title="启动主服务器"></a>启动主服务器</h3><p>docker run -p 3307:3306 –name mysql-master -v 容器卷映射(一般映射配置文件，日志文件，data文件) -e MYSQL_ROOT_PASSWORD&#x3D;123456 -d mysql:版本号</p>
+<p>-v &#x2F;myapps&#x2F;mysql-master&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;  <br>-v &#x2F;myapps&#x2F;mysql-master&#x2F;logs:&#x2F;var&#x2F;log&#x2F;mysql&#x2F;   <br>-v &#x2F;myapps&#x2F;mysql-master&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql  \</p>
+<p>例如：docker run -p 3307:3306 –name mysql-master -v &#x2F;myapps&#x2F;mysql-master&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;  -v &#x2F;myapps&#x2F;mysql-master&#x2F;logs:&#x2F;var&#x2F;log&#x2F;mysql&#x2F;  -v &#x2F;myapps&#x2F;mysql-master&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql  -e MYSQL_ROOT_PASSWORD&#x3D;123456 -d mysql:5.7</p>
+<h3 id="修改配置主mysql的配置"><a href="#修改配置主mysql的配置" class="headerlink" title="修改配置主mysql的配置"></a>修改配置主mysql的配置</h3><p>在&#x2F;myapps&#x2F;mysql-master&#x2F;conf下创建配置文件my.cnf<br>1.修改配置<br>[mysqld]<br>#mysql服务ID，保证整个集群环境中唯一<br>server-id&#x3D;1<br>#是否只读,1表示该数据库只能读(select)<br>read-only&#x3D;0<br>#忽略的数据，不需要同步的数据库<br>#binlog-ignore-db&#x3D;mysql<br>#指定要同步的数据<br>#binlog-do-db&#x3D;db01<br>##开启二进制日志功能<br>log-bin&#x3D;mall-mysql-bin<br>##设置二进制日志使用内存大小<br>binlog_cache_size&#x3D;1M<br>##设置使用的二进制日志格式<br>binlog_format&#x3D;mixed<br>##二进制日志过期清理时间，默认值为0，表示不自动清理<br>expire_logs_days&#x3D;7<br>##跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制##中断。1062指一些主键重复，1032主从数据库数据不一致<br>slave_skip_errors&#x3D;1062</p>
+<p>2.登录mysql，创建远程连接的账号，并授权主从复制权限<br>docker exec -it mysql-master bash<br>#创建用户，设置密码，该用户可在任意主机连接该mysql服务<br>create user ‘从库用户名‘@’%’ identified with mysql_native_password by ‘密码’<br>#为该用户分配主从复制权限<br>grant replication slave on * . * to ‘库‘@’’</p>
+<p>4.查看主从复制状态<br>show master status</p>
+<h3 id="启动从服务器"><a href="#启动从服务器" class="headerlink" title="启动从服务器"></a>启动从服务器</h3><p>docker run -p 3308:3306 –name slave </p>
+<p>-v &#x2F;myapps&#x2F;mysql-slave&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;conf.d<br>-v &#x2F;myapps&#x2F;mysql-slave&#x2F;logs:&#x2F;logs<br>-v &#x2F;myapps&#x2F;mysql-slave&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql </p>
+<p>-e MYSQL_ROOT_PASSWORD&#x3D;123456<br>-d mysql:5.7</p>
+<h3 id="配置从服务器配置文件"><a href="#配置从服务器配置文件" class="headerlink" title="配置从服务器配置文件"></a>配置从服务器配置文件</h3><p>在&#x2F;myapps&#x2F;mysql-slave&#x2F;conf下创建配置文件my.cnf<br>[mysqld]<br>##设置server_id，同一局域网中需要唯一<br>server_id&#x3D;2<br>##设置只读<br>read_only&#x3D;1<br>##relay_log配置中继日志<br>relay_log&#x3D;slave-relay-bin<br>##指定不需要同步的数据库名称<br>binlog-ignore-db&#x3D;mysql<br>##开启二进制日志功能,以备slave作为其他数据库实例的master时使用<br>log-bin&#x3D;mall-mysql-slave1-bin<br>##设置二进制日志使用内存大小<br>binlog_cache_size&#x3D;1M<br>##设置使用的二进制日志格式<br>binlog_format&#x3D;mixed<br>##二进制日志过期清理时间，默认值为0，表示不自动清理<br>expire_logs_days&#x3D;7<br>##跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制##中断。1062指一些主键重复，1032主从数据库数据不一致<br>slave_skip_errors&#x3D;1062<br>##slave将复制事件写进自己的二进制日志<br>log_slave_updates&#x3D;1</p>
+<p>C、重启slave实例<br>D、在主数据库中查看主从同步状态 show master status;<br>E、进入到从数据库中配置主从复制<br>change master to master_host&#x3D;’192.168.100.188’,master_user&#x3D;’slave’,<br>master_password&#x3D;’123456’,master_port&#x3D;3307,master_log_file&#x3D;’mall-mysql-bin.000001’,master_log_pos&#x3D; 154,master_connect_retry&#x3D;30;<br>F、从数据库中查看主从同步状态 show slave status;<br>G、从数据库中开启主从同步  start slave;<br>H、再次从数据库中查看主从同步状态 show slave status;<br>I、测试主从功能：</p>
+<h2 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h2><p><a href="#jump1">回到目录</a></p>
+<p>垂直拆分：</p>
+<ul>
+<li>垂直分库：以表为依据，根据业务将不同表拆分(每个库的表结构不一样)，库的并集为全量数据</li>
+<li>垂直分表：以字段为依据，将表结构拆分(每个表的结构不同)，表的并集为全量数据</li>
+</ul>
+<p>水平拆分：</p>
+<ul>
+<li>水平分库：以字段为依据，将数据拆分到别的库(表结构一样，数据不一样)，库的并集为全量数据</li>
+<li>水平分表：对表水平拆分，将数据拆分到库(表结构一致，数据不一致)，表的并集为全量数据</li>
+</ul>
+<h3 id="使用mycat分库分表"><a href="#使用mycat分库分表" class="headerlink" title="使用mycat分库分表"></a>使用mycat分库分表</h3><p>阿里巴巴开源的mysql数据库中间件</p>
+<h2 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h2><p><a href="#jump1">回到目录</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/06/06/C++%E5%85%A5%E9%97%A8/" rel="prev" title="C语言基础">
+      <i class="fa fa-chevron-left"></i> C语言基础
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/06/01/sql/SQL_server(%E7%9B%B8%E6%AF%94mysql)/" rel="next" title="SQL SERVER数据库">
+      SQL SERVER数据库 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="nav-number">1.</span> <span class="nav-text">基础篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD"><span class="nav-number">1.1.1.</span> <span class="nav-text">备份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL%E7%9A%84%E7%B3%BB%E7%BB%9F%E5%BA%93"><span class="nav-number">1.1.2.</span> <span class="nav-text">MySQL的系统库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#performance-schema"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">performance_schema</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#information-schema"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">information_schema</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sys"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">sys</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">mysql</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DDL"><span class="nav-number">1.2.</span> <span class="nav-text">DDL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E5%BA%93%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.1.</span> <span class="nav-text">对库定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E8%A1%A8%E5%AE%9A%E4%B9%89"><span class="nav-number">1.2.2.</span> <span class="nav-text">对表定义</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DML"><span class="nav-number">1.3.</span> <span class="nav-text">DML</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DQL"><span class="nav-number">1.4.</span> <span class="nav-text">DQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DCL"><span class="nav-number">1.5.</span> <span class="nav-text">DCL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.1.</span> <span class="nav-text">用户管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-number">1.5.2.</span> <span class="nav-text">权限管理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%A6%E6%9D%9F"><span class="nav-number">1.6.</span> <span class="nav-text">约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.7.</span> <span class="nav-text">多表查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%9B%E5%8D%A1%E5%B0%94%E7%A7%AF"><span class="nav-number">1.7.1.</span> <span class="nav-text">笛卡尔积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E8%BF%9E%E6%8E%A5join%E5%92%8Cinner-join%E5%92%8Cwhere"><span class="nav-number">1.7.2.</span> <span class="nav-text">内连接join和inner join和where</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.7.3.</span> <span class="nav-text">外连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.7.4.</span> <span class="nav-text">子查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2union"><span class="nav-number">1.7.5.</span> <span class="nav-text">联合查询union</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-number">1.8.</span> <span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.8.1.</span> <span class="nav-text">系统设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="nav-number">1.8.2.</span> <span class="nav-text">事务隔离级别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">1.9.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B0"><span class="nav-number">1.9.1.</span> <span class="nav-text">日期函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E5%87%BD%E6%95%B0"><span class="nav-number">1.9.2.</span> <span class="nav-text">字符函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E5%87%BD%E6%95%B0"><span class="nav-number">1.9.3.</span> <span class="nav-text">数学函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E5%87%BD%E6%95%B0"><span class="nav-number">1.9.4.</span> <span class="nav-text">高级函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E7%AF%87"><span class="nav-number">2.</span> <span class="nav-text">进阶篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#innodb%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">2.1.</span> <span class="nav-text">innodb存储引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%9C"><span class="nav-number">2.1.1.</span> <span class="nav-text">逻辑存储结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84"><span class="nav-number">2.1.2.</span> <span class="nav-text">架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.3.</span> <span class="nav-text">事务原理 </span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MVCC-%E5%A4%9A%E7%89%88%E6%9C%AC%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="nav-number">2.1.4.</span> <span class="nav-text">MVCC(多版本并发控制)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86-%E9%9A%90%E8%97%8F%E5%AD%97%E6%AE%B5-undo-log-readview"><span class="nav-number">2.1.4.1.</span> <span class="nav-text">实现原理(隐藏字段+undo log+readview)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%8CB-tree"><span class="nav-number">2.2.</span> <span class="nav-text">索引(数据结构，B+tree)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">2.2.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%A7%84%E5%88%99"><span class="nav-number">2.2.2.</span> <span class="nav-text">使用规则</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sql%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90"><span class="nav-number">2.3.</span> <span class="nav-text">sql性能分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="nav-number">2.3.1.</span> <span class="nav-text">慢查询日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#profile"><span class="nav-number">2.3.2.</span> <span class="nav-text">profile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#explain"><span class="nav-number">2.3.3.</span> <span class="nav-text">explain</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sql%E4%BC%98%E5%8C%96"><span class="nav-number">2.4.</span> <span class="nav-text">sql优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-number">2.4.1.</span> <span class="nav-text">插入数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E9%94%AE%E4%BC%98%E5%8C%96"><span class="nav-number">2.4.2.</span> <span class="nav-text">主键优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#order-by%E4%BC%98%E5%8C%96"><span class="nav-number">2.4.3.</span> <span class="nav-text">order by优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#group-by%E4%BC%98%E5%8C%96"><span class="nav-number">2.4.4.</span> <span class="nav-text">group by优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#limit%E4%BC%98%E5%8C%96"><span class="nav-number">2.4.5.</span> <span class="nav-text">limit优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#count%E4%BC%98%E5%8C%96"><span class="nav-number">2.4.6.</span> <span class="nav-text">count优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#update%E4%BC%98%E5%8C%96"><span class="nav-number">2.4.7.</span> <span class="nav-text">update优化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%86%E5%9B%BE-%E8%99%9A%E6%8B%9F%E8%A1%A8"><span class="nav-number">2.5.</span> <span class="nav-text">视图(虚拟表)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="nav-number">2.5.1.</span> <span class="nav-text">基础语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E9%80%89%E9%A1%B9"><span class="nav-number">2.5.2.</span> <span class="nav-text">检查选项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%86%E5%9B%BE%E7%9A%84%E6%9B%B4%E6%96%B0"><span class="nav-number">2.5.3.</span> <span class="nav-text">视图的更新</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="nav-number">2.6.</span> <span class="nav-text">存储过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-number">2.6.1.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E3%80%81%E8%B0%83%E7%94%A8%E3%80%81%E6%9F%A5%E7%9C%8B%E5%92%8C%E5%88%A0%E9%99%A4"><span class="nav-number">2.6.2.</span> <span class="nav-text">创建、调用、查看和删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E8%AF%8D%E7%94%A8%E6%B3%95"><span class="nav-number">2.6.3.</span> <span class="nav-text">关键词用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%B8%E6%A0%87"><span class="nav-number">2.6.4.</span> <span class="nav-text">游标</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%87%BD%E6%95%B0"><span class="nav-number">2.7.</span> <span class="nav-text">存储函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-number">2.8.</span> <span class="nav-text">触发器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%81"><span class="nav-number">2.9.</span> <span class="nav-text">锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">2.9.1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E9%94%81-%E4%B8%80%E8%87%B4%E6%80%A7%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD"><span class="nav-number">2.9.2.</span> <span class="nav-text">全局锁(一致性数据备份)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A8%E7%BA%A7%E9%94%81"><span class="nav-number">2.9.3.</span> <span class="nav-text">表级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A8%E9%94%81-%E9%81%BF%E5%85%8DDML%E5%92%8CDDL%E5%86%B2%E7%AA%81"><span class="nav-number">2.9.3.1.</span> <span class="nav-text">表锁(避免DML和DDL冲突)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%83%E6%95%B0%E6%8D%AE%E9%94%81"><span class="nav-number">2.9.3.2.</span> <span class="nav-text">元数据锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%84%8F%E5%90%91%E9%94%81"><span class="nav-number">2.9.3.3.</span> <span class="nav-text">意向锁</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E7%BA%A7%E9%94%81"><span class="nav-number">2.9.4.</span> <span class="nav-text">行级锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%8C%E9%94%81-Record-lock"><span class="nav-number">2.9.4.1.</span> <span class="nav-text">行锁(Record lock)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%B4%E9%9A%99%E9%94%81-Gap-lock"><span class="nav-number">2.9.4.2.</span> <span class="nav-text">间隙锁(Gap lock)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%B4%E9%94%AE%E9%94%81-Next-key-lock"><span class="nav-number">2.9.4.3.</span> <span class="nav-text">临键锁(Next-key lock)</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E7%BB%B4%E7%AF%87"><span class="nav-number">3.</span> <span class="nav-text">运维篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%BF%97"><span class="nav-number">3.1.</span> <span class="nav-text">日志</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97"><span class="nav-number">3.1.1.</span> <span class="nav-text">错误日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%97%A5%E5%BF%97"><span class="nav-number">3.1.2.</span> <span class="nav-text">二进制日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97"><span class="nav-number">3.1.3.</span> <span class="nav-text">查询日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97-1"><span class="nav-number">3.1.4.</span> <span class="nav-text">慢查询日志</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="nav-number">3.2.</span> <span class="nav-text">主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B%E5%8E%9F%E7%90%86"><span class="nav-number">3.2.1.</span> <span class="nav-text">过程原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">3.2.2.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker%E5%AE%9E%E7%8E%B0%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="nav-number">3.3.</span> <span class="nav-text">docker实现主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%B8%BB%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">3.3.1.</span> <span class="nav-text">启动主服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE%E4%B8%BBmysql%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="nav-number">3.3.2.</span> <span class="nav-text">修改配置主mysql的配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%BB%8E%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">3.3.3.</span> <span class="nav-text">启动从服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E4%BB%8E%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">3.3.4.</span> <span class="nav-text">配置从服务器配置文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8"><span class="nav-number">3.4.</span> <span class="nav-text">分库分表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8mycat%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8"><span class="nav-number">3.4.1.</span> <span class="nav-text">使用mycat分库分表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB"><span class="nav-number">3.5.</span> <span class="nav-text">读写分离</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我真不是雪上加霜"
+      src="/images/%E5%85%AD%E8%8A%B1.gif">
+  <p class="site-author-name" itemprop="name">我真不是雪上加霜</p>
+  <div class="site-description" itemprop="description">失败总是贯穿人生始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我真不是雪上加霜</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">197k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:59</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

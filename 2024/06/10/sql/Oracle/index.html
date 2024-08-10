@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"maofe3o4.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="参考大学教材《Oracle 11g大型数据库原理》">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle数据库(未完成)">
+<meta property="og:url" content="https://maofe3o4.github.io/2024/06/10/sql/Oracle/">
+<meta property="og:site_name" content="我真不是雪上加霜">
+<meta property="og:description" content="参考大学教材《Oracle 11g大型数据库原理》">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="d:\admin_file\%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0\sql\oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="d:\admin_file\%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0\sql\oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%89%A9%E7%90%86%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%E5%92%8C%E9%80%BB%E8%BE%91%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84.png">
+<meta property="article:published_time" content="2024-06-10T04:00:00.000Z">
+<meta property="article:modified_time" content="2024-08-10T05:49:56.999Z">
+<meta property="article:author" content="我真不是雪上加霜">
+<meta property="article:tag" content="oracle">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:\admin_file\%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0\sql\oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84.png">
+
+<link rel="canonical" href="https://maofe3o4.github.io/2024/06/10/sql/Oracle/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Oracle数据库(未完成) | 我真不是雪上加霜</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">我真不是雪上加霜</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://maofe3o4.github.io/2024/06/10/sql/Oracle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%85%AD%E8%8A%B1.gif">
+      <meta itemprop="name" content="我真不是雪上加霜">
+      <meta itemprop="description" content="失败总是贯穿人生始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我真不是雪上加霜">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Oracle数据库(未完成)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-06-10 12:00:00" itemprop="dateCreated datePublished" datetime="2024-06-10T12:00:00+08:00">2024-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-08-10 13:49:56" itemprop="dateModified" datetime="2024-08-10T13:49:56+08:00">2024-08-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>6 分钟</span>
+            </span>
+            <div class="post-description">参考大学教材《Oracle 11g大型数据库原理》</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><span id="jump1">目录</span></p>
+<p>[toc]</p>
+<p>Oracle内容庞大,推荐看《Oracle 11g数据库基础教程》，此文档只包含常用内容</p>
+<h1 id="安装与卸载"><a href="#安装与卸载" class="headerlink" title="安装与卸载"></a>安装与卸载</h1><p><a href="#jump1">回到目录</a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>setup-&gt;网络配置(监听器)-&gt;SQL PLUS(查看能否登录，用户名system)</p>
+<h2 id="企业管理器OEM"><a href="#企业管理器OEM" class="headerlink" title="企业管理器OEM"></a>企业管理器OEM</h2><p>浏览器https:&#x2F;&#x2F;本机:1158&#x2F;em<br>确保Oracle服务、监听服务和控制台服务打开</p>
+<p>默认控制台服务(即OEM控制台服务)端口为1158<br>查看在\app\product\11.2.0\dbhome_1\install\portlist.int</p>
+<h1 id="文件体系结构"><a href="#文件体系结构" class="headerlink" title="文件体系结构"></a>文件体系结构</h1><p><a href="#jump1">回到目录</a></p>
+<p><img src="D:\admin_file\自学笔记\sql\oracle数据库系统结构.png" alt="oracle数据库系统结构"></p>
+<p>admin:以数据库为单位，存放数据库运行过程中产生的跟踪文件<br>cfgtoologs:运行dbca、emca和netca图像化程序时产生的日志信息<br>checkpoint:存放数据库检查点信息<br>diag:以组件为单位，存储数据库各个组件运行的诊断信息<br>flash_recovery_area:以数据库为单位，数据库自动备份时，存放备份文件和闪回日志文件<br>oradata:以数据库为单位，存放数据库的物理文件(数据，控制，重做日志)<br>product:存放数据库管理相关的软件，包括可执行文件、网络配置、脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">Oracle数据库--&gt; 存储结构DB</span><br><span class="line">存储结构DB--&gt; 物理存储结构</span><br><span class="line">存储结构DB--&gt; 逻辑存储结构</span><br><span class="line">Oracle数据库--&gt; 数据库管理系统DBMS</span><br><span class="line">数据库管理系统DBMS--&gt; 实例instance</span><br><span class="line">实例instance--&gt; 内存结构--&gt; SGA和PGA</span><br><span class="line">实例instance--&gt; 后台进程</span><br></pre></td></tr></table></figure>
+
+<h2 id="物理存储和逻辑存储"><a href="#物理存储和逻辑存储" class="headerlink" title="物理存储和逻辑存储"></a>物理存储和逻辑存储</h2><p><img src="D:\admin_file\自学笔记\sql\oracle数据库物理存储结构和逻辑存储结构.png" alt="oracle数据库物理存储结构和逻辑存储结构"></p>
+<p>表空间：数据文件&#x3D;1：n             块：OS块&#x3D;1：n</p>
+<p><strong>物理文件</strong>：参数文件(库名，CTL路径，进程)，跟踪文件(记录运行过程发生的大事)+告警文件（记录后台进程活动）<br>数据文件：DBF<br>日志文件：LOG<br>控制文件：CTL(库名，数据和日志文件路径，建库日期）</p>
+<p>逻辑文件：<strong>表空间</strong>(系统表SYSTEM，辅助系统表SYSAUX，临时表TEMP，撤销表UNDO，USERS)，<strong>段</strong>(数据，索引，临时，回退)，<strong>区</strong>(连续的数据块，存储空间分配的最小单位)，<strong>块</strong>(最小逻辑存储单元)</p>
+<h2 id="内存结构和后台进程"><a href="#内存结构和后台进程" class="headerlink" title="内存结构和后台进程"></a>内存结构和后台进程</h2><h3 id="SGA和PGA"><a href="#SGA和PGA" class="headerlink" title="SGA和PGA"></a>SGA和PGA</h3><p>SGA系统全局区：数据高速缓冲区、共享池（库缓存和数据字典缓存）、重做日志缓冲区、大型池、Java池、流池和其他</p>
+<p>高速缓冲区：脏缓冲块(修改过的数据)+空闲缓冲块(无数据)+命中缓冲块(正在被使用的数据)+干净缓冲块(没被修改的数据)。<br>库缓存：通过硬解析(未执行的SQL)和软解析(已执行的SQL)来让相同的SQL语句不再编译，提升SQL执行效率。</p>
+<p>PGA程序全局区：排序区、游标信息区、会话信息区、堆栈区(会话变量)</p>
+<h3 id="后台进程"><a href="#后台进程" class="headerlink" title="后台进程"></a>后台进程</h3><table>
+<thead>
+<tr>
+<th>进程名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据库写入进程DBWR</td>
+<td>将高速缓冲区的脏缓冲块写入数据文件</td>
+</tr>
+<tr>
+<td>日志写入进程LGWR</td>
+<td>将重做日志缓冲区的记录写入重做日志文件</td>
+</tr>
+<tr>
+<td>检查点进程CKPT</td>
+<td>类似时间节点，每到检查点就执行上面的操作，并保存节点</td>
+</tr>
+<tr>
+<td>系统监控进程SMON</td>
+<td>系统崩溃时恢复系统（通过联机重做日志文件）;合并空闲表空间碎片</td>
+</tr>
+<tr>
+<td>进程监控进程PMON</td>
+<td>同上仅针对用户进程</td>
+</tr>
+<tr>
+<td>归档进程ARCH</td>
+<td>重做日志写满时，复制到归档目标</td>
+</tr>
+<tr>
+<td>恢复进程RECO</td>
+<td>自动解决分布式数据库出现的事务故障</td>
+</tr>
+<tr>
+<td>锁进程LCKn</td>
+<td></td>
+</tr>
+<tr>
+<td>调度进程Dnnn</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>归档模式开启：LOG_ARCHIVE_START&#x3D;TRUE</p>
+<h1 id="安全管理"><a href="#安全管理" class="headerlink" title="安全管理"></a>安全管理</h1><p><a href="#jump1">回到目录</a></p>
+<h2 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h2><h2 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h2><h2 id="角色管理"><a href="#角色管理" class="headerlink" title="角色管理"></a>角色管理</h2><h2 id="表空间管理"><a href="#表空间管理" class="headerlink" title="表空间管理"></a>表空间管理</h2><p><strong>表空间类型、名称、数据文件、表空间管理方式、区分配方式和段管理方式</strong><br>表空间管理：字典dictionary管理方式、(默认)本地管理方式local<br>区分配方式：在表空间本地管理中，区分配有(默认)自动分配autoallocate和定制分配uniform<br>管管理饭时：(默认)自动管理auto和手动管理manual</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建表空间</span></span><br><span class="line"><span class="keyword">create</span> [temporary<span class="operator">|</span>bigfile<span class="operator">|</span>undo] tablespace 名字</span><br><span class="line">[datafile<span class="operator">|</span>tempfile] <span class="string">&#x27;文件路径\名字.DBF&#x27;</span> size <span class="number">10</span>M</span><br><span class="line">[autoextent <span class="keyword">on</span> next <span class="number">1</span>M maxsize unlimited] <span class="comment">-- 数据文件自动扩展</span></span><br><span class="line">[extent management <span class="keyword">local</span> uniform size <span class="number">10</span>M] <span class="comment">-- 段定制分配</span></span><br><span class="line">[segment space management manual] <span class="comment">-- 区手动管理</span></span><br><span class="line"></span><br><span class="line">大文件表空间 段只能自动管理,临时表空间和撤销表空间 区只能自动分配</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改表空间</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="语法相关"><a href="#语法相关" class="headerlink" title="语法相关"></a>语法相关</h1><p><a href="#jump1">回到目录</a></p>
+<h2 id="求余"><a href="#求余" class="headerlink" title="求余"></a>求余</h2><table>
+<thead>
+<tr>
+<th>mysql</th>
+<th>sql server</th>
+<th>Oracle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%、mod</td>
+<td>%</td>
+<td>mod</td>
+</tr>
+</tbody></table>
+<h2 id="DDL、DML、DQL-没写的默认和其他sql一样"><a href="#DDL、DML、DQL-没写的默认和其他sql一样" class="headerlink" title="DDL、DML、DQL(没写的默认和其他sql一样)"></a>DDL、DML、DQL(没写的默认和其他sql一样)</h2><table>
+<thead>
+<tr>
+<th>表相关功能</th>
+<th>语法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>建表1</td>
+<td>create table 表名(。。。。)</td>
+<td>同mysql</td>
+</tr>
+<tr>
+<td>建表2</td>
+<td>craete table 表名(列…..) as select …..</td>
+<td>用子查询建表</td>
+</tr>
+<tr>
+<td>修改表</td>
+<td>alter table 表名<br />[add 新列 类型 约束]<br />[modify 列 类型]<br />[set unused coumn 列]<br />[drop column 列]<br />[rename column 旧列名 to 新列名]<br />[rename to 新表名]</td>
+<td><br />加新列<br />改类型<br />设置不使用列<br />删除列<br />重命名列<br />重命名表</td>
+</tr>
+<tr>
+<td>修改约束</td>
+<td>alter table 表名<br />[add constraint 约束名 主键|唯一|检查|外键]<br />[modify 列 not null]<br />[drop constraint 约束名]<br />[drop unique(列)]</td>
+<td><br />添加主键外键唯一检查约束<br />添加非空约束<br />按约束名删除<br />按列约束删除</td>
+</tr>
+<tr>
+<td>删除表</td>
+<td>drop table 表名<br />[cascade constraints]<br />[purge]</td>
+<td>在Oracle中删除表会重命名表并放在回收站(用来实现闪回删除flashback drop擦操作，清空回收站purge recyclebin)</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>数据相关功能</th>
+<th>语法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>插入1</td>
+<td>insert into 表(列…) values (列…)</td>
+<td>单条数据</td>
+</tr>
+<tr>
+<td>插入2</td>
+<td>insert into 表 select …</td>
+<td>子查询</td>
+</tr>
+<tr>
+<td>插入3</td>
+<td>insert all<br />[into 表1 values(列…)]<br />[into 表2 values(列…)]<br />select…</td>
+<td>多条数据</td>
+</tr>
+<tr>
+<td>插入4</td>
+<td>insert all|first<br />when 条件1 then into 表1(列…)<br />when 条件2 then into 表2(列…)<br />else into 表3(列…)<br />select …</td>
+<td>条件多表插入<br />all表示只要满足条件就插入<br />first表示只插入满足条件的第一个表</td>
+</tr>
+<tr>
+<td>插入5</td>
+<td>insert &#x2F; * +append *&#x2F; into 表 select…</td>
+<td>插入大量数据使用装载(不写入日志)</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>数据合并</td>
+<td>merge into 目标表 using 源表<br />on(条件)<br />when matched  then update set…<br />when not matched then insert values(…)</td>
+<td>将满足on条件的源表数据更新或插入到目标表</td>
+</tr>
+</tbody></table>
+<h2 id="select注意事项"><a href="#select注意事项" class="headerlink" title="select注意事项"></a>select注意事项</h2><ul>
+<li><p>拼接符号：||</p>
+</li>
+<li><p>交、并、差：intersect、union、minus</p>
+</li>
+<li><p>order by 2         将select结果按第2列排序</p>
+</li>
+<li><p>使用ROWNUM来显示行号，在select结果集里面直接加RUWNUM</p>
+</li>
+<li><p>ROWID是数据的物理地址</p>
+</li>
+</ul>
+<p>rowid&#x3D;对象编号6+数据文件编号3+块编号6+行编号3</p>
+<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><p>设置事务只读模式(该模式下，开启事务之后只能查询数据)<br>set transaction read only；</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">begin</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">savepoint</span> A;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">rollback</span> <span class="keyword">to</span> [A];<span class="operator">|</span><span class="keyword">commit</span>;<span class="operator">|</span><span class="keyword">rollback</span>;</span><br><span class="line">[exception</span><br><span class="line"> <span class="keyword">when</span> others <span class="keyword">then</span> <span class="keyword">rollback</span> <span class="keyword">to</span> A;]</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
+
+<p>其他内容同mysql</p>
+<h1 id="序列"><a href="#序列" class="headerlink" title="序列"></a>序列</h1><p><strong>序列不占用实际存储空间</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建序列</span></span><br><span class="line"><span class="keyword">create</span> sequence 序列名</span><br><span class="line">[<span class="keyword">start</span> <span class="keyword">with</span> n]             <span class="comment">-- 设置初始值，默认1</span></span><br><span class="line">[increment <span class="keyword">by</span> m]           <span class="comment">-- 步长，默认1</span></span><br><span class="line">[maxvalue mm<span class="operator">|</span>nomaxvalue]   <span class="comment">-- 序列最大值mm</span></span><br><span class="line">[minvalue mm<span class="operator">|</span>nominvalue]   <span class="comment">-- 序列最小值mm</span></span><br><span class="line">[<span class="keyword">cycle</span><span class="operator">|</span>nocycle]            <span class="comment">-- 达到最大值或最小值时，循环</span></span><br><span class="line">[cache n<span class="operator">|</span>nocache]   <span class="comment">-- 设置预先分配并保留在内存中的序列个数，默认20</span></span><br><span class="line"><span class="comment">-- 使用序列</span></span><br><span class="line">同rownum伪列，序列有currval和nextval两个伪列</span><br><span class="line">序列名.currval返回当前序列值</span><br><span class="line">序列名.nextval产生新值并返回</span><br><span class="line">使用范围：<span class="keyword">select</span>和<span class="keyword">insert</span>目标列，<span class="keyword">insert</span> <span class="keyword">values</span>子句，<span class="keyword">update</span>的<span class="keyword">set</span>子句</span><br></pre></td></tr></table></figure>
+
+<h1 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h1><p>查询简单化、数据安全性、逻辑数据独立性</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace][force<span class="operator">|</span>noforce] <span class="keyword">view</span> 视图名 <span class="comment">-- force不管有无基表强制创建视图</span></span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">select...</span><br><span class="line">[<span class="keyword">with</span> <span class="keyword">check</span> option] <span class="comment">-- 对试图操作时，必须满足子查询中的约束条件</span></span><br><span class="line">[<span class="keyword">with</span> read <span class="keyword">only</span>] <span class="comment">-- 只读</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="同义词"><a href="#同义词" class="headerlink" title="同义词"></a>同义词</h1><p>create synonym 名称 for 表名</p>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><p><a href="#jump1">回到目录</a></p>
+<h2 id="日期函数"><a href="#日期函数" class="headerlink" title="日期函数"></a>日期函数</h2><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>add_months(d,n)</td>
+<td>日期d+n个月,n可为负数</td>
+</tr>
+<tr>
+<td>extract(year from d)</td>
+<td>从日期d中截取,year,month,day,hour,minute,second</td>
+</tr>
+<tr>
+<td>sysdate</td>
+<td>系统时间</td>
+</tr>
+<tr>
+<td>last_day</td>
+<td>当月最后一天日期</td>
+</tr>
+<tr>
+<td>months_between(d1,d2)</td>
+<td>相差月数</td>
+</tr>
+</tbody></table>
+<h2 id="其他函数"><a href="#其他函数" class="headerlink" title="其他函数"></a>其他函数</h2><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>nvl(a,b)</td>
+<td>a为空，返回b,否则返回a</td>
+</tr>
+<tr>
+<td>nvl2(a,b,c)</td>
+<td>a为空,返回c，否则返回b</td>
+</tr>
+<tr>
+<td>nullif(a,b)</td>
+<td>a&#x3D;b,返回null，否则返回a</td>
+</tr>
+<tr>
+<td>decode(expr,a,b,a1,b1,…..default)</td>
+<td>表达式expr，为a时返回b，为a1时返回b1,….<br />否则默认</td>
+</tr>
+</tbody></table>
+<h1 id="PL-SQL"><a href="#PL-SQL" class="headerlink" title="PL&#x2F;SQL"></a>PL&#x2F;SQL</h1><table>
+<thead>
+<tr>
+<th>orcle功能函数</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>设置打印(默认开启)</td>
+<td>set serveroutput on</td>
+</tr>
+<tr>
+<td>输出内容并换行</td>
+<td>DBMS_OUTPUT.PUT_LINE()</td>
+</tr>
+<tr>
+<td>放进缓冲区，不换行输出</td>
+<td>dbms_output.put(‘Hello, Lao An ‘);<br />dbms_output.put(‘Hello, Lao An ‘);</td>
+</tr>
+<tr>
+<td>输出换行</td>
+<td>dbms_output.new_line();</td>
+</tr>
+<tr>
+<td>输入(注意&amp;后可以接任意内容)</td>
+<td>i:&#x3D;&amp;i</td>
+</tr>
+<tr>
+<td>产生从n到m的随机数</td>
+<td>dbms_random_value(n,m)</td>
+</tr>
+</tbody></table>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>种类</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数字</td>
+<td>number(p,s)</td>
+<td>p有效位，s小数位</td>
+</tr>
+<tr>
+<td>字符</td>
+<td>char()<br />varchar2()</td>
+<td>定长char；变长varchar2</td>
+</tr>
+<tr>
+<td>日期</td>
+<td>date<br />timestamp</td>
+<td>日期date；时间点timestamp</td>
+</tr>
+<tr>
+<td>布尔</td>
+<td>boolean</td>
+<td>true，false，null</td>
+</tr>
+<tr>
+<td>LOB</td>
+<td>blob,clob,nclob,bfile</td>
+<td>二进制blob；文本clob,nclob;操作系统文件指针bfile</td>
+</tr>
+<tr>
+<td>记录</td>
+<td>type 名称 is record(<br />…..)</td>
+<td>类似结构体</td>
+</tr>
+</tbody></table>
+<p>%TYPE和%ROWTYPE<br>已知存在表emp中的sal列，但不知道数据类型，想要定义一个相同的数据类型<br>a emp.sal%TYPE<br>b emp%ROWTYPE   定义一个与emp表结构一致的记录类型</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span></span><br><span class="line">声明各种变量</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">select</span> ...into..;</span><br><span class="line"><span class="keyword">insert</span>,<span class="keyword">update</span>,delete...;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 选择结构</span></span><br><span class="line"><span class="comment">-- if</span></span><br><span class="line">if 条件 <span class="keyword">then</span> 情况<span class="number">1</span>;</span><br><span class="line">elsif 条件<span class="number">2</span> <span class="keyword">then</span> 情况<span class="number">2</span>;</span><br><span class="line"><span class="keyword">else</span> 情况<span class="number">3</span>;</span><br><span class="line"><span class="keyword">end</span> if;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- case</span></span><br><span class="line"><span class="keyword">case</span></span><br><span class="line"><span class="keyword">when</span> ... <span class="keyword">then</span> ...;</span><br><span class="line"><span class="keyword">when</span> ... <span class="keyword">then</span> ...;</span><br><span class="line"><span class="keyword">else</span> ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">case</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 循环while for loop</span></span><br><span class="line"><span class="comment">-- 循环以end loop结束</span></span><br><span class="line">loop</span><br><span class="line">...;</span><br><span class="line">exit <span class="keyword">when</span> 条件;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line">while 条件 loop</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i [reverse] <span class="keyword">in</span> n..m loop   <span class="comment">-- 变量i从n到m循环,反转后从m到n</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 跳转结构GOTO</span></span><br><span class="line">...;</span><br><span class="line"><span class="operator">&lt;&lt;</span>a<span class="operator">&gt;&gt;</span>    <span class="comment">-- 定义跳转点</span></span><br><span class="line">...;</span><br><span class="line">goto a;  <span class="comment">-- goto跳转到跳转点</span></span><br><span class="line">...;</span><br></pre></td></tr></table></figure>
+
+<h2 id="游标"><a href="#游标" class="headerlink" title="游标"></a>游标</h2><p>在PL&#x2F;SQL块中执行select和DML，分配缓冲区，名为上下文区，游标是<strong>指向该缓冲的指针</strong></p>
+<p>显式游标：用户定义、操作，处理返回多行数据的select查询<br>隐式游标：由系统自动操作，处理DML和返回单行数据的select查询</p>
+<h3 id="显示游标"><a href="#显示游标" class="headerlink" title="显示游标"></a>显示游标</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 定义(可带参数)</span></span><br><span class="line"><span class="keyword">CURSOR</span> 游标名 <span class="keyword">IS</span> <span class="keyword">select</span>语句</span><br><span class="line"><span class="keyword">CURSOR</span> 游标名(变量) <span class="keyword">IS</span> <span class="keyword">select</span>语句</span><br><span class="line"><span class="comment">-- 打开(open之后游标指向第一行)</span></span><br><span class="line"><span class="keyword">open</span> 游标名</span><br><span class="line"><span class="keyword">open</span> 游标名(<span class="operator">&amp;</span>变量)</span><br><span class="line"><span class="comment">-- 检索(每执行一次fetch指针后移)</span></span><br><span class="line"><span class="keyword">fetch</span> 游标名 <span class="keyword">into</span> 一个能存一行数据的变量</span><br><span class="line"><span class="comment">-- 关闭</span></span><br><span class="line"><span class="keyword">close</span> 游标名</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 通过loop，while，for来循环检索的区别</span></span><br><span class="line">loop</span><br><span class="line">	fetch...into..;</span><br><span class="line">	exit <span class="keyword">when</span> 游标<span class="operator">%</span>notfound;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line">fetch...into..;</span><br><span class="line">while 游标<span class="operator">%</span>notfound loop</span><br><span class="line">	fetch...into..;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> 记录行变量 <span class="keyword">in</span> 游标名 loop</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>游标属性</th>
+<th>语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%isopen</td>
+<td>是否开启</td>
+</tr>
+<tr>
+<td>%found 或者 %notfound</td>
+<td>上次使用fetch时是否检测到数据,可以作为游标循环检索的判断条件</td>
+</tr>
+<tr>
+<td>%rowcount</td>
+<td>返回检索个数</td>
+</tr>
+<tr>
+<td>%bulk_rowcount(i)</td>
+<td>取得forall语句执行批绑定时第i个元素影响的行数</td>
+</tr>
+</tbody></table>
+<h3 id="隐式游标"><a href="#隐式游标" class="headerlink" title="隐式游标"></a>隐式游标</h3><p><strong>指向SQL语句执行的缓冲区的指针</strong>，又称SQL游标(静态游标)</p>
+<p>隐式游标属性同显式游标,相当于一个游标名称为SQL的游标<br>SQL游标主要用来处理insert、update、delete、单行的select…into</p>
+<h4 id="游标变量"><a href="#游标变量" class="headerlink" title="游标变量"></a>游标变量</h4><p>定义游标引用类型：TYPE 游标引用类型名a IS REF CURSOR [RETURN 返回类型]<br>引用上面定义：游标变量名 a<br>在Oracle有一个预定义的游标引用类型sys_refcursor</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 定义游标变量</span></span><br><span class="line">游标名 sys_refcursor;</span><br><span class="line"><span class="comment">-- 打开游标变量</span></span><br><span class="line"><span class="keyword">open</span> 游标变量名 <span class="keyword">for</span> select...</span><br><span class="line"><span class="comment">-- 检索游标变量</span></span><br><span class="line">loop</span><br><span class="line"><span class="keyword">fetch</span> 游标变量 <span class="keyword">into</span> 变量;</span><br><span class="line">...;</span><br><span class="line">exit <span class="keyword">when</span> ...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"><span class="comment">-- 关闭</span></span><br><span class="line"><span class="keyword">close</span> 游标变量名;</span><br></pre></td></tr></table></figure>
+
+<h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h2><p>预定义异常，非预定义异常，用户定义异常</p>
+<h2 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a>存储过程</h2><p>声明形参时<strong>不能定义长度或精度</strong>，有默认值的参数放在参数列表最后。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 定义</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">procedure</span> 存储过程名(变量名 <span class="keyword">in</span><span class="operator">|</span><span class="keyword">out</span><span class="operator">|</span><span class="keyword">in</span> <span class="keyword">out</span> 数据类型 [:<span class="operator">=</span>默认值])</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">定义变量;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">执行部分;</span><br><span class="line">exception</span><br><span class="line">when...then...异常处理部分;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line"><span class="keyword">execute</span><span class="operator">|</span><span class="keyword">call</span> 存储过程名;</span><br><span class="line">在PL<span class="operator">/</span><span class="keyword">SQL</span>直接当成函数执行</span><br></pre></td></tr></table></figure>
+
+<h2 id="存储函数"><a href="#存储函数" class="headerlink" title="存储函数"></a>存储函数</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 定义</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">function</span> 函数名(变量名 <span class="keyword">in</span><span class="operator">|</span><span class="keyword">out</span><span class="operator">|</span><span class="keyword">in</span> <span class="keyword">out</span> 数据类型 [:<span class="operator">=</span>默认值])</span><br><span class="line"><span class="keyword">return</span> 数据类型;</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">定义变量;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">执行部分;</span><br><span class="line"><span class="keyword">return</span> 变量;</span><br><span class="line">exception</span><br><span class="line">异常处理部分;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line">PL<span class="operator">/</span><span class="keyword">SQL</span>中使用直接调用</span><br><span class="line">在<span class="keyword">SQL</span>语句中直接使用</span><br></pre></td></tr></table></figure>
+
+<h2 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h2><p>一种特殊的存储过程系统自动调用执行，不能显式调用，不接受参数</p>
+<table>
+<thead>
+<tr>
+<th>作用对象不同类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DML触发器</td>
+<td>在基本表上的触发器，响应增删改操作</td>
+</tr>
+<tr>
+<td>INSTEAD OF触发器</td>
+<td>视图上的触发器，响应增删改操作</td>
+</tr>
+<tr>
+<td>系统触发器</td>
+<td>系统或模式上的触发器，响应系统事件和DDL操作</td>
+</tr>
+</tbody></table>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建DML触发器(语句级、行级for each row使用到:old、:new)</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">trigger</span> 触发器名</span><br><span class="line">before<span class="operator">|</span>after <span class="keyword">insert</span> <span class="keyword">or</span> <span class="keyword">delete</span> <span class="keyword">or</span> <span class="keyword">update</span></span><br><span class="line">[<span class="keyword">of</span> 列名] <span class="keyword">on</span> 表名</span><br><span class="line">[<span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span>]   <span class="comment">-- 行级触发器</span></span><br><span class="line">[<span class="keyword">declare</span> 变量]</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">...;</span><br><span class="line"><span class="comment">-- 条件谓词：inserting、updating、deleting</span></span><br><span class="line"><span class="comment">-- if 判断词 then或者 when 判断词 then</span></span><br><span class="line"><span class="comment">-- 行级DML标识符   :old.列名  :new.列名  在when中使用不加:</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建变异表触发器</span></span><br><span class="line"><span class="comment">-- 更新变异表同时查询变异表：在行级触发器中获取要修改的记录的信息，存放到一个软件包的全局变量中，然后在语句级后触发器中利用软件包中全局变量信息对变异表的查询</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="备份与恢复"><a href="#备份与恢复" class="headerlink" title="备份与恢复"></a>备份与恢复</h1><p>冷热备份，归档模式</p>
+<h2 id="物理备份"><a href="#物理备份" class="headerlink" title="物理备份"></a>物理备份</h2><h2 id="物理恢复"><a href="#物理恢复" class="headerlink" title="物理恢复"></a>物理恢复</h2><h2 id="RMAN备份"><a href="#RMAN备份" class="headerlink" title="RMAN备份"></a>RMAN备份</h2><h2 id="RMAN恢复"><a href="#RMAN恢复" class="headerlink" title="RMAN恢复"></a>RMAN恢复</h2><h2 id="逻辑备份"><a href="#逻辑备份" class="headerlink" title="逻辑备份"></a>逻辑备份</h2><h2 id="逻辑恢复"><a href="#逻辑恢复" class="headerlink" title="逻辑恢复"></a>逻辑恢复</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/oracle/" rel="tag"># oracle</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/06/06/docker/docker/" rel="prev" title="docker使用操作">
+      <i class="fa fa-chevron-left"></i> docker使用操作
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/07/29/kubernetes/Kubernetes%E5%8E%9F%E7%90%86/" rel="next" title="k8s核心原理">
+      k8s核心原理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD"><span class="nav-number">1.</span> <span class="nav-text">安装与卸载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86%E5%99%A8OEM"><span class="nav-number">1.2.</span> <span class="nav-text">企业管理器OEM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">文件体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%AD%98%E5%82%A8%E5%92%8C%E9%80%BB%E8%BE%91%E5%AD%98%E5%82%A8"><span class="nav-number">2.1.</span> <span class="nav-text">物理存储和逻辑存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84%E5%92%8C%E5%90%8E%E5%8F%B0%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">内存结构和后台进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SGA%E5%92%8CPGA"><span class="nav-number">2.2.1.</span> <span class="nav-text">SGA和PGA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.2.2.</span> <span class="nav-text">后台进程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">安全管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">用户管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-number">3.2.</span> <span class="nav-text">权限管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%92%E8%89%B2%E7%AE%A1%E7%90%86"><span class="nav-number">3.3.</span> <span class="nav-text">角色管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E7%A9%BA%E9%97%B4%E7%AE%A1%E7%90%86"><span class="nav-number">3.4.</span> <span class="nav-text">表空间管理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95%E7%9B%B8%E5%85%B3"><span class="nav-number">4.</span> <span class="nav-text">语法相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E4%BD%99"><span class="nav-number">4.1.</span> <span class="nav-text">求余</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DDL%E3%80%81DML%E3%80%81DQL-%E6%B2%A1%E5%86%99%E7%9A%84%E9%BB%98%E8%AE%A4%E5%92%8C%E5%85%B6%E4%BB%96sql%E4%B8%80%E6%A0%B7"><span class="nav-number">4.2.</span> <span class="nav-text">DDL、DML、DQL(没写的默认和其他sql一样)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">4.3.</span> <span class="nav-text">select注意事项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-number">5.</span> <span class="nav-text">事务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%8F%E5%88%97"><span class="nav-number">6.</span> <span class="nav-text">序列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%86%E5%9B%BE"><span class="nav-number">7.</span> <span class="nav-text">视图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E4%B9%89%E8%AF%8D"><span class="nav-number">8.</span> <span class="nav-text">同义词</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">9.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B0"><span class="nav-number">9.1.</span> <span class="nav-text">日期函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0"><span class="nav-number">9.2.</span> <span class="nav-text">其他函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PL-SQL"><span class="nav-number">10.</span> <span class="nav-text">PL&#x2F;SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">10.1.</span> <span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="nav-number">10.2.</span> <span class="nav-text">关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B8%E6%A0%87"><span class="nav-number">10.3.</span> <span class="nav-text">游标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E6%B8%B8%E6%A0%87"><span class="nav-number">10.3.1.</span> <span class="nav-text">显示游标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E6%B8%B8%E6%A0%87"><span class="nav-number">10.3.2.</span> <span class="nav-text">隐式游标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%B8%E6%A0%87%E5%8F%98%E9%87%8F"><span class="nav-number">10.3.2.1.</span> <span class="nav-text">游标变量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8"><span class="nav-number">10.4.</span> <span class="nav-text">异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="nav-number">10.5.</span> <span class="nav-text">存储过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%87%BD%E6%95%B0"><span class="nav-number">10.6.</span> <span class="nav-text">存储函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-number">10.7.</span> <span class="nav-text">触发器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D"><span class="nav-number">11.</span> <span class="nav-text">备份与恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%A4%87%E4%BB%BD"><span class="nav-number">11.1.</span> <span class="nav-text">物理备份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E6%81%A2%E5%A4%8D"><span class="nav-number">11.2.</span> <span class="nav-text">物理恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RMAN%E5%A4%87%E4%BB%BD"><span class="nav-number">11.3.</span> <span class="nav-text">RMAN备份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RMAN%E6%81%A2%E5%A4%8D"><span class="nav-number">11.4.</span> <span class="nav-text">RMAN恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%A4%87%E4%BB%BD"><span class="nav-number">11.5.</span> <span class="nav-text">逻辑备份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E6%81%A2%E5%A4%8D"><span class="nav-number">11.6.</span> <span class="nav-text">逻辑恢复</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我真不是雪上加霜"
+      src="/images/%E5%85%AD%E8%8A%B1.gif">
+  <p class="site-author-name" itemprop="name">我真不是雪上加霜</p>
+  <div class="site-description" itemprop="description">失败总是贯穿人生始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我真不是雪上加霜</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">197k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:59</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
