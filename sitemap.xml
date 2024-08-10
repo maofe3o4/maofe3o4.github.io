@@ -2,24 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://maofe3o4.github.io/2024/07/29/kubernetes/Kubernetes%E5%8E%9F%E7%90%86/</loc>
-    
-    <lastmod>2024-08-10</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://maofe3o4.github.io/2024/07/29/kubernetes/k8s%E5%AE%9E%E7%94%A8%E6%93%8D%E4%BD%9C/</loc>
-    
-    <lastmod>2024-08-10</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://maofe3o4.github.io/2024/08/10/linux/linux%E7%AE%80%E5%8D%95%E6%8C%87%E4%BB%A4/</loc>
     
     <lastmod>2024-08-10</lastmod>
@@ -29,25 +11,7 @@
   </url>
   
   <url>
-    <loc>https://maofe3o4.github.io/2024/08/10/linux/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%8F%8A%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</loc>
-    
-    <lastmod>2024-08-10</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://maofe3o4.github.io/2024/08/01/840-C%E8%AF%AD%E8%A8%80%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
-    
-    <lastmod>2024-08-10</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://maofe3o4.github.io/2024/06/01/sql/SQL_server(%E7%9B%B8%E6%AF%94mysql)/</loc>
     
     <lastmod>2024-08-10</lastmod>
     
@@ -74,7 +38,7 @@
   </url>
   
   <url>
-    <loc>https://maofe3o4.github.io/2023/06/06/C++%E5%85%A5%E9%97%A8/</loc>
+    <loc>https://maofe3o4.github.io/2024/07/29/kubernetes/k8s%E5%AE%9E%E7%94%A8%E6%93%8D%E4%BD%9C/</loc>
     
     <lastmod>2024-08-10</lastmod>
     
@@ -84,6 +48,42 @@
   
   <url>
     <loc>https://maofe3o4.github.io/2024/06/06/docker/docker/</loc>
+    
+    <lastmod>2024-08-10</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://maofe3o4.github.io/2024/07/29/kubernetes/Kubernetes%E5%8E%9F%E7%90%86/</loc>
+    
+    <lastmod>2024-08-10</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://maofe3o4.github.io/2024/08/10/linux/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%8F%8A%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</loc>
+    
+    <lastmod>2024-08-10</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://maofe3o4.github.io/2024/06/01/sql/SQL_server(%E7%9B%B8%E6%AF%94mysql)/</loc>
+    
+    <lastmod>2024-08-10</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://maofe3o4.github.io/2023/06/06/C++%E5%85%A5%E9%97%A8/</loc>
     
     <lastmod>2024-08-10</lastmod>
     
@@ -177,7 +177,7 @@
   </url>
   
   <url>
-    <loc>https://maofe3o4.github.io/tags/sql-server/</loc>
+    <loc>https://maofe3o4.github.io/tags/oracle/</loc>
     <lastmod>2024-08-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -191,7 +191,7 @@
   </url>
   
   <url>
-    <loc>https://maofe3o4.github.io/tags/oracle/</loc>
+    <loc>https://maofe3o4.github.io/tags/sql-server/</loc>
     <lastmod>2024-08-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
