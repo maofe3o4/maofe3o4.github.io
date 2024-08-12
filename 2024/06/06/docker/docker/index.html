@@ -1,244 +1,232 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 7.3.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"maofe3o4.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
-
-  <meta name="description" content="！！！不涉及docker底层原理，仅包括docker实用操作，比如如何在linux上使用docker、一些常用命令和设置仓库">
-<meta property="og:type" content="article">
-<meta property="og:title" content="docker使用操作">
-<meta property="og:url" content="https://maofe3o4.github.io/2024/06/06/docker/docker/">
-<meta property="og:site_name" content="我真不是雪上加霜">
-<meta property="og:description" content="！！！不涉及docker底层原理，仅包括docker实用操作，比如如何在linux上使用docker、一些常用命令和设置仓库">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="d:\admin_file\%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0\myblog_hexo\source\_posts\docker\docker%E5%91%BD%E4%BB%A4.png">
-<meta property="article:published_time" content="2024-06-06T04:00:00.000Z">
-<meta property="article:modified_time" content="2024-08-10T06:02:00.407Z">
-<meta property="article:author" content="我真不是雪上加霜">
-<meta property="article:tag" content="docker">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="d:\admin_file\%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0\myblog_hexo\source\_posts\docker\docker%E5%91%BD%E4%BB%A4.png">
-
-<link rel="canonical" href="https://maofe3o4.github.io/2024/06/06/docker/docker/">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
-
-  <title>docker使用操作 | 我真不是雪上加霜</title>
-  
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>docker使用操作 | 我真不是雪上加霜</title><meta name="keywords" content="docker"><meta name="author" content="我真不是雪上加霜"><meta name="copyright" content="我真不是雪上加霜"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="docker使用操作"><meta name="application-name" content="docker使用操作"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="docker使用操作"><meta property="og:url" content="https://maofe3o4.github.io/2024/06/06/docker/docker/index.html"><meta property="og:site_name" content="我真不是雪上加霜"><meta property="og:description" content="！！！不涉及docker底层原理，仅包括docker实用操作，比如如何在linux上使用docker、一些常用命令和设置仓库"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://maofe3o4.github.io/img/%E5%85%AD%E8%8A%B1.gif"><meta property="article:author" content="我真不是雪上加霜"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://maofe3o4.github.io/img/%E5%85%AD%E8%8A%B1.gif"><meta name="description" content="！！！不涉及docker底层原理，仅包括docker实用操作，比如如何在linux上使用docker、一些常用命令和设置仓库"><link rel="shortcut icon" href="/img/ff.ico"><link rel="canonical" href="https://maofe3o4.github.io/2024/06/06/docker/docker/"><link rel="preconnect" href="//cdn.cbd.int"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: {"enable":true,"img":"https://upload-bbs.miyoushe.com/upload/2023/09/03/125766904/ee23df8517f3c3e3efc4145658269c06_5714860933110284659.png"},
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"走干嘛？","backTitle":"回来了？"},
+  LA51: undefined,
+  greetingBox: {"enable":true,"default":"来了,老弟👋","list":null},
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: undefined,
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: 我真不是雪上加霜","link":"链接: ","source":"来源: 我真不是雪上加霜","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '我真不是雪上加霜',
+  title: 'docker使用操作',
+  postAI: '',
+  pageFillDescription: '简介, 组成, 镜像image：一个特殊的文件系统, 容器container：镜像运行时的实体, 仓库：repository：集中存放镜像文件的地方, 安装, 指令, 配置自己的镜像加速器, 卸载, 常用命令, 使用docker拉取镜像运行容器, mysql, nginx, redis, 镜像的分层, 设置个人或企业版阿里云镜像仓库简介是一个结构的系统守护进程运行在主机上然后通过连接从客户端访问守护进程从客户端接受命令并管理运行在主机上的容器容器是一个运行时环境就是我们前面说到的集装箱组成镜像一个特殊的文件系统除了提供容器运行时所需的程序库资源配置等文件外还包含了一些为运行时准备的一些配置参数如匿名卷环境变量用户等镜像不包含任何动态数据其内容在构建之后也不会被改变镜像实际是由多层文件系统联合组成镜像构建时会一层层构建前一层是后一层的基础每一层构建完就不会再发生改变后一层上的任何改变只发生在自己这一层比如删除前一层文件的操作实际不是真的删除前一层的文件而是仅在当前层标记为该文件已删除在最终容器运行的时候虽然不会看到这个文件但是实际上该文件会一直跟随镜像因此在构建镜像的时候需要额外小心每一层尽量只包含该层需要添加的东西任何额外的东西应该在该层构建结束前清理掉分层存储的特征还使得镜像的复用定制变的更为容易甚至可以用之前构建好的镜像作为基础层然后进一步添加新的层以定制自己所需的内容构建新的镜像容器镜像运行时的实体容器可以被创建启动停止删除暂停等容器的实质是进程但与直接在宿主执行的进程不同容器进程运行于属于自己的独立的命名空间前面讲过镜像使用的是分层存储容器也是如此容器存储层的生存周期和容器一样容器消亡时容器存储层也随之消亡因此任何保存于容器存储层的信息都会随容器删除而丢失按照最佳实践的要求容器不应该向其存储层内写入任何数据容器存储层要保持无状态化所有的文件写入操作都应该使用数据卷或者绑定宿主目录在这些位置的读写会跳过容器存储层直接对宿主或网络存储发生读写其性能和稳定性更高数据卷的生存周期独立于容器容器消亡数据卷不会消亡因此使用数据卷后容器可以随意删除重新数据却不会丢失仓库集中存放镜像文件的地方镜像构建完成后可以很容易的在当前宿主上运行但是如果需要在其它服务器上使用这个镜像我们就需要一个集中的存储分发镜像的服务就是这样的服务一个中可以包含多个仓库每个仓库可以包含多个标签每个标签对应一个镜像所以说镜像仓库是用来集中存放镜像文件的地方类似于我们之前常用的代码仓库通常一个仓库会包含同一个软件不同版本的镜像而标签就常用于对应该软件的各个版本我们可以通过仓库名标签的格式来指定具体是这个软件哪个版本的镜像如果不给出标签将以作为默认标签安装指令移除旧版本配置源安装最新启动开机启动二合一配置自己的镜像加速器镜像加速器配置需登录阿里云我这里配置了两项一个是阿里云个人的镜像服务一个是中科大的更改配置文件如果没有则新建卸载删除常用命令命令选项说明在官方搜索镜像通过创建一个镜像拉取镜像推送镜像到查看本地镜像删除本地镜像后台运行交互运行伪终端指定端口映射随机端口映射容器卷映射创建并运行容器停止指定容器启动指定容器重启指定容器强制删除强制删除指定容器查看所有容器只显示容器查看容器基本信息标准查看查看容器内运行的日志内部命令行进入容器文件保存镜像到本地压缩文件文件加载本地压缩文件到镜像容器仓库名版本号新增功能将容器提交到镜像查看容器详细信息设置开机自启容器名容器设置容器开机自启使用拉取镜像运行容器拉取镜像查看镜像创建并运行容器查看运行的容器通过网页访问的宿主机宿主机对应的端口拉创进合成一句容器名可以直接执行配置文件在镜像的分层创建一个镜像需要根据文件里面的脚本来一层一层的构建这种层级的文件系统称为镜像轻量级可执行的独立软件包包含运行某个软件所需要的所有内容我们把应用程序和配置依赖打包好形成一个可交付的运行环境包括代码运行时环境环境变量和配置文件等联合文件系统是一种分层轻量级高性能的文件系统支持对文件系统的修改作为一次提交来一层层的叠加同时将不同目录挂载到同一个虚拟文件系统下联合文件系统是镜像的基础镜像可以通过分层进行继承基于基础镜像可以制作各种具体的应用镜像镜像加载原理的镜像实际上由一层一层的文件系统组成这种层级的文件系统主要包含和主要是引导加载刚启动时会加载文件系统在镜像的最底层是这一层与我们典型的系统是一样的包含加载器和内核当加载完成之后整个内核就都在内存中了此时内存的使用权已由转交给内核此时系统也会卸载设置个人或企业版阿里云镜像仓库选择实例列表点击个人版进入个人实例创建命名空间创建镜像仓库选择刚刚创建的命名空间选择本地仓库创建在成功节目根据第三点将镜像推送到然后尝试下载上传的镜像具体命令在阿里云镜像服务里面有',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-12 14:43:41',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
   }
 
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">我真不是雪上加霜</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-  <div class="reading-progress-bar"></div>
-  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://maofe3o4.github.io/2024/06/06/docker/docker/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/%E5%85%AD%E8%8A%B1.gif">
-      <meta itemprop="name" content="我真不是雪上加霜">
-      <meta itemprop="description" content="失败总是贯穿人生始终">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="我真不是雪上加霜">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          docker使用操作
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-06-06 12:00:00" itemprop="dateCreated datePublished" datetime="2024-06-06T12:00:00+08:00">2024-06-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-08-10 14:02:00" itemprop="dateModified" datetime="2024-08-10T14:02:00+08:00">2024-08-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%BF%90%E7%BB%B4/" itemprop="url" rel="index"><span itemprop="name">运维</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.7k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-            <div class="post-description">！！！不涉及docker底层原理，仅包括docker实用操作，比如如何在linux上使用docker、一些常用命令和设置仓库</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
       
-        <p>[toc]</p>
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="/img/%E5%85%AD%E8%8A%B1.gif"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><a id="site-name" href="/" accesskey="h"><div class="title">我真不是雪上加霜</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a><div id="he-plugin-simple"></div><script>var WIDGET = {
+  "CONFIG": {
+    "modules": "0124",
+    "background": "2",
+    "tmpColor": "FFFFFF",
+    "tmpSize": "16",
+    "cityColor": "FFFFFF",
+    "citySize": "16",
+    "aqiColor": "E8D87B",
+    "aqiSize": "16",
+    "weatherIconSize": "24",
+    "alertIconSize": "18",
+    "padding": "10px 10px 10px 10px",
+    "shadow": "0",
+    "language": "auto",
+    "borderRadius": "20",
+    "fixed": "true",
+    "vertical": "top",
+    "horizontal": "left",
+    "left": "20",
+    "top": "7.1",
+    "key": "df245676fb434a0691ead1c63341cd94"
+  }
+}
+</script><link rel="stylesheet" href="https://widget.qweather.net/simple/static/css/he-simple.css?v=1.4.0"/><script src="https://widget.qweather.net/simple/static/js/he-simple.js?v=1.4.0"></script></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/840%E8%A5%BF%E5%8D%97%E4%BA%A4%E5%A4%A7/" style="font-size: 1.05rem;">840西南交大<sup>1</sup></a><a href="/tags/C-C/" style="font-size: 1.05rem;">C/C++<sup>1</sup></a><a href="/tags/C%E8%AF%AD%E8%A8%80/" style="font-size: 1.05rem;">C语言<sup>1</sup></a><a href="/tags/docker/" style="font-size: 1.05rem;">docker<sup>1</sup></a><a href="/tags/k8s/" style="font-size: 1.05rem;">k8s<sup>2</sup></a><a href="/tags/linux/" style="font-size: 1.05rem;">linux<sup>2</sup></a><a href="/tags/mysql/" style="font-size: 1.05rem;">mysql<sup>1</sup></a><a href="/tags/oracle/" style="font-size: 1.05rem;">oracle<sup>1</sup></a><a href="/tags/redis/" style="font-size: 1.05rem;">redis<sup>1</sup></a><a href="/tags/sql-server/" style="font-size: 1.05rem;">sql server<sup>1</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 1.05rem;">数据结构<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/08/"><span class="card-archive-list-date">八月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">4</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/07/"><span class="card-archive-list-date">七月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/06/"><span class="card-archive-list-date">六月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">3</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/05/"><span class="card-archive-list-date">五月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/06/"><span class="card-archive-list-date">六月 2023</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%BF%90%E7%BB%B4/" itemprop="url">运维</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/docker/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>docker</span></a></span></div></div><h1 class="post-title" itemprop="name headline">docker使用操作</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-06-06T04:00:00.000Z" title="发表于 2024-06-06 12:00:00">2024-06-06</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-08-12T06:43:41.005Z" title="更新于 2024-08-12 14:43:41">2024-08-12</time></span></div><div class="meta-secondline"></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src=""></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="https://maofe3o4.github.io/2024/06/06/docker/docker/"><header><a class="post-meta-categories" href="/categories/%E8%BF%90%E7%BB%B4/" itemprop="url">运维</a><a href="/tags/docker/" tabindex="-1" itemprop="url">docker</a><h1 id="CrawlerTitle" itemprop="name headline">docker使用操作</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">我真不是雪上加霜</span><time itemprop="dateCreated datePublished" datetime="2024-06-06T04:00:00.000Z" title="发表于 2024-06-06 12:00:00">2024-06-06</time><time itemprop="dateCreated datePublished" datetime="2024-08-12T06:43:41.005Z" title="更新于 2024-08-12 14:43:41">2024-08-12</time></header><p>[toc]</p>
 <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Docker是一个C&#x2F;S结构的系统，Docker守护进程运行在主机上， 然后通过Socket连接从客户端访问，守护进程从客户端接受命令并管理运行在主机上的容器。 容器，是一个运行时环境，就是我们前面说到的集装箱。</p>
 <h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><h3 id="镜像image：一个特殊的文件系统"><a href="#镜像image：一个特殊的文件系统" class="headerlink" title="镜像image：一个特殊的文件系统"></a>镜像image：一个特殊的文件系统</h3><p><strong>除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。</strong> 镜像不包含任何动态数据，其内容在构建之后也不会被改变。</p>
 <p>镜像实际是由多层文件系统联合组成。</p>
@@ -254,10 +242,10 @@
 <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><h2 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移除旧版本docker</span></span><br><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置docker yum源</span></span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">--add-repo \</span><br><span class="line">http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 最新 docker</span></span><br><span class="line">sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动&amp; 开机启动docker； <span class="built_in">enable</span> + start 二合一</span></span><br><span class="line">systemctl enable docker --now</span><br></pre></td></tr></table></figure>
 
 <h2 id="配置自己的镜像加速器"><a href="#配置自己的镜像加速器" class="headerlink" title="配置自己的镜像加速器"></a>配置自己的镜像加速器</h2><p>docker镜像加速器配置需登录阿里云<a target="_blank" rel="noopener" href="https://cr.console.aliyun.com/cn-hangzhou/instances">https://cr.console.aliyun.com/cn-hangzhou/instances</a><br>我这里配置了两项，一个是阿里云个人的镜像服务，一个是中科大的</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span><br><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://f3fprrzr.mirror.aliyuncs.com&quot;,&quot;https://docker.mirrors.ustc.edu.cn&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span><br><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://f3fprrzr.mirror.aliyuncs.com&quot;,</span><br><span class="line">  &quot;https://docker.mirrors.ustc.edu.cn&quot;,</span><br><span class="line">  &quot;https://registry.docker-cn.com&quot;,</span><br><span class="line">   &quot;https://hub-mirror.c.163.com&quot;,</span><br><span class="line">   &quot;https://mirror.baidubce.com&quot;,</span><br><span class="line">   &quot;https://ccr.ccs.tencentyun.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
 
 <h1 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h1><p>删除docker：yum remove docker-ce<br>rm -rf &#x2F;var&#x2F;lib&#x2F;docker</p>
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><img src="D:\admin_file\自学笔记\myblog_hexo\source\_posts\docker\docker命令.png" alt="docker命令" style="zoom: 200%;" />
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="D:\admin_file\自学笔记\myblog_hexo\source\_posts\docker\docker命令.png" alt="docker命令" style="zoom: 200%;" />
 
 <table>
 <thead>
@@ -373,6 +361,8 @@
 <p>3.创建并运行nginx容器<br>docker run -d –name mynginx -p 80:80 nginx</p>
 <p>5.查看运行的容器<br>docker ps</p>
 <p>6.通过网页访问nginx<br>docker的宿主机IP:宿主机对应的端口</p>
+<h2 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h2><p>拉，创，进<br>合成一句<br>docker run -itd <br>-p 6379:6379 <br>–name myredis <br>-v &#x2F;home&#x2F;redis&#x2F;conf:&#x2F;etc&#x2F;redis&#x2F; <br>-v &#x2F;home&#x2F;redis&#x2F;data:&#x2F;data <br>redis redis-server</p>
+<p>docker exec -it 容器名 bash<br>可以直接执行redis-cli<br>配置文件在&#x2F;etc&#x2F;redis</p>
 <h1 id="镜像的分层"><a href="#镜像的分层" class="headerlink" title="镜像的分层"></a>镜像的分层</h1><p>创建一个镜像需要根据dockerfile文件里面的shell脚本来一层一层的构建，这种层级的文件系统称为UnionFS</p>
 <p>1、镜像：轻量级、可执行的独立软件包，包含运行某个软件所需要的所有内容，我们把应用程序和配置依赖打包好形成一个可交付的运行环境（包括代码、运行时环境、环境变量和配置文件等）。</p>
 <p>2、UnionFS(联合文件系统):是一种分层，轻量级高性能的文件系统、支持对文件系统的修改作为一次提交来一层层的叠加，同时将不同目录挂载到同一个虚拟文件系统下。联合文件系统是Docker镜像的基础，镜像可以通过分层进行继承，基于基础镜像可以制作各种具体的应用镜像。</p>
@@ -386,216 +376,67 @@
 <p>④  在成功节目根据第三点“将镜像推送到Registry”</p>
 <p>⑤  然后尝试下载上传的镜像</p>
 <p>具体命令在阿里云镜像服务里面有</p>
+</article><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/06/01/sql/SQL_server(%E7%9B%B8%E6%AF%94mysql)/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">SQL SERVER数据库</div></div></a></div><div class="next-post pull-right"><a href="/2024/06/10/sql/Oracle/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Oracle数据库(未完成)</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/%E5%85%AD%E8%8A%B1.gif" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">没错这是一句测试</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的知识和东西。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">我真不是雪上加霜</h1><div class="author-info__desc">失败总是贯穿人生始终</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://space.bilibili.com/646326155" target="_blank" title="BiliBili"><i class="anzhiyufont anzhiyu-icon-bilibili"></i></a></div></div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://bu.dusays.com/2023/01/13/63c02edf44033.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(https://bu.dusays.com/2023/05/13/645fa415e8694.png) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E6%88%90"><span class="toc-number">1.1.</span> <span class="toc-text">组成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%83%8Fimage%EF%BC%9A%E4%B8%80%E4%B8%AA%E7%89%B9%E6%AE%8A%E7%9A%84%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="toc-number">1.1.1.</span> <span class="toc-text">镜像image：一个特殊的文件系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8container%EF%BC%9A%E9%95%9C%E5%83%8F%E8%BF%90%E8%A1%8C%E6%97%B6%E7%9A%84%E5%AE%9E%E4%BD%93"><span class="toc-number">1.1.2.</span> <span class="toc-text">容器container：镜像运行时的实体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%93%E5%BA%93%EF%BC%9Arepository%EF%BC%9A%E9%9B%86%E4%B8%AD%E5%AD%98%E6%94%BE%E9%95%9C%E5%83%8F%E6%96%87%E4%BB%B6%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="toc-number">1.1.3.</span> <span class="toc-text">仓库：repository：集中存放镜像文件的地方</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E4%BB%A4"><span class="toc-number">2.1.</span> <span class="toc-text">指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E8%87%AA%E5%B7%B1%E7%9A%84%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F%E5%99%A8"><span class="toc-number">2.2.</span> <span class="toc-text">配置自己的镜像加速器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%B8%E8%BD%BD"><span class="toc-number">3.</span> <span class="toc-text">卸载</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">4.</span> <span class="toc-text">常用命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8docker%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F%E8%BF%90%E8%A1%8C%E5%AE%B9%E5%99%A8"><span class="toc-number">5.</span> <span class="toc-text">使用docker拉取镜像运行容器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql"><span class="toc-number">5.1.</span> <span class="toc-text">mysql</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx"><span class="toc-number">5.2.</span> <span class="toc-text">nginx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#redis"><span class="toc-number">5.3.</span> <span class="toc-text">redis</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%95%9C%E5%83%8F%E7%9A%84%E5%88%86%E5%B1%82"><span class="toc-number">6.</span> <span class="toc-text">镜像的分层</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E4%B8%AA%E4%BA%BA%E6%88%96%E4%BC%81%E4%B8%9A%E7%89%88%E9%98%BF%E9%87%8C%E4%BA%91%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93"><span class="toc-number">7.</span> <span class="toc-text">设置个人或企业版阿里云镜像仓库</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/08/12/redis/redis/" title="redis(未完成)"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tse2-mm.cn.bing.net/th/id/OIP-C.h0OGpOas4j9eWRdWauuIVQHaEK?rs=1&amp;pid=ImgDetMain" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="redis(未完成)"/></a><div class="content"><a class="title" href="/2024/08/12/redis/redis/" title="redis(未完成)">redis(未完成)</a><time datetime="2024-08-12T04:00:00.000Z" title="发表于 2024-08-12 12:00:00">2024-08-12</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/10/linux/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%8F%8A%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/" title="在linux上安装常用环境和网络配置(vm)">在linux上安装常用环境和网络配置(vm)</a><time datetime="2024-08-10T05:12:37.399Z" title="发表于 2024-08-10 13:12:37">2024-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/10/linux/linux%E7%AE%80%E5%8D%95%E6%8C%87%E4%BB%A4/" title="linux常用指令快速入门">linux常用指令快速入门</a><time datetime="2024-08-10T05:12:37.397Z" title="发表于 2024-08-10 13:12:37">2024-08-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/01/840-C%E8%AF%AD%E8%A8%80%E5%92%8C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="C语言和数据结构840">C语言和数据结构840</a><time datetime="2024-08-01T04:00:00.000Z" title="发表于 2024-08-01 12:00:00">2024-08-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/07/29/kubernetes/k8s%E5%AE%9E%E7%94%A8%E6%93%8D%E4%BD%9C/" title="k8s集群部署以及实用操作">k8s集群部署以及实用操作</a><time datetime="2024-07-29T04:00:01.000Z" title="发表于 2024-07-29 12:00:01">2024-07-29</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2020 - 2024 By <a class="footer-bar-link" href="/" title="我真不是雪上加霜" target="_blank">我真不是雪上加霜</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">11</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">4</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://space.bilibili.com/646326155" title="B站"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="anzhiyu-icon-bilibili" alt="B站"/><span class="back-menu-item-text">B站</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 隧道</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/album/"><i class="anzhiyufont anzhiyu-icon-images faa-tada" style="font-size: 0.9em;"></i><span> 相册集</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/840%E8%A5%BF%E5%8D%97%E4%BA%A4%E5%A4%A7/" style="font-size: 0.88rem;">840西南交大<sup>1</sup></a><a href="/tags/C-C/" style="font-size: 0.88rem;">C/C++<sup>1</sup></a><a href="/tags/C%E8%AF%AD%E8%A8%80/" style="font-size: 0.88rem;">C语言<sup>1</sup></a><a href="/tags/docker/" style="font-size: 0.88rem;">docker<sup>1</sup></a><a href="/tags/k8s/" style="font-size: 0.88rem;">k8s<sup>2</sup></a><a href="/tags/linux/" style="font-size: 0.88rem;">linux<sup>2</sup></a><a href="/tags/mysql/" style="font-size: 0.88rem;">mysql<sup>1</sup></a><a href="/tags/oracle/" style="font-size: 0.88rem;">oracle<sup>1</sup></a><a href="/tags/redis/" style="font-size: 0.88rem;">redis<sup>1</sup></a><a href="/tags/sql-server/" style="font-size: 0.88rem;">sql server<sup>1</sup></a><a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" style="font-size: 0.88rem;">数据结构<sup>1</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="8152976493" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script async src="/anzhiyu/random.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
 
-    </div>
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
 
-    
-    
-    
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/docker/" rel="tag"># docker</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2024/06/01/sql/SQL_server(%E7%9B%B8%E6%AF%94mysql)/" rel="prev" title="SQL SERVER数据库">
-      <i class="fa fa-chevron-left"></i> SQL SERVER数据库
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2024/06/10/sql/Oracle/" rel="next" title="Oracle数据库(未完成)">
-      Oracle数据库(未完成) <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
+  document.getElementById('rightside').classList.remove('rightside-show')
   
-  
-  
-
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
       }
     }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
   }
-</script>
 
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
+  typeof typed === 'object' && typed.destroy()
 
-  <aside class="sidebar">
-    <div class="sidebar-inner">
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
 
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
 
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%84%E6%88%90"><span class="nav-number">1.1.</span> <span class="nav-text">组成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%95%9C%E5%83%8Fimage%EF%BC%9A%E4%B8%80%E4%B8%AA%E7%89%B9%E6%AE%8A%E7%9A%84%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.1.1.</span> <span class="nav-text">镜像image：一个特殊的文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8container%EF%BC%9A%E9%95%9C%E5%83%8F%E8%BF%90%E8%A1%8C%E6%97%B6%E7%9A%84%E5%AE%9E%E4%BD%93"><span class="nav-number">1.1.2.</span> <span class="nav-text">容器container：镜像运行时的实体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%93%E5%BA%93%EF%BC%9Arepository%EF%BC%9A%E9%9B%86%E4%B8%AD%E5%AD%98%E6%94%BE%E9%95%9C%E5%83%8F%E6%96%87%E4%BB%B6%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="nav-number">1.1.3.</span> <span class="nav-text">仓库：repository：集中存放镜像文件的地方</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4"><span class="nav-number">2.1.</span> <span class="nav-text">指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E8%87%AA%E5%B7%B1%E7%9A%84%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F%E5%99%A8"><span class="nav-number">2.2.</span> <span class="nav-text">配置自己的镜像加速器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%B8%E8%BD%BD"><span class="nav-number">3.</span> <span class="nav-text">卸载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">4.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8docker%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F%E8%BF%90%E8%A1%8C%E5%AE%B9%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">使用docker拉取镜像运行容器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql"><span class="nav-number">5.1.</span> <span class="nav-text">mysql</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx"><span class="nav-number">5.2.</span> <span class="nav-text">nginx</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E7%9A%84%E5%88%86%E5%B1%82"><span class="nav-number">6.</span> <span class="nav-text">镜像的分层</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E4%B8%AA%E4%BA%BA%E6%88%96%E4%BC%81%E4%B8%9A%E7%89%88%E9%98%BF%E9%87%8C%E4%BA%91%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93"><span class="nav-number">7.</span> <span class="nav-text">设置个人或企业版阿里云镜像仓库</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
 
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="我真不是雪上加霜"
-      src="/images/%E5%85%AD%E8%8A%B1.gif">
-  <p class="site-author-name" itemprop="name">我真不是雪上加霜</p>
-  <div class="site-description" itemprop="description">失败总是贯穿人生始终</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">10</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-            <a href="/categories/">
-          
-        <span class="site-state-item-count">4</span>
-        <span class="site-state-item-name">分类</span></a>
-      </div>
-      <div class="site-state-item site-state-tags">
-            <a href="/tags/">
-          
-        <span class="site-state-item-count">10</span>
-        <span class="site-state-item-name">标签</span></a>
-      </div>
-  </nav>
-</div>
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
 
+  typeof panguInit === 'function' && panguInit()
 
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
 
-      </div>
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
 
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
 
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
 
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2024</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">我真不是雪上加霜</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
-    </span>
-    <span title="站点总字数">197k</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-coffee"></i>
-    </span>
-    <span title="站点阅读时长">2:59</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
-  </div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/muse.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-<script src="/js/bookmark.js"></script>
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
-</body>
-</html>
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
