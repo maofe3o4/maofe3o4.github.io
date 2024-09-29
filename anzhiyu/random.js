@@ -1,3 +1,3 @@
-var posts=["2024/08/01/840-C语言和数据结构/","2023/06/06/C++入门/","2024/06/06/docker/docker/","2024/07/29/kubernetes/k8s实用操作/","2024/08/10/linux/linux简单指令/","2024/08/10/linux/linux软件安装及项目部署/","2024/08/12/redis/redis/","2024/06/10/sql/Oracle/","2024/05/10/sql/MYSQL/","2024/07/29/kubernetes/Kubernetes原理/","2024/06/01/sql/SQL_server(相比mysql)/"];function toRandomPost(){
+var posts=["2024/08/01/840-C语言和数据结构/","2023/06/06/C++入门/","2024/06/06/docker/docker/","2024/07/29/kubernetes/k8s实用操作/","2024/08/10/linux/linux简单指令/","2024/08/10/linux/linux软件安装及项目部署/","2024/07/29/kubernetes/Kubernetes原理/","2024/08/12/redis/redis/","2024/05/10/sql/MYSQL/","2024/06/10/sql/Oracle/","2024/06/01/sql/SQL_server(相比mysql)/"];function toRandomPost(){
     pjax.loadUrl('/'+posts[Math.floor(Math.random() * posts.length)]);
   };
