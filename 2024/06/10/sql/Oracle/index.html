@@ -227,7 +227,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6.9k</span>
+              <span>6.8k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -257,7 +257,14 @@
 <h1 id="文件体系结构"><a href="#文件体系结构" class="headerlink" title="文件体系结构"></a>文件体系结构</h1><p><a href="#jump1">回到目录</a></p>
 <p><img src="D:\admin_file\自学笔记\myblog_hexo\source_posts\sql\oracle数据库系统结构.png" alt="oracle数据库系统结构"></p>
 <p>admin:以数据库为单位，存放数据库运行过程中产生的跟踪文件<br>cfgtoologs:运行dbca、emca和netca图像化程序时产生的日志信息<br>checkpoint:存放数据库检查点信息<br>diag:以组件为单位，存储数据库各个组件运行的诊断信息<br>flash_recovery_area:以数据库为单位，数据库自动备份时，存放备份文件和闪回日志文件<br>oradata:以数据库为单位，存放数据库的物理文件(数据，控制，重做日志)<br>product:存放数据库管理相关的软件，包括可执行文件、网络配置、脚本</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">Oracle数据库--&gt; 存储结构DB</span><br><span class="line">存储结构DB--&gt; 物理存储结构</span><br><span class="line">存储结构DB--&gt; 逻辑存储结构</span><br><span class="line">Oracle数据库--&gt; 数据库管理系统DBMS</span><br><span class="line">数据库管理系统DBMS--&gt; 实例instance</span><br><span class="line">实例instance--&gt; 内存结构--&gt; SGA和PGA</span><br><span class="line">实例instance--&gt; 后台进程</span><br></pre></td></tr></table></figure>
+<pre class="mermaid">graph LR
+Oracle数据库--> 存储结构DB
+存储结构DB--> 物理存储结构
+存储结构DB--> 逻辑存储结构
+Oracle数据库--> 数据库管理系统DBMS
+数据库管理系统DBMS--> 实例instance
+实例instance--> 内存结构--> SGA和PGA
+实例instance--> 后台进程</pre>
 
 <h2 id="物理存储和逻辑存储"><a href="#物理存储和逻辑存储" class="headerlink" title="物理存储和逻辑存储"></a>物理存储和逻辑存储</h2><p><img src="D:\admin_file\自学笔记\myblog_hexo\source_posts\sql\oracle数据库物理存储结构和逻辑存储结构.png" alt="oracle数据库物理存储结构和逻辑存储结构"></p>
 <p>表空间：数据文件&#x3D;1：n             块：OS块&#x3D;1：n</p>

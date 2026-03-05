@@ -235,7 +235,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>21k</span>
+              <span>20k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -938,13 +938,39 @@
 
 <h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><p><a href="#jump1">回到目录</a></p>
 <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1po4y1M7k5?p=2&vd_source=c75d57452dfe6d1e8dca457f1ab7a2ac">这一章很乱建议看视频</a></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">锁--&gt; 粒度分类</span><br><span class="line">粒度分类--&gt; 全局锁</span><br><span class="line">粒度分类--&gt; 表锁锁</span><br><span class="line">粒度分类--&gt; 行锁</span><br><span class="line">锁--&gt; 模式分类</span><br><span class="line">模式分类--&gt; 乐观锁</span><br><span class="line">模式分类--&gt; 悲观锁</span><br><span class="line">锁--&gt; 属性分类</span><br><span class="line">属性分类--&gt; 共享锁</span><br><span class="line">属性分类--&gt; 排他锁</span><br><span class="line">锁--&gt; 状态分类</span><br><span class="line">状态分类--&gt; 意向共享锁</span><br><span class="line">状态分类--&gt; 意向排他锁</span><br><span class="line">锁--&gt; 算法分类</span><br><span class="line">算法分类--&gt; 间隙锁</span><br><span class="line">算法分类--&gt; 记录锁</span><br><span class="line">算法分类--&gt; 临键锁</span><br></pre></td></tr></table></figure>
+<pre class="mermaid">graph TD
+锁--> 粒度分类
+粒度分类--> 全局锁
+粒度分类--> 表锁锁
+粒度分类--> 行锁
+锁--> 模式分类
+模式分类--> 乐观锁
+模式分类--> 悲观锁
+锁--> 属性分类
+属性分类--> 共享锁
+属性分类--> 排他锁
+锁--> 状态分类
+状态分类--> 意向共享锁
+状态分类--> 意向排他锁
+锁--> 算法分类
+算法分类--> 间隙锁
+算法分类--> 记录锁
+算法分类--> 临键锁</pre>
 
 <h3 id="全局锁-一致性数据备份"><a href="#全局锁-一致性数据备份" class="headerlink" title="全局锁(一致性数据备份)"></a>全局锁(一致性数据备份)</h3><p>1.为当前数据库加全局锁：flush tables with read lock</p>
 <p>2.备份:mysqldump -h[数据库服务器主机ip] -uroot -p[密码] 库名&gt;[备份的存储路径文件.sql]<br>备份语句不用在登录mysql服务器后执行</p>
 <p>3.释放全局锁：unlock tables</p>
 <p>不加锁的一致性数据备份(innodb通过快照读实现):mysqldump <strong>[–single-transaction]</strong> -h[数据库服务器主机ip] -uroot -p[密码] 库名&gt;[备份的存储路径文件.sql]</p>
-<h3 id="表级锁"><a href="#表级锁" class="headerlink" title="表级锁"></a>表级锁</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">表级锁--&gt; 表锁</span><br><span class="line">表锁--&gt; 表共享读锁readlock--&gt; 读锁皆可读</span><br><span class="line">表锁--&gt; 表独占写锁writelock--&gt; 写锁我读写</span><br><span class="line">表级锁--&gt; 元数据锁DML</span><br><span class="line">元数据锁DML--&gt; 增删改查时读锁--&gt; 共享写锁shared_write</span><br><span class="line">增删改查时读锁--&gt; 共享读锁shared_read</span><br><span class="line">元数据锁DML--&gt; 表结构变更时写锁--&gt; 排他锁exclusive</span><br><span class="line">表级锁--&gt; 意向锁--&gt; 意向共共享锁IS</span><br><span class="line">意向锁--&gt; 意向共排他锁IX</span><br></pre></td></tr></table></figure>
+<h3 id="表级锁"><a href="#表级锁" class="headerlink" title="表级锁"></a>表级锁</h3><pre class="mermaid">graph LR
+表级锁--> 表锁
+表锁--> 表共享读锁readlock--> 读锁皆可读
+表锁--> 表独占写锁writelock--> 写锁我读写
+表级锁--> 元数据锁DML
+元数据锁DML--> 增删改查时读锁--> 共享写锁shared_write
+增删改查时读锁--> 共享读锁shared_read
+元数据锁DML--> 表结构变更时写锁--> 排他锁exclusive
+表级锁--> 意向锁--> 意向共共享锁IS
+意向锁--> 意向共排他锁IX</pre>
 
 <h4 id="表锁-避免DML和DDL冲突"><a href="#表锁-避免DML和DDL冲突" class="headerlink" title="表锁(避免DML和DDL冲突)"></a>表锁(避免DML和DDL冲突)</h4><p>加锁：lock tables 表名 read|write<br>释放锁：unlock tables&#x2F;客户端连接关闭</p>
 <h4 id="元数据锁"><a href="#元数据锁" class="headerlink" title="元数据锁"></a>元数据锁</h4><p>系统自动控制，维护元数据的数据一致性；表上有事务时不可对元数据进行写入<br>增删改查时加读锁(共享读和共享写)；改变表结果时加写锁(排他)</p>
