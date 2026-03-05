@@ -16,12 +16,12 @@ https://maofe3o4.github.io/categories/
 https://maofe3o4.github.io/
 https://maofe3o4.github.io/tags/C-C/
 https://maofe3o4.github.io/tags/docker/
-https://maofe3o4.github.io/tags/linux/
 https://maofe3o4.github.io/tags/k8s/
-https://maofe3o4.github.io/tags/oracle/
-https://maofe3o4.github.io/tags/mysql/
+https://maofe3o4.github.io/tags/linux/
 https://maofe3o4.github.io/tags/redis/
+https://maofe3o4.github.io/tags/mysql/
 https://maofe3o4.github.io/tags/sql-server/
+https://maofe3o4.github.io/tags/oracle/
 https://maofe3o4.github.io/tags/C%E8%AF%AD%E8%A8%80/
 https://maofe3o4.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/
 https://maofe3o4.github.io/tags/840%E8%A5%BF%E5%8D%97%E4%BA%A4%E5%A4%A7/
