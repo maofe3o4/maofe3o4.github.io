@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://maofe3o4.github.io/2024/08/12/redis/redis/</loc>
+    
+    <lastmod>2026-03-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://maofe3o4.github.io/2024/05/10/sql/MYSQL/</loc>
     
     <lastmod>2026-03-05</lastmod>
@@ -23,15 +32,6 @@
     <loc>https://maofe3o4.github.io/2024/06/10/sql/Oracle/</loc>
     
     <lastmod>2024-08-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://maofe3o4.github.io/2024/08/12/redis/redis/</loc>
-    
-    <lastmod>2024-08-14</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -167,14 +167,14 @@
   </url>
   
   <url>
-    <loc>https://maofe3o4.github.io/tags/linux/</loc>
+    <loc>https://maofe3o4.github.io/tags/redis/</loc>
     <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://maofe3o4.github.io/tags/redis/</loc>
+    <loc>https://maofe3o4.github.io/tags/mysql/</loc>
     <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -188,7 +188,7 @@
   </url>
   
   <url>
-    <loc>https://maofe3o4.github.io/tags/mysql/</loc>
+    <loc>https://maofe3o4.github.io/tags/linux/</loc>
     <lastmod>2026-03-05</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
