@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"maofe3o4.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="[TOC] IDEA使用快捷方法快速补全代码：ctrl+空格 表达式值类型转换：String s &#x3D; ( 并按 Ctrl+Shift+空格 查看发生的情况 选择多个词语：shift+alt双击词语 查看类中实现接口的方法：光标置于类声明中的 implements 关键字处，然后按 Ctrl+Shift+F7 注释和取消注释: Ctrl+&#x2F;用于单行注释(&#x2F;&#x2F;…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我真不是雪上加霜">
+<meta property="og:url" content="https://maofe3o4.github.io/2025/02/03/ing_exclude/java%E8%87%AA%E5%AD%A6/%E5%9F%BA%E7%A1%80/">
+<meta property="og:site_name" content="我真不是雪上加霜">
+<meta property="og:description" content="[TOC] IDEA使用快捷方法快速补全代码：ctrl+空格 表达式值类型转换：String s &#x3D; ( 并按 Ctrl+Shift+空格 查看发生的情况 选择多个词语：shift+alt双击词语 查看类中实现接口的方法：光标置于类声明中的 implements 关键字处，然后按 Ctrl+Shift+F7 注释和取消注释: Ctrl+&#x2F;用于单行注释(&#x2F;&#x2F;…">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-03T08:31:57.302Z">
+<meta property="article:modified_time" content="2025-02-06T08:02:24.619Z">
+<meta property="article:author" content="我真不是雪上加霜">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://maofe3o4.github.io/2025/02/03/ing_exclude/java%E8%87%AA%E5%AD%A6/%E5%9F%BA%E7%A1%80/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | 我真不是雪上加霜</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">我真不是雪上加霜</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">失败总是贯穿人生始终</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-相册">
+
+    <a href="/photo/" rel="section"><i class="fa fa-camera fa-fw"></i>相册</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+      
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://maofe3o4.github.io/2025/02/03/ing_exclude/java%E8%87%AA%E5%AD%A6/%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%85%AD%E8%8A%B1.gif">
+      <meta itemprop="name" content="我真不是雪上加霜">
+      <meta itemprop="description" content="失败总是贯穿人生始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我真不是雪上加霜">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2025-02-03 16:31:57" itemprop="dateCreated datePublished" datetime="2025-02-03T16:31:57+08:00">2025-02-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-02-06 16:02:24" itemprop="dateModified" datetime="2025-02-06T16:02:24+08:00">2025-02-06</time>
+              </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>[TOC]</p>
+<h3 id="IDEA使用"><a href="#IDEA使用" class="headerlink" title="IDEA使用"></a>IDEA使用</h3><h4 id="快捷方法"><a href="#快捷方法" class="headerlink" title="快捷方法"></a>快捷方法</h4><p>快速补全代码：ctrl+空格</p>
+<p>表达式值类型转换：String s &#x3D; ( 并按 Ctrl+Shift+空格 查看发生的情况</p>
+<p>选择多个词语：shift+alt双击词语</p>
+<p>查看类中实现接口的方法：光标置于类声明中的 implements 关键字处，然后按 Ctrl+Shift+F7</p>
+<p>注释和取消注释: Ctrl+&#x2F;用于单行注释(&#x2F;&#x2F;…)  Ctrl+Shift+&#x2F;用于块注释(&#x2F;* … *&#x2F;)</p>
+<p>规范代码格式:选中要调整格式的代码ctrl+alt+L</p>
+<p>查看类的继承关系:ctrl+H</p>
+<p>定位方法属于哪个类:ctrl+B</p>
+<p>自动分配对象变量名:通过在后面加.var      例如new 类().var</p>
+<p><strong>实时模板</strong>：file–setting–editor–live templates（比如fori直接生成for循环，main直接生成main方法）</p>
+<h3 id="快速扫盲"><a href="#快速扫盲" class="headerlink" title="快速扫盲"></a>快速扫盲</h3><p>编译java文件生成.class文件：javac -encoding UTF-8 文件名.java</p>
+<p>运行.class文件：java 文件名</p>
+<p>java程序执行入口：public static void main(String [] args){ }</p>
+<p>类有属性和方法，将类实例化成对象后，该对象有对应的状态和行为</p>
+<p>构造方法:与类名和类修饰一致，无返回类型，new对象时自动执行，一个类可定义多个构造方法(形成重载)</p>
+<p>this的使用：哪个对象调用，this就代表那个对象</p>
+<p>可变参数：int…a</p>
+<table>
+<thead>
+<tr>
+<th>对象和类</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>继承</td>
+<td>一个类可以继承另一个类的属性和方法。</td>
+</tr>
+<tr>
+<td>封装</td>
+<td>将对象的状态私有，通过公共方法访问(类的变量私有，方法公共)</td>
+</tr>
+<tr>
+<td>多态</td>
+<td>通过方法重载和方法重写实现</td>
+</tr>
+<tr>
+<td>抽象</td>
+<td>抽象类和接口，不用具体实现</td>
+</tr>
+<tr>
+<td>接口</td>
+<td>定义类必须实现的方法，支持多重继承</td>
+</tr>
+<tr>
+<td>方法重载</td>
+<td>同一个类中有多个同名的方法，但参数不同。</td>
+</tr>
+<tr>
+<td>方法重写</td>
+<td>子类有一个和父类重名，重参数的方法，“重写父类方法”</td>
+</tr>
+</tbody></table>
+<p>instanceof运算符：检查该变量是否是一个特定类型的对象<br>                                    boolean result &#x3D; name instanceof String; </p>
+<p>运算符优先级：一元运算&gt;四则运算&gt;移位运算&gt;关系运算&gt;位运算&gt;逻辑运算&gt;赋值</p>
+<p>数据类型：八个基本类型(byte,short,int,long,float,double,char,boolean)、一个引用类型(类，接口，数组等特定类型)</p>
+<p>Number包装类：Byte,Short,Integer,Long,Float,Double,Character,Boolean对应八大基本类型(给予了好用的方法)</p>
+<table>
+<thead>
+<tr>
+<th>Number方法</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>xxxValue()</td>
+<td>将Number对象转换成xxx数据类型返回</td>
+</tr>
+<tr>
+<td>equals()</td>
+<td>判断相等</td>
+</tr>
+<tr>
+<td>valueOf()</td>
+<td>返回Number对象对应的基本数据类型</td>
+</tr>
+</tbody></table>
+<p>String类和StringBuffer类：</p>
+<p>数组创建：int a[ ] &#x3D; new int[10];</p>
+<h3 id="java面向对象"><a href="#java面向对象" class="headerlink" title="java面向对象"></a>java面向对象</h3><h4 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h4><p>把数据和方法封装在一起，可以对数据进行验证</p>
+<p>如果在构造方法里使用set方法，仍然可以对数据进行验证</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.将属性私有化</span></span><br><span class="line"><span class="comment">//2.提供公共的set方法来修改私有的属性的值</span></span><br><span class="line"><span class="comment">//3.提供公共的get方法来获取私有属性的值</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">	<span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(String name)</span>&#123;</span><br><span class="line">	setName(name)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span>&#123;</span><br><span class="line">      <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h4><p>所有类都继承Object类，extends继承父类，implements继承(实现)接口，</p>
+<p>final修饰表示该类不能被继承，或该方法不能被重写</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//构造器必须用上往下完成调用才能通过编译，默认调用无参构造器</span></span><br><span class="line"><span class="comment">//super的使用</span></span><br><span class="line"><span class="comment">//super()必须在构造方法的第一行用来调用父类的构造方法，不写默认调用父类的无参构造器</span></span><br><span class="line"><span class="built_in">super</span>.属性   <span class="comment">//访问父类非私有属性</span></span><br><span class="line"><span class="built_in">super</span>.方法(参数)  <span class="comment">//访问父类非私有方法</span></span><br><span class="line"><span class="built_in">super</span>(参数列表)    <span class="comment">//访问父类构造器，有参或无参</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h4><p>多态就是同一个接口，使用不同的实例而执行不同操作；多态的三个必要条件：<strong>继承、重写、父类引用指向子类对象</strong>。</p>
+<ul>
+<li><p>动物类 动物&#x3D;new 狗() | 父类动物的引用指向了一个实际的狗对象（左边是编译类型，右边是运行类型）</p>
+</li>
+<li><p>向上转型：将父类引用指向子类对象 <strong>父类引用 父类对象名&#x3D;new 子类对象())</strong></p>
+</li>
+<li><p>向下转型: 将父类引用转为子类对象子类引用 <strong>子类对象名&#x3D;(子类对象) 父类引用</strong></p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//它的核心场景是当父类引用实际指向子类对象时，需要访问子类特有的方法或属性。</span></span><br><span class="line">List&lt;Animal&gt; animals = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">animals.add(<span class="keyword">new</span> <span class="title class_">Dog</span>());</span><br><span class="line">animals.add(<span class="keyword">new</span> <span class="title class_">Cat</span>());</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (Animal animal : animals) &#123;</span><br><span class="line">    <span class="keyword">if</span> (animal <span class="keyword">instanceof</span> Dog) &#123;</span><br><span class="line">        <span class="type">Dog</span> <span class="variable">dog</span> <span class="operator">=</span> (Dog) animal; <span class="comment">//向下转型</span></span><br><span class="line">        dog.bark();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (animal <span class="keyword">instanceof</span> Cat) &#123;</span><br><span class="line">        <span class="type">Cat</span> <span class="variable">cat</span> <span class="operator">=</span> (Cat) animal; <span class="comment">//向下转型</span></span><br><span class="line">        cat.meow();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>动态绑定机制：调用对象方法时，该方法和该对象的运行类型绑定</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//运行类型是B,调用set方法时从下往上找，set中有get方法，调用运行类型的get方法</span></span><br><span class="line">A a=<span class="keyword">new</span> <span class="title class_">B</span>();</span><br><span class="line">a.set();   <span class="comment">//返回10</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>&#123;</span><br><span class="line">    <span class="type">int</span> i=<span class="number">20</span>;</span><br><span class="line">    set()&#123;</span><br><span class="line">        get();</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="type">int</span> <span class="title function_">get</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span>&#123;</span><br><span class="line">    <span class="type">int</span> j=<span class="number">10</span>;</span><br><span class="line">    <span class="type">int</span> <span class="title function_">get</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> j;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="重写与重载"><a href="#重写与重载" class="headerlink" title="重写与重载"></a>重写与重载</h4><p>重写是子类与父类之间，有同名同参且返回类型也是父子或相同关系(如父类返回Object类型，子类返回String类型，String是Object的子类)的时候，子类对父类实现方法重写；</p>
+<ul>
+<li>不能重写父类构造器</li>
+<li>不能缩小父类方法的访问权限</li>
+</ul>
+<p>重载是同一类中相同名字不同参数的方法实现重载</p>
+<h4 id="抽象"><a href="#抽象" class="headerlink" title="抽象"></a>抽象</h4><h4 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h4><h4 id="包"><a href="#包" class="headerlink" title="包"></a>包</h4><p>区分相同名字的类，实质就是文件夹，当同时调用两个不同包中相同类名的类时，应该加上包名加以区别。</p>
+<p>开发者把一组类和接口等打包，并定义自己的包。将相关的类分组，更容易地确定哪些类、接口、枚举和注释等是相关的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//声明包</span></span><br><span class="line"><span class="keyword">package</span> pkg1[.pkg2[.pkg3...]]</span><br><span class="line"><span class="comment">//导入包或包中的类</span></span><br><span class="line"><span class="comment">//若最后一个pkg是类命则只导入该类，通配符*导入该包中的全部类不包括子包</span></span><br><span class="line"><span class="keyword">import</span> pkg1[.pkg2[.pkg3...]]</span><br><span class="line"><span class="comment">//java中常用的包</span></span><br><span class="line"><span class="keyword">import</span> java.lang.*   <span class="comment">//基本包，默认引用</span></span><br><span class="line"><span class="keyword">import</span> java.util.*   <span class="comment">//工具类</span></span><br><span class="line"><span class="keyword">import</span> java.net.*    <span class="comment">//网络开发</span></span><br><span class="line"><span class="keyword">import</span> java.awt.*    <span class="comment">//GUI界面开发</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h4><h4 id="内部类"><a href="#内部类" class="headerlink" title="内部类"></a>内部类</h4>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/08/12/redis/redis/" rel="prev" title="redis(未完成)">
+      <i class="fa fa-chevron-left"></i> redis(未完成)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2025/02/06/ing_exclude/java%E8%87%AA%E5%AD%A6/%E8%BF%9B%E9%98%B6/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#IDEA%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">IDEA使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BF%AB%E6%8D%B7%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">快捷方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E6%89%AB%E7%9B%B2"><span class="nav-number">2.</span> <span class="nav-text">快速扫盲</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.</span> <span class="nav-text">java面向对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%81%E8%A3%85"><span class="nav-number">3.1.</span> <span class="nav-text">封装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%A7%E6%89%BF"><span class="nav-number">3.2.</span> <span class="nav-text">继承</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E6%80%81"><span class="nav-number">3.3.</span> <span class="nav-text">多态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8D%E5%86%99%E4%B8%8E%E9%87%8D%E8%BD%BD"><span class="nav-number">3.4.</span> <span class="nav-text">重写与重载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%BD%E8%B1%A1"><span class="nav-number">3.5.</span> <span class="nav-text">抽象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.6.</span> <span class="nav-text">接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8C%85"><span class="nav-number">3.7.</span> <span class="nav-text">包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84"><span class="nav-number">3.8.</span> <span class="nav-text">反射</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E7%B1%BB"><span class="nav-number">3.9.</span> <span class="nav-text">内部类</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我真不是雪上加霜"
+      src="/images/%E5%85%AD%E8%8A%B1.gif">
+  <p class="site-author-name" itemprop="name">我真不是雪上加霜</p>
+  <div class="site-description" itemprop="description">失败总是贯穿人生始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我真不是雪上加霜</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">397k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:01</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>

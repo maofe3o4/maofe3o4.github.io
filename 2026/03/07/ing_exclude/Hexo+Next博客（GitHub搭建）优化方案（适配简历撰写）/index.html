@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="manifest" href="/images/manifest.json">
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"maofe3o4.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"hide","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Hexo+Next博客（GitHub搭建）优化方案（适配简历撰写）体现技术能力、工程化思维、知识沉淀能力。 以下从「技术增强」「工程化实践」「内容打磨」「简历包装」四个维度，给出具体可操作的方案，每个方案均说明“怎么做”和“简历里怎么写”。 一、技术定制：让博客体现你的前端&#x2F;工程化能力基于next现成主题框架做二次开发和优化。 1. 主题深度定制（替代默认样式）操作步骤： 基础配置：修改">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我真不是雪上加霜">
+<meta property="og:url" content="https://maofe3o4.github.io/2026/03/07/ing_exclude/Hexo+Next%E5%8D%9A%E5%AE%A2%EF%BC%88GitHub%E6%90%AD%E5%BB%BA%EF%BC%89%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88%EF%BC%88%E9%80%82%E9%85%8D%E7%AE%80%E5%8E%86%E6%92%B0%E5%86%99%EF%BC%89/">
+<meta property="og:site_name" content="我真不是雪上加霜">
+<meta property="og:description" content="Hexo+Next博客（GitHub搭建）优化方案（适配简历撰写）体现技术能力、工程化思维、知识沉淀能力。 以下从「技术增强」「工程化实践」「内容打磨」「简历包装」四个维度，给出具体可操作的方案，每个方案均说明“怎么做”和“简历里怎么写”。 一、技术定制：让博客体现你的前端&#x2F;工程化能力基于next现成主题框架做二次开发和优化。 1. 主题深度定制（替代默认样式）操作步骤： 基础配置：修改">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-03-07T06:59:27.376Z">
+<meta property="article:modified_time" content="2026-03-07T06:59:27.580Z">
+<meta property="article:author" content="我真不是雪上加霜">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://maofe3o4.github.io/2026/03/07/ing_exclude/Hexo+Next%E5%8D%9A%E5%AE%A2%EF%BC%88GitHub%E6%90%AD%E5%BB%BA%EF%BC%89%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88%EF%BC%88%E9%80%82%E9%85%8D%E7%AE%80%E5%8E%86%E6%92%B0%E5%86%99%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title> | 我真不是雪上加霜</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">我真不是雪上加霜</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">失败总是贯穿人生始终</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-相册">
+
+    <a href="/photo/" rel="section"><i class="fa fa-camera fa-fw"></i>相册</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+      
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://maofe3o4.github.io/2026/03/07/ing_exclude/Hexo+Next%E5%8D%9A%E5%AE%A2%EF%BC%88GitHub%E6%90%AD%E5%BB%BA%EF%BC%89%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88%EF%BC%88%E9%80%82%E9%85%8D%E7%AE%80%E5%8E%86%E6%92%B0%E5%86%99%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/%E5%85%AD%E8%8A%B1.gif">
+      <meta itemprop="name" content="我真不是雪上加霜">
+      <meta itemprop="description" content="失败总是贯穿人生始终">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我真不是雪上加霜">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2026-03-07 14:59:27" itemprop="dateCreated datePublished" datetime="2026-03-07T14:59:27+08:00">2026-03-07</time>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Hexo-Next博客（GitHub搭建）优化方案（适配简历撰写）"><a href="#Hexo-Next博客（GitHub搭建）优化方案（适配简历撰写）" class="headerlink" title="Hexo+Next博客（GitHub搭建）优化方案（适配简历撰写）"></a>Hexo+Next博客（GitHub搭建）优化方案（适配简历撰写）</h1><p><strong>体现技术能力、工程化思维、知识沉淀能力</strong>。</p>
+<p>以下从「技术增强」「工程化实践」「内容打磨」「简历包装」四个维度，给出具体可操作的方案，每个方案均说明“怎么做”和“简历里怎么写”。</p>
+<h1 id="一、技术定制：让博客体现你的前端-工程化能力"><a href="#一、技术定制：让博客体现你的前端-工程化能力" class="headerlink" title="一、技术定制：让博客体现你的前端&#x2F;工程化能力"></a>一、技术定制：让博客体现你的前端&#x2F;工程化能力</h1><p>基于next现成主题框架做二次开发和优化。</p>
+<h2 id="1-主题深度定制（替代默认样式）"><a href="#1-主题深度定制（替代默认样式）" class="headerlink" title="1. 主题深度定制（替代默认样式）"></a>1. 主题深度定制（替代默认样式）</h2><h3 id="操作步骤："><a href="#操作步骤：" class="headerlink" title="操作步骤："></a>操作步骤：</h3><ul>
+<li><p>基础配置：修改 Next 主题配置文件 <code>_config.next.yml</code>，自定义配色、字体、布局（比如单栏改双栏）、关闭冗余组件（如不常用的社交图标）。</p>
+</li>
+<li><p>自定义样式：在 <code>source/css/_custom/custom.styl</code>（Next 主题专属）中添加自定义 CSS，比如：</p>
+<ul>
+<li><p>实现<strong>阅读进度条</strong>（跟随滚动位置变化）；</p>
+</li>
+<li><p>优化代码块样式（添加一键复制按钮、自定义高亮配色）；</p>
+</li>
+<li><p>适配暗黑模式（调整文字&#x2F;背景对比度，优化图片显示）。</p>
+</li>
+</ul>
+</li>
+<li><p>新增实用组件：比如添加「文章最后更新时间」「阅读时长估算」「自定义 404 页面」。</p>
+</li>
+</ul>
+<h3 id="简历体现："><a href="#简历体现：" class="headerlink" title="简历体现："></a>简历体现：</h3><p>基于 Hexo+Next 主题完成前端定制开发，新增阅读进度条、代码块复制等 8+ 交互组件，自定义暗黑模式与响应式布局，优化博客 UI&#x2F;UX 体验。</p>
+<h2 id="2-集成高价值功能模块"><a href="#2-集成高价值功能模块" class="headerlink" title="2. 集成高价值功能模块"></a>2. 集成高价值功能模块</h2><p>选以下易实现且有亮点的功能，解决“纯笔记博客”的交互短板：</p>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>实现方式</th>
+<th>简历体现点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>全文搜索</td>
+<td>开启 Next 主题的 <code>local_search</code>，或集成 Algolia 搜索（更精准）</td>
+<td>解决笔记检索难题，提升内容可达性</td>
+</tr>
+<tr>
+<td>评论系统</td>
+<td>集成 Giscus（基于 GitHub Discussions，无需服务器，零成本）</td>
+<td>实现读者互动，完善博客社区属性</td>
+</tr>
+<tr>
+<td>RSS 订阅</td>
+<td>安装 <code>hexo-generator-feed</code> 插件，生成 RSS 文件并配置到博客首页</td>
+<td>支持内容订阅，提升内容分发能力</td>
+</tr>
+<tr>
+<td>图片懒加载</td>
+<td>安装 <code>hexo-lazyload-image</code> 插件，减少首屏加载资源</td>
+<td>优化页面加载性能</td>
+</tr>
+</tbody></table>
+<h2 id="3-性能与-SEO-优化"><a href="#3-性能与-SEO-优化" class="headerlink" title="3. 性能与 SEO 优化"></a>3. 性能与 SEO 优化</h2><p>让博客不仅“能用”，还能“好用、易被发现”：</p>
+<ul>
+<li><p>图片优化：用 <code>hexo-imageoptim</code> 插件自动压缩图片，或手动用 TinyPNG 压缩；</p>
+</li>
+<li><p>CDN 加速：将图片、JS&#x2F;CSS 静态资源托管到 JsDelivr&#x2F;Cloudflare 免费 CDN；</p>
+</li>
+<li><p>SEO 配置：</p>
+<ul>
+<li><p>安装 <code>hexo-generator-sitemap</code> 生成站点地图，提交到百度&#x2F;Google 搜索控制台；</p>
+</li>
+<li><p>给每篇文章添加 <code>keywords</code>（关键词）、<code>description</code>（描述），让文章能被搜索引擎收录。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="简历体现：-1"><a href="#简历体现：-1" class="headerlink" title="简历体现："></a>简历体现：</h3><p>通过图片压缩、CDN 加速等手段将博客页面加载速度提升 40%；完成 SEO 基础配置，实现技术文章搜索引擎收录率 80%+。</p>
+<h1 id="二、工程化实践：体现-DevOps-自动化能力"><a href="#二、工程化实践：体现-DevOps-自动化能力" class="headerlink" title="二、工程化实践：体现 DevOps&#x2F;自动化能力"></a>二、工程化实践：体现 DevOps&#x2F;自动化能力</h1><p>这部分能体现你懂“规范化、自动化”，是区别于普通博客的关键：</p>
+<h2 id="1-自动化部署（核心亮点）"><a href="#1-自动化部署（核心亮点）" class="headerlink" title="1. 自动化部署（核心亮点）"></a>1. 自动化部署（核心亮点）</h2><p>替代手动执行 <code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</code> 的繁琐流程，用 GitHub Actions 实现“提交代码自动部署”：</p>
+<h3 id="操作步骤：-1"><a href="#操作步骤：-1" class="headerlink" title="操作步骤："></a>操作步骤：</h3><ol>
+<li><p>在博客的 GitHub 仓库中新建 <code>.github/workflows/hexo-deploy.yml</code> 文件；</p>
+</li>
+<li><p>复制以下配置（直接可用）：</p>
+</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Hexo</span> <span class="string">Deploy</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">main</span>  <span class="comment"># 你的源码分支（比如 master）</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build-and-deploy:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span> <span class="string">source</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/checkout@v4</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">submodules:</span> <span class="literal">true</span></span><br><span class="line">          <span class="attr">fetch-depth:</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Set</span> <span class="string">up</span> <span class="string">Node.js</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/setup-node@v4</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">node-version:</span> <span class="string">&#x27;20&#x27;</span>  <span class="comment"># 适配 Hexo 的 Node 版本</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">dependencies</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">npm</span> <span class="string">install</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Build</span> <span class="string">Hexo</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">build</span>  <span class="comment"># 对应 package.json 中的 &quot;build&quot;: &quot;hexo generate&quot;</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Deploy</span> <span class="string">to</span> <span class="string">GitHub</span> <span class="string">Pages</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">peaceiris/actions-gh-pages@v4</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">github_token:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.GITHUB_TOKEN</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="attr">publish_dir:</span> <span class="string">./public</span></span><br><span class="line">          <span class="attr">publish_branch:</span> <span class="string">gh-pages</span>  <span class="comment"># GitHub Pages 部署分支</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>提交该文件后，后续只需把笔记推送到 <code>main</code> 分支，GitHub 会自动构建并部署到博客。</li>
+</ol>
+<h3 id="简历体现：-2"><a href="#简历体现：-2" class="headerlink" title="简历体现："></a>简历体现：</h3><p>基于 GitHub Actions 搭建自动化部署流程，替代手动部署操作，将博客发布周期从 10 分钟缩短至 1 分钟，迭代效率提升 90%。</p>
+<h2 id="2-规范化管理项目仓库"><a href="#2-规范化管理项目仓库" class="headerlink" title="2. 规范化管理项目仓库"></a>2. 规范化管理项目仓库</h2><p>完善 GitHub 仓库的“门面”，体现你的工程化思维：</p>
+<ul>
+<li><p>编写清晰的 <code>README.md</code>：包含「项目介绍（技术栈）」「部署步骤」「功能亮点」「博客预览截图」；</p>
+</li>
+<li><p>添加 <code>LICENSE</code> 文件（比如 MIT 协议），体现开源规范意识；</p>
+</li>
+<li><p>对自定义的配置&#x2F;代码添加注释，便于后续维护。</p>
+</li>
+</ul>
+<h2 id="3-只推送笔记（核心操作，适配简历规范化亮点）"><a href="#3-只推送笔记（核心操作，适配简历规范化亮点）" class="headerlink" title="3. 只推送笔记（核心操作，适配简历规范化亮点）"></a>3. 只推送笔记（核心操作，适配简历规范化亮点）</h2><p>核心逻辑：Hexo笔记默认存储在 <code>source/_posts</code> 目录（所有Markdown格式笔记均在此处），只需精准提交该目录文件，不推送主题配置、插件、生成文件等无关内容，既保持仓库整洁，也能正常触发自动化部署，同时体现你的规范化操作意识。</p>
+<h3 id="操作步骤（分2种场景，按需选择）"><a href="#操作步骤（分2种场景，按需选择）" class="headerlink" title="操作步骤（分2种场景，按需选择）"></a>操作步骤（分2种场景，按需选择）</h3><h4 id="场景1：手动推送（适合偶尔更新笔记）"><a href="#场景1：手动推送（适合偶尔更新笔记）" class="headerlink" title="场景1：手动推送（适合偶尔更新笔记）"></a>场景1：手动推送（适合偶尔更新笔记）</h4><ol>
+<li><p>确认笔记已保存至 <code>source/_posts</code> 目录（单篇笔记为.md文件，可按技术分类创建子目录，如 <code>source/_posts/前端笔记</code>）；</p>
+</li>
+<li><p>执行git命令，仅提交笔记目录（不提交其他文件），终端输入以下命令（依次执行）：<br>&#96;# 仅添加笔记目录（精准推送，不涉及主题、配置等文件）<br>git add source&#x2F;_posts&#x2F;</p>
+</li>
+</ol>
+<h1 id="提交备注（规范备注，体现工程化意识，如“更新笔记：JavaScript核心知识点”）"><a href="#提交备注（规范备注，体现工程化意识，如“更新笔记：JavaScript核心知识点”）" class="headerlink" title="提交备注（规范备注，体现工程化意识，如“更新笔记：JavaScript核心知识点”）"></a>提交备注（规范备注，体现工程化意识，如“更新笔记：JavaScript核心知识点”）</h1><p>git commit -m “更新笔记：XXX（笔记标题&#x2F;分类）”</p>
+<h1 id="推送至GitHub源码分支（与你自动化部署配置的分支一致，如main）"><a href="#推送至GitHub源码分支（与你自动化部署配置的分支一致，如main）" class="headerlink" title="推送至GitHub源码分支（与你自动化部署配置的分支一致，如main）"></a>推送至GitHub源码分支（与你自动化部署配置的分支一致，如main）</h1><p><code> </code>git push origin main&#96;</p>
+<ol start="3">
+<li>推送完成后，GitHub Actions会自动检测main分支变动，仅根据新增&#x2F;修改的笔记重新构建博客，无需手动执行部署命令。</li>
+</ol>
+<h4 id="场景2：结合软链接同步（适合用Obsidian等工具记笔记，自动同步）"><a href="#场景2：结合软链接同步（适合用Obsidian等工具记笔记，自动同步）" class="headerlink" title="场景2：结合软链接同步（适合用Obsidian等工具记笔记，自动同步）"></a>场景2：结合软链接同步（适合用Obsidian等工具记笔记，自动同步）</h4><p>若日常用Obsidian等笔记工具记录，无需手动复制笔记到Hexo目录，可通过软链接自动同步，再推送笔记，操作更高效：</p>
+<ol>
+<li>Windows系统（以管理员身份打开命令提示符），输入命令创建软链接（将Obsidian笔记目录链接到Hexo的_posts目录）：<br>           &#96;# 格式：mklink &#x2F;D “Hexo的_posts目录路径” “Obsidian笔记目录路径”</li>
+</ol>
+<p><code> </code>mklink &#x2F;D “D:\Blog\source_posts” “C:\Obsidian\技术笔记”&#96;</p>
+<ol start="2">
+<li>Mac&#x2F;Linux系统，终端输入命令创建软链接：<br>           &#96;# 格式：ln -s Obsidian笔记目录路径 Hexo的_posts目录路径</li>
+</ol>
+<p><code> </code>ln -s ~&#x2F;Obsidian&#x2F;技术笔记 ~&#x2F;Blog&#x2F;source&#x2F;_posts&#96;</p>
+<ol start="3">
+<li>软链接创建后，修改Obsidian笔记会自动同步到Hexo的_posts目录，后续只需执行场景1的git命令，即可只推送同步后的笔记。</li>
+</ol>
+<h3 id="关键注意事项（避坑重点）"><a href="#关键注意事项（避坑重点）" class="headerlink" title="关键注意事项（避坑重点）"></a>关键注意事项（避坑重点）</h3><ul>
+<li>配置 <code>.gitignore</code> 文件（根目录下），过滤无关文件，避免误推送，可添加以下内容（补充完善）：<br>            &#96;# 过滤Hexo生成文件</li>
+</ul>
+<p>&#x2F;public&#x2F;<br>&#x2F;node_modules&#x2F;</p>
+<h1 id="过滤主题配置备份（若有）"><a href="#过滤主题配置备份（若有）" class="headerlink" title="过滤主题配置备份（若有）"></a>过滤主题配置备份（若有）</h1><p>&#x2F;_config.next.yml.bak</p>
+<h1 id="过滤系统临时文件"><a href="#过滤系统临时文件" class="headerlink" title="过滤系统临时文件"></a>过滤系统临时文件</h1><p>.DS_Store<br><code> </code>Thumbs.db&#96;</p>
+<ul>
+<li><p>推送前确认未执行 <code>git add .</code>（该命令会添加所有变动文件），仅用 <code>git add source/_posts/</code> 精准添加笔记；</p>
+</li>
+<li><p>若需修改主题、配置，可单独提交该类文件，与笔记推送分开，保持提交记录清晰（体现规范化管理，适配简历亮点）。</p>
+</li>
+</ul>
+<h3 id="简历体现（补充适配）"><a href="#简历体现（补充适配）" class="headerlink" title="简历体现（补充适配）"></a>简历体现（补充适配）</h3><p>规范博客仓库提交流程，实现精准推送笔记功能，通过软链接同步、.gitignore过滤等操作，保持仓库整洁，提升笔记更新与部署效率，体现工程化规范意识。</p>
+<h1 id="三、内容打磨：体现知识沉淀能力"><a href="#三、内容打磨：体现知识沉淀能力" class="headerlink" title="三、内容打磨：体现知识沉淀能力"></a>三、内容打磨：体现知识沉淀能力</h1><p>技术再炫，没有有价值的内容，项目也会显得空洞。重点是让内容“体系化、有价值”：</p>
+<ol>
+<li><p><strong>内容分类体系化</strong>：</p>
+<ul>
+<li><p>按技术栈划分目录（比如「前端基础」「算法刷题」「Hexo 实战」）；</p>
+</li>
+<li><p>打造系列文章（比如「JavaScript 核心知识点系列」「LeetCode 刷题笔记系列」），每系列至少 3 篇，体现知识的连贯性。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>内容质量提升</strong>：</p>
+<ul>
+<li><p>每篇文章添加「可运行的代码示例」「逻辑流程图（用 Mermaid 绘制）」「踩坑记录&#x2F;解决方案」；</p>
+</li>
+<li><p>统一文章格式（标题、目录、正文、参考文献、更新时间），提升可读性。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="简历体现：-3"><a href="#简历体现：-3" class="headerlink" title="简历体现："></a>简历体现：</h3><p>沉淀 20+ 篇技术文章，涵盖前端&#x2F;算法领域，打造 3 个系列化知识专栏，体现对技术知识点的深度理解与总结输出能力。</p>
+<h1 id="四、简历包装：把亮点转化为HR能看懂的语言"><a href="#四、简历包装：把亮点转化为HR能看懂的语言" class="headerlink" title="四、简历包装：把亮点转化为HR能看懂的语言"></a>四、简历包装：把亮点转化为HR能看懂的语言</h1><p>核心是<strong>量化成果、匹配岗位、突出价值</strong>，以下是可直接复用的项目描述模板：</p>
+<h2 id="简历项目描述示例"><a href="#简历项目描述示例" class="headerlink" title="简历项目描述示例"></a>简历项目描述示例</h2><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">项目名称：个人技术博客（Hexo + Next + GitHub Pages）</span><br><span class="line">技术栈：Hexo、Next、HTML/CSS/JS、GitHub Actions、CDN、SEO、Giscus</span><br><span class="line">核心成果：</span><br><span class="line">1. 定制开发：基于 Next 主题完成前端定制，新增阅读进度条、代码块复制等 8+ 交互组件，优化暗黑模式与响应式布局；</span><br><span class="line">2. 自动化部署：搭建 GitHub Actions 自动化流程，将博客部署效率提升 90%，实现代码提交后自动发布；</span><br><span class="line">3. 性能优化：通过图片压缩、CDN 加速将页面加载速度提升 40%，完成 SEO 配置使文章收录率达 80%+；</span><br><span class="line">4. 内容沉淀：发布 20+ 篇技术文章（含 3 个系列专栏），覆盖前端/算法领域，博客累计访问量 5000+。</span><br></pre></td></tr></table></figure>
+
+<h2 id="关键技巧："><a href="#关键技巧：" class="headerlink" title="关键技巧："></a>关键技巧：</h2><ul>
+<li><p>量化成果：用数字说话（访问量、优化百分比、文章数量），避免“提升了体验”这类空泛描述；</p>
+</li>
+<li><p>匹配岗位：应聘前端岗重点提“主题定制、性能优化”，应聘全栈&#x2F;运维岗重点提“自动化部署、CDN 配置”；</p>
+</li>
+<li><p>突出问题：比如“解决手动部署繁琐问题”“解决默认主题搜索功能缺失问题”。</p>
+</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
+<li><p><strong>技术层面</strong>：主题定制、自动化部署、性能优化是核心亮点，体现你的前端&#x2F;工程化能力；</p>
+</li>
+<li><p><strong>内容层面</strong>：体系化的技术文章体现知识沉淀和总结输出能力，让项目有实际价值；</p>
+</li>
+<li><p><strong>简历包装</strong>：量化成果、匹配岗位需求，把技术动作转化为可衡量的价值，让HR快速感知你的能力。</p>
+</li>
+</ol>
+<p>按这个思路优化后，你的博客项目不再是“简单的笔记发布”，而是能体现多维度能力的优质项目，完全可以成为简历中的加分项。</p>
+<blockquote>
+<p>（注：文档部分内容可能由 AI 生成）</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2026/03/05/%E7%AE%97%E6%B3%95/" rel="prev" title="算法海">
+      <i class="fa fa-chevron-left"></i> 算法海
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hexo-Next%E5%8D%9A%E5%AE%A2%EF%BC%88GitHub%E6%90%AD%E5%BB%BA%EF%BC%89%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88%EF%BC%88%E9%80%82%E9%85%8D%E7%AE%80%E5%8E%86%E6%92%B0%E5%86%99%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">Hexo+Next博客（GitHub搭建）优化方案（适配简历撰写）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%8A%80%E6%9C%AF%E5%AE%9A%E5%88%B6%EF%BC%9A%E8%AE%A9%E5%8D%9A%E5%AE%A2%E4%BD%93%E7%8E%B0%E4%BD%A0%E7%9A%84%E5%89%8D%E7%AB%AF-%E5%B7%A5%E7%A8%8B%E5%8C%96%E8%83%BD%E5%8A%9B"><span class="nav-number">2.</span> <span class="nav-text">一、技术定制：让博客体现你的前端&#x2F;工程化能力</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%B8%BB%E9%A2%98%E6%B7%B1%E5%BA%A6%E5%AE%9A%E5%88%B6%EF%BC%88%E6%9B%BF%E4%BB%A3%E9%BB%98%E8%AE%A4%E6%A0%B7%E5%BC%8F%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">1. 主题深度定制（替代默认样式）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4%EF%BC%9A"><span class="nav-number">2.1.1.</span> <span class="nav-text">操作步骤：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8E%86%E4%BD%93%E7%8E%B0%EF%BC%9A"><span class="nav-number">2.1.2.</span> <span class="nav-text">简历体现：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E9%9B%86%E6%88%90%E9%AB%98%E4%BB%B7%E5%80%BC%E5%8A%9F%E8%83%BD%E6%A8%A1%E5%9D%97"><span class="nav-number">2.2.</span> <span class="nav-text">2. 集成高价值功能模块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%80%A7%E8%83%BD%E4%B8%8E-SEO-%E4%BC%98%E5%8C%96"><span class="nav-number">2.3.</span> <span class="nav-text">3. 性能与 SEO 优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8E%86%E4%BD%93%E7%8E%B0%EF%BC%9A-1"><span class="nav-number">2.3.1.</span> <span class="nav-text">简历体现：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%B7%A5%E7%A8%8B%E5%8C%96%E5%AE%9E%E8%B7%B5%EF%BC%9A%E4%BD%93%E7%8E%B0-DevOps-%E8%87%AA%E5%8A%A8%E5%8C%96%E8%83%BD%E5%8A%9B"><span class="nav-number">3.</span> <span class="nav-text">二、工程化实践：体现 DevOps&#x2F;自动化能力</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%EF%BC%88%E6%A0%B8%E5%BF%83%E4%BA%AE%E7%82%B9%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">1. 自动化部署（核心亮点）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4%EF%BC%9A-1"><span class="nav-number">3.1.1.</span> <span class="nav-text">操作步骤：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8E%86%E4%BD%93%E7%8E%B0%EF%BC%9A-2"><span class="nav-number">3.1.2.</span> <span class="nav-text">简历体现：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%A7%84%E8%8C%83%E5%8C%96%E7%AE%A1%E7%90%86%E9%A1%B9%E7%9B%AE%E4%BB%93%E5%BA%93"><span class="nav-number">3.2.</span> <span class="nav-text">2. 规范化管理项目仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%8F%AA%E6%8E%A8%E9%80%81%E7%AC%94%E8%AE%B0%EF%BC%88%E6%A0%B8%E5%BF%83%E6%93%8D%E4%BD%9C%EF%BC%8C%E9%80%82%E9%85%8D%E7%AE%80%E5%8E%86%E8%A7%84%E8%8C%83%E5%8C%96%E4%BA%AE%E7%82%B9%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">3. 只推送笔记（核心操作，适配简历规范化亮点）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%AD%A5%E9%AA%A4%EF%BC%88%E5%88%862%E7%A7%8D%E5%9C%BA%E6%99%AF%EF%BC%8C%E6%8C%89%E9%9C%80%E9%80%89%E6%8B%A9%EF%BC%89"><span class="nav-number">3.3.1.</span> <span class="nav-text">操作步骤（分2种场景，按需选择）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF1%EF%BC%9A%E6%89%8B%E5%8A%A8%E6%8E%A8%E9%80%81%EF%BC%88%E9%80%82%E5%90%88%E5%81%B6%E5%B0%94%E6%9B%B4%E6%96%B0%E7%AC%94%E8%AE%B0%EF%BC%89"><span class="nav-number">3.3.1.1.</span> <span class="nav-text">场景1：手动推送（适合偶尔更新笔记）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E5%A4%87%E6%B3%A8%EF%BC%88%E8%A7%84%E8%8C%83%E5%A4%87%E6%B3%A8%EF%BC%8C%E4%BD%93%E7%8E%B0%E5%B7%A5%E7%A8%8B%E5%8C%96%E6%84%8F%E8%AF%86%EF%BC%8C%E5%A6%82%E2%80%9C%E6%9B%B4%E6%96%B0%E7%AC%94%E8%AE%B0%EF%BC%9AJavaScript%E6%A0%B8%E5%BF%83%E7%9F%A5%E8%AF%86%E7%82%B9%E2%80%9D%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">提交备注（规范备注，体现工程化意识，如“更新笔记：JavaScript核心知识点”）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A8%E9%80%81%E8%87%B3GitHub%E6%BA%90%E7%A0%81%E5%88%86%E6%94%AF%EF%BC%88%E4%B8%8E%E4%BD%A0%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2%E9%85%8D%E7%BD%AE%E7%9A%84%E5%88%86%E6%94%AF%E4%B8%80%E8%87%B4%EF%BC%8C%E5%A6%82main%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">推送至GitHub源码分支（与你自动化部署配置的分支一致，如main）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF2%EF%BC%9A%E7%BB%93%E5%90%88%E8%BD%AF%E9%93%BE%E6%8E%A5%E5%90%8C%E6%AD%A5%EF%BC%88%E9%80%82%E5%90%88%E7%94%A8Obsidian%E7%AD%89%E5%B7%A5%E5%85%B7%E8%AE%B0%E7%AC%94%E8%AE%B0%EF%BC%8C%E8%87%AA%E5%8A%A8%E5%90%8C%E6%AD%A5%EF%BC%89"><span class="nav-number">5.0.0.1.</span> <span class="nav-text">场景2：结合软链接同步（适合用Obsidian等工具记笔记，自动同步）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9%EF%BC%88%E9%81%BF%E5%9D%91%E9%87%8D%E7%82%B9%EF%BC%89"><span class="nav-number">5.0.1.</span> <span class="nav-text">关键注意事项（避坑重点）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E5%A4%87%E4%BB%BD%EF%BC%88%E8%8B%A5%E6%9C%89%EF%BC%89"><span class="nav-number">6.</span> <span class="nav-text">过滤主题配置备份（若有）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E7%B3%BB%E7%BB%9F%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6"><span class="nav-number">7.</span> <span class="nav-text">过滤系统临时文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8E%86%E4%BD%93%E7%8E%B0%EF%BC%88%E8%A1%A5%E5%85%85%E9%80%82%E9%85%8D%EF%BC%89"><span class="nav-number">7.0.1.</span> <span class="nav-text">简历体现（补充适配）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%86%85%E5%AE%B9%E6%89%93%E7%A3%A8%EF%BC%9A%E4%BD%93%E7%8E%B0%E7%9F%A5%E8%AF%86%E6%B2%89%E6%B7%80%E8%83%BD%E5%8A%9B"><span class="nav-number">8.</span> <span class="nav-text">三、内容打磨：体现知识沉淀能力</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8E%86%E4%BD%93%E7%8E%B0%EF%BC%9A-3"><span class="nav-number">8.0.1.</span> <span class="nav-text">简历体现：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E7%AE%80%E5%8E%86%E5%8C%85%E8%A3%85%EF%BC%9A%E6%8A%8A%E4%BA%AE%E7%82%B9%E8%BD%AC%E5%8C%96%E4%B8%BAHR%E8%83%BD%E7%9C%8B%E6%87%82%E7%9A%84%E8%AF%AD%E8%A8%80"><span class="nav-number">9.</span> <span class="nav-text">四、简历包装：把亮点转化为HR能看懂的语言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8E%86%E9%A1%B9%E7%9B%AE%E6%8F%8F%E8%BF%B0%E7%A4%BA%E4%BE%8B"><span class="nav-number">9.1.</span> <span class="nav-text">简历项目描述示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E6%8A%80%E5%B7%A7%EF%BC%9A"><span class="nav-number">9.2.</span> <span class="nav-text">关键技巧：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">10.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我真不是雪上加霜"
+      src="/images/%E5%85%AD%E8%8A%B1.gif">
+  <p class="site-author-name" itemprop="name">我真不是雪上加霜</p>
+  <div class="site-description" itemprop="description">失败总是贯穿人生始终</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2026</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我真不是雪上加霜</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">397k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">6:01</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 1,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>
