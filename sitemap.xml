@@ -169,6 +169,13 @@
   </url>
   
   <url>
+    <loc>https://maofe3o4.github.io/tags/k8s/</loc>
+    <lastmod>2026-03-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://maofe3o4.github.io/tags/%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>weekly</changefreq>
@@ -197,7 +204,7 @@
   </url>
   
   <url>
-    <loc>https://maofe3o4.github.io/tags/k8s/</loc>
+    <loc>https://maofe3o4.github.io/tags/oracle/</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -211,7 +218,7 @@
   </url>
   
   <url>
-    <loc>https://maofe3o4.github.io/tags/oracle/</loc>
+    <loc>https://maofe3o4.github.io/tags/redis/</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -219,13 +226,6 @@
   
   <url>
     <loc>https://maofe3o4.github.io/tags/sql-server/</loc>
-    <lastmod>2026-03-07</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://maofe3o4.github.io/tags/redis/</loc>
     <lastmod>2026-03-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
