@@ -356,1035 +356,6 @@
       </tags>
   </entry>
   <entry>
-    <title>linux常用指令快速入门</title>
-    <url>/2024/08/10/linux/linux%E7%AE%80%E5%8D%95%E6%8C%87%E4%BB%A4/</url>
-    <content><![CDATA[<p><span id="jump1">目录</span></p>
-<p>[toc]</p>
-<h1 id="常用简单指令"><a href="#常用简单指令" class="headerlink" title="常用简单指令"></a>常用简单指令</h1><table>
-<thead>
-<tr>
-<th>运行等级</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>init 0</td>
-<td>关机</td>
-</tr>
-<tr>
-<td>init 1</td>
-<td>单用户，root，用于系统维护，禁止远程登陆</td>
-</tr>
-<tr>
-<td>init 2</td>
-<td>多用户，不支持NFS</td>
-</tr>
-<tr>
-<td>init 3</td>
-<td>命令行模式，完全的多用户，登陆后进入</td>
-</tr>
-<tr>
-<td>init 4</td>
-<td>安全模式</td>
-</tr>
-<tr>
-<td>init 5</td>
-<td>图形化</td>
-</tr>
-<tr>
-<td>init 6</td>
-<td>重启</td>
-</tr>
-</tbody></table>
-<p>内存中的数据同步到磁盘：sync<br>查看当前目录：pwd<br>切换目录：cd 目录名       （cd只能进入目录）<br>进入文件：cat 文件路径<br>显示(当前)目录中的文件：ls [-a包括隐藏文件] [-l列表详细信息] [目录名]<br>创建目录：mkdir [-p] 目录名&#x2F;路径<br>删除空目录(非空删除失败)：rmdir [-p] 目录名<br>清屏：clear<br>在终端使用之前用到的命令(历史命令保存在.bash_history文件中)：上下光标调取<br>命令自动补全：tab<br>正则表达式：*多个字符,?一个字符<br>查看&#x2F;设置时间：date                date -s “2024-01-02 09:11:42”<br>帮助指令：man      help<br>修改主机名：hostname set-hostname 新名称</p>
-<h1 id="Linux目录和文件-简单介绍"><a href="#Linux目录和文件-简单介绍" class="headerlink" title="Linux目录和文件(简单介绍)"></a>Linux目录和文件(简单介绍)</h1><p><a href="#jump1">回到目录</a></p>
-<p><img src="/images/loading/loading.gif" data-original="/images/%E5%9B%BE%E7%89%871.png" alt="image-20240604094822494"></p>
-<p>绝对路径：&#x2F;usr&#x2F;include&#x2F;a.h<br>相对路径：如果当前目录为&#x2F;usr，则include&#x2F;a.h为相对路径等同于上面<br>当前目录：.<br>上一级目录：..<br>家目录：~<br>系统启动必须：&#x2F;boot、&#x2F;etc、&#x2F;lib<br>命令集合：&#x2F;sbin、&#x2F;bin<br>设备相关：&#x2F;dev、&#x2F;media、&#x2F;mnt<br>临时文件：&#x2F;run、&#x2F;lost+found、&#x2F;tmp<br>账户相关：&#x2F;root、&#x2F;home、&#x2F;usr<br>运行过程：&#x2F;var、&#x2F;proc<br>拓展相关：&#x2F;opt、&#x2F;srv</p>
-<p>bin执行，lib库，etc是配置，usr和home是’我的’，dev管设备，opt装软件</p>
-<h1 id="vi编辑器"><a href="#vi编辑器" class="headerlink" title="vi编辑器"></a>vi编辑器</h1><p><a href="#jump1">回到目录</a></p>
-<p><img src="/images/loading/loading.gif" data-original="/images/vim.png" alt="vim工作模式"></p>
-<p><img src="/images/loading/loading.gif" data-original="/images/vim%E9%94%AE%E7%9B%98.png" alt="vim键盘"></p>
-<p>命令模式</p>
-<table>
-<thead>
-<tr>
-<th>命令模式</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>:set nu</td>
-<td>显示行号</td>
-</tr>
-<tr>
-<td>:set nonu</td>
-<td>取消行号</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>一般模式</td>
-<td></td>
-</tr>
-<tr>
-<td>&#x2F;字符</td>
-<td>查找指定字符，按n查找下一个</td>
-</tr>
-<tr>
-<td>gg</td>
-<td>查看行首</td>
-</tr>
-<tr>
-<td>G</td>
-<td>查看行尾</td>
-</tr>
-<tr>
-<td>数字 G</td>
-<td>查看指定行</td>
-</tr>
-</tbody></table>
-<p>i:当前位置开始编辑<br>o：在下面插入一行编辑<br>a：当前位置后一个位置插入<br>r：当前位置替换<br>I:当前行首个位置编辑<br>O：在上面插入一行编辑<br>A：当前行最后一个位置插入<br>R：从当位置开始替换</p>
-<h1 id="用户-组-管理"><a href="#用户-组-管理" class="headerlink" title="用户(组)管理"></a>用户(组)管理</h1><p><a href="#jump1">回到目录</a></p>
-<h3 id="组"><a href="#组" class="headerlink" title="组"></a>组</h3><p>组的信息保存在&#x2F;etc&#x2F;group文件<br>创建组：groupadd 组名<br>修改组：groupmod [-n 新组] 旧组<br>删除组：groupdel 组名</p>
-<h3 id="用户"><a href="#用户" class="headerlink" title="用户"></a>用户</h3><p><strong>创建删除</strong><br>用户信息保存在&#x2F;etc&#x2F;passwd文件<br>用户密码保存在&#x2F;etc&#x2F;shadow文件<br>创建用户：useradd  [-g 组名] [-d 用户主目录] [-r系统用户不可登录系统] 用户名<br>修改用户：usermod [-l 新名字] [-g 新组] [-d 新目录] 用户名<br>删除用户：userdel [-r删除组目录] 用户名<br><strong>修改密码</strong><br>root用户修改其他用户：passwd 用户名<br>普通用户修改自己：passwd<br><strong>切换用户</strong><br>root用户免密码切换：su -用户名<br>普通用户：su -用户名 然后输入密码<br><strong>查看用户信息</strong><br>id 用户名</p>
-<h1 id="目录文件操作"><a href="#目录文件操作" class="headerlink" title="目录文件操作"></a>目录文件操作</h1><p><a href="#jump1">回到目录</a></p>
-<p>目录和文件的详细信息：ls [-l] [目录名]             按时间降序显示ls -lt [目录名]<br>-a:列出全部文件，包括隐藏文件<br>快捷方式显示按当前目录下详细信息：ll</p>
-<h2 id="文件-目录属性"><a href="#文件-目录属性" class="headerlink" title="文件&#x2F;目录属性"></a>文件&#x2F;目录属性</h2><p>drwxr-xr-x. 4 root root 80 9月 26 17：05 aaa</p>
-<table>
-<thead>
-<tr>
-<th align="center">对应信息</th>
-<th align="center">介绍</th>
-<th align="center">例子</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">文件类型</td>
-<td align="center">d目录-普通文件l链接p管道文件b块设备文件c字符设备文件s套接字文件</td>
-<td align="center">d</td>
-</tr>
-<tr>
-<td align="center">文件权限</td>
-<td align="center">r读w写x可执行-无权限；三个为一组代表所有者，同组用户，其他用户</td>
-<td align="center">rwxr-xr-x</td>
-</tr>
-<tr>
-<td align="center">文件硬链接数或目录的子目录数</td>
-<td align="center">文件硬链接，初始为1；空目录初始为2；</td>
-<td align="center">4</td>
-</tr>
-<tr>
-<td align="center">文件拥有者</td>
-<td align="center"></td>
-<td align="center">root</td>
-</tr>
-<tr>
-<td align="center">文件拥有者所在组</td>
-<td align="center"></td>
-<td align="center">root</td>
-</tr>
-<tr>
-<td align="center">目录或文件大小</td>
-<td align="center">文件大小单位字节；目录大小不包括目录下的文件和子目录</td>
-<td align="center">80</td>
-</tr>
-<tr>
-<td align="center">最后一次被修改的时间</td>
-<td align="center">创建&#x2F;last修改</td>
-<td align="center">9月 26 17：05</td>
-</tr>
-<tr>
-<td align="center">目录或文件名</td>
-<td align="center"></td>
-<td align="center">aaa</td>
-</tr>
-</tbody></table>
-<p><img src="/images/loading/loading.gif" data-original="/images/%E5%9B%BE%E7%89%872.png" alt="image-20240604094822494"></p>
-<h2 id="修改目录和文件权限"><a href="#修改目录和文件权限" class="headerlink" title="修改目录和文件权限"></a>修改目录和文件权限</h2><p>修改拥有者：chown [-R递归赋予权限] 用户：组 目录和文件列表<br>设置权限：chmod [-R] whooperatorpermission 目录和文件列表</p>
-<table>
-<thead>
-<tr>
-<th>who</th>
-<th>operator</th>
-<th>permission</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>u所有者</td>
-<td>+增加权限</td>
-<td>x进入目录或执行文件</td>
-</tr>
-<tr>
-<td>g所有者所在组</td>
-<td>-取消权限</td>
-<td>r读取文件或查看目录中有哪些子目录和文件</td>
-</tr>
-<tr>
-<td>o其他用户</td>
-<td>&#x3D;重新设置权限</td>
-<td>w修改文件内容或在目录中增删改</td>
-</tr>
-<tr>
-<td>a全部用户</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<p>r&#x3D;4 w&#x3D;2 x&#x3D;1 rwx&#x3D;4+2+1&#x3D;7<br>chmod -R 777 文件名&#x2F;目录 给所有人用给rwx权限</p>
-<h2 id="查看-查找文件内容"><a href="#查看-查找文件内容" class="headerlink" title="查看&#x2F;查找文件内容"></a>查看&#x2F;查找文件内容</h2><table>
-<thead>
-<tr>
-<th>查看文件内容</th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>cat 文件名</td>
-<td>显示</td>
-</tr>
-<tr>
-<td>less 文件名</td>
-<td>分屏查看，</td>
-</tr>
-<tr>
-<td>more 文件名</td>
-<td>分页查看，空格下一页，b上一页，q退出</td>
-</tr>
-<tr>
-<td>wc 文件名</td>
-<td>统计文件行数</td>
-</tr>
-<tr>
-<td>head [-n] 文件</td>
-<td>查看前n行，默认10行</td>
-</tr>
-<tr>
-<td>tail [-n] [-f] 文件</td>
-<td>查看尾n行，默认10行,-f实时跟踪</td>
-</tr>
-<tr>
-<td>grep [-n]</td>
-<td>过滤查找， 内容|grep 指定查找内容</td>
-</tr>
-<tr>
-<td>find 目录 -name 文件名</td>
-<td>在指定目录下按名字查找文件</td>
-</tr>
-<tr>
-<td>locate 文件名</td>
-<td>locate之前updatedb</td>
-</tr>
-</tbody></table>
-<h2 id="文件-目录的创建删除复制移动"><a href="#文件-目录的创建删除复制移动" class="headerlink" title="文件&#x2F;目录的创建删除复制移动"></a>文件&#x2F;目录的创建删除复制移动</h2><table>
-<thead>
-<tr>
-<th>创建目录&#x2F;空文件</th>
-<th>删除</th>
-<th>复制</th>
-<th>移动&#x2F;重命名</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>mkdir [-mp] 目录名</td>
-<td>rm [-rf] 目录和文件</td>
-<td>cp [-r] 旧名 新名</td>
-<td>mv 旧名 新名</td>
-</tr>
-<tr>
-<td>touch 文件名</td>
-<td>-r递归删除-f强制删除不提示</td>
-<td>-r递归复制目录</td>
-<td></td>
-</tr>
-<tr>
-<td>-m配置权限；-p目录递归创建</td>
-<td>rmdir是删空目录</td>
-<td>\cp强制覆盖</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>在不同的linux服务器之间进行文件传输：<br>scp [-r] 文件 目标用户名@目标服务器名或ip:目标服务器上的保存路径</p>
-<h2 id="安装和打包"><a href="#安装和打包" class="headerlink" title="安装和打包"></a>安装和打包</h2><h3 id="rpm包管理"><a href="#rpm包管理" class="headerlink" title="rpm包管理"></a>rpm包管理</h3><table>
-<thead>
-<tr>
-<th>命令</th>
-<th>选项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>rpm</td>
-<td>-q 包名</td>
-<td>查询是否安装</td>
-</tr>
-<tr>
-<td></td>
-<td>-qa</td>
-<td>查询已安装的软件包</td>
-</tr>
-<tr>
-<td></td>
-<td>-ql 包名</td>
-<td>查询软件包中文件</td>
-</tr>
-<tr>
-<td></td>
-<td>-qi 包名</td>
-<td>查询软件包信息</td>
-</tr>
-<tr>
-<td></td>
-<td>-qf 文件全路径名</td>
-<td>查询文件所属软件包</td>
-</tr>
-<tr>
-<td></td>
-<td>-e 包名</td>
-<td>卸载包</td>
-</tr>
-</tbody></table>
-<h3 id="yum安装"><a href="#yum安装" class="headerlink" title="yum安装"></a>yum安装</h3><p>mv &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo.backup</p>
-<p>curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo <a href="http://mirrors.aliyun.com/repo/Centos-7.repo">http://mirrors.aliyun.com/repo/Centos-7.repo</a></p>
-<p>yum makecache</p>
-<table>
-<thead>
-<tr>
-<th align="left">命令</th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">yum [-y&#x2F;d&#x2F;n] install 包名</td>
-<td>安装</td>
-</tr>
-<tr>
-<td align="left">yum -y remove</td>
-<td>删除</td>
-</tr>
-<tr>
-<td align="left">yum update 包名</td>
-<td>升级</td>
-</tr>
-<tr>
-<td align="left">yum list | grep 软件名</td>
-<td>查找能够安装的包</td>
-</tr>
-<tr>
-<td align="left">yum check-update</td>
-<td>显示可更新的包</td>
-</tr>
-</tbody></table>
-<h3 id="打包和压缩"><a href="#打包和压缩" class="headerlink" title="打包和压缩"></a>打包和压缩</h3><p>zip命令和tar命令</p>
-<p>压缩：zip [-qrd] 压缩包文件名 目录和文件名列表<br>解压：unzip [-d 指定放的位置] 压缩包文件名</p>
-<p>压缩：tar [-zcvf] 压缩包文件名.tar.gz 目录和文件名列表<br>解压：tar [-xzvf] 压缩包文件名  [-C 指定放的位置]</p>
-<table>
-<thead>
-<tr>
-<th>zip</th>
-<th>说明</th>
-<th>tar</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>-q</td>
-<td>不显示命令执行过程</td>
-<td>-z</td>
-<td>打包同时压缩</td>
-</tr>
-<tr>
-<td>-r</td>
-<td>递归压缩</td>
-<td>-c&#x2F;x</td>
-<td>打包&#x2F;解包</td>
-</tr>
-<tr>
-<td>-u</td>
-<td>把文件增加&#x2F;替换到压缩包中</td>
-<td>-v</td>
-<td>显示文件详细信息</td>
-</tr>
-<tr>
-<td>-d</td>
-<td>指定压缩或解压缩后产生的文件放的地方</td>
-<td>-f</td>
-<td>指定压缩&#x2F;解压的文件名</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>-t</td>
-<td>列出压缩包里的文件(不用解压)</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>-C</td>
-<td>指定压缩或解压缩后产生的文件放的地方</td>
-</tr>
-</tbody></table>
-<h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><p><a href="#jump1">回到目录</a></p>
-<p>硬链接：ln 文件名 链接名<br>软链接：ln -s 目录或文件 链接名</p>
-<p>硬链接是文件指针；软链接是一个保存了文件路径的文件</p>
-<p>尽量为目录做软链接，为文件做硬链接</p>
-<h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><p><a href="#jump1">回到目录</a></p>
-<h2 id="查看进程"><a href="#查看进程" class="headerlink" title="查看进程"></a>查看进程</h2><p>ps [-aux]&#x2F;[-ef]<br>选项说明：<br>-a 查全部进程(前台)<br>-x 查全部进程(包括后台)<br>-u 显示该进程的用户<br>-e 显示所有进程<br>-f 全格式</p>
-<p>以树状形式显示<br>pstree [-p]&#x2F;[-u]<br>选项说明：p：进程pid；u进程所属用户</p>
-<p>实时显示top [选项]</p>
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>-d</td>
-<td>每各d秒更新显示内容</td>
-</tr>
-<tr>
-<td>-i</td>
-<td>不显示闲置和僵尸进程</td>
-</tr>
-<tr>
-<td>-p</td>
-<td>指定进程ID查看</td>
-</tr>
-<tr>
-<td>执行后操作</td>
-<td>说明</td>
-</tr>
-<tr>
-<td>P</td>
-<td>以CPU使用率排序(默认)</td>
-</tr>
-<tr>
-<td>M</td>
-<td>以内存使用率排序</td>
-</tr>
-<tr>
-<td>N</td>
-<td>以PID排序</td>
-</tr>
-<tr>
-<td>q</td>
-<td>退出top</td>
-</tr>
-</tbody></table>
-<p><img src="/images/loading/loading.gif" data-original="/images/top%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90.png" alt="top性能分析"></p>
-<table>
-<thead>
-<tr>
-<th>第一行</th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>top - 11：03：25</td>
-<td>up 4 min</td>
-<td>3 users</td>
-<td></td>
-<td>load average：0.05,0.18,0.10</td>
-<td></td>
-</tr>
-<tr>
-<td>当前时间</td>
-<td>运行了多久</td>
-<td>当前登录用户数</td>
-<td></td>
-<td>系统负载：一段时间内，CPU正在处理和等待处理的进程数之和<br>上面三个数值分别是1分钟，5分钟，15分钟内的平均值</td>
-<td></td>
-</tr>
-<tr>
-<td>第二行:</td>
-<td>统计进程</td>
-<td>的统计</td>
-<td></td>
-<td>信息</td>
-<td></td>
-</tr>
-<tr>
-<td>Tasks:209 total</td>
-<td>2 running</td>
-<td>207 sleeping</td>
-<td></td>
-<td>0</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<h2 id="终止进程"><a href="#终止进程" class="headerlink" title="终止进程"></a>终止进程</h2><p>kill [-9] 进程号<br>kill all 进程名称       可用通配符</p>
-<h2 id="按端口查"><a href="#按端口查" class="headerlink" title="按端口查"></a>按端口查</h2><p>lsof -t -i:端口号<br>-t只显示进程号<br>杀死某一端口的进程：kill $(lsof -t -i:端口号)</p>
-<h1 id="磁盘分区和挂载"><a href="#磁盘分区和挂载" class="headerlink" title="磁盘分区和挂载"></a>磁盘分区和挂载</h1><p><a href="#jump1">回到目录</a></p>
-<p>linux独特的挂载使得其只有一个根目录<br>查挂载情况-分区-分区格式化-挂载-查磁盘分区使用情况</p>
-<table>
-<thead>
-<tr>
-<th>分区方式</th>
-<th align="center">特点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>mbr</td>
-<td align="center">最多支持4个主分区，系统只能在主分区，扩展分区占一个主分区，最大2TB，兼容性好</td>
-</tr>
-<tr>
-<td>gtp</td>
-<td align="center">无限多个主分区(windows限制128个)，最大18EB</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>硬盘</th>
-<th></th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>IDE</td>
-<td></td>
-<td>驱动器标识符hdx~   例如hda3表示第一个IDE硬盘的第三个分区</td>
-</tr>
-<tr>
-<td>SCSI</td>
-<td></td>
-<td>sdx~</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>常用指令</th>
-<th>选项</th>
-<th>选项说明</th>
-<th>说明</th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>lsblk</td>
-<td>-f</td>
-<td>会显示uuid和挂载点</td>
-<td>查看所有设备挂载情况</td>
-<td></td>
-</tr>
-<tr>
-<td>fdisk &#x2F;dev&#x2F;sdb</td>
-<td>m p q w n</td>
-<td>m显示命令;p显示磁盘分区;q不保存退出;w写入并退出;n新增分区;e扩展分区</td>
-<td>对&#x2F;sdb分区,输入n,新增分区然后选择p ，分区类型为主分区。两次回车默认剩余全部空间。最后w写入分区并退出，或者q。</td>
-<td></td>
-</tr>
-<tr>
-<td>mkfs -t ext4 &#x2F;dev&#x2F;sdb1</td>
-<td>-t</td>
-<td>设置分区类型</td>
-<td>对刚刚的主分区格式化</td>
-<td></td>
-</tr>
-<tr>
-<td>mount &#x2F;dev&#x2F;sdb1 被挂载的目录</td>
-<td>-a -o</td>
-<td>修改&#x2F;etc&#x2F;fstab后mount -a即可永久挂载 o选择何种方式挂载</td>
-<td>不永久挂载重启会失效<br>-o ro  只读方式挂载<br>-o rw 读写方式挂载</td>
-<td></td>
-</tr>
-<tr>
-<td>umount 被挂载的目录&#x2F;分区</td>
-<td></td>
-<td></td>
-<td>取消挂载</td>
-<td></td>
-</tr>
-<tr>
-<td>df</td>
-<td>-h</td>
-<td>带单位</td>
-<td>查询磁盘、分区使用情况</td>
-<td></td>
-</tr>
-<tr>
-<td>du &#x2F;目录</td>
-<td>-s -h -a -c –max-depth&#x3D;1</td>
-<td>s占用大小汇总a含文件c列出明细同时增加汇总值max深度为1查看</td>
-<td>查询指定目录的磁盘使用情况</td>
-<td></td>
-</tr>
-</tbody></table>
-<h1 id="系统服务管理systemctl"><a href="#系统服务管理systemctl" class="headerlink" title="系统服务管理systemctl"></a>系统服务管理systemctl</h1><p><a href="#jump1">回到目录</a></p>
-<p>systemctl start|stop|restart|staus|enable|reload 服务名<br>Centos7后不再使用service(可以用，会自动重定向到systemctl命令)<br>service 服务名 start|stop|restart</p>
-<p>查看服务名：<br>方式1：使用seup-&gt;系统服务<br>方式2：&#x2F;etc&#x2F;init.d&#x2F;服务名称</p>
-<h1 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h1><p><a href="#jump1">回到目录</a></p>
-<table>
-<thead>
-<tr>
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>systemctl start|restart|stop firewalld</td>
-<td>启动、重启、关闭防火墙</td>
-</tr>
-<tr>
-<td>firewall-cmd –zone&#x3D;public –add-port&#x3D;80-100&#x2F;tcp –permanent</td>
-<td>开通指定端口<br />也可以设置一个范围的端口80到100</td>
-</tr>
-<tr>
-<td>firewall-cmd –zone&#x3D;public –remove-port&#x3D;80&#x2F;tcp –permanent</td>
-<td>关闭指定端口</td>
-</tr>
-<tr>
-<td>firewall-cmd –zone&#x3D;public –add-service&#x3D;ftp –permanent</td>
-<td>开通服务</td>
-</tr>
-<tr>
-<td>firewall-cmd –zone&#x3D;public –remove-service&#x3D;http –permanent</td>
-<td>移去服务</td>
-</tr>
-<tr>
-<td>firewall-cmd –reload</td>
-<td>重载</td>
-</tr>
-</tbody></table>
-<p>常用服务的端口：ssh(22）、HTTP(80、8080)、MySQL(3306)、Oracle(1521) 、ftp(21）、<br>telnet(23）。</p>
-<p>查看已经开放端口<br>firewall-cmd –list-ports #查看已经开放的端口</p>
-<h1 id="环境变量（shell）"><a href="#环境变量（shell）" class="headerlink" title="环境变量（shell）"></a>环境变量（shell）</h1><p><a href="#jump1">回到目录</a></p>
-<p>输出内容<br>echo ‘任务已开启’<br>echo $PATH<br>查看环境变量：env</p>
-<table>
-<thead>
-<tr>
-<th align="left">命令</th>
-<th align="left">说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">command &gt; file</td>
-<td align="left">将输出重定向到 file。</td>
-</tr>
-<tr>
-<td align="left">command &lt; file</td>
-<td align="left">将输入重定向到 file。</td>
-</tr>
-<tr>
-<td align="left">command &gt;&gt; file</td>
-<td align="left">将输出以追加的方式重定向到 file。</td>
-</tr>
-<tr>
-<td align="left">n &gt; file</td>
-<td align="left">将文件描述符为 n 的文件重定向到 file。</td>
-</tr>
-<tr>
-<td align="left">n &gt;&gt; file</td>
-<td align="left">将文件描述符为 n 的文件以追加的方式重定向到 file。</td>
-</tr>
-<tr>
-<td align="left">n &gt;&amp; m</td>
-<td align="left">将输出文件 m 和 n 合并。</td>
-</tr>
-<tr>
-<td align="left">n &lt;&amp; m</td>
-<td align="left">将输入文件 m 和 n 合并。</td>
-</tr>
-<tr>
-<td align="left">&lt;&lt; tag</td>
-<td align="left">将开始标记 tag 和结束标记 tag 之间的内容作为输入。</td>
-</tr>
-</tbody></table>
-<h1 id="任务调度crontab"><a href="#任务调度crontab" class="headerlink" title="任务调度crontab"></a>任务调度crontab</h1><p>分时天月周</p>
-<p>*任意<br>,不连续<br>-连续<br>*&#x2F;n</p>
-<p>-e编辑<br>-r清空任务<br>-l列出任务</p>
-<h1 id="开机启动程序"><a href="#开机启动程序" class="headerlink" title="开机启动程序"></a>开机启动程序</h1><p><a href="#jump1">回到目录</a></p>
-<p>init.d</p>
-<p>systemctl enable 服务名<br>systemctl disable 服务名</p>
-]]></content>
-      <categories>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>redis(未完成)</title>
-    <url>/2024/08/12/redis/redis/</url>
-    <content><![CDATA[<p>[toc]</p>
-<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>见《linux软件安装》</p>
-<p>简单说一下就是：</p>
-<ul>
-<li>压缩包解压</li>
-<li>进解压文件执行make</li>
-<li>创建安装目录mkdir 安装路径</li>
-<li>开始安装make PREFIX&#x3D;安装路径 install</li>
-</ul>
-<p>如果要使用bin&#x2F;redis-server .&#x2F;redis.conf启动redis服务<br>.&#x2F;bin&#x2F;redis-server .&#x2F;redis.conf<br>容器内直接输入redis-server </p>
-<p>提前配置好redis.conf</p>
-<ul>
-<li>容器里面在&#x2F;etc&#x2F;redis目录</li>
-<li>直接部署在linux，位置在解压的文件里面，要复制一份到安装路径下</li>
-<li>修改配置文件bind 127.0.0.1 -::1 修改成0.0.0.0</li>
-<li>如果是容器内不改这个   daemonize no 改成daemonize yes</li>
-</ul>
-<p>启动登录</p>
-<ul>
-<li>刚开始没有密码，直接redis-cli</li>
-<li>后面设了密码和用户名，reis-cli  -a 密码</li>
-</ul>
-<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><p>参考<a href="http://redisdoc.com/">http://redisdoc.com</a></p>
-<ul>
-<li>string字符串</li>
-<li>hash哈希</li>
-<li>list列表</li>
-<li>set集合</li>
-<li>zset有序集合</li>
-</ul>
-<p>查数据库大小：dbsize</p>
-<h2 id="键key"><a href="#键key" class="headerlink" title="键key"></a>键key</h2><table>
-<thead>
-<tr>
-<th>命令(key全为键名)</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>del key</td>
-<td>删除</td>
-</tr>
-<tr>
-<td>get key</td>
-<td>查key值</td>
-</tr>
-<tr>
-<td>move key db</td>
-<td>从当前库移到db库</td>
-</tr>
-<tr>
-<td>exists key</td>
-<td>判断是否存在</td>
-</tr>
-<tr>
-<td><strong>存活时间相关</strong></td>
-<td></td>
-</tr>
-<tr>
-<td>expire&#x2F;expireat key 秒&#x2F;时间戳</td>
-<td>设置过期时间&#x2F;设置过期时间点</td>
-</tr>
-<tr>
-<td>persist key</td>
-<td>移除过期时间</td>
-</tr>
-<tr>
-<td>ttl key</td>
-<td>返回剩余生存时间，-1永不过期，-2已过期</td>
-</tr>
-<tr>
-<td>randomkey</td>
-<td>从当前库随机返回一个值</td>
-</tr>
-<tr>
-<td>rename key newkey</td>
-<td>重命名</td>
-</tr>
-<tr>
-<td>keys pattern</td>
-<td>查看所有符合模式的key，通配符*, ? ,[]</td>
-</tr>
-</tbody></table>
-<h2 id="字符串string"><a href="#字符串string" class="headerlink" title="字符串string"></a>字符串string</h2><p>可以包含任何数据(因为是用二进制存的)，比如图片或者序列化的对象<br>最大512M</p>
-<table>
-<thead>
-<tr>
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>set&#x2F;mset&#x2F;get&#x2F;mget&#x2F;del&#x2F;append&#x2F;strlen key value [key value]</td>
-<td>设值&#x2F;设多个值&#x2F;获取值&#x2F;获取多个key的值&#x2F;删除key&#x2F;字符串追加&#x2F;获取长度</td>
-</tr>
-<tr>
-<td>incrby&#x2F;decrby&#x2F;incrfloat&#x2F;decrfloat key 值</td>
-<td>增加&#x2F;减少&#x2F;增加浮点数&#x2F;减少浮点数</td>
-</tr>
-<tr>
-<td>getrange key start end</td>
-<td>返回key中从start到end的字串</td>
-</tr>
-<tr>
-<td>getbit key offset</td>
-<td>key的字符串值，获取偏移量offset位的bit</td>
-</tr>
-<tr>
-<td>setbit key offset value</td>
-<td>同上但是是设置该位的值</td>
-</tr>
-<tr>
-<td>setrange key offset value</td>
-<td>设置key从偏移量offset开始的值</td>
-</tr>
-<tr>
-<td>setex key 秒 vlaue</td>
-<td>设置key的值同时设置过期时间</td>
-</tr>
-<tr>
-<td>setnx key value</td>
-<td>在key不存在时设置key的值</td>
-</tr>
-</tbody></table>
-<h2 id="列表list"><a href="#列表list" class="headerlink" title="列表list"></a>列表list</h2><p>用链表实现</p>
-<table>
-<thead>
-<tr>
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>lpush&#x2F;rpush key value1 value2 …</td>
-<td>头插或尾插一个或多个值</td>
-</tr>
-<tr>
-<td>lrange key start stop</td>
-<td>查指定范围内的元素，-1表示最后一位</td>
-</tr>
-<tr>
-<td>lpop&#x2F;rpop&#x2F;blpop&#x2F;brpop key</td>
-<td>移出并获取&#x2F;若为空会一直等到进来元素 头&#x2F;尾的元素</td>
-</tr>
-<tr>
-<td>lindex key index</td>
-<td>通过索引获取(类似数组下标),-1表示最后一位</td>
-</tr>
-<tr>
-<td>lset key index value</td>
-<td>通过下标设置列表值</td>
-</tr>
-<tr>
-<td>llen key</td>
-<td>获取列表长度</td>
-</tr>
-<tr>
-<td>lrem key count value</td>
-<td>删除列表里的value，并返回实际删除个数，count&gt;0,从左边开始删，count&#x3D;0删除全部</td>
-</tr>
-<tr>
-<td>ltrim key start stop</td>
-<td>保留从start到stop的元素</td>
-</tr>
-<tr>
-<td>rpoplpush&#x2F;brpoplpush key1 key2</td>
-<td>剪切列表1的最后一个元素到列表2<br />加上b就是若列表为空会等到出现值</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>linsert key before&#x2F;after 值1 值2</td>
-<td>在值1前或者后插入值2</td>
-</tr>
-</tbody></table>
-<h2 id="集合set"><a href="#集合set" class="headerlink" title="集合set"></a>集合set</h2><table>
-<thead>
-<tr>
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>sadd key member1 member2 …</td>
-<td>增加成员</td>
-</tr>
-<tr>
-<td>spop key</td>
-<td>删除并返回随机一个元素</td>
-</tr>
-<tr>
-<td>srem key value</td>
-<td>删除</td>
-</tr>
-<tr>
-<td>scard key</td>
-<td>获取成员数</td>
-</tr>
-<tr>
-<td>smembers key</td>
-<td>返回所有成员</td>
-</tr>
-<tr>
-<td>sismember key member</td>
-<td>是否是集合key的成员</td>
-</tr>
-<tr>
-<td>smove 集合1 集合2 member</td>
-<td>将member从集合1移到集合2</td>
-</tr>
-<tr>
-<td>sinter&#x2F;sdiff&#x2F;sunion 一个或多个集合</td>
-<td>返回 交&#x2F;并&#x2F;差 后面的集合</td>
-</tr>
-</tbody></table>
-<h2 id="哈希hash"><a href="#哈希hash" class="headerlink" title="哈希hash"></a>哈希hash</h2><h2 id="有序集合zset"><a href="#有序集合zset" class="headerlink" title="有序集合zset"></a>有序集合zset</h2><h1 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h1><h2 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h2><ul>
-<li>最后一次持久化的数据可能丢失</li>
-<li>创建子进程fork来执行快照会占用两倍的空间</li>
-<li>redis&#x2F;data下的dump.rdb文件整个内存压缩过后的快照</li>
-</ul>
-<p>开启rdb自动来持久化：redis.conf<br>配置文件中搜索save<br>save  &lt; seconds &gt;  &lt; changes &gt;</p>
-<p>save和bgsave：保存rdb到内存上，前者只保存，后者是异步保存<br>lastsave：获取最后一次成功执行快照的时间</p>
-<h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2><p><img src="/images/loading/loading.gif" data-original="/images/%E6%8C%81%E4%B9%85%E5%8C%96.png" alt="image-20240813172014778"></p>
-<p>Redis会记录上次重写时的AOF大小，默认配置是当AOF文件大小是上次rewrite后大小的一倍且文件大于64M时触发</p>
-<ul>
-<li>以日志形式来记录每个写操作(读不记录)</li>
-<li>只追加文件，不改写文件</li>
-<li>保存在&#x2F;redis&#x2F;data&#x2F;appendonly.aof</li>
-</ul>
-<p>开启AOF：redis.conf<br>配置文件中搜索appendonly<br>appendonly yes</p>
-<p>修复AOF文件</p>
-<ul>
-<li>备份损坏的文件</li>
-<li>执行redis-check-aof –fix</li>
-<li>重启redis</li>
-</ul>
-<p>重写AOF(aof有冗余记录)</p>
-<ul>
-<li>执行bgrewriteaof</li>
-<li>fork一条新进程来重写AOF文件</li>
-<li>重写触发条件在redis.conf中</li>
-<li>auto-aof-rewrite-percentage 100   &#x2F;&#x2F;每次达到重写后的一倍就重写<br>auto-aof-rewrite-min-size 64mb</li>
-</ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>持久化方式，两种同时启动</li>
-<li>RDB用于备份数据库</li>
-<li>AOF用于恢复</li>
-</ul>
-]]></content>
-      <categories>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在linux上安装常用环境和网络配置(vm)</title>
-    <url>/2024/08/10/linux/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%8F%8A%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<p>[toc]</p>
-<h1 id="网络配置-dhcp改静态"><a href="#网络配置-dhcp改静态" class="headerlink" title="网络配置(dhcp改静态)"></a>网络配置(dhcp改静态)</h1><p>nat模式-设置本机vm8的ipv4和网关-修改ifcfg-ens33 -重启-网络图标不见看下面</p>
-<p>网络图标消失不见的解决方案<br>停止网络配置管理器：systemctl stop NetworkManager.service<br>删除文件： rm &#x2F;var&#x2F;lib&#x2F;NetworkManager&#x2F;NetworkManager.state<br>开启网络配置管理器： systemctl start NetworkManager.service</p>
-<p>vi &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-ens33</p>
-<p>TYPE&#x3D;”Ethernet”<br>PROXY_METHOD&#x3D;”none”<br>BROWSER_ONLY&#x3D;”no”<br>BOOTPROTO&#x3D;”static”<br>DEFROUTE&#x3D;”yes”<br>IPV4_FAILURE_FATAL&#x3D;”no”<br>IPV6INIT&#x3D;”yes”<br>IPV6_AUTOCONF&#x3D;”yes”<br>IPV6_DEFROUTE&#x3D;”yes”<br>IPV6_FAILURE_FATAL&#x3D;”no”<br>IPV6_ADDR_GEN_MODE&#x3D;”stable-privacy”<br>NAME&#x3D;”ens33”<br>UUID&#x3D;”5afdee8c-694c-4b47-b78a-9f07ea444acd”<br>DEVICE&#x3D;”ens33”<br>ONBOOT&#x3D;”yes”<br>IPADDR&#x3D;192.168.181.3<br>NETMASK&#x3D;255.255.255.0<br>GATEWAY&#x3D;192.168.181.2<br>DNS1&#x3D;8.8.8.8<br>DNS2&#x3D;114.114.114.114</p>
-<h1 id="防火墙设置"><a href="#防火墙设置" class="headerlink" title="防火墙设置"></a>防火墙设置</h1><p>打开对应端口</p>
-<ol>
-<li>防火墙打开3306端口号<br> firewall-cmd –zone&#x3D;public –add-port&#x3D;3306&#x2F;tcp –permanent<br> 下面3行是参数说明<br> #–zone                        #作用域<br> #–add-port&#x3D;80&#x2F;tcp   #添加端口,格式为:端口&#x2F;通讯协议<br> #–permanent             #永久生效,没有此参数重启后失效</li>
-<li>重启防火墙<br> firewall-cmd –reload#重启firewall</li>
-<li>查看是否已经开放3306端口<br> firewall-cmd –list-ports #查看已经开放的端口</li>
-</ol>
-<p>如果你想再关闭firewall-cmd –zone&#x3D;public –remove-port&#x3D;3306&#x2F;tcp –permanent<br>然后再重启防火墙</p>
-<h1 id="安装方式"><a href="#安装方式" class="headerlink" title="安装方式"></a>安装方式</h1><p>软件一般安装在根目录下的&#x2F;usr&#x2F;local&#x2F;</p>
-<table>
-<thead>
-<tr>
-<th>安装方式</th>
-<th>特点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>二进制发布包安装</td>
-<td>已经编译过只需解压修改配置</td>
-</tr>
-<tr>
-<td>rpm</td>
-<td>按照包管理规范进行打包，有库依赖问题</td>
-</tr>
-<tr>
-<td>yum</td>
-<td>本质上还是rpm，需联网，无库依赖问题</td>
-</tr>
-<tr>
-<td>源码编译安装</td>
-<td>将源码工程自行打包发布</td>
-</tr>
-</tbody></table>
-<h1 id="没有vim"><a href="#没有vim" class="headerlink" title="没有vim"></a>没有vim</h1><p>apt-get update</p>
-<p>apt-get install vim -y</p>
-<h1 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h1><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>下载链接<a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html">https://www.oracle.com/technetwork/java/javase/downloads/index.html</a></p>
-<p>1.在&#x2F;usr&#x2F;local目录下创建自定义soft目录<br>2.使用FinalShell自带的上传工具将jdk的二进制发布包上传到Linux<br>3.切换到soft目录<br>4.解压安装包 tar -zxvf jdk-8u171-linux-x64.tar.gz<br>5.配置环境变量：使用vim修改&#x2F;etc&#x2F;profile文件<br>JAVA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;soft&#x2F;jdk1.8.0_171<br>JRE_HOME&#x3D;${JAVA_HOME}&#x2F;jre<br>CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;lib<br>PATH&#x3D;$JAVA_HOME&#x2F;bin:$PATH<br>export JAVA_HOME JRE_HOME CLASSPATH PATH<br>6.重新加载profile文件 source &#x2F;etc&#x2F;profile<br>7.检查安装是否成功，java -version</p>
-<h2 id="alternatives管理"><a href="#alternatives管理" class="headerlink" title="alternatives管理"></a>alternatives管理</h2><p>如果交给了alternatives来管理java可以不用设置环境变量</p>
-<p>通过alternatives –install [软链接] [链接名] [执行文件路径] [优先级]<br>例如将自己安装的java交给alternatives管理：<br>alternatives –install  &#x2F;usr&#x2F;bin&#x2F;java   java     ..&#x2F;jdk&#x2F;bin&#x2F;java 3<br>其实就是将安装的java执行文件路径生成软链接放到&#x2F;usr&#x2F;bin目录下</p>
-<p>切换java版本:alternatives –config java</p>
-<h1 id="安装tomcat"><a href="#安装tomcat" class="headerlink" title="安装tomcat"></a>安装tomcat</h1><p>压缩包直接解压<br><a href="https://www.cnblogs.com/wjt-super/p/8018642.html">配置文件</a></p>
-<h1 id="安装mysql8-0"><a href="#安装mysql8-0" class="headerlink" title="安装mysql8.0"></a>安装mysql8.0</h1><p>tar.gz方式下载路径：<a href="https://downloads.mysql.com/archives/community/">https://downloads.mysql.com/archives/community/</a></p>
-<p>1、ps -ajx |grep mariadb # 先检查是否有mariadb存在<br>如果存在先停止systemctl stop mariadb.service或者kill -9 进程id<br>2、检查系统安装包rpm -qa | grep mariadb和rpm -qa | grep mysql<br>如果存在就删除rpm -e –nodeps 包名或者yum remove mariadb&#x2F;mysql<br>3.创建mysql 用户组和用户<br>groupadd mysql<br>useradd -r -g mysql mysql<br>4.解压<br>5.配置文件 &#x2F;etc&#x2F;my.cnf<br>[mysql]<br>default-character-set&#x3D;utf8mb4</p>
-<p>[mysqld]<br>port&#x3D;3306<br>#server-id&#x3D;3306<br>user&#x3D;mysql8.0<br>socket&#x3D;&#x2F;tmp&#x2F;mysql.sock<br>basedir&#x3D;&#x2F;opt&#x2F;mysql8.0<br>datadir&#x3D;&#x2F;opt&#x2F;mysql8.0&#x2F;data<br>#字符集，大小写，自动提交事务<br>character-set-server&#x3D;utf8mb4<br>#lower_case_table_names&#x3D;1<br>autocommit&#x3D;1</p>
-<p>#创表默认引擎<br>default-storage-engine&#x3D;INNODB<br>lower_case_table_names&#x3D;1<br>max_allowed_packet&#x3D;16M</p>
-<p>#sql模式<br>sql_mode&#x3D;ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION</p>
-<p>[mysqld_safe]<br>log-error&#x3D;&#x2F;opt&#x2F;mysql8.0&#x2F;data&#x2F;mysql.log<br>pid-file&#x3D;&#x2F;opt&#x2F;mysql8.0&#x2F;data&#x2F;mysql.pid</p>
-<p>5、设置权限：chown -R mysql:mysql &#x2F;opt&#x2F; mysql8.0<br>                           chmod -R 755 &#x2F;opt&#x2F; mysql8.0</p>
-<p>6、创建data目录:mkdir &#x2F;opt&#x2F;mysql8.0&#x2F;data</p>
-<p>7.初始化并记住初始密码<br>.&#x2F;bin&#x2F;mysqld –initialize –user&#x3D;mysql8.0 –datadir&#x3D;&#x2F;opt&#x2F;mysql8.0&#x2F;data –basedir&#x3D;&#x2F;opt&#x2F;mysql8.0 –lower_case_table_names&#x3D;1</p>
-<p>8.启动<br>.&#x2F;support-files&#x2F;mysql.server start</p>
-<p>9.复制启动脚本文件到init.d下<br>cp support-files&#x2F;mysql.server &#x2F;etc&#x2F;init.d&#x2F;mysqld<br>chmod a+x &#x2F;etc&#x2F;init.d&#x2F;mysqld  设置所有人可以执行权限</p>
-<p>10.启动，停止，重启<br>service mysqld start<br>#service mysqld stop<br>#service mysqld restart</p>
-<p>11.添加软链接<br>ln -s &#x2F;opt&#x2F;mysql8.0&#x2F;bin&#x2F;mysql  &#x2F;usr&#x2F;bin</p>
-<p>10.登录并改密码，配置远程登陆<br>mysql -uroot -p<br>输密码<br>alter user ‘root‘@’localhost’ identified by ‘123456’; 修改密码<br>flush privileges; 刷新权限</p>
-<p>配置远程登陆权限(8.0之前直接给root@%赋权就行，<br>8.0之后需要先新建一个root@%的用户)<br>create user ‘root‘@’%’ IDENTIFIED BY ‘123456’;<br>GRANT ALL PRIVILEGES ON * . *  TO ‘root‘@’%’ IDENTIFIED BY ‘111111’ WITH GRANT OPTION; 远程用户用root加密码111111连接</p>
-<p>11.连不上打开3306防火墙<br>防火墙打开3306端口号<br>firewall-cmd –zone&#x3D;public –add-port&#x3D;3306&#x2F;tcp –permanent<br>下面3行是参数说明<br>#–zone              #作用域<br>#–add-port&#x3D;80&#x2F;tcp#添加端口,格式为:端口&#x2F;通讯协议<br>#–permanent         #永久生效,没有此参数重启后失效</p>
-<p> 重启防火墙<br>firewall-cmd –reload#重启firewall</p>
-<p>查看是否已经开放3306端口<br>firewall-cmd –list-ports #查看已经开放的端口</p>
-<p>12.mysql开机自启<br>cp &#x2F;usr&#x2F;local&#x2F;mysql&#x2F;mysql&#x2F;support-files&#x2F;mysql.server &#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;mysqld<br>chmod +x &#x2F;etc&#x2F;init.d&#x2F;mysqld<br>添加为服务: chkconfig –add mysqld<br>查看服务列表:  chkconfig –list<br>看到3、4、5状态为开或者为 on 则表示成功。如果是 关或者 off 则执行一下：chkconfig –level 345 mysqld on<br>重启计算机:reboot</p>
-<h1 id="安装redis"><a href="#安装redis" class="headerlink" title="安装redis"></a>安装redis</h1><p>linux上安装,首先拿到压缩包，方法任意,这里使用在线下载<br>wget <a href="http://download.redis.io/releases/redis-4.0.9.tar.gz">http://download.redis.io/releases/redis-4.0.9.tar.gz</a></p>
-<p>1.解压然后进到解压的文件里面<br>2.执行make来编译<br>3.他会生成src文件夹，进到里面执行redis-server就运行了</p>
-<h1 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h1><p>1.卸载之前的docker</p>
-<p>yum remove docker <br>                      docker-client <br>                      docker-client-latest <br>                      docker-common \<br>                      docker-latest \<br>             	     docker-latest-logrotate \<br>                      docker-logrotate <br>                      docker-selinux \<br>                      docker-engine-selinux \<br>                      docker-engine \<br>                      docker-ce</p>
-<p>2.建立仓库</p>
-<p>yum install -y yum-utils     &#x2F;&#x2F;安装docker所需要的工具包</p>
-<p>yum-config-manager –add-repo <a href="http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo">http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</a>       &#x2F;&#x2F;建立docker仓库，映射仓库地址</p>
-<p>3.安装docker引擎</p>
-<p>yum install docker -ce dockerce-cli containerd.io</p>
-<p>4.启动docker</p>
-<p>systemctl start docker</p>
-<p>5.测试安装是否成功</p>
-<p>docker pull hello-world</p>
-<p>docker run hello-world</p>
-<h2 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h2><p>docker镜像加速器配置(建立仓库时可提前选择镜像)</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="comment">//重启docker</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
-
-<p>守护进程重启：systemctl daemon-reload </p>
-<p>重启Docker服务：systemctl restart docker &#x2F; service docker restart </p>
-<p>关闭Docker服务：docker service docker stop &#x2F; docker systemctl stop docker</p>
-<p>删除docker：yum remove docker-ce<br>rm -rf &#x2F;var&#x2F;lib&#x2F;docker</p>
-]]></content>
-      <categories>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>算法海</title>
     <url>/2026/03/05/%E7%AE%97%E6%B3%95/</url>
     <content><![CDATA[<p>[toc]</p>
@@ -3642,6 +2613,1934 @@
       </tags>
   </entry>
   <entry>
+    <title>linux常用指令快速入门</title>
+    <url>/2024/08/10/linux/linux%E7%AE%80%E5%8D%95%E6%8C%87%E4%BB%A4/</url>
+    <content><![CDATA[<p><span id="jump1">目录</span></p>
+<p>[toc]</p>
+<h1 id="常用简单指令"><a href="#常用简单指令" class="headerlink" title="常用简单指令"></a>常用简单指令</h1><table>
+<thead>
+<tr>
+<th>运行等级</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>init 0</td>
+<td>关机</td>
+</tr>
+<tr>
+<td>init 1</td>
+<td>单用户，root，用于系统维护，禁止远程登陆</td>
+</tr>
+<tr>
+<td>init 2</td>
+<td>多用户，不支持NFS</td>
+</tr>
+<tr>
+<td>init 3</td>
+<td>命令行模式，完全的多用户，登陆后进入</td>
+</tr>
+<tr>
+<td>init 4</td>
+<td>安全模式</td>
+</tr>
+<tr>
+<td>init 5</td>
+<td>图形化</td>
+</tr>
+<tr>
+<td>init 6</td>
+<td>重启</td>
+</tr>
+</tbody></table>
+<p>内存中的数据同步到磁盘：sync<br>查看当前目录：pwd<br>切换目录：cd 目录名       （cd只能进入目录）<br>进入文件：cat 文件路径<br>显示(当前)目录中的文件：ls [-a包括隐藏文件] [-l列表详细信息] [目录名]<br>创建目录：mkdir [-p] 目录名&#x2F;路径<br>删除空目录(非空删除失败)：rmdir [-p] 目录名<br>清屏：clear<br>在终端使用之前用到的命令(历史命令保存在.bash_history文件中)：上下光标调取<br>命令自动补全：tab<br>正则表达式：*多个字符,?一个字符<br>查看&#x2F;设置时间：date                date -s “2024-01-02 09:11:42”<br>帮助指令：man      help<br>修改主机名：hostname set-hostname 新名称</p>
+<h1 id="Linux目录和文件-简单介绍"><a href="#Linux目录和文件-简单介绍" class="headerlink" title="Linux目录和文件(简单介绍)"></a>Linux目录和文件(简单介绍)</h1><p><a href="#jump1">回到目录</a></p>
+<p><img src="/images/loading/loading.gif" data-original="/images/%E5%9B%BE%E7%89%871.png" alt="image-20240604094822494"></p>
+<p>绝对路径：&#x2F;usr&#x2F;include&#x2F;a.h<br>相对路径：如果当前目录为&#x2F;usr，则include&#x2F;a.h为相对路径等同于上面<br>当前目录：.<br>上一级目录：..<br>家目录：~<br>系统启动必须：&#x2F;boot、&#x2F;etc、&#x2F;lib<br>命令集合：&#x2F;sbin、&#x2F;bin<br>设备相关：&#x2F;dev、&#x2F;media、&#x2F;mnt<br>临时文件：&#x2F;run、&#x2F;lost+found、&#x2F;tmp<br>账户相关：&#x2F;root、&#x2F;home、&#x2F;usr<br>运行过程：&#x2F;var、&#x2F;proc<br>拓展相关：&#x2F;opt、&#x2F;srv</p>
+<p>bin执行，lib库，etc是配置，usr和home是’我的’，dev管设备，opt装软件</p>
+<h1 id="vi编辑器"><a href="#vi编辑器" class="headerlink" title="vi编辑器"></a>vi编辑器</h1><p><a href="#jump1">回到目录</a></p>
+<p><img src="/images/loading/loading.gif" data-original="/images/vim.png" alt="vim工作模式"></p>
+<p><img src="/images/loading/loading.gif" data-original="/images/vim%E9%94%AE%E7%9B%98.png" alt="vim键盘"></p>
+<p>命令模式</p>
+<table>
+<thead>
+<tr>
+<th>命令模式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>:set nu</td>
+<td>显示行号</td>
+</tr>
+<tr>
+<td>:set nonu</td>
+<td>取消行号</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>一般模式</td>
+<td></td>
+</tr>
+<tr>
+<td>&#x2F;字符</td>
+<td>查找指定字符，按n查找下一个</td>
+</tr>
+<tr>
+<td>gg</td>
+<td>查看行首</td>
+</tr>
+<tr>
+<td>G</td>
+<td>查看行尾</td>
+</tr>
+<tr>
+<td>数字 G</td>
+<td>查看指定行</td>
+</tr>
+</tbody></table>
+<p>i:当前位置开始编辑<br>o：在下面插入一行编辑<br>a：当前位置后一个位置插入<br>r：当前位置替换<br>I:当前行首个位置编辑<br>O：在上面插入一行编辑<br>A：当前行最后一个位置插入<br>R：从当位置开始替换</p>
+<h1 id="用户-组-管理"><a href="#用户-组-管理" class="headerlink" title="用户(组)管理"></a>用户(组)管理</h1><p><a href="#jump1">回到目录</a></p>
+<h3 id="组"><a href="#组" class="headerlink" title="组"></a>组</h3><p>组的信息保存在&#x2F;etc&#x2F;group文件<br>创建组：groupadd 组名<br>修改组：groupmod [-n 新组] 旧组<br>删除组：groupdel 组名</p>
+<h3 id="用户"><a href="#用户" class="headerlink" title="用户"></a>用户</h3><p><strong>创建删除</strong><br>用户信息保存在&#x2F;etc&#x2F;passwd文件<br>用户密码保存在&#x2F;etc&#x2F;shadow文件<br>创建用户：useradd  [-g 组名] [-d 用户主目录] [-r系统用户不可登录系统] 用户名<br>修改用户：usermod [-l 新名字] [-g 新组] [-d 新目录] 用户名<br>删除用户：userdel [-r删除组目录] 用户名<br><strong>修改密码</strong><br>root用户修改其他用户：passwd 用户名<br>普通用户修改自己：passwd<br><strong>切换用户</strong><br>root用户免密码切换：su -用户名<br>普通用户：su -用户名 然后输入密码<br><strong>查看用户信息</strong><br>id 用户名</p>
+<h1 id="目录文件操作"><a href="#目录文件操作" class="headerlink" title="目录文件操作"></a>目录文件操作</h1><p><a href="#jump1">回到目录</a></p>
+<p>目录和文件的详细信息：ls [-l] [目录名]             按时间降序显示ls -lt [目录名]<br>-a:列出全部文件，包括隐藏文件<br>快捷方式显示按当前目录下详细信息：ll</p>
+<h2 id="文件-目录属性"><a href="#文件-目录属性" class="headerlink" title="文件&#x2F;目录属性"></a>文件&#x2F;目录属性</h2><p>drwxr-xr-x. 4 root root 80 9月 26 17：05 aaa</p>
+<table>
+<thead>
+<tr>
+<th align="center">对应信息</th>
+<th align="center">介绍</th>
+<th align="center">例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">文件类型</td>
+<td align="center">d目录-普通文件l链接p管道文件b块设备文件c字符设备文件s套接字文件</td>
+<td align="center">d</td>
+</tr>
+<tr>
+<td align="center">文件权限</td>
+<td align="center">r读w写x可执行-无权限；三个为一组代表所有者，同组用户，其他用户</td>
+<td align="center">rwxr-xr-x</td>
+</tr>
+<tr>
+<td align="center">文件硬链接数或目录的子目录数</td>
+<td align="center">文件硬链接，初始为1；空目录初始为2；</td>
+<td align="center">4</td>
+</tr>
+<tr>
+<td align="center">文件拥有者</td>
+<td align="center"></td>
+<td align="center">root</td>
+</tr>
+<tr>
+<td align="center">文件拥有者所在组</td>
+<td align="center"></td>
+<td align="center">root</td>
+</tr>
+<tr>
+<td align="center">目录或文件大小</td>
+<td align="center">文件大小单位字节；目录大小不包括目录下的文件和子目录</td>
+<td align="center">80</td>
+</tr>
+<tr>
+<td align="center">最后一次被修改的时间</td>
+<td align="center">创建&#x2F;last修改</td>
+<td align="center">9月 26 17：05</td>
+</tr>
+<tr>
+<td align="center">目录或文件名</td>
+<td align="center"></td>
+<td align="center">aaa</td>
+</tr>
+</tbody></table>
+<p><img src="/images/loading/loading.gif" data-original="/images/%E5%9B%BE%E7%89%872.png" alt="image-20240604094822494"></p>
+<h2 id="修改目录和文件权限"><a href="#修改目录和文件权限" class="headerlink" title="修改目录和文件权限"></a>修改目录和文件权限</h2><p>修改拥有者：chown [-R递归赋予权限] 用户：组 目录和文件列表<br>设置权限：chmod [-R] whooperatorpermission 目录和文件列表</p>
+<table>
+<thead>
+<tr>
+<th>who</th>
+<th>operator</th>
+<th>permission</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>u所有者</td>
+<td>+增加权限</td>
+<td>x进入目录或执行文件</td>
+</tr>
+<tr>
+<td>g所有者所在组</td>
+<td>-取消权限</td>
+<td>r读取文件或查看目录中有哪些子目录和文件</td>
+</tr>
+<tr>
+<td>o其他用户</td>
+<td>&#x3D;重新设置权限</td>
+<td>w修改文件内容或在目录中增删改</td>
+</tr>
+<tr>
+<td>a全部用户</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>r&#x3D;4 w&#x3D;2 x&#x3D;1 rwx&#x3D;4+2+1&#x3D;7<br>chmod -R 777 文件名&#x2F;目录 给所有人用给rwx权限</p>
+<h2 id="查看-查找文件内容"><a href="#查看-查找文件内容" class="headerlink" title="查看&#x2F;查找文件内容"></a>查看&#x2F;查找文件内容</h2><table>
+<thead>
+<tr>
+<th>查看文件内容</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>cat 文件名</td>
+<td>显示</td>
+</tr>
+<tr>
+<td>less 文件名</td>
+<td>分屏查看，</td>
+</tr>
+<tr>
+<td>more 文件名</td>
+<td>分页查看，空格下一页，b上一页，q退出</td>
+</tr>
+<tr>
+<td>wc 文件名</td>
+<td>统计文件行数</td>
+</tr>
+<tr>
+<td>head [-n] 文件</td>
+<td>查看前n行，默认10行</td>
+</tr>
+<tr>
+<td>tail [-n] [-f] 文件</td>
+<td>查看尾n行，默认10行,-f实时跟踪</td>
+</tr>
+<tr>
+<td>grep [-n]</td>
+<td>过滤查找， 内容|grep 指定查找内容</td>
+</tr>
+<tr>
+<td>find 目录 -name 文件名</td>
+<td>在指定目录下按名字查找文件</td>
+</tr>
+<tr>
+<td>locate 文件名</td>
+<td>locate之前updatedb</td>
+</tr>
+</tbody></table>
+<h2 id="文件-目录的创建删除复制移动"><a href="#文件-目录的创建删除复制移动" class="headerlink" title="文件&#x2F;目录的创建删除复制移动"></a>文件&#x2F;目录的创建删除复制移动</h2><table>
+<thead>
+<tr>
+<th>创建目录&#x2F;空文件</th>
+<th>删除</th>
+<th>复制</th>
+<th>移动&#x2F;重命名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mkdir [-mp] 目录名</td>
+<td>rm [-rf] 目录和文件</td>
+<td>cp [-r] 旧名 新名</td>
+<td>mv 旧名 新名</td>
+</tr>
+<tr>
+<td>touch 文件名</td>
+<td>-r递归删除-f强制删除不提示</td>
+<td>-r递归复制目录</td>
+<td></td>
+</tr>
+<tr>
+<td>-m配置权限；-p目录递归创建</td>
+<td>rmdir是删空目录</td>
+<td>\cp强制覆盖</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>在不同的linux服务器之间进行文件传输：<br>scp [-r] 文件 目标用户名@目标服务器名或ip:目标服务器上的保存路径</p>
+<h2 id="安装和打包"><a href="#安装和打包" class="headerlink" title="安装和打包"></a>安装和打包</h2><h3 id="rpm包管理"><a href="#rpm包管理" class="headerlink" title="rpm包管理"></a>rpm包管理</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>rpm</td>
+<td>-q 包名</td>
+<td>查询是否安装</td>
+</tr>
+<tr>
+<td></td>
+<td>-qa</td>
+<td>查询已安装的软件包</td>
+</tr>
+<tr>
+<td></td>
+<td>-ql 包名</td>
+<td>查询软件包中文件</td>
+</tr>
+<tr>
+<td></td>
+<td>-qi 包名</td>
+<td>查询软件包信息</td>
+</tr>
+<tr>
+<td></td>
+<td>-qf 文件全路径名</td>
+<td>查询文件所属软件包</td>
+</tr>
+<tr>
+<td></td>
+<td>-e 包名</td>
+<td>卸载包</td>
+</tr>
+</tbody></table>
+<h3 id="yum安装"><a href="#yum安装" class="headerlink" title="yum安装"></a>yum安装</h3><p>mv &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo.backup</p>
+<p>curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo <a href="http://mirrors.aliyun.com/repo/Centos-7.repo">http://mirrors.aliyun.com/repo/Centos-7.repo</a></p>
+<p>yum makecache</p>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">yum [-y&#x2F;d&#x2F;n] install 包名</td>
+<td>安装</td>
+</tr>
+<tr>
+<td align="left">yum -y remove</td>
+<td>删除</td>
+</tr>
+<tr>
+<td align="left">yum update 包名</td>
+<td>升级</td>
+</tr>
+<tr>
+<td align="left">yum list | grep 软件名</td>
+<td>查找能够安装的包</td>
+</tr>
+<tr>
+<td align="left">yum check-update</td>
+<td>显示可更新的包</td>
+</tr>
+</tbody></table>
+<h3 id="打包和压缩"><a href="#打包和压缩" class="headerlink" title="打包和压缩"></a>打包和压缩</h3><p>zip命令和tar命令</p>
+<p>压缩：zip [-qrd] 压缩包文件名 目录和文件名列表<br>解压：unzip [-d 指定放的位置] 压缩包文件名</p>
+<p>压缩：tar [-zcvf] 压缩包文件名.tar.gz 目录和文件名列表<br>解压：tar [-xzvf] 压缩包文件名  [-C 指定放的位置]</p>
+<table>
+<thead>
+<tr>
+<th>zip</th>
+<th>说明</th>
+<th>tar</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-q</td>
+<td>不显示命令执行过程</td>
+<td>-z</td>
+<td>打包同时压缩</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>递归压缩</td>
+<td>-c&#x2F;x</td>
+<td>打包&#x2F;解包</td>
+</tr>
+<tr>
+<td>-u</td>
+<td>把文件增加&#x2F;替换到压缩包中</td>
+<td>-v</td>
+<td>显示文件详细信息</td>
+</tr>
+<tr>
+<td>-d</td>
+<td>指定压缩或解压缩后产生的文件放的地方</td>
+<td>-f</td>
+<td>指定压缩&#x2F;解压的文件名</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>-t</td>
+<td>列出压缩包里的文件(不用解压)</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>-C</td>
+<td>指定压缩或解压缩后产生的文件放的地方</td>
+</tr>
+</tbody></table>
+<h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><p><a href="#jump1">回到目录</a></p>
+<p>硬链接：ln 文件名 链接名<br>软链接：ln -s 目录或文件 链接名</p>
+<p>硬链接是文件指针；软链接是一个保存了文件路径的文件</p>
+<p>尽量为目录做软链接，为文件做硬链接</p>
+<h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><p><a href="#jump1">回到目录</a></p>
+<h2 id="查看进程"><a href="#查看进程" class="headerlink" title="查看进程"></a>查看进程</h2><p>ps [-aux]&#x2F;[-ef]<br>选项说明：<br>-a 查全部进程(前台)<br>-x 查全部进程(包括后台)<br>-u 显示该进程的用户<br>-e 显示所有进程<br>-f 全格式</p>
+<p>以树状形式显示<br>pstree [-p]&#x2F;[-u]<br>选项说明：p：进程pid；u进程所属用户</p>
+<p>实时显示top [选项]</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-d</td>
+<td>每各d秒更新显示内容</td>
+</tr>
+<tr>
+<td>-i</td>
+<td>不显示闲置和僵尸进程</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>指定进程ID查看</td>
+</tr>
+<tr>
+<td>执行后操作</td>
+<td>说明</td>
+</tr>
+<tr>
+<td>P</td>
+<td>以CPU使用率排序(默认)</td>
+</tr>
+<tr>
+<td>M</td>
+<td>以内存使用率排序</td>
+</tr>
+<tr>
+<td>N</td>
+<td>以PID排序</td>
+</tr>
+<tr>
+<td>q</td>
+<td>退出top</td>
+</tr>
+</tbody></table>
+<p><img src="/images/loading/loading.gif" data-original="/images/top%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90.png" alt="top性能分析"></p>
+<table>
+<thead>
+<tr>
+<th>第一行</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>top - 11：03：25</td>
+<td>up 4 min</td>
+<td>3 users</td>
+<td></td>
+<td>load average：0.05,0.18,0.10</td>
+<td></td>
+</tr>
+<tr>
+<td>当前时间</td>
+<td>运行了多久</td>
+<td>当前登录用户数</td>
+<td></td>
+<td>系统负载：一段时间内，CPU正在处理和等待处理的进程数之和<br>上面三个数值分别是1分钟，5分钟，15分钟内的平均值</td>
+<td></td>
+</tr>
+<tr>
+<td>第二行:</td>
+<td>统计进程</td>
+<td>的统计</td>
+<td></td>
+<td>信息</td>
+<td></td>
+</tr>
+<tr>
+<td>Tasks:209 total</td>
+<td>2 running</td>
+<td>207 sleeping</td>
+<td></td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="终止进程"><a href="#终止进程" class="headerlink" title="终止进程"></a>终止进程</h2><p>kill [-9] 进程号<br>kill all 进程名称       可用通配符</p>
+<h2 id="按端口查"><a href="#按端口查" class="headerlink" title="按端口查"></a>按端口查</h2><p>lsof -t -i:端口号<br>-t只显示进程号<br>杀死某一端口的进程：kill $(lsof -t -i:端口号)</p>
+<h1 id="磁盘分区和挂载"><a href="#磁盘分区和挂载" class="headerlink" title="磁盘分区和挂载"></a>磁盘分区和挂载</h1><p><a href="#jump1">回到目录</a></p>
+<p>linux独特的挂载使得其只有一个根目录<br>查挂载情况-分区-分区格式化-挂载-查磁盘分区使用情况</p>
+<table>
+<thead>
+<tr>
+<th>分区方式</th>
+<th align="center">特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mbr</td>
+<td align="center">最多支持4个主分区，系统只能在主分区，扩展分区占一个主分区，最大2TB，兼容性好</td>
+</tr>
+<tr>
+<td>gtp</td>
+<td align="center">无限多个主分区(windows限制128个)，最大18EB</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>硬盘</th>
+<th></th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IDE</td>
+<td></td>
+<td>驱动器标识符hdx~   例如hda3表示第一个IDE硬盘的第三个分区</td>
+</tr>
+<tr>
+<td>SCSI</td>
+<td></td>
+<td>sdx~</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th>常用指令</th>
+<th>选项</th>
+<th>选项说明</th>
+<th>说明</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>lsblk</td>
+<td>-f</td>
+<td>会显示uuid和挂载点</td>
+<td>查看所有设备挂载情况</td>
+<td></td>
+</tr>
+<tr>
+<td>fdisk &#x2F;dev&#x2F;sdb</td>
+<td>m p q w n</td>
+<td>m显示命令;p显示磁盘分区;q不保存退出;w写入并退出;n新增分区;e扩展分区</td>
+<td>对&#x2F;sdb分区,输入n,新增分区然后选择p ，分区类型为主分区。两次回车默认剩余全部空间。最后w写入分区并退出，或者q。</td>
+<td></td>
+</tr>
+<tr>
+<td>mkfs -t ext4 &#x2F;dev&#x2F;sdb1</td>
+<td>-t</td>
+<td>设置分区类型</td>
+<td>对刚刚的主分区格式化</td>
+<td></td>
+</tr>
+<tr>
+<td>mount &#x2F;dev&#x2F;sdb1 被挂载的目录</td>
+<td>-a -o</td>
+<td>修改&#x2F;etc&#x2F;fstab后mount -a即可永久挂载 o选择何种方式挂载</td>
+<td>不永久挂载重启会失效<br>-o ro  只读方式挂载<br>-o rw 读写方式挂载</td>
+<td></td>
+</tr>
+<tr>
+<td>umount 被挂载的目录&#x2F;分区</td>
+<td></td>
+<td></td>
+<td>取消挂载</td>
+<td></td>
+</tr>
+<tr>
+<td>df</td>
+<td>-h</td>
+<td>带单位</td>
+<td>查询磁盘、分区使用情况</td>
+<td></td>
+</tr>
+<tr>
+<td>du &#x2F;目录</td>
+<td>-s -h -a -c –max-depth&#x3D;1</td>
+<td>s占用大小汇总a含文件c列出明细同时增加汇总值max深度为1查看</td>
+<td>查询指定目录的磁盘使用情况</td>
+<td></td>
+</tr>
+</tbody></table>
+<h1 id="系统服务管理systemctl"><a href="#系统服务管理systemctl" class="headerlink" title="系统服务管理systemctl"></a>系统服务管理systemctl</h1><p><a href="#jump1">回到目录</a></p>
+<p>systemctl start|stop|restart|staus|enable|reload 服务名<br>Centos7后不再使用service(可以用，会自动重定向到systemctl命令)<br>service 服务名 start|stop|restart</p>
+<p>查看服务名：<br>方式1：使用seup-&gt;系统服务<br>方式2：&#x2F;etc&#x2F;init.d&#x2F;服务名称</p>
+<h1 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h1><p><a href="#jump1">回到目录</a></p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>systemctl start|restart|stop firewalld</td>
+<td>启动、重启、关闭防火墙</td>
+</tr>
+<tr>
+<td>firewall-cmd –zone&#x3D;public –add-port&#x3D;80-100&#x2F;tcp –permanent</td>
+<td>开通指定端口<br />也可以设置一个范围的端口80到100</td>
+</tr>
+<tr>
+<td>firewall-cmd –zone&#x3D;public –remove-port&#x3D;80&#x2F;tcp –permanent</td>
+<td>关闭指定端口</td>
+</tr>
+<tr>
+<td>firewall-cmd –zone&#x3D;public –add-service&#x3D;ftp –permanent</td>
+<td>开通服务</td>
+</tr>
+<tr>
+<td>firewall-cmd –zone&#x3D;public –remove-service&#x3D;http –permanent</td>
+<td>移去服务</td>
+</tr>
+<tr>
+<td>firewall-cmd –reload</td>
+<td>重载</td>
+</tr>
+</tbody></table>
+<p>常用服务的端口：ssh(22）、HTTP(80、8080)、MySQL(3306)、Oracle(1521) 、ftp(21）、<br>telnet(23）。</p>
+<p>查看已经开放端口<br>firewall-cmd –list-ports #查看已经开放的端口</p>
+<h1 id="环境变量（shell）"><a href="#环境变量（shell）" class="headerlink" title="环境变量（shell）"></a>环境变量（shell）</h1><p><a href="#jump1">回到目录</a></p>
+<p>输出内容<br>echo ‘任务已开启’<br>echo $PATH<br>查看环境变量：env</p>
+<table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">command &gt; file</td>
+<td align="left">将输出重定向到 file。</td>
+</tr>
+<tr>
+<td align="left">command &lt; file</td>
+<td align="left">将输入重定向到 file。</td>
+</tr>
+<tr>
+<td align="left">command &gt;&gt; file</td>
+<td align="left">将输出以追加的方式重定向到 file。</td>
+</tr>
+<tr>
+<td align="left">n &gt; file</td>
+<td align="left">将文件描述符为 n 的文件重定向到 file。</td>
+</tr>
+<tr>
+<td align="left">n &gt;&gt; file</td>
+<td align="left">将文件描述符为 n 的文件以追加的方式重定向到 file。</td>
+</tr>
+<tr>
+<td align="left">n &gt;&amp; m</td>
+<td align="left">将输出文件 m 和 n 合并。</td>
+</tr>
+<tr>
+<td align="left">n &lt;&amp; m</td>
+<td align="left">将输入文件 m 和 n 合并。</td>
+</tr>
+<tr>
+<td align="left">&lt;&lt; tag</td>
+<td align="left">将开始标记 tag 和结束标记 tag 之间的内容作为输入。</td>
+</tr>
+</tbody></table>
+<h1 id="任务调度crontab"><a href="#任务调度crontab" class="headerlink" title="任务调度crontab"></a>任务调度crontab</h1><p>分时天月周</p>
+<p>*任意<br>,不连续<br>-连续<br>*&#x2F;n</p>
+<p>-e编辑<br>-r清空任务<br>-l列出任务</p>
+<h1 id="开机启动程序"><a href="#开机启动程序" class="headerlink" title="开机启动程序"></a>开机启动程序</h1><p><a href="#jump1">回到目录</a></p>
+<p>init.d</p>
+<p>systemctl enable 服务名<br>systemctl disable 服务名</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在linux上安装常用环境和网络配置(vm)</title>
+    <url>/2024/08/10/linux/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%8F%8A%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>[toc]</p>
+<h1 id="网络配置-dhcp改静态"><a href="#网络配置-dhcp改静态" class="headerlink" title="网络配置(dhcp改静态)"></a>网络配置(dhcp改静态)</h1><p>nat模式-设置本机vm8的ipv4和网关-修改ifcfg-ens33 -重启-网络图标不见看下面</p>
+<p>网络图标消失不见的解决方案<br>停止网络配置管理器：systemctl stop NetworkManager.service<br>删除文件： rm &#x2F;var&#x2F;lib&#x2F;NetworkManager&#x2F;NetworkManager.state<br>开启网络配置管理器： systemctl start NetworkManager.service</p>
+<p>vi &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-ens33</p>
+<p>TYPE&#x3D;”Ethernet”<br>PROXY_METHOD&#x3D;”none”<br>BROWSER_ONLY&#x3D;”no”<br>BOOTPROTO&#x3D;”static”<br>DEFROUTE&#x3D;”yes”<br>IPV4_FAILURE_FATAL&#x3D;”no”<br>IPV6INIT&#x3D;”yes”<br>IPV6_AUTOCONF&#x3D;”yes”<br>IPV6_DEFROUTE&#x3D;”yes”<br>IPV6_FAILURE_FATAL&#x3D;”no”<br>IPV6_ADDR_GEN_MODE&#x3D;”stable-privacy”<br>NAME&#x3D;”ens33”<br>UUID&#x3D;”5afdee8c-694c-4b47-b78a-9f07ea444acd”<br>DEVICE&#x3D;”ens33”<br>ONBOOT&#x3D;”yes”<br>IPADDR&#x3D;192.168.181.3<br>NETMASK&#x3D;255.255.255.0<br>GATEWAY&#x3D;192.168.181.2<br>DNS1&#x3D;8.8.8.8<br>DNS2&#x3D;114.114.114.114</p>
+<h1 id="防火墙设置"><a href="#防火墙设置" class="headerlink" title="防火墙设置"></a>防火墙设置</h1><p>打开对应端口</p>
+<ol>
+<li>防火墙打开3306端口号<br> firewall-cmd –zone&#x3D;public –add-port&#x3D;3306&#x2F;tcp –permanent<br> 下面3行是参数说明<br> #–zone                        #作用域<br> #–add-port&#x3D;80&#x2F;tcp   #添加端口,格式为:端口&#x2F;通讯协议<br> #–permanent             #永久生效,没有此参数重启后失效</li>
+<li>重启防火墙<br> firewall-cmd –reload#重启firewall</li>
+<li>查看是否已经开放3306端口<br> firewall-cmd –list-ports #查看已经开放的端口</li>
+</ol>
+<p>如果你想再关闭firewall-cmd –zone&#x3D;public –remove-port&#x3D;3306&#x2F;tcp –permanent<br>然后再重启防火墙</p>
+<h1 id="安装方式"><a href="#安装方式" class="headerlink" title="安装方式"></a>安装方式</h1><p>软件一般安装在根目录下的&#x2F;usr&#x2F;local&#x2F;</p>
+<table>
+<thead>
+<tr>
+<th>安装方式</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>二进制发布包安装</td>
+<td>已经编译过只需解压修改配置</td>
+</tr>
+<tr>
+<td>rpm</td>
+<td>按照包管理规范进行打包，有库依赖问题</td>
+</tr>
+<tr>
+<td>yum</td>
+<td>本质上还是rpm，需联网，无库依赖问题</td>
+</tr>
+<tr>
+<td>源码编译安装</td>
+<td>将源码工程自行打包发布</td>
+</tr>
+</tbody></table>
+<h1 id="没有vim"><a href="#没有vim" class="headerlink" title="没有vim"></a>没有vim</h1><p>apt-get update</p>
+<p>apt-get install vim -y</p>
+<h1 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h1><h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>下载链接<a href="https://www.oracle.com/technetwork/java/javase/downloads/index.html">https://www.oracle.com/technetwork/java/javase/downloads/index.html</a></p>
+<p>1.在&#x2F;usr&#x2F;local目录下创建自定义soft目录<br>2.使用FinalShell自带的上传工具将jdk的二进制发布包上传到Linux<br>3.切换到soft目录<br>4.解压安装包 tar -zxvf jdk-8u171-linux-x64.tar.gz<br>5.配置环境变量：使用vim修改&#x2F;etc&#x2F;profile文件<br>JAVA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;soft&#x2F;jdk1.8.0_171<br>JRE_HOME&#x3D;${JAVA_HOME}&#x2F;jre<br>CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;lib<br>PATH&#x3D;$JAVA_HOME&#x2F;bin:$PATH<br>export JAVA_HOME JRE_HOME CLASSPATH PATH<br>6.重新加载profile文件 source &#x2F;etc&#x2F;profile<br>7.检查安装是否成功，java -version</p>
+<h2 id="alternatives管理"><a href="#alternatives管理" class="headerlink" title="alternatives管理"></a>alternatives管理</h2><p>如果交给了alternatives来管理java可以不用设置环境变量</p>
+<p>通过alternatives –install [软链接] [链接名] [执行文件路径] [优先级]<br>例如将自己安装的java交给alternatives管理：<br>alternatives –install  &#x2F;usr&#x2F;bin&#x2F;java   java     ..&#x2F;jdk&#x2F;bin&#x2F;java 3<br>其实就是将安装的java执行文件路径生成软链接放到&#x2F;usr&#x2F;bin目录下</p>
+<p>切换java版本:alternatives –config java</p>
+<h1 id="安装tomcat"><a href="#安装tomcat" class="headerlink" title="安装tomcat"></a>安装tomcat</h1><p>压缩包直接解压<br><a href="https://www.cnblogs.com/wjt-super/p/8018642.html">配置文件</a></p>
+<h1 id="安装mysql8-0"><a href="#安装mysql8-0" class="headerlink" title="安装mysql8.0"></a>安装mysql8.0</h1><p>tar.gz方式下载路径：<a href="https://downloads.mysql.com/archives/community/">https://downloads.mysql.com/archives/community/</a></p>
+<p>1、ps -ajx |grep mariadb # 先检查是否有mariadb存在<br>如果存在先停止systemctl stop mariadb.service或者kill -9 进程id<br>2、检查系统安装包rpm -qa | grep mariadb和rpm -qa | grep mysql<br>如果存在就删除rpm -e –nodeps 包名或者yum remove mariadb&#x2F;mysql<br>3.创建mysql 用户组和用户<br>groupadd mysql<br>useradd -r -g mysql mysql<br>4.解压<br>5.配置文件 &#x2F;etc&#x2F;my.cnf<br>[mysql]<br>default-character-set&#x3D;utf8mb4</p>
+<p>[mysqld]<br>port&#x3D;3306<br>#server-id&#x3D;3306<br>user&#x3D;mysql8.0<br>socket&#x3D;&#x2F;tmp&#x2F;mysql.sock<br>basedir&#x3D;&#x2F;opt&#x2F;mysql8.0<br>datadir&#x3D;&#x2F;opt&#x2F;mysql8.0&#x2F;data<br>#字符集，大小写，自动提交事务<br>character-set-server&#x3D;utf8mb4<br>#lower_case_table_names&#x3D;1<br>autocommit&#x3D;1</p>
+<p>#创表默认引擎<br>default-storage-engine&#x3D;INNODB<br>lower_case_table_names&#x3D;1<br>max_allowed_packet&#x3D;16M</p>
+<p>#sql模式<br>sql_mode&#x3D;ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION</p>
+<p>[mysqld_safe]<br>log-error&#x3D;&#x2F;opt&#x2F;mysql8.0&#x2F;data&#x2F;mysql.log<br>pid-file&#x3D;&#x2F;opt&#x2F;mysql8.0&#x2F;data&#x2F;mysql.pid</p>
+<p>5、设置权限：chown -R mysql:mysql &#x2F;opt&#x2F; mysql8.0<br>                           chmod -R 755 &#x2F;opt&#x2F; mysql8.0</p>
+<p>6、创建data目录:mkdir &#x2F;opt&#x2F;mysql8.0&#x2F;data</p>
+<p>7.初始化并记住初始密码<br>.&#x2F;bin&#x2F;mysqld –initialize –user&#x3D;mysql8.0 –datadir&#x3D;&#x2F;opt&#x2F;mysql8.0&#x2F;data –basedir&#x3D;&#x2F;opt&#x2F;mysql8.0 –lower_case_table_names&#x3D;1</p>
+<p>8.启动<br>.&#x2F;support-files&#x2F;mysql.server start</p>
+<p>9.复制启动脚本文件到init.d下<br>cp support-files&#x2F;mysql.server &#x2F;etc&#x2F;init.d&#x2F;mysqld<br>chmod a+x &#x2F;etc&#x2F;init.d&#x2F;mysqld  设置所有人可以执行权限</p>
+<p>10.启动，停止，重启<br>service mysqld start<br>#service mysqld stop<br>#service mysqld restart</p>
+<p>11.添加软链接<br>ln -s &#x2F;opt&#x2F;mysql8.0&#x2F;bin&#x2F;mysql  &#x2F;usr&#x2F;bin</p>
+<p>10.登录并改密码，配置远程登陆<br>mysql -uroot -p<br>输密码<br>alter user ‘root‘@’localhost’ identified by ‘123456’; 修改密码<br>flush privileges; 刷新权限</p>
+<p>配置远程登陆权限(8.0之前直接给root@%赋权就行，<br>8.0之后需要先新建一个root@%的用户)<br>create user ‘root‘@’%’ IDENTIFIED BY ‘123456’;<br>GRANT ALL PRIVILEGES ON * . *  TO ‘root‘@’%’ IDENTIFIED BY ‘111111’ WITH GRANT OPTION; 远程用户用root加密码111111连接</p>
+<p>11.连不上打开3306防火墙<br>防火墙打开3306端口号<br>firewall-cmd –zone&#x3D;public –add-port&#x3D;3306&#x2F;tcp –permanent<br>下面3行是参数说明<br>#–zone              #作用域<br>#–add-port&#x3D;80&#x2F;tcp#添加端口,格式为:端口&#x2F;通讯协议<br>#–permanent         #永久生效,没有此参数重启后失效</p>
+<p> 重启防火墙<br>firewall-cmd –reload#重启firewall</p>
+<p>查看是否已经开放3306端口<br>firewall-cmd –list-ports #查看已经开放的端口</p>
+<p>12.mysql开机自启<br>cp &#x2F;usr&#x2F;local&#x2F;mysql&#x2F;mysql&#x2F;support-files&#x2F;mysql.server &#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;mysqld<br>chmod +x &#x2F;etc&#x2F;init.d&#x2F;mysqld<br>添加为服务: chkconfig –add mysqld<br>查看服务列表:  chkconfig –list<br>看到3、4、5状态为开或者为 on 则表示成功。如果是 关或者 off 则执行一下：chkconfig –level 345 mysqld on<br>重启计算机:reboot</p>
+<h1 id="安装redis"><a href="#安装redis" class="headerlink" title="安装redis"></a>安装redis</h1><p>linux上安装,首先拿到压缩包，方法任意,这里使用在线下载<br>wget <a href="http://download.redis.io/releases/redis-4.0.9.tar.gz">http://download.redis.io/releases/redis-4.0.9.tar.gz</a></p>
+<p>1.解压然后进到解压的文件里面<br>2.执行make来编译<br>3.他会生成src文件夹，进到里面执行redis-server就运行了</p>
+<h1 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h1><p>1.卸载之前的docker</p>
+<p>yum remove docker <br>                      docker-client <br>                      docker-client-latest <br>                      docker-common \<br>                      docker-latest \<br>             	     docker-latest-logrotate \<br>                      docker-logrotate <br>                      docker-selinux \<br>                      docker-engine-selinux \<br>                      docker-engine \<br>                      docker-ce</p>
+<p>2.建立仓库</p>
+<p>yum install -y yum-utils     &#x2F;&#x2F;安装docker所需要的工具包</p>
+<p>yum-config-manager –add-repo <a href="http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo">http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</a>       &#x2F;&#x2F;建立docker仓库，映射仓库地址</p>
+<p>3.安装docker引擎</p>
+<p>yum install docker -ce dockerce-cli containerd.io</p>
+<p>4.启动docker</p>
+<p>systemctl start docker</p>
+<p>5.测试安装是否成功</p>
+<p>docker pull hello-world</p>
+<p>docker run hello-world</p>
+<h2 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h2><p>docker镜像加速器配置(建立仓库时可提前选择镜像)</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="comment">//重启docker</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<p>守护进程重启：systemctl daemon-reload </p>
+<p>重启Docker服务：systemctl restart docker &#x2F; service docker restart </p>
+<p>关闭Docker服务：docker service docker stop &#x2F; docker systemctl stop docker</p>
+<p>删除docker：yum remove docker-ce<br>rm -rf &#x2F;var&#x2F;lib&#x2F;docker</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>redis(未完成)</title>
+    <url>/2024/08/12/redis/redis/</url>
+    <content><![CDATA[<p>[toc]</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>见《linux软件安装》</p>
+<p>简单说一下就是：</p>
+<ul>
+<li>压缩包解压</li>
+<li>进解压文件执行make</li>
+<li>创建安装目录mkdir 安装路径</li>
+<li>开始安装make PREFIX&#x3D;安装路径 install</li>
+</ul>
+<p>如果要使用bin&#x2F;redis-server .&#x2F;redis.conf启动redis服务<br>.&#x2F;bin&#x2F;redis-server .&#x2F;redis.conf<br>容器内直接输入redis-server </p>
+<p>提前配置好redis.conf</p>
+<ul>
+<li>容器里面在&#x2F;etc&#x2F;redis目录</li>
+<li>直接部署在linux，位置在解压的文件里面，要复制一份到安装路径下</li>
+<li>修改配置文件bind 127.0.0.1 -::1 修改成0.0.0.0</li>
+<li>如果是容器内不改这个   daemonize no 改成daemonize yes</li>
+</ul>
+<p>启动登录</p>
+<ul>
+<li>刚开始没有密码，直接redis-cli</li>
+<li>后面设了密码和用户名，reis-cli  -a 密码</li>
+</ul>
+<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><p>参考<a href="http://redisdoc.com/">http://redisdoc.com</a></p>
+<ul>
+<li>string字符串</li>
+<li>hash哈希</li>
+<li>list列表</li>
+<li>set集合</li>
+<li>zset有序集合</li>
+</ul>
+<p>查数据库大小：dbsize</p>
+<h2 id="键key"><a href="#键key" class="headerlink" title="键key"></a>键key</h2><table>
+<thead>
+<tr>
+<th>命令(key全为键名)</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>del key</td>
+<td>删除</td>
+</tr>
+<tr>
+<td>get key</td>
+<td>查key值</td>
+</tr>
+<tr>
+<td>move key db</td>
+<td>从当前库移到db库</td>
+</tr>
+<tr>
+<td>exists key</td>
+<td>判断是否存在</td>
+</tr>
+<tr>
+<td><strong>存活时间相关</strong></td>
+<td></td>
+</tr>
+<tr>
+<td>expire&#x2F;expireat key 秒&#x2F;时间戳</td>
+<td>设置过期时间&#x2F;设置过期时间点</td>
+</tr>
+<tr>
+<td>persist key</td>
+<td>移除过期时间</td>
+</tr>
+<tr>
+<td>ttl key</td>
+<td>返回剩余生存时间，-1永不过期，-2已过期</td>
+</tr>
+<tr>
+<td>randomkey</td>
+<td>从当前库随机返回一个值</td>
+</tr>
+<tr>
+<td>rename key newkey</td>
+<td>重命名</td>
+</tr>
+<tr>
+<td>keys pattern</td>
+<td>查看所有符合模式的key，通配符*, ? ,[]</td>
+</tr>
+</tbody></table>
+<h2 id="字符串string"><a href="#字符串string" class="headerlink" title="字符串string"></a>字符串string</h2><p>可以包含任何数据(因为是用二进制存的)，比如图片或者序列化的对象<br>最大512M</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>set&#x2F;mset&#x2F;get&#x2F;mget&#x2F;del&#x2F;append&#x2F;strlen key value [key value]</td>
+<td>设值&#x2F;设多个值&#x2F;获取值&#x2F;获取多个key的值&#x2F;删除key&#x2F;字符串追加&#x2F;获取长度</td>
+</tr>
+<tr>
+<td>incrby&#x2F;decrby&#x2F;incrfloat&#x2F;decrfloat key 值</td>
+<td>增加&#x2F;减少&#x2F;增加浮点数&#x2F;减少浮点数</td>
+</tr>
+<tr>
+<td>getrange key start end</td>
+<td>返回key中从start到end的字串</td>
+</tr>
+<tr>
+<td>getbit key offset</td>
+<td>key的字符串值，获取偏移量offset位的bit</td>
+</tr>
+<tr>
+<td>setbit key offset value</td>
+<td>同上但是是设置该位的值</td>
+</tr>
+<tr>
+<td>setrange key offset value</td>
+<td>设置key从偏移量offset开始的值</td>
+</tr>
+<tr>
+<td>setex key 秒 vlaue</td>
+<td>设置key的值同时设置过期时间</td>
+</tr>
+<tr>
+<td>setnx key value</td>
+<td>在key不存在时设置key的值</td>
+</tr>
+</tbody></table>
+<h2 id="列表list"><a href="#列表list" class="headerlink" title="列表list"></a>列表list</h2><p>用链表实现</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>lpush&#x2F;rpush key value1 value2 …</td>
+<td>头插或尾插一个或多个值</td>
+</tr>
+<tr>
+<td>lrange key start stop</td>
+<td>查指定范围内的元素，-1表示最后一位</td>
+</tr>
+<tr>
+<td>lpop&#x2F;rpop&#x2F;blpop&#x2F;brpop key</td>
+<td>移出并获取&#x2F;若为空会一直等到进来元素 头&#x2F;尾的元素</td>
+</tr>
+<tr>
+<td>lindex key index</td>
+<td>通过索引获取(类似数组下标),-1表示最后一位</td>
+</tr>
+<tr>
+<td>lset key index value</td>
+<td>通过下标设置列表值</td>
+</tr>
+<tr>
+<td>llen key</td>
+<td>获取列表长度</td>
+</tr>
+<tr>
+<td>lrem key count value</td>
+<td>删除列表里的value，并返回实际删除个数，count&gt;0,从左边开始删，count&#x3D;0删除全部</td>
+</tr>
+<tr>
+<td>ltrim key start stop</td>
+<td>保留从start到stop的元素</td>
+</tr>
+<tr>
+<td>rpoplpush&#x2F;brpoplpush key1 key2</td>
+<td>剪切列表1的最后一个元素到列表2<br />加上b就是若列表为空会等到出现值</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>linsert key before&#x2F;after 值1 值2</td>
+<td>在值1前或者后插入值2</td>
+</tr>
+</tbody></table>
+<h2 id="集合set"><a href="#集合set" class="headerlink" title="集合set"></a>集合set</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sadd key member1 member2 …</td>
+<td>增加成员</td>
+</tr>
+<tr>
+<td>spop key</td>
+<td>删除并返回随机一个元素</td>
+</tr>
+<tr>
+<td>srem key value</td>
+<td>删除</td>
+</tr>
+<tr>
+<td>scard key</td>
+<td>获取成员数</td>
+</tr>
+<tr>
+<td>smembers key</td>
+<td>返回所有成员</td>
+</tr>
+<tr>
+<td>sismember key member</td>
+<td>是否是集合key的成员</td>
+</tr>
+<tr>
+<td>smove 集合1 集合2 member</td>
+<td>将member从集合1移到集合2</td>
+</tr>
+<tr>
+<td>sinter&#x2F;sdiff&#x2F;sunion 一个或多个集合</td>
+<td>返回 交&#x2F;并&#x2F;差 后面的集合</td>
+</tr>
+</tbody></table>
+<h2 id="哈希hash"><a href="#哈希hash" class="headerlink" title="哈希hash"></a>哈希hash</h2><h2 id="有序集合zset"><a href="#有序集合zset" class="headerlink" title="有序集合zset"></a>有序集合zset</h2><h1 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h1><h2 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h2><ul>
+<li>最后一次持久化的数据可能丢失</li>
+<li>创建子进程fork来执行快照会占用两倍的空间</li>
+<li>redis&#x2F;data下的dump.rdb文件整个内存压缩过后的快照</li>
+</ul>
+<p>开启rdb自动来持久化：redis.conf<br>配置文件中搜索save<br>save  &lt; seconds &gt;  &lt; changes &gt;</p>
+<p>save和bgsave：保存rdb到内存上，前者只保存，后者是异步保存<br>lastsave：获取最后一次成功执行快照的时间</p>
+<h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2><p><img src="/images/loading/loading.gif" data-original="/images/%E6%8C%81%E4%B9%85%E5%8C%96.png" alt="image-20240813172014778"></p>
+<p>Redis会记录上次重写时的AOF大小，默认配置是当AOF文件大小是上次rewrite后大小的一倍且文件大于64M时触发</p>
+<ul>
+<li>以日志形式来记录每个写操作(读不记录)</li>
+<li>只追加文件，不改写文件</li>
+<li>保存在&#x2F;redis&#x2F;data&#x2F;appendonly.aof</li>
+</ul>
+<p>开启AOF：redis.conf<br>配置文件中搜索appendonly<br>appendonly yes</p>
+<p>修复AOF文件</p>
+<ul>
+<li>备份损坏的文件</li>
+<li>执行redis-check-aof –fix</li>
+<li>重启redis</li>
+</ul>
+<p>重写AOF(aof有冗余记录)</p>
+<ul>
+<li>执行bgrewriteaof</li>
+<li>fork一条新进程来重写AOF文件</li>
+<li>重写触发条件在redis.conf中</li>
+<li>auto-aof-rewrite-percentage 100   &#x2F;&#x2F;每次达到重写后的一倍就重写<br>auto-aof-rewrite-min-size 64mb</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>持久化方式，两种同时启动</li>
+<li>RDB用于备份数据库</li>
+<li>AOF用于恢复</li>
+</ul>
+]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mysql基础篇+进阶篇+运维篇</title>
+    <url>/2024/05/10/sql/MYSQL/</url>
+    <content><![CDATA[<p><span id="jump1">目录</span></p>
+<p>[TOC]</p>
+<h1 id="基础篇"><a href="#基础篇" class="headerlink" title="基础篇"></a>基础篇</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a href="#jump1">回到目录</a></p>
+<p>进Mysql配置文件设置客户端和服务端的字符集编码<br>路径：找到Mysql安装路径，*&#x2F;data&#x2F;my.ini        也可能是mysql.ini</p>
+<p>&#x2F;# 设置客户端字符集编码<br>default-character-set&#x3D;gbk</p>
+<p>&#x2F;# 设置服务端字符集编码<br>character-set-server&#x3D;utf8</p>
+<p>Mysql关系型数据库（由多张互相连接的二维表），SQL，结构化查询语言<br>DMQC:definition定义，manipulation操作，query查询，control控制<br>DDL:对库、表创建修改删除  DML：对表内数据增删改   DQL：对数据表查询 DCL：权限，安全，用户<br>登录：mysql -uroot -p123456 [-h192.168.181.3]</p>
+<table>
+<thead>
+<tr>
+<th>常用指令(不用登录mysql)</th>
+<th>解释说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mysql</td>
+<td>mysql客户端工具</td>
+</tr>
+<tr>
+<td>mysqladmin</td>
+<td>mysql管理工具</td>
+</tr>
+<tr>
+<td>mysqlbinlog</td>
+<td>二进制日志查看工具</td>
+</tr>
+<tr>
+<td>mysqlshow</td>
+<td>查看库表字段的统计信息</td>
+</tr>
+<tr>
+<td>mysqldump</td>
+<td>数据备份工具</td>
+</tr>
+<tr>
+<td>mysqlimport&#x2F;source</td>
+<td>数据导入工具(mysqldump导出的txt)&#x2F;sql文件导入</td>
+</tr>
+</tbody></table>
+<h3 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h3><p>备份：mysqldump -uroot -p 库名&gt;路径&#x2F;自命名.sql        路径不能有空格<br>还原：mysql -uroot -p 库名&lt;路径&#x2F;自命名.sql<br>备份所有库–all-databases</p>
+<p>数据库基本数据类型：<br>设置时区：set time zone&#x3D;’+8:00’ </p>
+<table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th align="center">范围</th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">int</td>
+<td align="center">4字节</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">float</td>
+<td align="center">4字节</td>
+<td align="center">6位有效</td>
+</tr>
+<tr>
+<td align="center">double</td>
+<td align="center">8字节</td>
+<td align="center">16位有效</td>
+</tr>
+<tr>
+<td align="center">varchar可变长度</td>
+<td align="center">65535个字符</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">char定长</td>
+<td align="center">255个字符</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">date</td>
+<td align="center">3字节yy-mm-dd</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">datetime不受时区影响</td>
+<td align="center">5字节</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">datestamp受时区影响</td>
+<td align="center">4字节</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">enum枚举</td>
+<td align="center"></td>
+<td align="center">存储单一值</td>
+</tr>
+<tr>
+<td align="center">set集合</td>
+<td align="center"></td>
+<td align="center">存储多个值</td>
+</tr>
+</tbody></table>
+<h3 id="MySQL的系统库"><a href="#MySQL的系统库" class="headerlink" title="MySQL的系统库"></a>MySQL的系统库</h3><h4 id="performance-schema"><a href="#performance-schema" class="headerlink" title="performance_schema"></a>performance_schema</h4><p>保存MySQL服务器运行过程时的状态信息，算是对MySQL服务器的一个性能监控。包括统计最近执行了哪些语句，在执行过程的每个阶段都花费了多长时间，内存的使用情况等等信息。</p>
+<h4 id="information-schema"><a href="#information-schema" class="headerlink" title="information_schema"></a>information_schema</h4><p>保存所有其他数据库的信息，比如有哪些表、哪些视图、哪些触发器、哪些列、哪些索引。这些是一些描述性信息，称之为元数据。</p>
+<h4 id="sys"><a href="#sys" class="headerlink" title="sys"></a>sys</h4><p>通过视图把information_schema和performance_schema结合起来，让程序员可以更方便的了解MySQL服务器的一些性能信息。</p>
+<h4 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h4><p>存储MySQL用户账户和权限信息，还有一些存储过程、事件的定义信息，一些运行过程中产生的日志信息，一些帮助信息以及时区信息等。</p>
+<h2 id="DDL"><a href="#DDL" class="headerlink" title="DDL"></a>DDL</h2><p><a href="#jump1">回到目录</a></p>
+<h3 id="对库定义"><a href="#对库定义" class="headerlink" title="对库定义"></a>对库定义</h3><p>–查看数据库<br>show DATABASES;<br>–创建数据库<br>create database <code>数据库名</code>;<br>create database if no exists <code>数据库名</code>;<br>复制表结构和数据：<strong>create table</strong> 新表 <strong>as</strong> (select * from 旧表);<br>复制表结构：<strong>create table</strong> 新表 <strong>as</strong> (select * from 旧表 where 1&#x3D;2);<br>复制表数据:insert into 新表 (column1,column2…) select column1,column2… from table_name_old;<br>sql server：select * into 新表 from 旧表</p>
+<p>–删除数据库<br>drop database <code>数据库名</code>;<br>drop database if exists <code>数据库名</code>;<br>–查看当前使用的哪个数据库<br>select database();<br>–切换数据库<br>use <code>数据库名</code>;</p>
+<h3 id="对表定义"><a href="#对表定义" class="headerlink" title="对表定义"></a>对表定义</h3><p>–查看当前数据库下所有表<br>show tables;<br>–查看表结构<br>desc <code>表名</code>;<br>–创建表<br>create table <code>表名</code>(<br><code>字段名</code> 数据类型,<br><code>字段名</code> 数据类型，<br>primary key(<code>列</code>),<br>foreign key(<code>列</code>) references 主表(列)<br>);<br>–删除表<br>drop table <code>表名</code>；<br>drop table if exists <code>表名</code>;</p>
+<p>开发时使用DDL里面的：truncate table 表名;<br>delete支持回滚，truncate不支持回滚<br>–<strong>修改表的数据类型表名，（修改数据用update）</strong><br>–修改名字，新增一列，修改数据类型，修改列名和数据类型，删除列<br>alter table <code>表名</code> rename to <code>表名</code>;<br>alter table <code>表名</code> add <code>列名</code> <code>数据类型</code>;<br>alter table <code>表名</code> modify <code>列名</code> <code>新数据类型</code>;<br>alter table <code>表名</code> change <code>列名</code> <code>新列名</code> <code>新数据类型</code>;也可以保持数据类型不动<br>alter table <code>表名</code> drop <code>列名</code>;</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>添加列和约束</td>
+<td>add</td>
+</tr>
+<tr>
+<td>重命名表名</td>
+<td>rename to</td>
+</tr>
+<tr>
+<td>修改列数据类型</td>
+<td>modify</td>
+</tr>
+<tr>
+<td>修改列名或数据类型</td>
+<td>change</td>
+</tr>
+<tr>
+<td>删除一列和约束</td>
+<td>drop</td>
+</tr>
+</tbody></table>
+<h2 id="DML"><a href="#DML" class="headerlink" title="DML"></a>DML</h2><p><a href="#jump1">回到目录</a></p>
+<p>–添加数据insert<br>1.指定列添加<br>insert into 表名 (列名1,列名3) values (数据1,数据3);<br>2.所有列添加数据<br>insert into 表名 values (数据1,数据2,数据3);<br>3.批量添加数据<br>insert into 表名(列名1，列名3)  values (数据1,数据3)，(数据1,数据3)，(数据1,数据3);<br>4.通过复制来插入数据<br>复制表数据:insert into 表名(列1,列2…) select 列1,列2… from 表名;</p>
+<p>–修改数据update<br>–不设条件会改全部，不建议<br>修改整个表：update 表名 set 列名1&#x3D;新值,列名2&#x3D;新值….;       可以撤回<br>修改指定行数据：update 表名 set 列名1&#x3D;新值,列名2&#x3D;新值…. where 条件；</p>
+<p>–删除数据delete from<br>–删除满足条件的行记录<br>delete from 表名 where 条件:<br>–删除所有行,两者区别,前者一行行删,后者先drop再create<br>delete from 表名 where 真;<br>开发时使用DDL里面的：truncate table 表名;<br>delete支持回滚,truncate不支持回滚（sqlsever可以回滚）</p>
+<h2 id="DQL"><a href="#DQL" class="headerlink" title="DQL"></a>DQL</h2><p><a href="#jump1">回到目录</a></p>
+<p><img src="/images/loading/loading.gif" data-original="/images/%E6%9D%A1%E4%BB%B6%E7%AC%A6%E5%8F%B7.png" alt="条件符号"></p>
+<p>!!! like模糊查询：%表示0个或1个或多个任意字符,_表示一个字符；比如姓马的人like ‘马%’,<strong>如果要直接查询含有%的”&#x2F;%”</strong></p>
+<p>在sql server中还有范围匹配[]         [0-9a-zA-Z] 为数字大小写字母</p>
+<p>自定义转义字符：like ‘!%!%’ ESCAPE ‘!’         – 自定义转义字符！</p>
+<p>聚合函数不能对NULL进行计算，使用时可以**avg(ifnull(列名，0))**，如果为，设置为0</p>
+<p><img src="/images/loading/loading.gif" data-original="/images/%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0.png" alt="聚合函数"></p>
+<p>[]里面可写可不写，<strong>当有多个排序条件时，当前边的条件值一样时，才会根据第二个条件排序</strong>。</p>
+<p>变量：用户变量，@变量名<br>赋值：set 变量名&#x3D;值       select 变量名:&#x3D;值</p>
+<p>select [distinct]（去除重复记录）<br>    字段列表 [as]  别名<br>from [as]  别名<br>    表名列表<br>where         –条件查询<br>    条件<br>group by    –分组查询（select什么就分什么组，其他用聚合函数，按唯一值分组可以写所有列，group_concat(字段[order by 字段]) 将未分组的列拼接）<br>    分组列表<br>having    –注意和where的区别，where中不能使用聚合函数<br>    分组后条件<br>[with rollup] 分组后在最后一行加一个汇总行<br>order by   –排序查询<br>    排序字段1 [desc|asc]（默认升序，desc降序），排序字段2 [desc|asc]（默认升序，desc降序）<br>limit  n,m  –分页查询     1，3查询结果为第234条    0，5简写5<br>    起始索引，查询行数</p>
+<p>！mysql分页查询limit，Oracle分页查询rownumber，sql sever分页查询top</p>
+<p> <strong>sql执行顺序：</strong><br>from-where-group by-having-select-order by-limit</p>
+<h2 id="DCL"><a href="#DCL" class="headerlink" title="DCL"></a>DCL</h2><h3 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h3><p>查询：use mysql;select * from user;<br>创建：create user ‘用户名‘@’主机名’ identified by ‘密码’；<br>修改密码：<br>alter user ‘用户名‘@’主机名’ identified by ‘新密码’；<br>alter user  ‘用户名‘@’主机名’  identified with my_native_password by ‘新密码’；<br>删除用户：drop user  ‘用户名‘@’主机名’ </p>
+<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h3><p>查询权限：show grants for  ‘用户名‘@’主机名’;<br>授予权限：grant 权限列表 on 数据库名.表名 to ‘用户名‘@’主机名’ [with grant option];<br>with grant opion允许被授权方给予他人权限<br>撤销权限：revoke 权限列表 on 数据库名.表名 from 用户名‘@’主机名’;</p>
+<p>权限列表：all，all privileges，select，insert，update，delete，alter，drop，create<br>所有数据库.所有表：* . *</p>
+<p>刷新权限：flush pivileges;</p>
+<h2 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h2><p><a href="#jump1">回到目录</a></p>
+<p><strong>《维护和保证数据一致性和完整性》，mysql5个约束+Oracle check检查约束</strong></p>
+<p>约束可以在创建表的时候在字段后添加，也可以使用alter添加<br><strong>主键约束：primary key  [auto_increment]</strong>      					<br>auto_increment&#x3D;起始值 设置起始值</p>
+<p>添加主键：alter table 表名 add prinmary key（字段）;<br>删除主键：alter table 表名 drop primary key;</p>
+<p><strong>唯一约束：unique</strong>      不能重复</p>
+<p>添加唯一约束：alter table 表名 add unique（字段）</p>
+<p>*<strong>非空约束：not null</strong>      不能为空</p>
+<p>添加唯一约束：alter table 表名 modify 字段 类型 not null<br>sql sever：alter table 表名 alter column 列名 数据类型 not null</p>
+<p>*<strong>默认值约束：default</strong>      设置默认值，now()mysql函数获取当前系统时间</p>
+<p>添加唯一约束：alter table 表名 modify 字段 类型 default 默认值<br>sql sever添加默认值约束：alter table 表名 add constraint default 默认值 for 列名</p>
+<p><strong>外键约束：constraint 外键名 foreign key(字段) references 主表名(主表主键)</strong>       限制外键中数据来自主键</p>
+<p>表关系：<strong>一对多</strong>，多方表设外键指向另一表的主键；<strong>多对多</strong>，创建第三张表作为中间表，设置两个外键分别指向各自主键；<strong>一对一</strong>，合并或者设置任意一个外键指向另一个主键</p>
+<p>主键外键关系：添加先主再从；删除先从再主；修改主键被引用不能修改(外键级联：on update&#x2F;delete cascade设置外键时设置该项)</p>
+<p>添加外键约束：alter table 表名 add constraint 外键名 froeign key(当前表外键字段) references 主表(主表主键)</p>
+<h2 id="多表查询"><a href="#多表查询" class="headerlink" title="多表查询"></a>多表查询</h2><p><a href="#jump1">回到目录</a></p>
+<h3 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h3><p>笛卡尔积是两张表每一项互相交叉组合的结果。<strong>消除笛卡尔积：主表.主键字段&#x3D;从表.外键字段</strong></p>
+<h3 id="内连接join和inner-join和where"><a href="#内连接join和inner-join和where" class="headerlink" title="内连接join和inner join和where"></a>内连接join和inner join和where</h3><p>隐式内连接:select 列名 from 左表，右表 where 主表.主键&#x3D;从表.外键</p>
+<p><strong>显式内连接</strong>:select 列名 from 左表 inner join 右表 on 主表.主键&#x3D;从表.外键<br>                                           from 表1 join 表2 using(同名的列名)</p>
+<p>区别：隐式内连接先做笛卡尔积再过滤不匹配的行；显示内连接先匹配连接条件再返回匹配的行。</p>
+<h3 id="外连接"><a href="#外连接" class="headerlink" title="外连接"></a>外连接</h3><p><strong>左外连接</strong>：左表所有记录都出现在结果中，如果右表没有匹配的记录，使用NULL填充，</p>
+<p>select 列名 from 左表 left join 右表 on 主表.主键&#x3D;从表.外键</p>
+<p><strong>右外连接</strong>：同上，改为右表</p>
+<p>select 列名 from 左表 right join 右表 on 主表.主键&#x3D;从表.外键</p>
+<p><strong>全外连接</strong></p>
+<p>mysql不支持，既左右外连接</p>
+<h3 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h3><p>子查询结果为<strong>单行单列</strong>，父查询使用比较运算符**&lt;&gt;&#x3D;<strong>;<strong>多行单列</strong>，父查询使用</strong>in、any、all<strong>；</strong>多行多列<strong>，需要</strong>取别名**当作临时表来使用该子查询的表格</p>
+<p>查询工资大于5000的员工信息<br>select id，name，gender，salary，dept_id from emp<br>where salary&gt;5000；<br>基于以上结果，关联dept表进行多表查询<br>实现方式一：select emp.id,emp.name.emp.gender,emp.salary<br>from dept inner join (select id，name，gender，salary，dept_id from emp<br>where salary&gt;5000；) as emp<br>on dept.id&#x3D;emp.dept_id<br>实现方式二：select emp.id,emp.name,emp.gender,emp.salary,dept.id,dept.name<br>from dept right join emp<br>    on dept.id&#x3D;emp.dept_id<br>where emp.salary in (select salary from emp where salary&gt;5000)</p>
+<h3 id="联合查询union"><a href="#联合查询union" class="headerlink" title="联合查询union"></a>联合查询union</h3><p>select ……union [all] select …..<br>前后列数和[数据类型]要一致,all是不去重</p>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><p><a href="#jump1">回到目录</a></p>
+<p>一种机制，操作序列，包含多个步骤的业务操作，通过临时事务日志实现</p>
+<p>四个标准属性ACID：一个不可分割的工作逻辑单元<br><strong>原子性atom</strong>（要么全部执行成功，要么全部执行失败）；<br><strong>一致性consist</strong>（<strong>在事务开始之前和事务结束以后</strong>，<strong>数据库的完整性</strong>没有被破坏）；<br><strong>隔离性isolation</strong>（数据库允许<strong>多个并发事务同时对其数据进行读写和修改</strong>的能力，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致）；<br><strong>持久性durability</strong>(事务处理结束后，<strong>对数据的修改就是永久</strong>的，即便系统故障也不会丢失)</p>
+<p>与事务控制有关的 SQL 命令包括：</p>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BEGIN 或者 START TRANSACTION</td>
+<td>开始事务</td>
+</tr>
+<tr>
+<td>COMMIT</td>
+<td>提交事务；将临时日志文件同步到数据库</td>
+</tr>
+<tr>
+<td>ROLLBACK</td>
+<td>回滚事务；将临时日志文件清空</td>
+</tr>
+<tr>
+<td>SAVEPOINT</td>
+<td>在事务内部设置回滚标记点；</td>
+</tr>
+<tr>
+<td>RELEASE SAVEPOINT</td>
+<td>删除回滚标记点；</td>
+</tr>
+<tr>
+<td>ROLLBACK TO</td>
+<td>将事务回滚到标记点（ROLLBACK 命令的一种变形写法）。</td>
+</tr>
+</tbody></table>
+<p>一个事务要么提交（Commit），要么回滚（Rollback），提交意味着成功，回滚意味着失败。编写事务代码时，以 BEGIN 命令开头，后跟一条或者多条 SQL 语句，最后书写 COMMIT 或者 ROLLBACK 命令；<strong>COMMIT 和 ROLLBACK 对应事务的两种状态，只能出现一个</strong>。</p>
+<p>事务控制命令仅能与 INSERT、UPDATE、DELETE 和 SELECT一起使用，在创建或者删除表时不能使用事务，因为这些操作在数据库中是自动提交的。</p>
+<h3 id="系统设置"><a href="#系统设置" class="headerlink" title="系统设置"></a>系统设置</h3><p>select @@autocommit；查看mysql的事务默认提交方式<br>set autocommit&#x3D;0;           修改mysql默认提交方式，改为手动</p>
+<h3 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h3><p>安全：串行化&gt;可重复读&gt;读已提交&gt;读未提交    性能相反<br>查看隔离级别：show variables like ‘%isolation%’<br>设置隔离级别（<strong>设置全局事务隔离水平</strong>）：set [session|global] transcation isolation level [read uncommitted|…..] </p>
+<ul>
+<li>脏读：读到其他事务未提交(回滚 )的数据；</li>
+<li>不可重复读：同一人前后读取的数据不一致；</li>
+<li>幻读：同一人前后读取的记录数量不一致。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">级别</th>
+<th>脏读</th>
+<th align="center">不可重复读</th>
+<th align="center">幻读</th>
+<th align="center">数据库默认隔离级别</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">读未提交read uncommitted</td>
+<td>是</td>
+<td align="center">是</td>
+<td align="center">是</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">读已提交read committed</td>
+<td>否</td>
+<td align="center">是</td>
+<td align="center">是</td>
+<td align="center">Oracle和SQL sever</td>
+</tr>
+<tr>
+<td align="center">可重复读repeatable read</td>
+<td>否</td>
+<td align="center">否</td>
+<td align="center">是</td>
+<td align="center">Mysql</td>
+</tr>
+<tr>
+<td align="center">串行化serializable</td>
+<td>否</td>
+<td align="center">否</td>
+<td align="center">否</td>
+<td align="center">否</td>
+</tr>
+</tbody></table>
+<p>mysql在可重复读下幻读的场景1</p>
+<p><img src="/images/loading/loading.gif" data-original="/images/%E5%B9%BB%E8%AF%BB%E5%9C%BA%E6%99%AF1.png" alt="聚合函数"></p>
+<p>场景2<br><img src="/images/loading/loading.gif" data-original="/images/%E5%B9%BB%E8%AF%BB%E5%9C%BA%E6%99%AF2.png" alt="聚合函数"></p>
+<p><a href="#jump2">innodb事务原理</a></p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p><a href="#jump1">回到目录</a></p>
+<h3 id="日期函数"><a href="#日期函数" class="headerlink" title="日期函数"></a>日期函数</h3><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>语法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>返回当前日期&#x2F;时间&#x2F;日期和时间</td>
+<td>current_date<br />current_time<br />current_timestamp</td>
+<td></td>
+</tr>
+<tr>
+<td>返回月&#x2F;周&#x2F;年的第几天</td>
+<td>dayofmonth()<br />dayofweek()<br />dayofyear()</td>
+<td></td>
+</tr>
+<tr>
+<td>从时间d中返回type</td>
+<td>extract(type FROM d)</td>
+<td></td>
+</tr>
+<tr>
+<td>日期 d 加上一个时间段后的日期</td>
+<td>date_add(d,INTERVAL 值 type)<br />date_sub()</td>
+<td></td>
+</tr>
+<tr>
+<td>计算时间点差(时间1-时间2)</td>
+<td>timestampdiff(时间格式,时间1,时间2)</td>
+<td></td>
+</tr>
+<tr>
+<td>计算时间差(时间1-时间2)</td>
+<td>datediff(时间1，时间2)</td>
+<td></td>
+</tr>
+<tr>
+<td>返回年月日</td>
+<td>date(时间)</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="字符函数"><a href="#字符函数" class="headerlink" title="字符函数"></a>字符函数</h3><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>语法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>返回字符串 s 的字符数</td>
+<td>CHAR_LENGTH(“RUNOOB”)</td>
+<td>5</td>
+</tr>
+<tr>
+<td>合并多个字符串，并添加分隔符</td>
+<td>CONCAT_WS(“-“, “SQL”,  “is”, “fun!”)</td>
+<td>SQL-IS-is-fun</td>
+</tr>
+<tr>
+<td>从字符串第一个位置开始的 6 个字符替换为 runoob</td>
+<td>INSERT(“com”, 1, 2, “www”)</td>
+<td>cwww</td>
+</tr>
+<tr>
+<td>获取 b 在字符串 abc 中的位置</td>
+<td>LOCATE(‘st’,’myteststring’)</td>
+<td>5</td>
+</tr>
+<tr>
+<td>将字符串 s2 替代字符串 s 中的字符串 s1</td>
+<td>REPLACE(‘abc’,’a’,’x’)</td>
+<td>xbc</td>
+</tr>
+<tr>
+<td>从字符串 RUNOOB 中的第 2 个位置截取 3个 字符</td>
+<td>SUBSTRING(“RUNOOB”, 2, 3)</td>
+<td>UNO</td>
+</tr>
+<tr>
+<td>去掉字符串 RUNOOB 的首尾空格</td>
+<td>TRIM(‘    RUNOOB    ‘)</td>
+<td>RUNOOB</td>
+</tr>
+</tbody></table>
+<h3 id="数学函数"><a href="#数学函数" class="headerlink" title="数学函数"></a>数学函数</h3><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>语法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>返回离 x 最近的整数，可选参数 y 表示要四舍五入的小数位数，如果省略，则返回整数</td>
+<td>round’(345.156, 2)</td>
+<td>345.16</td>
+</tr>
+<tr>
+<td>返回数值 x 保留到小数点后 y 位的值</td>
+<td>TRUNCATE(1.23456,3)</td>
+<td>1.234</td>
+</tr>
+</tbody></table>
+<h3 id="高级函数"><a href="#高级函数" class="headerlink" title="高级函数"></a>高级函数</h3><table>
+<thead>
+<tr>
+<th>排序函数&#x2F;分布函数&#x2F;聚合函数</th>
+<th>高级函数</th>
+<th>内置参数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>rank() 并列跳跃</td>
+<td>窗口函数over()</td>
+<td>分区 partition by</td>
+</tr>
+<tr>
+<td>dense_rank() 并列不跳跃</td>
+<td></td>
+<td>排序order by</td>
+</tr>
+<tr>
+<td>row_number() 记行号</td>
+<td></td>
+<td>rows between 开始行 and 结束行</td>
+</tr>
+<tr>
+<td>percent_rank() 每行(rank-1) &#x2F; (rows-1)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>cume_dist() 分组内&lt;&#x3D;当前 rank 值的行数 &#x2F; 分组内总行数</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>低版本的mysql没有窗口函数，通过用户变量@来添加行号<br>set @i&#x3D;0;<br>select @i:&#x3D;@i+1</p>
+<h1 id="进阶篇"><a href="#进阶篇" class="headerlink" title="进阶篇"></a>进阶篇</h1><h2 id="innodb存储引擎"><a href="#innodb存储引擎" class="headerlink" title="innodb存储引擎"></a>innodb存储引擎</h2><p><a href="#jump1">回到目录</a></p>
+<p>innoDB存储逻辑:支持事务，外键，行级锁提高并发性能</p>
+<h3 id="逻辑存储结果"><a href="#逻辑存储结果" class="headerlink" title="逻辑存储结果"></a>逻辑存储结果</h3><img src="/images/loading/loading.gif" data-original="/images/innodb.png" alt="innodb" style="zoom: 200%;" />
+
+<table>
+<thead>
+<tr>
+<th>存储空间</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>表空间</td>
+<td>ibd文件</td>
+<td></td>
+</tr>
+<tr>
+<td>段</td>
+<td>包括数据段(叶子节点)、索引段、回滚段</td>
+<td></td>
+</tr>
+<tr>
+<td>区</td>
+<td>每个区1M，默认一页16K，所以一个区有64页</td>
+<td></td>
+</tr>
+<tr>
+<td>页</td>
+<td>存储引擎磁盘管理的最小单元，为保持页的连续性，引擎每次申请4-5页</td>
+<td></td>
+</tr>
+<tr>
+<td>行</td>
+<td>按行数据存放</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><img src="/images/loading/loading.gif" data-original="/images/innodb架构.png" alt="innodb" style="zoom: 200%;" />
+
+<p>内存结构：缓冲池、更改缓冲区、日志缓冲区、自适应哈希索引<br>磁盘结构：系统表空间、每个表的表空间、通用表空间、撤销(undo)表空间、临时表空间、双写缓冲区、重做日志redo(重做日志缓冲(内存中)+重做日志文件(磁盘中))<br>后台线程：master thread、IO thread、purge thread回收已提交的撤销日志、page cleaner thread协助master thread刷新脏页到磁盘</p>
+<h3 id="事务原理"><a href="#事务原理" class="headerlink" title="事务原理 "></a>事务原理<span id="jump2"> </span></h3><p>redo log+undo log负责acd     原子，一致，持久<br>锁机制+MVCC负责i        隔离</p>
+<h3 id="MVCC-多版本并发控制"><a href="#MVCC-多版本并发控制" class="headerlink" title="MVCC(多版本并发控制)"></a>MVCC(多版本并发控制)</h3><p>当前读：对读取的记录加锁<br>select…lock in share mode(S)    select…for update、update、insert、delete(X)</p>
+<p>快照读：不加锁读取<br>read committed：每次select生成一个快照读<br>repeatable read：开启事务后，第一个select为快照读<br>serializable：快照读变成当前读</p>
+<h4 id="实现原理-隐藏字段-undo-log-readview"><a href="#实现原理-隐藏字段-undo-log-readview" class="headerlink" title="实现原理(隐藏字段+undo log+readview)"></a>实现原理(隐藏字段+undo log+readview)</h4><table>
+<thead>
+<tr>
+<th>隐藏字段(建表时会自动生成)</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DB_TRX_ID</td>
+<td>最近修改的事务ID</td>
+</tr>
+<tr>
+<td>DB_ROLL_PTR</td>
+<td>回滚指针，配合undo log</td>
+</tr>
+<tr>
+<td>DB_ROW_ID</td>
+<td>隐藏主键，如果表结构没有主键生成</td>
+</tr>
+</tbody></table>
+<p>查看方法 ：idb2sdi idb文件名</p>
+<p>undo log日志：通过隐藏字段的回滚指针形成<strong>版本链</strong>来确定回滚到哪个事务<br>insert事务提交后undo log可立即删除；update和delete不会</p>
+<p>readview(读视图)：快照读执行时MVCC提取数据的依据</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>m_ids</td>
+<td>当前活跃事务的id集合</td>
+</tr>
+<tr>
+<td>min_trx_id</td>
+<td>最小活跃事务id</td>
+</tr>
+<tr>
+<td>max_trx_id</td>
+<td>预分配事务id，当前最大事务id+1</td>
+</tr>
+<tr>
+<td>creator_trx_id</td>
+<td>readview创建者的事务id</td>
+</tr>
+</tbody></table>
+<img src="/images/loading/loading.gif" data-original="/images/版本链数据访问规则.png" alt="innodb" style="zoom: 200%;" />
+
+<p>不同的隔离级别，生成readview的时机不同：<br>read committed：事务每次执行快照读时生成<br>repeatable read：仅在事务第一次执行快照读时生成</p>
+<h2 id="索引-数据结构，B-tree"><a href="#索引-数据结构，B-tree" class="headerlink" title="索引(数据结构，B+tree)"></a>索引(数据结构，B+tree)</h2><p><a href="#jump1">回到目录</a></p>
+<p><strong>索引大大提高查询效率，但是降低更新表的速度</strong><br>查询当前数据库是查询密集型还是修改密集型(查询或修改语句执行次数多)<br>show global status like ‘Com_ _ _ _ _ _ _’   七条下划线</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>主键索引，唯一索引，普通索引，组合索引，全文索引，hash索引<br>创建索引：create [unique|fulltext] index 索引名 on 表名(字段1，字段2…..)<br>查看索引：show index from 表名<br>添加索引：alter table 表名 add index(字段)<br>删除索引：drop index 索引名 on 表名<br>对于约束会自动创建索引</p>
+<p>按存储结构分类：</p>
+<ul>
+<li>聚集索引：叶子节点保存行数据</li>
+<li>二级索引：叶子节点保存主键(索引结构和数据分开存放的索引)</li>
+</ul>
+<p>按数据结构分类：B+tree、hash索引、T-tree……</p>
+<h3 id="使用规则"><a href="#使用规则" class="headerlink" title="使用规则"></a>使用规则</h3><ul>
+<li>最左前缀匹配原则</li>
+<li>频繁查找，不频繁修改</li>
+<li>能够有效区分数据</li>
+<li>扩展索引不新建索引，索引扩展成(a,b),而不是创建a和b</li>
+<li>外键</li>
+<li>text，image，bit数据不建</li>
+</ul>
+<p><strong>索引失效</strong>：<a href="https://cloud.tencent.com/developer/article/1992920">https://cloud.tencent.com/developer/article/1992920</a></p>
+<h2 id="sql性能分析"><a href="#sql性能分析" class="headerlink" title="sql性能分析"></a>sql性能分析</h2><p><a href="#jump1">回到目录</a></p>
+<h3 id="慢查询日志"><a href="#慢查询日志" class="headerlink" title="慢查询日志"></a>慢查询日志</h3><p>来分析哪些语句的执行时间过长<br>开启方式：linux下mysql配置文件&#x2F;etc&#x2F;my.cnf<br>                     windows下mysql配置文件my.ini或者mysql.ini<br><img src="/images/loading/loading.gif" data-original="/images/慢查询.png" alt="innodb" style="zoom: 200%;" /></p>
+<p>慢查询日志：linux下的路径&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;localhost-slow.log</p>
+<h3 id="profile"><a href="#profile" class="headerlink" title="profile"></a>profile</h3><p>分析时间耗费情况<br>查看是否有该功能：select @@have_profiling<br>开启：set profiling &#x3D; 1<br>查看sql’耗时情况:show profiles<br>查看指定query_id的sql语句各阶段的耗时情况：show profile for query 查询id<br>查看该查询的cpu占比：show profile cpu for query 查询id</p>
+<h3 id="explain"><a href="#explain" class="headerlink" title="explain"></a>explain</h3><p>explain&#x2F;desc 来提前预览select语句的执行过程<br>explain select ………</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>操作表的顺序，id越大越先执行</td>
+</tr>
+<tr>
+<td>select_type</td>
+<td>simple,primary,union,subquery</td>
+</tr>
+<tr>
+<td>type</td>
+<td>性能null&gt;system&gt;const&gt;eq_ref,ref,range,index,all</td>
+</tr>
+<tr>
+<td>possible_key</td>
+<td>可能用到的索引</td>
+</tr>
+<tr>
+<td>key</td>
+<td>实际用到的索引</td>
+</tr>
+<tr>
+<td>key_len</td>
+<td>使用到的索引字节数</td>
+</tr>
+<tr>
+<td>rows</td>
+<td>执行查询的行数(预估值)</td>
+</tr>
+<tr>
+<td>filtered</td>
+<td>返回结果行数占需读取行数的百分比，越大越好</td>
+</tr>
+</tbody></table>
+<h2 id="sql优化"><a href="#sql优化" class="headerlink" title="sql优化"></a>sql优化</h2><p><a href="#jump1">回到目录</a></p>
+<h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><ul>
+<li>单次插入-&gt;批量插入</li>
+<li>自动提交事务-&gt;手动提交事务</li>
+<li>主键乱序插入-&gt;主键顺序插入</li>
+<li>大批量插入insert-&gt;load</li>
+</ul>
+<p>load使用</p>
+<img src="/images/loading/loading.gif" data-original="/images/load插入数据.png" alt="innodb" style="zoom: 200%;" />
+
+<h3 id="主键优化"><a href="#主键优化" class="headerlink" title="主键优化"></a>主键优化</h3><ul>
+<li>尽量降低主键长度</li>
+<li>插入时尽量顺序插入auto_increment</li>
+<li>尽量不要使用uuid或其他自然主键(如身份证)做主键</li>
+<li>业务操作时避免对主键的修改(会动主键索引结构)</li>
+</ul>
+<h3 id="order-by优化"><a href="#order-by优化" class="headerlink" title="order by优化"></a>order by优化</h3><p>order by有两种排序：using filesort(全表扫描后在缓冲区排序)；using index(有序索引顺序扫描，效率高)</p>
+<ul>
+<li>根据排序字段建立索引，多字段时遵循最左前缀法则</li>
+<li>尽量使用覆盖索引(避免select *)</li>
+<li>对于不可避免的using filesort，可以适当增加缓冲区sort_buffer_size大小</li>
+</ul>
+<h3 id="group-by优化"><a href="#group-by优化" class="headerlink" title="group by优化"></a>group by优化</h3><p>using tempory和using index</p>
+<ul>
+<li>通过索引提高效率</li>
+<li>索引满足最左前缀法则</li>
+</ul>
+<h3 id="limit优化"><a href="#limit优化" class="headerlink" title="limit优化"></a>limit优化</h3><p>当查询limit a,b，对于a过大，而b较小时,例如limit 20000000,10<br>优化思路覆盖索引+子查询</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 优化前</span><br><span class="line">select * from table limit 900000,10;</span><br><span class="line">-- 优化后（id有索引）</span><br><span class="line">select t.*,(select id from table order by id limit 9000000,10) a from table t where s.id=a.id </span><br></pre></td></tr></table></figure>
+
+<h3 id="count优化"><a href="#count优化" class="headerlink" title="count优化"></a>count优化</h3><p>没有较好的方法，一般通过redis自己计数<br>效率：count(字段)&lt;count(主键id)&lt;count(1)≈count(*)</p>
+<h3 id="update优化"><a href="#update优化" class="headerlink" title="update优化"></a>update优化</h3><p>由于innodb支持行锁，在update行数据时，如果更新条件有索引，则为行锁；如果没有索引，则为表锁(并发性能降低)。因此避免更新条件没有索引</p>
+<h2 id="视图-虚拟表"><a href="#视图-虚拟表" class="headerlink" title="视图(虚拟表)"></a>视图(虚拟表)</h2><p><a href="#jump1">回到目录</a></p>
+<p>视图的作用：</p>
+<ul>
+<li>简单：简化用户对数据的理解和操作，经常使用的查询可以被定义为视图；</li>
+<li>安全：通过视图，用户只能查询和修改他们见到的数据，保证了安全性；</li>
+<li>数据独立：帮助用户屏蔽真实表结构变化带来的影响</li>
+</ul>
+<h3 id="基础语法"><a href="#基础语法" class="headerlink" title="基础语法"></a>基础语法</h3><p>创建视图：create [or replace] view 视图名 as select …….<br>查询视图：show create view 视图名<br>                    select * from 视图名<br>修改视图：create or replace view 视图名 as select …….;<br>                    alter view 视图名 as select…….;<br>                    update 视图名 set … where …;<br>删除视图：drop view [if exists] 视图名称</p>
+<h3 id="检查选项"><a href="#检查选项" class="headerlink" title="检查选项"></a>检查选项</h3><p>with [默认cascaded|local] check option<br>往视图中插入数据，实际会插入到该视图创建时，所依赖的表中<br>mysql允许基于另一个视图创建视图，并检查依赖视图中的规则来保持一致性<br>cascaded级联检查条件；local递归检查条件(检查取决于是否添加了check)</p>
+<h3 id="视图的更新"><a href="#视图的更新" class="headerlink" title="视图的更新"></a>视图的更新</h3><p>insert，update，delete都是更新<br>视图中的行与基础表中的行一对一<br>创建视图时，select中不能包含聚合函数、窗口函数、distinct、group by、having、union，不然无法更新视图</p>
+<h2 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a>存储过程</h2><p><a href="#jump1">回到目录</a></p>
+<p>一组经过预先编译的sql，来完成特定的事情。当存储过程执行一次后，可以将语句<strong>缓存在内存</strong>中，这样下次执行的时候直接使用缓存中的语句。这样就可以提高存储过程的性能。</p>
+<p>优点：</p>
+<ul>
+<li>减少sql重用率</li>
+<li>减少网络传输量(在开发架构中只需要向sql发送存储过程即可获取持久化数据)</li>
+<li>提高安全性(不会暴露sql)</li>
+</ul>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>设置&#x2F;声明</th>
+<th>查看</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>系统变量[全局变量&#x2F;会话变量]</td>
+<td>set <strong>[global&#x2F;|session]</strong> 变量名&#x3D;值<br>重启服务后全局变量恢复默认值，永久更改需更改配置文件</td>
+<td>show <strong>[global&#x2F;|session]</strong> variables [like ‘…’]<br>select @@<strong>[global&#x2F;|session]</strong>.变量名</td>
+</tr>
+<tr>
+<td>用户变量</td>
+<td>set&#x2F;|select @名称:&#x3D;值<br>select 字段名 into @名称 from 表</td>
+<td>select @名称</td>
+</tr>
+<tr>
+<td>局部变量(begin-end范围内有效)</td>
+<td>create procedure 存储过程名()<br>begin <br>declare 变量名 类型[default…]<br>set 变量名:&#x3D;值<br>end</td>
+<td>同上</td>
+</tr>
+</tbody></table>
+<h3 id="创建、调用、查看和删除"><a href="#创建、调用、查看和删除" class="headerlink" title="创建、调用、查看和删除"></a>创建、调用、查看和删除</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">在命令行中把语句结束符号换成自定义符号，避免存储过程创建中断(图形化界面不用)</span><br><span class="line">delimiter //     自定义//为结束符</span><br><span class="line">-- 创建</span><br><span class="line">create precedure 存储过程名称([in|out|inout 参数 参数类型])</span><br><span class="line">约束</span><br><span class="line">begin</span><br><span class="line">declare 变量名 数据类型 [default 值];</span><br><span class="line">set @变量名=值</span><br><span class="line">.....</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">约束：</span><br><span class="line"></span><br><span class="line">-- 调用(in参数直接写值，out参数@变量名，inout参数提前设好值然后@变量名)</span><br><span class="line">call 名称([参数])</span><br><span class="line"></span><br><span class="line">-- 查看</span><br><span class="line">-- 查询指定数据库xxx的存储过程及状态信息</span><br><span class="line">select * from information_schema.routines where routine_schema=&#x27;xxx&#x27;</span><br><span class="line">-- 查询你某个存储过程的定义</span><br><span class="line">show create procedure</span><br><span class="line"></span><br><span class="line">-- 删除</span><br><span class="line">drop procedure [if exists] 名称</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="关键词用法"><a href="#关键词用法" class="headerlink" title="关键词用法"></a>关键词用法</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- if</span><br><span class="line">if 条件 then ...;</span><br><span class="line">elseif 条件 then ...;</span><br><span class="line">else ...;</span><br><span class="line">end if;</span><br><span class="line"></span><br><span class="line">-- case</span><br><span class="line">case [表达式]</span><br><span class="line">	when 情况1 then ...</span><br><span class="line">	when 情况2 then ...</span><br><span class="line">	else ...</span><br><span class="line">end [case]</span><br><span class="line"></span><br><span class="line">-- while</span><br><span class="line">[标记:]while 条件 do</span><br><span class="line">	...</span><br><span class="line">end while [标记]</span><br><span class="line"></span><br><span class="line">-- repeat</span><br><span class="line">[标记:]repeat</span><br><span class="line">	...</span><br><span class="line">	until 条件</span><br><span class="line">end repeat [标记]</span><br><span class="line"></span><br><span class="line">-- loop</span><br><span class="line">-- 标记就是给这个循环取个名字</span><br><span class="line">[标记:] loop</span><br><span class="line">	...</span><br><span class="line">end loop [标记]</span><br><span class="line"></span><br><span class="line">-- 跳出循环 leave(退出循环)和iterate(跳过此次循环)</span><br><span class="line">	leave 标记;</span><br><span class="line">	iterate 标记;</span><br><span class="line"></span><br><span class="line">-- 条件处理程序hander(自定义异常处理)</span><br><span class="line">-- 声明</span><br><span class="line">declare [continue继续|exit退出] hander for 情况 [应对操作]</span><br><span class="line">-- 情况有一下几种</span><br><span class="line">sqlstate 状态码;</span><br><span class="line">sqlwarning;01开头的状态码</span><br><span class="line">not found;02开头的状态码</span><br><span class="line">sqlexception;非01和02的状态码</span><br></pre></td></tr></table></figure>
+
+<h3 id="游标"><a href="#游标" class="headerlink" title="游标"></a>游标</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 游标cursor(用来存储查询结果集的数据类型)</span></span><br><span class="line"><span class="comment">-- 声明(游标的声明要在普通变量之后)</span></span><br><span class="line"><span class="keyword">declare</span> 游标名称 <span class="keyword">cursor</span> <span class="keyword">for</span> 查询语句</span><br><span class="line"><span class="comment">-- 打开</span></span><br><span class="line"><span class="keyword">open</span> 游标名称</span><br><span class="line"><span class="comment">-- 获取游标记录(把查询结果里面的列分别赋值给对应的变量名)</span></span><br><span class="line"><span class="keyword">fetch</span> 游标名称 <span class="keyword">into</span> 变量<span class="number">1</span>,变量<span class="number">2.</span>..</span><br><span class="line"><span class="comment">-- 关闭游标</span></span><br><span class="line"><span class="keyword">close</span> 游标名称</span><br></pre></td></tr></table></figure>
+
+<h2 id="存储函数"><a href="#存储函数" class="headerlink" title="存储函数"></a>存储函数</h2><p><a href="#jump1">回到目录</a></p>
+<p>有返回值的存储过程，且参数只有in类型(无须声明，默认就是in)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create function 函数名([参数])</span><br><span class="line">returns 返回值的数据类型 </span><br><span class="line">[特征]</span><br><span class="line">begin</span><br><span class="line">	...</span><br><span class="line">	return ...;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">特征说明(在开启二进制日志时，此选项必须填写)：</span><br><span class="line">deterministic:与输入参数类型相同</span><br><span class="line">no sql:不含sql语句</span><br><span class="line">reads sql data:只包含select</span><br><span class="line">modifies sql data:只包含update，delete</span><br><span class="line"></span><br><span class="line">LANGUAGE SQL</span><br><span class="line">存储过程语言，默认是sql，说明存储过程中使用的是sql语言编写的，暂时只支持sql，后续可能会支持其他语言</span><br><span class="line"></span><br><span class="line">NOT DETERMINISTIC</span><br><span class="line">默认是NOT DETERMINISTIC，只对于同样的输入，输出也是一样的，当前这个值还没有使用</span><br><span class="line"></span><br><span class="line">CONTAINS SQL</span><br><span class="line">包括以下四种选择</span><br><span class="line">1.CONTAINS SQL：不包含读写</span><br><span class="line">2.NO SQL：不包含sql</span><br><span class="line">3.READS SQL DATA：包含读，不包含写</span><br><span class="line">4.MODIFIES SQL DATA：包含写</span><br></pre></td></tr></table></figure>
+
+<h2 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h2><p><a href="#jump1">回到目录</a></p>
+<p>在insert&#x2F;update&#x2F;delete之前或之后，出发并执行触发器中定义的sql语句集合；<br>协助应用在数据库端确保数据的完整性，日志记录，数据校验等操作</p>
+<table>
+<thead>
+<tr>
+<th>触发器类型</th>
+<th>new和old</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>insert型触发器</td>
+<td>new表示新增数据</td>
+</tr>
+<tr>
+<td>update型触发器</td>
+<td>old表示修改前的数据，new表示将要或已更新的数据</td>
+</tr>
+<tr>
+<td>delete型触发器</td>
+<td>old表示将要或已删除的数据</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 创建</span><br><span class="line">create trigger 名称</span><br><span class="line">	before|after insert|update|delete </span><br><span class="line">	on 表名 for each row -- 行级触发器</span><br><span class="line">begin</span><br><span class="line">	...</span><br><span class="line">	new.列名 就表示新的某一数据</span><br><span class="line">	old.列名 就表示旧的某一数据</span><br><span class="line">end</span><br><span class="line">-- 查看</span><br><span class="line">show triggers</span><br><span class="line">-- 删除</span><br><span class="line">drop trigger [数据库名.]触发器名 -- 默认为当前数据库</span><br></pre></td></tr></table></figure>
+
+<h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><p><a href="#jump1">回到目录</a></p>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://www.bilibili.com/video/BV1po4y1M7k5?p=2&vd_source=c75d57452dfe6d1e8dca457f1ab7a2ac">这一章很乱建议看视频</a></p>
+<pre class="mermaid">graph TD
+锁--> 粒度分类
+粒度分类--> 全局锁
+粒度分类--> 表锁锁
+粒度分类--> 行锁
+锁--> 模式分类
+模式分类--> 乐观锁
+模式分类--> 悲观锁
+锁--> 属性分类
+属性分类--> 共享锁
+属性分类--> 排他锁
+锁--> 状态分类
+状态分类--> 意向共享锁
+状态分类--> 意向排他锁
+锁--> 算法分类
+算法分类--> 间隙锁
+算法分类--> 记录锁
+算法分类--> 临键锁</pre>
+
+<h3 id="全局锁-一致性数据备份"><a href="#全局锁-一致性数据备份" class="headerlink" title="全局锁(一致性数据备份)"></a>全局锁(一致性数据备份)</h3><p>1.为当前数据库加全局锁：flush tables with read lock</p>
+<p>2.备份:mysqldump -h[数据库服务器主机ip] -uroot -p[密码] 库名&gt;[备份的存储路径文件.sql]<br>备份语句不用在登录mysql服务器后执行</p>
+<p>3.释放全局锁：unlock tables</p>
+<p>不加锁的一致性数据备份(innodb通过快照读实现):mysqldump <strong>[–single-transaction]</strong> -h[数据库服务器主机ip] -uroot -p[密码] 库名&gt;[备份的存储路径文件.sql]</p>
+<h3 id="表级锁"><a href="#表级锁" class="headerlink" title="表级锁"></a>表级锁</h3><pre class="mermaid">graph LR
+表级锁--> 表锁
+表锁--> 表共享读锁readlock--> 读锁皆可读
+表锁--> 表独占写锁writelock--> 写锁我读写
+表级锁--> 元数据锁DML
+元数据锁DML--> 增删改查时读锁--> 共享写锁shared_write
+增删改查时读锁--> 共享读锁shared_read
+元数据锁DML--> 表结构变更时写锁--> 排他锁exclusive
+表级锁--> 意向锁--> 意向共共享锁IS
+意向锁--> 意向共排他锁IX</pre>
+
+<h4 id="表锁-避免DML和DDL冲突"><a href="#表锁-避免DML和DDL冲突" class="headerlink" title="表锁(避免DML和DDL冲突)"></a>表锁(避免DML和DDL冲突)</h4><p>加锁：lock tables 表名 read|write<br>释放锁：unlock tables&#x2F;客户端连接关闭</p>
+<h4 id="元数据锁"><a href="#元数据锁" class="headerlink" title="元数据锁"></a>元数据锁</h4><p>系统自动控制，维护元数据的数据一致性；表上有事务时不可对元数据进行写入<br>增删改查时加读锁(共享读和共享写)；改变表结果时加写锁(排他)</p>
+<p>查看元数据锁：<br>select object_type,object_schema,object_name,lock_type,lock_duration from performance_schema.metadata_locks</p>
+<h4 id="意向锁"><a href="#意向锁" class="headerlink" title="意向锁"></a>意向锁</h4><p>当<strong>加行锁</strong>时，为了不和**[想要加表锁的另一方]<strong>冲突，会</strong>默认加意向锁**，这样加表锁的一方可以通过检测意向锁来确顶此时是否可以加表锁<br>意向共享锁IS：select…lock in share mode<br>意向排他锁IX：insert&#x2F;update&#x2F;delete&#x2F;select…for update</p>
+<h3 id="行级锁"><a href="#行级锁" class="headerlink" title="行级锁"></a>行级锁</h3><p>通过对索引上的索引项加锁来实现</p>
+<h4 id="行锁-Record-lock"><a href="#行锁-Record-lock" class="headerlink" title="行锁(Record lock)"></a>行锁(Record lock)</h4><p>锁定单个行记录，防止update和delete，在Read Commited，Repeat Read隔离级别下支持</p>
+<p>当通过没有索引的条件检索数据时,行锁会自动升级成表锁</p>
+<p>共享S：兼容S，冲突X<br>排他X：冲突S和X</p>
+<h4 id="间隙锁-Gap-lock"><a href="#间隙锁-Gap-lock" class="headerlink" title="间隙锁(Gap lock)"></a>间隙锁(Gap lock)</h4><p>锁定索引记录间隙，防止在事务间隙insert，产生幻读，在RR隔离级别下支持</p>
+<h4 id="临键锁-Next-key-lock"><a href="#临键锁-Next-key-lock" class="headerlink" title="临键锁(Next-key lock)"></a>临键锁(Next-key lock)</h4><p>行锁和间隙锁组合，锁行数据和数据前的间隙，在RR隔离级别下支持<br>innodb在rr隔离级别下使用临键锁进行搜索和索引扫面，防止幻读</p>
+<ul>
+<li>等值查询(唯一索引)时，对不存在的记录加锁会优化成间隙锁</li>
+<li>等值查询(普通索引)时，不满足查询需求，临键锁退化成间隙锁</li>
+<li>范围查询(唯一索引)时，访问不满足第一个条件的值</li>
+</ul>
+<h1 id="运维篇"><a href="#运维篇" class="headerlink" title="运维篇"></a>运维篇</h1><h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><p><a href="#jump1">回到目录</a></p>
+<h3 id="错误日志"><a href="#错误日志" class="headerlink" title="错误日志"></a>错误日志</h3><p>show variables like ‘%log_error%’<br>linux存放路径：&#x2F;var&#x2F;log&#x2F;mysqld.log<br>刷新错误日志文件：flush logs;</p>
+<p>配置文件mysqld：log-error&#x3D;&#x2F;</p>
+<h3 id="二进制日志"><a href="#二进制日志" class="headerlink" title="二进制日志"></a>二进制日志</h3><p>show variables ‘%log_bin%’</p>
+<p>记录所有的DDL和DML数据变更，不包括数据查询语言</p>
+<ul>
+<li><p>灾难时的<strong>数据恢复</strong></p>
+</li>
+<li><p>mysql的<strong>主从复制</strong>,mysql8二进制日志默认开启</p>
+</li>
+</ul>
+<p>show variables ‘%binlog_format%’<br>更改格式：vim &#x2F;etc&#x2F;my.cnf</p>
+<table>
+<thead>
+<tr>
+<th>日志格式</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>statement</td>
+<td>基于sql语句的日志记录，对数据进行修改的sql都会记录</td>
+</tr>
+<tr>
+<td>row</td>
+<td>基于行的记录，记录没一行的数据变更(默认)</td>
+</tr>
+<tr>
+<td>mixed</td>
+<td>混合上两种，某些情况下自动切换为row格式</td>
+</tr>
+</tbody></table>
+<p>二进制日志查询工具<br>mysqlbinlog [参数选项] 二进制日志文件名<br>参数选项：</p>
+<ul>
+<li>-d     指定数据库名称，只列出指定数据库的日志文件</li>
+<li>-o     忽略掉日志中的前n行命令</li>
+<li>-v     将行事件重构为sql语句</li>
+<li>-w    将行事件重构为sql语句，并输出注释</li>
+</ul>
+<p>日志删除</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>含义</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>reset master</td>
+<td>删除全部binloog日志，删除后日志编号从000001重新开始</td>
+<td></td>
+</tr>
+<tr>
+<td>purge master logs to ‘binlog.xxxxxx’</td>
+<td>删除xxxxxx编号之前的所有日志</td>
+<td></td>
+</tr>
+<tr>
+<td>purge master logs before ‘yyyy-mm-dd hh24:mi:ss’</td>
+<td>删除日志为’yyyy-mm-dd hh24:mi:ss’之前的所有日志</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>配置二进制日志过期时间：show variables like ‘%binlog_expire%’</p>
+<h3 id="查询日志"><a href="#查询日志" class="headerlink" title="查询日志"></a>查询日志</h3><p>默认情况下，查询日志未开启<br>开启：set global general_log&#x3D;on<br>默认文件名:general_log_file&#x3D;host_name.log<br>show variables like ‘%general%’</p>
+<h3 id="慢查询日志-1"><a href="#慢查询日志-1" class="headerlink" title="慢查询日志"></a>慢查询日志</h3><p>默认未开启，记录执行时间超过long_query_time并且扫面记录数不小于min_examined_row_limit的所有sql语句日志</p>
+<p>开启方式：linux下mysql配置文件&#x2F;etc&#x2F;my.cnf<br>                     windows下mysql配置文件my.ini或者mysql.ini<br><img src="/images/loading/loading.gif" data-original="/images/慢查询.png" alt="innodb" style="zoom: 200%;" /></p>
+<p>慢查询日志：linux下的路径&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;localhost-slow.log</p>
+<p>记录执行<strong>较慢的管理</strong>语句：log_slow_admin_statements&#x3D;1<br>记录执行较慢的<strong>未使用索引</strong>的语句：log_queries_not_using_indexs&#x3D;1</p>
+<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><p><a href="#jump1">回到目录</a></p>
+<p>将主库master的DDL和DML操作通过二进制日志传到从库，然后在从库slave上重做</p>
+<ul>
+<li>主库出现问题，快速切换到从库提供服务</li>
+<li>实现读写分离，降低主库的访问压力</li>
+<li>在从库中执行备份，避免备份期间影响主库服务</li>
+</ul>
+<h3 id="过程原理"><a href="#过程原理" class="headerlink" title="过程原理"></a>过程原理</h3><p>1.master主库提交事务时，把数据变更记录在二进制日志文件里binlog<br>2.从库用IOthread读取主库的二进制日志binlog文件，写入从库的中继日志relaylog中<br>3.salve从库用SQLthread执行中继日志relaylog中的事件，改变它自己的数据</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>开放指定的3306端口号：<br>firewall-cmd –zone&#x3D;public –add-port&#x3D;3306&#x2F;tcp-permanent<br>firewall-cmd-reload<br>关闭防火墙和开机自启<br>systemctl stop firewalld<br>systemctl disable firewalld</p>
+<p><strong>主库master配置</strong></p>
+<p>1.修改配置<br>[mysqld]<br>#mysql服务ID，保证整个集群环境中唯一<br>server-id&#x3D;1<br>#是否只读,1表示该数据库只能读(select)<br>read-only&#x3D;0<br>#启用二进制日志<br>log-bin&#x3D;mysql-bin<br>#不需要同步的数据库<br>binlog-ignore-db&#x3D;mysql<br>#要同步的数据库<br>#binlog-do-db&#x3D;数据库名</p>
+<p>2.重启mysql服务器<br>systemctl restart mysqld</p>
+<p>3.登录mysql，创建远程连接的账号，并授权主从复制权限<br>#创建用户，设置密码，该用户可在任意主机连接该mysql服务<br>create user ‘用户名‘@’%’ identified by ‘密码’<br>#为该用户分配主从复制权限<br>grant replication slave on * . * to ‘从库‘@’%’</p>
+<p>4.查看二进制日志坐标<br>show master status</p>
+<p><strong>从库slave配置</strong></p>
+<p>1.修改配置<br>server-id&#x3D;2        只要和主库不一样就行<br>read-only&#x3D;1       可以读写</p>
+<p>2.重启systemctl restart mysqld</p>
+<p>3，登录mysql，设置主库配置<br>change master to master_host&#x3D;’xxx.xxx’,master_user&#x3D;’xxx’,master_password&#x3D;’xxx’,<br>master_log_file&#x3D;’xxx’,master_log_pos&#x3D;xxx<br><strong>mysql8.0.23后的版本</strong><br>change republication source to source_host&#x3D;’xxx.xxx’,source_user&#x3D;’xxx’,source_password&#x3D;’xxx’,<br>source_log_file&#x3D;’xxx’,source_log_pos&#x3D;xxx</p>
+<table>
+<thead>
+<tr>
+<th>8.0.23前的参数</th>
+<th>8.0.23及之后的参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>master_host</td>
+<td>source_host</td>
+<td>主库ip地址</td>
+</tr>
+<tr>
+<td>master_user</td>
+<td>source_user</td>
+<td>连接主库的用户名</td>
+</tr>
+<tr>
+<td>master_password</td>
+<td>source_password</td>
+<td>连接主库的密码</td>
+</tr>
+<tr>
+<td>master_log_file</td>
+<td>source_log_file</td>
+<td>binlog日志文件名</td>
+</tr>
+<tr>
+<td>master_log_pos</td>
+<td>source_log_pos</td>
+<td>binlog日志文件当前位置</td>
+</tr>
+</tbody></table>
+<p>4.开启同步操作<br>start replica；   8.0.22后<br>start slave；      8.0.22前</p>
+<p>5.查看主从同步状态<br>show replica status&#x2F;G；   8.0.22之后    &#x2F;G由列换成行显示<br>关键字Replica_IO_Running和Replica_SQL_Running</p>
+<p>show slave status；    8.0.22之前</p>
+<h2 id="docker实现主从复制"><a href="#docker实现主从复制" class="headerlink" title="docker实现主从复制"></a>docker实现主从复制</h2><p>修改主机名：hostnamectl set-hostname 新名称<br>ip和主机名映射：修改文件&#x2F;etc&#x2F;hosts</p>
+<p>多台虚拟机之间建立免密登录：</p>
+<ul>
+<li>ssh-keygen 三次回车生成密钥</li>
+<li>ssh-copy-id 主机账号名root@主机名</li>
+<li>测试，ssh root@主机名</li>
+</ul>
+<h3 id="启动主服务器"><a href="#启动主服务器" class="headerlink" title="启动主服务器"></a>启动主服务器</h3><p>docker run -p 3307:3306 –name mysql-master -v 容器卷映射(一般映射配置文件，日志文件，data文件) -e MYSQL_ROOT_PASSWORD&#x3D;123456 -d mysql:版本号</p>
+<p>-v &#x2F;myapps&#x2F;mysql-master&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;  &#x2F;<br>-v &#x2F;myapps&#x2F;mysql-master&#x2F;logs:&#x2F;var&#x2F;log&#x2F;mysql&#x2F;   &#x2F;<br>-v &#x2F;myapps&#x2F;mysql-master&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql  &#x2F;</p>
+<p>例如：docker run -p 3307:3306 –name mysql-master -v &#x2F;myapps&#x2F;mysql-master&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;  -v &#x2F;myapps&#x2F;mysql-master&#x2F;logs:&#x2F;var&#x2F;log&#x2F;mysql&#x2F;  -v &#x2F;myapps&#x2F;mysql-master&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql  -e MYSQL_ROOT_PASSWORD&#x3D;123456 -d mysql:5.7</p>
+<h3 id="修改配置主mysql的配置"><a href="#修改配置主mysql的配置" class="headerlink" title="修改配置主mysql的配置"></a>修改配置主mysql的配置</h3><p>在&#x2F;myapps&#x2F;mysql-master&#x2F;conf下创建配置文件my.cnf<br>1.修改配置<br>[mysqld]<br>#mysql服务ID，保证整个集群环境中唯一<br>server-id&#x3D;1<br>#是否只读,1表示该数据库只能读(select)<br>read-only&#x3D;0<br>#忽略的数据，不需要同步的数据库<br>#binlog-ignore-db&#x3D;mysql<br>#指定要同步的数据<br>#binlog-do-db&#x3D;db01<br>##开启二进制日志功能<br>log-bin&#x3D;mall-mysql-bin<br>##设置二进制日志使用内存大小<br>binlog_cache_size&#x3D;1M<br>##设置使用的二进制日志格式<br>binlog_format&#x3D;mixed<br>##二进制日志过期清理时间，默认值为0，表示不自动清理<br>expire_logs_days&#x3D;7<br>##跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制##中断。1062指一些主键重复，1032主从数据库数据不一致<br>slave_skip_errors&#x3D;1062</p>
+<p>2.登录mysql，创建远程连接的账号，并授权主从复制权限<br>docker exec -it mysql-master bash<br>#创建用户，设置密码，该用户可在任意主机连接该mysql服务<br>create user ‘从库用户名‘@’%’ identified with mysql_native_password by ‘密码’<br>#为该用户分配主从复制权限<br>grant replication slave on * . * to ‘库‘@’’</p>
+<p>4.查看主从复制状态<br>show master status</p>
+<h3 id="启动从服务器"><a href="#启动从服务器" class="headerlink" title="启动从服务器"></a>启动从服务器</h3><p>docker run -p 3308:3306 –name slave </p>
+<p>-v &#x2F;myapps&#x2F;mysql-slave&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;conf.d<br>-v &#x2F;myapps&#x2F;mysql-slave&#x2F;logs:&#x2F;logs<br>-v &#x2F;myapps&#x2F;mysql-slave&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql </p>
+<p>-e MYSQL_ROOT_PASSWORD&#x3D;123456<br>-d mysql:5.7</p>
+<h3 id="配置从服务器配置文件"><a href="#配置从服务器配置文件" class="headerlink" title="配置从服务器配置文件"></a>配置从服务器配置文件</h3><p>在&#x2F;myapps&#x2F;mysql-slave&#x2F;conf下创建配置文件my.cnf<br>[mysqld]<br>##设置server_id，同一局域网中需要唯一<br>server_id&#x3D;2<br>##设置只读<br>read_only&#x3D;1<br>##relay_log配置中继日志<br>relay_log&#x3D;slave-relay-bin<br>##指定不需要同步的数据库名称<br>binlog-ignore-db&#x3D;mysql<br>##开启二进制日志功能,以备slave作为其他数据库实例的master时使用<br>log-bin&#x3D;mall-mysql-slave1-bin<br>##设置二进制日志使用内存大小<br>binlog_cache_size&#x3D;1M<br>##设置使用的二进制日志格式<br>binlog_format&#x3D;mixed<br>##二进制日志过期清理时间，默认值为0，表示不自动清理<br>expire_logs_days&#x3D;7<br>##跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制##中断。1062指一些主键重复，1032主从数据库数据不一致<br>slave_skip_errors&#x3D;1062<br>##slave将复制事件写进自己的二进制日志<br>log_slave_updates&#x3D;1</p>
+<p>C、重启slave实例<br>D、在主数据库中查看主从同步状态 show master status;<br>E、进入到从数据库中配置主从复制<br>change master to master_host&#x3D;’192.168.100.188’,master_user&#x3D;’slave’,<br>master_password&#x3D;’123456’,master_port&#x3D;3307,master_log_file&#x3D;’mall-mysql-bin.000001’,master_log_pos&#x3D; 154,master_connect_retry&#x3D;30;<br>F、从数据库中查看主从同步状态 show slave status;<br>G、从数据库中开启主从同步  start slave;<br>H、再次从数据库中查看主从同步状态 show slave status;<br>I、测试主从功能：</p>
+<h2 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h2><p><a href="#jump1">回到目录</a></p>
+<p>垂直拆分：</p>
+<ul>
+<li>垂直分库：以表为依据，根据业务将不同表拆分(每个库的表结构不一样)，库的并集为全量数据</li>
+<li>垂直分表：以字段为依据，将表结构拆分(每个表的结构不同)，表的并集为全量数据</li>
+</ul>
+<p>水平拆分：</p>
+<ul>
+<li>水平分库：以字段为依据，将数据拆分到别的库(表结构一样，数据不一样)，库的并集为全量数据</li>
+<li>水平分表：对表水平拆分，将数据拆分到库(表结构一致，数据不一致)，表的并集为全量数据</li>
+</ul>
+<h3 id="使用mycat分库分表"><a href="#使用mycat分库分表" class="headerlink" title="使用mycat分库分表"></a>使用mycat分库分表</h3><p>阿里巴巴开源的mysql数据库中间件</p>
+<h2 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h2><p><a href="#jump1">回到目录</a></p>
+]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Oracle数据库(未完成)</title>
     <url>/2024/06/10/sql/Oracle/</url>
     <content><![CDATA[<p><span id="jump1">目录</span></p>
@@ -4574,905 +5473,6 @@ Oracle数据库--> 数据库管理系统DBMS
       </categories>
       <tags>
         <tag>sql server</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mysql基础篇+进阶篇+运维篇</title>
-    <url>/2024/05/10/sql/MYSQL/</url>
-    <content><![CDATA[<p><span id="jump1">目录</span></p>
-<p>[TOC]</p>
-<h1 id="基础篇"><a href="#基础篇" class="headerlink" title="基础篇"></a>基础篇</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a href="#jump1">回到目录</a></p>
-<p>进Mysql配置文件设置客户端和服务端的字符集编码<br>路径：找到Mysql安装路径，*&#x2F;data&#x2F;my.ini        也可能是mysql.ini</p>
-<p>&#x2F;# 设置客户端字符集编码<br>default-character-set&#x3D;gbk</p>
-<p>&#x2F;# 设置服务端字符集编码<br>character-set-server&#x3D;utf8</p>
-<p>Mysql关系型数据库（由多张互相连接的二维表），SQL，结构化查询语言<br>DMQC:definition定义，manipulation操作，query查询，control控制<br>DDL:对库、表创建修改删除  DML：对表内数据增删改   DQL：对数据表查询 DCL：权限，安全，用户<br>登录：mysql -uroot -p123456 [-h192.168.181.3]</p>
-<table>
-<thead>
-<tr>
-<th>常用指令(不用登录mysql)</th>
-<th>解释说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>mysql</td>
-<td>mysql客户端工具</td>
-</tr>
-<tr>
-<td>mysqladmin</td>
-<td>mysql管理工具</td>
-</tr>
-<tr>
-<td>mysqlbinlog</td>
-<td>二进制日志查看工具</td>
-</tr>
-<tr>
-<td>mysqlshow</td>
-<td>查看库表字段的统计信息</td>
-</tr>
-<tr>
-<td>mysqldump</td>
-<td>数据备份工具</td>
-</tr>
-<tr>
-<td>mysqlimport&#x2F;source</td>
-<td>数据导入工具(mysqldump导出的txt)&#x2F;sql文件导入</td>
-</tr>
-</tbody></table>
-<h3 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h3><p>备份：mysqldump -uroot -p 库名&gt;路径&#x2F;自命名.sql        路径不能有空格<br>还原：mysql -uroot -p 库名&lt;路径&#x2F;自命名.sql<br>备份所有库–all-databases</p>
-<p>数据库基本数据类型：<br>设置时区：set time zone&#x3D;’+8:00’ </p>
-<table>
-<thead>
-<tr>
-<th align="center">数据类型</th>
-<th align="center">范围</th>
-<th align="center"></th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">int</td>
-<td align="center">4字节</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">float</td>
-<td align="center">4字节</td>
-<td align="center">6位有效</td>
-</tr>
-<tr>
-<td align="center">double</td>
-<td align="center">8字节</td>
-<td align="center">16位有效</td>
-</tr>
-<tr>
-<td align="center">varchar可变长度</td>
-<td align="center">65535个字符</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">char定长</td>
-<td align="center">255个字符</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">date</td>
-<td align="center">3字节yy-mm-dd</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">datetime不受时区影响</td>
-<td align="center">5字节</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">datestamp受时区影响</td>
-<td align="center">4字节</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">enum枚举</td>
-<td align="center"></td>
-<td align="center">存储单一值</td>
-</tr>
-<tr>
-<td align="center">set集合</td>
-<td align="center"></td>
-<td align="center">存储多个值</td>
-</tr>
-</tbody></table>
-<h3 id="MySQL的系统库"><a href="#MySQL的系统库" class="headerlink" title="MySQL的系统库"></a>MySQL的系统库</h3><h4 id="performance-schema"><a href="#performance-schema" class="headerlink" title="performance_schema"></a>performance_schema</h4><p>保存MySQL服务器运行过程时的状态信息，算是对MySQL服务器的一个性能监控。包括统计最近执行了哪些语句，在执行过程的每个阶段都花费了多长时间，内存的使用情况等等信息。</p>
-<h4 id="information-schema"><a href="#information-schema" class="headerlink" title="information_schema"></a>information_schema</h4><p>保存所有其他数据库的信息，比如有哪些表、哪些视图、哪些触发器、哪些列、哪些索引。这些是一些描述性信息，称之为元数据。</p>
-<h4 id="sys"><a href="#sys" class="headerlink" title="sys"></a>sys</h4><p>通过视图把information_schema和performance_schema结合起来，让程序员可以更方便的了解MySQL服务器的一些性能信息。</p>
-<h4 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h4><p>存储MySQL用户账户和权限信息，还有一些存储过程、事件的定义信息，一些运行过程中产生的日志信息，一些帮助信息以及时区信息等。</p>
-<h2 id="DDL"><a href="#DDL" class="headerlink" title="DDL"></a>DDL</h2><p><a href="#jump1">回到目录</a></p>
-<h3 id="对库定义"><a href="#对库定义" class="headerlink" title="对库定义"></a>对库定义</h3><p>–查看数据库<br>show DATABASES;<br>–创建数据库<br>create database <code>数据库名</code>;<br>create database if no exists <code>数据库名</code>;<br>复制表结构和数据：<strong>create table</strong> 新表 <strong>as</strong> (select * from 旧表);<br>复制表结构：<strong>create table</strong> 新表 <strong>as</strong> (select * from 旧表 where 1&#x3D;2);<br>复制表数据:insert into 新表 (column1,column2…) select column1,column2… from table_name_old;<br>sql server：select * into 新表 from 旧表</p>
-<p>–删除数据库<br>drop database <code>数据库名</code>;<br>drop database if exists <code>数据库名</code>;<br>–查看当前使用的哪个数据库<br>select database();<br>–切换数据库<br>use <code>数据库名</code>;</p>
-<h3 id="对表定义"><a href="#对表定义" class="headerlink" title="对表定义"></a>对表定义</h3><p>–查看当前数据库下所有表<br>show tables;<br>–查看表结构<br>desc <code>表名</code>;<br>–创建表<br>create table <code>表名</code>(<br><code>字段名</code> 数据类型,<br><code>字段名</code> 数据类型，<br>primary key(<code>列</code>),<br>foreign key(<code>列</code>) references 主表(列)<br>);<br>–删除表<br>drop table <code>表名</code>；<br>drop table if exists <code>表名</code>;</p>
-<p>开发时使用DDL里面的：truncate table 表名;<br>delete支持回滚，truncate不支持回滚<br>–<strong>修改表的数据类型表名，（修改数据用update）</strong><br>–修改名字，新增一列，修改数据类型，修改列名和数据类型，删除列<br>alter table <code>表名</code> rename to <code>表名</code>;<br>alter table <code>表名</code> add <code>列名</code> <code>数据类型</code>;<br>alter table <code>表名</code> modify <code>列名</code> <code>新数据类型</code>;<br>alter table <code>表名</code> change <code>列名</code> <code>新列名</code> <code>新数据类型</code>;也可以保持数据类型不动<br>alter table <code>表名</code> drop <code>列名</code>;</p>
-<table>
-<thead>
-<tr>
-<th>操作</th>
-<th>语法</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>添加列和约束</td>
-<td>add</td>
-</tr>
-<tr>
-<td>重命名表名</td>
-<td>rename to</td>
-</tr>
-<tr>
-<td>修改列数据类型</td>
-<td>modify</td>
-</tr>
-<tr>
-<td>修改列名或数据类型</td>
-<td>change</td>
-</tr>
-<tr>
-<td>删除一列和约束</td>
-<td>drop</td>
-</tr>
-</tbody></table>
-<h2 id="DML"><a href="#DML" class="headerlink" title="DML"></a>DML</h2><p><a href="#jump1">回到目录</a></p>
-<p>–添加数据insert<br>1.指定列添加<br>insert into 表名 (列名1,列名3) values (数据1,数据3);<br>2.所有列添加数据<br>insert into 表名 values (数据1,数据2,数据3);<br>3.批量添加数据<br>insert into 表名(列名1，列名3)  values (数据1,数据3)，(数据1,数据3)，(数据1,数据3);<br>4.通过复制来插入数据<br>复制表数据:insert into 表名(列1,列2…) select 列1,列2… from 表名;</p>
-<p>–修改数据update<br>–不设条件会改全部，不建议<br>修改整个表：update 表名 set 列名1&#x3D;新值,列名2&#x3D;新值….;       可以撤回<br>修改指定行数据：update 表名 set 列名1&#x3D;新值,列名2&#x3D;新值…. where 条件；</p>
-<p>–删除数据delete from<br>–删除满足条件的行记录<br>delete from 表名 where 条件:<br>–删除所有行,两者区别,前者一行行删,后者先drop再create<br>delete from 表名 where 真;<br>开发时使用DDL里面的：truncate table 表名;<br>delete支持回滚,truncate不支持回滚（sqlsever可以回滚）</p>
-<h2 id="DQL"><a href="#DQL" class="headerlink" title="DQL"></a>DQL</h2><p><a href="#jump1">回到目录</a></p>
-<p><img src="/images/loading/loading.gif" data-original="/images/%E6%9D%A1%E4%BB%B6%E7%AC%A6%E5%8F%B7.png" alt="条件符号"></p>
-<p>!!! like模糊查询：%表示0个或1个或多个任意字符,_表示一个字符；比如姓马的人like ‘马%’,<strong>如果要直接查询含有%的”&#x2F;%”</strong></p>
-<p>在sql server中还有范围匹配[]         [0-9a-zA-Z] 为数字大小写字母</p>
-<p>自定义转义字符：like ‘!%!%’ ESCAPE ‘!’         – 自定义转义字符！</p>
-<p>聚合函数不能对NULL进行计算，使用时可以**avg(ifnull(列名，0))**，如果为，设置为0</p>
-<p><img src="/images/loading/loading.gif" data-original="/images/%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0.png" alt="聚合函数"></p>
-<p>[]里面可写可不写，<strong>当有多个排序条件时，当前边的条件值一样时，才会根据第二个条件排序</strong>。</p>
-<p>变量：用户变量，@变量名<br>赋值：set 变量名&#x3D;值       select 变量名:&#x3D;值</p>
-<p>select [distinct]（去除重复记录）<br>    字段列表 [as]  别名<br>from [as]  别名<br>    表名列表<br>where         –条件查询<br>    条件<br>group by    –分组查询（select什么就分什么组，其他用聚合函数，按唯一值分组可以写所有列，group_concat(字段[order by 字段]) 将未分组的列拼接）<br>    分组列表<br>having    –注意和where的区别，where中不能使用聚合函数<br>    分组后条件<br>[with rollup] 分组后在最后一行加一个汇总行<br>order by   –排序查询<br>    排序字段1 [desc|asc]（默认升序，desc降序），排序字段2 [desc|asc]（默认升序，desc降序）<br>limit  n,m  –分页查询     1，3查询结果为第234条    0，5简写5<br>    起始索引，查询行数</p>
-<p>！mysql分页查询limit，Oracle分页查询rownumber，sql sever分页查询top</p>
-<p> <strong>sql执行顺序：</strong><br>from-where-group by-having-select-order by-limit</p>
-<h2 id="DCL"><a href="#DCL" class="headerlink" title="DCL"></a>DCL</h2><h3 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h3><p>查询：use mysql;select * from user;<br>创建：create user ‘用户名‘@’主机名’ identified by ‘密码’；<br>修改密码：<br>alter user ‘用户名‘@’主机名’ identified by ‘新密码’；<br>alter user  ‘用户名‘@’主机名’  identified with my_native_password by ‘新密码’；<br>删除用户：drop user  ‘用户名‘@’主机名’ </p>
-<h3 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h3><p>查询权限：show grants for  ‘用户名‘@’主机名’;<br>授予权限：grant 权限列表 on 数据库名.表名 to ‘用户名‘@’主机名’ [with grant option];<br>with grant opion允许被授权方给予他人权限<br>撤销权限：revoke 权限列表 on 数据库名.表名 from 用户名‘@’主机名’;</p>
-<p>权限列表：all，all privileges，select，insert，update，delete，alter，drop，create<br>所有数据库.所有表：* . *</p>
-<p>刷新权限：flush pivileges;</p>
-<h2 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h2><p><a href="#jump1">回到目录</a></p>
-<p><strong>《维护和保证数据一致性和完整性》，mysql5个约束+Oracle check检查约束</strong></p>
-<p>约束可以在创建表的时候在字段后添加，也可以使用alter添加<br><strong>主键约束：primary key  [auto_increment]</strong>      					<br>auto_increment&#x3D;起始值 设置起始值</p>
-<p>添加主键：alter table 表名 add prinmary key（字段）;<br>删除主键：alter table 表名 drop primary key;</p>
-<p><strong>唯一约束：unique</strong>      不能重复</p>
-<p>添加唯一约束：alter table 表名 add unique（字段）</p>
-<p>*<strong>非空约束：not null</strong>      不能为空</p>
-<p>添加唯一约束：alter table 表名 modify 字段 类型 not null<br>sql sever：alter table 表名 alter column 列名 数据类型 not null</p>
-<p>*<strong>默认值约束：default</strong>      设置默认值，now()mysql函数获取当前系统时间</p>
-<p>添加唯一约束：alter table 表名 modify 字段 类型 default 默认值<br>sql sever添加默认值约束：alter table 表名 add constraint default 默认值 for 列名</p>
-<p><strong>外键约束：constraint 外键名 foreign key(字段) references 主表名(主表主键)</strong>       限制外键中数据来自主键</p>
-<p>表关系：<strong>一对多</strong>，多方表设外键指向另一表的主键；<strong>多对多</strong>，创建第三张表作为中间表，设置两个外键分别指向各自主键；<strong>一对一</strong>，合并或者设置任意一个外键指向另一个主键</p>
-<p>主键外键关系：添加先主再从；删除先从再主；修改主键被引用不能修改(外键级联：on update&#x2F;delete cascade设置外键时设置该项)</p>
-<p>添加外键约束：alter table 表名 add constraint 外键名 froeign key(当前表外键字段) references 主表(主表主键)</p>
-<h2 id="多表查询"><a href="#多表查询" class="headerlink" title="多表查询"></a>多表查询</h2><p><a href="#jump1">回到目录</a></p>
-<h3 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h3><p>笛卡尔积是两张表每一项互相交叉组合的结果。<strong>消除笛卡尔积：主表.主键字段&#x3D;从表.外键字段</strong></p>
-<h3 id="内连接join和inner-join和where"><a href="#内连接join和inner-join和where" class="headerlink" title="内连接join和inner join和where"></a>内连接join和inner join和where</h3><p>隐式内连接:select 列名 from 左表，右表 where 主表.主键&#x3D;从表.外键</p>
-<p><strong>显式内连接</strong>:select 列名 from 左表 inner join 右表 on 主表.主键&#x3D;从表.外键<br>                                           from 表1 join 表2 using(同名的列名)</p>
-<p>区别：隐式内连接先做笛卡尔积再过滤不匹配的行；显示内连接先匹配连接条件再返回匹配的行。</p>
-<h3 id="外连接"><a href="#外连接" class="headerlink" title="外连接"></a>外连接</h3><p><strong>左外连接</strong>：左表所有记录都出现在结果中，如果右表没有匹配的记录，使用NULL填充，</p>
-<p>select 列名 from 左表 left join 右表 on 主表.主键&#x3D;从表.外键</p>
-<p><strong>右外连接</strong>：同上，改为右表</p>
-<p>select 列名 from 左表 right join 右表 on 主表.主键&#x3D;从表.外键</p>
-<p><strong>全外连接</strong></p>
-<p>mysql不支持，既左右外连接</p>
-<h3 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h3><p>子查询结果为<strong>单行单列</strong>，父查询使用比较运算符**&lt;&gt;&#x3D;<strong>;<strong>多行单列</strong>，父查询使用</strong>in、any、all<strong>；</strong>多行多列<strong>，需要</strong>取别名**当作临时表来使用该子查询的表格</p>
-<p>查询工资大于5000的员工信息<br>select id，name，gender，salary，dept_id from emp<br>where salary&gt;5000；<br>基于以上结果，关联dept表进行多表查询<br>实现方式一：select emp.id,emp.name.emp.gender,emp.salary<br>from dept inner join (select id，name，gender，salary，dept_id from emp<br>where salary&gt;5000；) as emp<br>on dept.id&#x3D;emp.dept_id<br>实现方式二：select emp.id,emp.name,emp.gender,emp.salary,dept.id,dept.name<br>from dept right join emp<br>    on dept.id&#x3D;emp.dept_id<br>where emp.salary in (select salary from emp where salary&gt;5000)</p>
-<h3 id="联合查询union"><a href="#联合查询union" class="headerlink" title="联合查询union"></a>联合查询union</h3><p>select ……union [all] select …..<br>前后列数和[数据类型]要一致,all是不去重</p>
-<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><p><a href="#jump1">回到目录</a></p>
-<p>一种机制，操作序列，包含多个步骤的业务操作，通过临时事务日志实现</p>
-<p>四个标准属性ACID：一个不可分割的工作逻辑单元<br><strong>原子性atom</strong>（要么全部执行成功，要么全部执行失败）；<br><strong>一致性consist</strong>（<strong>在事务开始之前和事务结束以后</strong>，<strong>数据库的完整性</strong>没有被破坏）；<br><strong>隔离性isolation</strong>（数据库允许<strong>多个并发事务同时对其数据进行读写和修改</strong>的能力，隔离性可以防止多个事务并发执行时由于交叉执行而导致数据的不一致）；<br><strong>持久性durability</strong>(事务处理结束后，<strong>对数据的修改就是永久</strong>的，即便系统故障也不会丢失)</p>
-<p>与事务控制有关的 SQL 命令包括：</p>
-<table>
-<thead>
-<tr>
-<th>语法</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>BEGIN 或者 START TRANSACTION</td>
-<td>开始事务</td>
-</tr>
-<tr>
-<td>COMMIT</td>
-<td>提交事务；将临时日志文件同步到数据库</td>
-</tr>
-<tr>
-<td>ROLLBACK</td>
-<td>回滚事务；将临时日志文件清空</td>
-</tr>
-<tr>
-<td>SAVEPOINT</td>
-<td>在事务内部设置回滚标记点；</td>
-</tr>
-<tr>
-<td>RELEASE SAVEPOINT</td>
-<td>删除回滚标记点；</td>
-</tr>
-<tr>
-<td>ROLLBACK TO</td>
-<td>将事务回滚到标记点（ROLLBACK 命令的一种变形写法）。</td>
-</tr>
-</tbody></table>
-<p>一个事务要么提交（Commit），要么回滚（Rollback），提交意味着成功，回滚意味着失败。编写事务代码时，以 BEGIN 命令开头，后跟一条或者多条 SQL 语句，最后书写 COMMIT 或者 ROLLBACK 命令；<strong>COMMIT 和 ROLLBACK 对应事务的两种状态，只能出现一个</strong>。</p>
-<p>事务控制命令仅能与 INSERT、UPDATE、DELETE 和 SELECT一起使用，在创建或者删除表时不能使用事务，因为这些操作在数据库中是自动提交的。</p>
-<h3 id="系统设置"><a href="#系统设置" class="headerlink" title="系统设置"></a>系统设置</h3><p>select @@autocommit；查看mysql的事务默认提交方式<br>set autocommit&#x3D;0;           修改mysql默认提交方式，改为手动</p>
-<h3 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h3><p>安全：串行化&gt;可重复读&gt;读已提交&gt;读未提交    性能相反<br>查看隔离级别：show variables like ‘%isolation%’<br>设置隔离级别（<strong>设置全局事务隔离水平</strong>）：set [session|global] transcation isolation level [read uncommitted|…..] </p>
-<ul>
-<li>脏读：读到其他事务未提交(回滚 )的数据；</li>
-<li>不可重复读：同一人前后读取的数据不一致；</li>
-<li>幻读：同一人前后读取的记录数量不一致。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="center">级别</th>
-<th>脏读</th>
-<th align="center">不可重复读</th>
-<th align="center">幻读</th>
-<th align="center">数据库默认隔离级别</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">读未提交read uncommitted</td>
-<td>是</td>
-<td align="center">是</td>
-<td align="center">是</td>
-<td align="center"></td>
-</tr>
-<tr>
-<td align="center">读已提交read committed</td>
-<td>否</td>
-<td align="center">是</td>
-<td align="center">是</td>
-<td align="center">Oracle和SQL sever</td>
-</tr>
-<tr>
-<td align="center">可重复读repeatable read</td>
-<td>否</td>
-<td align="center">否</td>
-<td align="center">是</td>
-<td align="center">Mysql</td>
-</tr>
-<tr>
-<td align="center">串行化serializable</td>
-<td>否</td>
-<td align="center">否</td>
-<td align="center">否</td>
-<td align="center">否</td>
-</tr>
-</tbody></table>
-<p>mysql在可重复读下幻读的场景1</p>
-<p><img src="/images/loading/loading.gif" data-original="/images/%E5%B9%BB%E8%AF%BB%E5%9C%BA%E6%99%AF1.png" alt="聚合函数"></p>
-<p>场景2<br><img src="/images/loading/loading.gif" data-original="/images/%E5%B9%BB%E8%AF%BB%E5%9C%BA%E6%99%AF2.png" alt="聚合函数"></p>
-<p><a href="#jump2">innodb事务原理</a></p>
-<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p><a href="#jump1">回到目录</a></p>
-<h3 id="日期函数"><a href="#日期函数" class="headerlink" title="日期函数"></a>日期函数</h3><table>
-<thead>
-<tr>
-<th>功能</th>
-<th>语法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>返回当前日期&#x2F;时间&#x2F;日期和时间</td>
-<td>current_date<br />current_time<br />current_timestamp</td>
-<td></td>
-</tr>
-<tr>
-<td>返回月&#x2F;周&#x2F;年的第几天</td>
-<td>dayofmonth()<br />dayofweek()<br />dayofyear()</td>
-<td></td>
-</tr>
-<tr>
-<td>从时间d中返回type</td>
-<td>extract(type FROM d)</td>
-<td></td>
-</tr>
-<tr>
-<td>日期 d 加上一个时间段后的日期</td>
-<td>date_add(d,INTERVAL 值 type)<br />date_sub()</td>
-<td></td>
-</tr>
-<tr>
-<td>计算时间点差(时间1-时间2)</td>
-<td>timestampdiff(时间格式,时间1,时间2)</td>
-<td></td>
-</tr>
-<tr>
-<td>计算时间差(时间1-时间2)</td>
-<td>datediff(时间1，时间2)</td>
-<td></td>
-</tr>
-<tr>
-<td>返回年月日</td>
-<td>date(时间)</td>
-<td></td>
-</tr>
-</tbody></table>
-<h3 id="字符函数"><a href="#字符函数" class="headerlink" title="字符函数"></a>字符函数</h3><table>
-<thead>
-<tr>
-<th>功能</th>
-<th>语法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>返回字符串 s 的字符数</td>
-<td>CHAR_LENGTH(“RUNOOB”)</td>
-<td>5</td>
-</tr>
-<tr>
-<td>合并多个字符串，并添加分隔符</td>
-<td>CONCAT_WS(“-“, “SQL”,  “is”, “fun!”)</td>
-<td>SQL-IS-is-fun</td>
-</tr>
-<tr>
-<td>从字符串第一个位置开始的 6 个字符替换为 runoob</td>
-<td>INSERT(“com”, 1, 2, “www”)</td>
-<td>cwww</td>
-</tr>
-<tr>
-<td>获取 b 在字符串 abc 中的位置</td>
-<td>LOCATE(‘st’,’myteststring’)</td>
-<td>5</td>
-</tr>
-<tr>
-<td>将字符串 s2 替代字符串 s 中的字符串 s1</td>
-<td>REPLACE(‘abc’,’a’,’x’)</td>
-<td>xbc</td>
-</tr>
-<tr>
-<td>从字符串 RUNOOB 中的第 2 个位置截取 3个 字符</td>
-<td>SUBSTRING(“RUNOOB”, 2, 3)</td>
-<td>UNO</td>
-</tr>
-<tr>
-<td>去掉字符串 RUNOOB 的首尾空格</td>
-<td>TRIM(‘    RUNOOB    ‘)</td>
-<td>RUNOOB</td>
-</tr>
-</tbody></table>
-<h3 id="数学函数"><a href="#数学函数" class="headerlink" title="数学函数"></a>数学函数</h3><table>
-<thead>
-<tr>
-<th>功能</th>
-<th>语法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>返回离 x 最近的整数，可选参数 y 表示要四舍五入的小数位数，如果省略，则返回整数</td>
-<td>round’(345.156, 2)</td>
-<td>345.16</td>
-</tr>
-<tr>
-<td>返回数值 x 保留到小数点后 y 位的值</td>
-<td>TRUNCATE(1.23456,3)</td>
-<td>1.234</td>
-</tr>
-</tbody></table>
-<h3 id="高级函数"><a href="#高级函数" class="headerlink" title="高级函数"></a>高级函数</h3><table>
-<thead>
-<tr>
-<th>排序函数&#x2F;分布函数&#x2F;聚合函数</th>
-<th>高级函数</th>
-<th>内置参数</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>rank() 并列跳跃</td>
-<td>窗口函数over()</td>
-<td>分区 partition by</td>
-</tr>
-<tr>
-<td>dense_rank() 并列不跳跃</td>
-<td></td>
-<td>排序order by</td>
-</tr>
-<tr>
-<td>row_number() 记行号</td>
-<td></td>
-<td>rows between 开始行 and 结束行</td>
-</tr>
-<tr>
-<td>percent_rank() 每行(rank-1) &#x2F; (rows-1)</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>cume_dist() 分组内&lt;&#x3D;当前 rank 值的行数 &#x2F; 分组内总行数</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<p>低版本的mysql没有窗口函数，通过用户变量@来添加行号<br>set @i&#x3D;0;<br>select @i:&#x3D;@i+1</p>
-<h1 id="进阶篇"><a href="#进阶篇" class="headerlink" title="进阶篇"></a>进阶篇</h1><h2 id="innodb存储引擎"><a href="#innodb存储引擎" class="headerlink" title="innodb存储引擎"></a>innodb存储引擎</h2><p><a href="#jump1">回到目录</a></p>
-<p>innoDB存储逻辑:支持事务，外键，行级锁提高并发性能</p>
-<h3 id="逻辑存储结果"><a href="#逻辑存储结果" class="headerlink" title="逻辑存储结果"></a>逻辑存储结果</h3><img src="/images/loading/loading.gif" data-original="/images/innodb.png" alt="innodb" style="zoom: 200%;" />
-
-<table>
-<thead>
-<tr>
-<th>存储空间</th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>表空间</td>
-<td>ibd文件</td>
-<td></td>
-</tr>
-<tr>
-<td>段</td>
-<td>包括数据段(叶子节点)、索引段、回滚段</td>
-<td></td>
-</tr>
-<tr>
-<td>区</td>
-<td>每个区1M，默认一页16K，所以一个区有64页</td>
-<td></td>
-</tr>
-<tr>
-<td>页</td>
-<td>存储引擎磁盘管理的最小单元，为保持页的连续性，引擎每次申请4-5页</td>
-<td></td>
-</tr>
-<tr>
-<td>行</td>
-<td>按行数据存放</td>
-<td></td>
-</tr>
-</tbody></table>
-<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><img src="/images/loading/loading.gif" data-original="/images/innodb架构.png" alt="innodb" style="zoom: 200%;" />
-
-<p>内存结构：缓冲池、更改缓冲区、日志缓冲区、自适应哈希索引<br>磁盘结构：系统表空间、每个表的表空间、通用表空间、撤销(undo)表空间、临时表空间、双写缓冲区、重做日志redo(重做日志缓冲(内存中)+重做日志文件(磁盘中))<br>后台线程：master thread、IO thread、purge thread回收已提交的撤销日志、page cleaner thread协助master thread刷新脏页到磁盘</p>
-<h3 id="事务原理"><a href="#事务原理" class="headerlink" title="事务原理 "></a>事务原理<span id="jump2"> </span></h3><p>redo log+undo log负责acd     原子，一致，持久<br>锁机制+MVCC负责i        隔离</p>
-<h3 id="MVCC-多版本并发控制"><a href="#MVCC-多版本并发控制" class="headerlink" title="MVCC(多版本并发控制)"></a>MVCC(多版本并发控制)</h3><p>当前读：对读取的记录加锁<br>select…lock in share mode(S)    select…for update、update、insert、delete(X)</p>
-<p>快照读：不加锁读取<br>read committed：每次select生成一个快照读<br>repeatable read：开启事务后，第一个select为快照读<br>serializable：快照读变成当前读</p>
-<h4 id="实现原理-隐藏字段-undo-log-readview"><a href="#实现原理-隐藏字段-undo-log-readview" class="headerlink" title="实现原理(隐藏字段+undo log+readview)"></a>实现原理(隐藏字段+undo log+readview)</h4><table>
-<thead>
-<tr>
-<th>隐藏字段(建表时会自动生成)</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>DB_TRX_ID</td>
-<td>最近修改的事务ID</td>
-</tr>
-<tr>
-<td>DB_ROLL_PTR</td>
-<td>回滚指针，配合undo log</td>
-</tr>
-<tr>
-<td>DB_ROW_ID</td>
-<td>隐藏主键，如果表结构没有主键生成</td>
-</tr>
-</tbody></table>
-<p>查看方法 ：idb2sdi idb文件名</p>
-<p>undo log日志：通过隐藏字段的回滚指针形成<strong>版本链</strong>来确定回滚到哪个事务<br>insert事务提交后undo log可立即删除；update和delete不会</p>
-<p>readview(读视图)：快照读执行时MVCC提取数据的依据</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>m_ids</td>
-<td>当前活跃事务的id集合</td>
-</tr>
-<tr>
-<td>min_trx_id</td>
-<td>最小活跃事务id</td>
-</tr>
-<tr>
-<td>max_trx_id</td>
-<td>预分配事务id，当前最大事务id+1</td>
-</tr>
-<tr>
-<td>creator_trx_id</td>
-<td>readview创建者的事务id</td>
-</tr>
-</tbody></table>
-<img src="/images/loading/loading.gif" data-original="/images/版本链数据访问规则.png" alt="innodb" style="zoom: 200%;" />
-
-<p>不同的隔离级别，生成readview的时机不同：<br>read committed：事务每次执行快照读时生成<br>repeatable read：仅在事务第一次执行快照读时生成</p>
-<h2 id="索引-数据结构，B-tree"><a href="#索引-数据结构，B-tree" class="headerlink" title="索引(数据结构，B+tree)"></a>索引(数据结构，B+tree)</h2><p><a href="#jump1">回到目录</a></p>
-<p><strong>索引大大提高查询效率，但是降低更新表的速度</strong><br>查询当前数据库是查询密集型还是修改密集型(查询或修改语句执行次数多)<br>show global status like ‘Com_ _ _ _ _ _ _’   七条下划线</p>
-<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>主键索引，唯一索引，普通索引，组合索引，全文索引，hash索引<br>创建索引：create [unique|fulltext] index 索引名 on 表名(字段1，字段2…..)<br>查看索引：show index from 表名<br>添加索引：alter table 表名 add index(字段)<br>删除索引：drop index 索引名 on 表名<br>对于约束会自动创建索引</p>
-<p>按存储结构分类：</p>
-<ul>
-<li>聚集索引：叶子节点保存行数据</li>
-<li>二级索引：叶子节点保存主键(索引结构和数据分开存放的索引)</li>
-</ul>
-<p>按数据结构分类：B+tree、hash索引、T-tree……</p>
-<h3 id="使用规则"><a href="#使用规则" class="headerlink" title="使用规则"></a>使用规则</h3><ul>
-<li>最左前缀匹配原则</li>
-<li>频繁查找，不频繁修改</li>
-<li>能够有效区分数据</li>
-<li>扩展索引不新建索引，索引扩展成(a,b),而不是创建a和b</li>
-<li>外键</li>
-<li>text，image，bit数据不建</li>
-</ul>
-<p><strong>索引失效</strong>：<a href="https://cloud.tencent.com/developer/article/1992920">https://cloud.tencent.com/developer/article/1992920</a></p>
-<h2 id="sql性能分析"><a href="#sql性能分析" class="headerlink" title="sql性能分析"></a>sql性能分析</h2><p><a href="#jump1">回到目录</a></p>
-<h3 id="慢查询日志"><a href="#慢查询日志" class="headerlink" title="慢查询日志"></a>慢查询日志</h3><p>来分析哪些语句的执行时间过长<br>开启方式：linux下mysql配置文件&#x2F;etc&#x2F;my.cnf<br>                     windows下mysql配置文件my.ini或者mysql.ini<br><img src="/images/loading/loading.gif" data-original="/images/慢查询.png" alt="innodb" style="zoom: 200%;" /></p>
-<p>慢查询日志：linux下的路径&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;localhost-slow.log</p>
-<h3 id="profile"><a href="#profile" class="headerlink" title="profile"></a>profile</h3><p>分析时间耗费情况<br>查看是否有该功能：select @@have_profiling<br>开启：set profiling &#x3D; 1<br>查看sql’耗时情况:show profiles<br>查看指定query_id的sql语句各阶段的耗时情况：show profile for query 查询id<br>查看该查询的cpu占比：show profile cpu for query 查询id</p>
-<h3 id="explain"><a href="#explain" class="headerlink" title="explain"></a>explain</h3><p>explain&#x2F;desc 来提前预览select语句的执行过程<br>explain select ………</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>id</td>
-<td>操作表的顺序，id越大越先执行</td>
-</tr>
-<tr>
-<td>select_type</td>
-<td>simple,primary,union,subquery</td>
-</tr>
-<tr>
-<td>type</td>
-<td>性能null&gt;system&gt;const&gt;eq_ref,ref,range,index,all</td>
-</tr>
-<tr>
-<td>possible_key</td>
-<td>可能用到的索引</td>
-</tr>
-<tr>
-<td>key</td>
-<td>实际用到的索引</td>
-</tr>
-<tr>
-<td>key_len</td>
-<td>使用到的索引字节数</td>
-</tr>
-<tr>
-<td>rows</td>
-<td>执行查询的行数(预估值)</td>
-</tr>
-<tr>
-<td>filtered</td>
-<td>返回结果行数占需读取行数的百分比，越大越好</td>
-</tr>
-</tbody></table>
-<h2 id="sql优化"><a href="#sql优化" class="headerlink" title="sql优化"></a>sql优化</h2><p><a href="#jump1">回到目录</a></p>
-<h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><ul>
-<li>单次插入-&gt;批量插入</li>
-<li>自动提交事务-&gt;手动提交事务</li>
-<li>主键乱序插入-&gt;主键顺序插入</li>
-<li>大批量插入insert-&gt;load</li>
-</ul>
-<p>load使用</p>
-<img src="/images/loading/loading.gif" data-original="/images/load插入数据.png" alt="innodb" style="zoom: 200%;" />
-
-<h3 id="主键优化"><a href="#主键优化" class="headerlink" title="主键优化"></a>主键优化</h3><ul>
-<li>尽量降低主键长度</li>
-<li>插入时尽量顺序插入auto_increment</li>
-<li>尽量不要使用uuid或其他自然主键(如身份证)做主键</li>
-<li>业务操作时避免对主键的修改(会动主键索引结构)</li>
-</ul>
-<h3 id="order-by优化"><a href="#order-by优化" class="headerlink" title="order by优化"></a>order by优化</h3><p>order by有两种排序：using filesort(全表扫描后在缓冲区排序)；using index(有序索引顺序扫描，效率高)</p>
-<ul>
-<li>根据排序字段建立索引，多字段时遵循最左前缀法则</li>
-<li>尽量使用覆盖索引(避免select *)</li>
-<li>对于不可避免的using filesort，可以适当增加缓冲区sort_buffer_size大小</li>
-</ul>
-<h3 id="group-by优化"><a href="#group-by优化" class="headerlink" title="group by优化"></a>group by优化</h3><p>using tempory和using index</p>
-<ul>
-<li>通过索引提高效率</li>
-<li>索引满足最左前缀法则</li>
-</ul>
-<h3 id="limit优化"><a href="#limit优化" class="headerlink" title="limit优化"></a>limit优化</h3><p>当查询limit a,b，对于a过大，而b较小时,例如limit 20000000,10<br>优化思路覆盖索引+子查询</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 优化前</span><br><span class="line">select * from table limit 900000,10;</span><br><span class="line">-- 优化后（id有索引）</span><br><span class="line">select t.*,(select id from table order by id limit 9000000,10) a from table t where s.id=a.id </span><br></pre></td></tr></table></figure>
-
-<h3 id="count优化"><a href="#count优化" class="headerlink" title="count优化"></a>count优化</h3><p>没有较好的方法，一般通过redis自己计数<br>效率：count(字段)&lt;count(主键id)&lt;count(1)≈count(*)</p>
-<h3 id="update优化"><a href="#update优化" class="headerlink" title="update优化"></a>update优化</h3><p>由于innodb支持行锁，在update行数据时，如果更新条件有索引，则为行锁；如果没有索引，则为表锁(并发性能降低)。因此避免更新条件没有索引</p>
-<h2 id="视图-虚拟表"><a href="#视图-虚拟表" class="headerlink" title="视图(虚拟表)"></a>视图(虚拟表)</h2><p><a href="#jump1">回到目录</a></p>
-<p>视图的作用：</p>
-<ul>
-<li>简单：简化用户对数据的理解和操作，经常使用的查询可以被定义为视图；</li>
-<li>安全：通过视图，用户只能查询和修改他们见到的数据，保证了安全性；</li>
-<li>数据独立：帮助用户屏蔽真实表结构变化带来的影响</li>
-</ul>
-<h3 id="基础语法"><a href="#基础语法" class="headerlink" title="基础语法"></a>基础语法</h3><p>创建视图：create [or replace] view 视图名 as select …….<br>查询视图：show create view 视图名<br>                    select * from 视图名<br>修改视图：create or replace view 视图名 as select …….;<br>                    alter view 视图名 as select…….;<br>                    update 视图名 set … where …;<br>删除视图：drop view [if exists] 视图名称</p>
-<h3 id="检查选项"><a href="#检查选项" class="headerlink" title="检查选项"></a>检查选项</h3><p>with [默认cascaded|local] check option<br>往视图中插入数据，实际会插入到该视图创建时，所依赖的表中<br>mysql允许基于另一个视图创建视图，并检查依赖视图中的规则来保持一致性<br>cascaded级联检查条件；local递归检查条件(检查取决于是否添加了check)</p>
-<h3 id="视图的更新"><a href="#视图的更新" class="headerlink" title="视图的更新"></a>视图的更新</h3><p>insert，update，delete都是更新<br>视图中的行与基础表中的行一对一<br>创建视图时，select中不能包含聚合函数、窗口函数、distinct、group by、having、union，不然无法更新视图</p>
-<h2 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a>存储过程</h2><p><a href="#jump1">回到目录</a></p>
-<p>一组经过预先编译的sql，来完成特定的事情。当存储过程执行一次后，可以将语句<strong>缓存在内存</strong>中，这样下次执行的时候直接使用缓存中的语句。这样就可以提高存储过程的性能。</p>
-<p>优点：</p>
-<ul>
-<li>减少sql重用率</li>
-<li>减少网络传输量(在开发架构中只需要向sql发送存储过程即可获取持久化数据)</li>
-<li>提高安全性(不会暴露sql)</li>
-</ul>
-<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><table>
-<thead>
-<tr>
-<th>类型</th>
-<th>设置&#x2F;声明</th>
-<th>查看</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>系统变量[全局变量&#x2F;会话变量]</td>
-<td>set <strong>[global&#x2F;|session]</strong> 变量名&#x3D;值<br>重启服务后全局变量恢复默认值，永久更改需更改配置文件</td>
-<td>show <strong>[global&#x2F;|session]</strong> variables [like ‘…’]<br>select @@<strong>[global&#x2F;|session]</strong>.变量名</td>
-</tr>
-<tr>
-<td>用户变量</td>
-<td>set&#x2F;|select @名称:&#x3D;值<br>select 字段名 into @名称 from 表</td>
-<td>select @名称</td>
-</tr>
-<tr>
-<td>局部变量(begin-end范围内有效)</td>
-<td>create procedure 存储过程名()<br>begin <br>declare 变量名 类型[default…]<br>set 变量名:&#x3D;值<br>end</td>
-<td>同上</td>
-</tr>
-</tbody></table>
-<h3 id="创建、调用、查看和删除"><a href="#创建、调用、查看和删除" class="headerlink" title="创建、调用、查看和删除"></a>创建、调用、查看和删除</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">在命令行中把语句结束符号换成自定义符号，避免存储过程创建中断(图形化界面不用)</span><br><span class="line">delimiter //     自定义//为结束符</span><br><span class="line">-- 创建</span><br><span class="line">create precedure 存储过程名称([in|out|inout 参数 参数类型])</span><br><span class="line">约束</span><br><span class="line">begin</span><br><span class="line">declare 变量名 数据类型 [default 值];</span><br><span class="line">set @变量名=值</span><br><span class="line">.....</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">约束：</span><br><span class="line"></span><br><span class="line">-- 调用(in参数直接写值，out参数@变量名，inout参数提前设好值然后@变量名)</span><br><span class="line">call 名称([参数])</span><br><span class="line"></span><br><span class="line">-- 查看</span><br><span class="line">-- 查询指定数据库xxx的存储过程及状态信息</span><br><span class="line">select * from information_schema.routines where routine_schema=&#x27;xxx&#x27;</span><br><span class="line">-- 查询你某个存储过程的定义</span><br><span class="line">show create procedure</span><br><span class="line"></span><br><span class="line">-- 删除</span><br><span class="line">drop procedure [if exists] 名称</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="关键词用法"><a href="#关键词用法" class="headerlink" title="关键词用法"></a>关键词用法</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- if</span><br><span class="line">if 条件 then ...;</span><br><span class="line">elseif 条件 then ...;</span><br><span class="line">else ...;</span><br><span class="line">end if;</span><br><span class="line"></span><br><span class="line">-- case</span><br><span class="line">case [表达式]</span><br><span class="line">	when 情况1 then ...</span><br><span class="line">	when 情况2 then ...</span><br><span class="line">	else ...</span><br><span class="line">end [case]</span><br><span class="line"></span><br><span class="line">-- while</span><br><span class="line">[标记:]while 条件 do</span><br><span class="line">	...</span><br><span class="line">end while [标记]</span><br><span class="line"></span><br><span class="line">-- repeat</span><br><span class="line">[标记:]repeat</span><br><span class="line">	...</span><br><span class="line">	until 条件</span><br><span class="line">end repeat [标记]</span><br><span class="line"></span><br><span class="line">-- loop</span><br><span class="line">-- 标记就是给这个循环取个名字</span><br><span class="line">[标记:] loop</span><br><span class="line">	...</span><br><span class="line">end loop [标记]</span><br><span class="line"></span><br><span class="line">-- 跳出循环 leave(退出循环)和iterate(跳过此次循环)</span><br><span class="line">	leave 标记;</span><br><span class="line">	iterate 标记;</span><br><span class="line"></span><br><span class="line">-- 条件处理程序hander(自定义异常处理)</span><br><span class="line">-- 声明</span><br><span class="line">declare [continue继续|exit退出] hander for 情况 [应对操作]</span><br><span class="line">-- 情况有一下几种</span><br><span class="line">sqlstate 状态码;</span><br><span class="line">sqlwarning;01开头的状态码</span><br><span class="line">not found;02开头的状态码</span><br><span class="line">sqlexception;非01和02的状态码</span><br></pre></td></tr></table></figure>
-
-<h3 id="游标"><a href="#游标" class="headerlink" title="游标"></a>游标</h3><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 游标cursor(用来存储查询结果集的数据类型)</span></span><br><span class="line"><span class="comment">-- 声明(游标的声明要在普通变量之后)</span></span><br><span class="line"><span class="keyword">declare</span> 游标名称 <span class="keyword">cursor</span> <span class="keyword">for</span> 查询语句</span><br><span class="line"><span class="comment">-- 打开</span></span><br><span class="line"><span class="keyword">open</span> 游标名称</span><br><span class="line"><span class="comment">-- 获取游标记录(把查询结果里面的列分别赋值给对应的变量名)</span></span><br><span class="line"><span class="keyword">fetch</span> 游标名称 <span class="keyword">into</span> 变量<span class="number">1</span>,变量<span class="number">2.</span>..</span><br><span class="line"><span class="comment">-- 关闭游标</span></span><br><span class="line"><span class="keyword">close</span> 游标名称</span><br></pre></td></tr></table></figure>
-
-<h2 id="存储函数"><a href="#存储函数" class="headerlink" title="存储函数"></a>存储函数</h2><p><a href="#jump1">回到目录</a></p>
-<p>有返回值的存储过程，且参数只有in类型(无须声明，默认就是in)</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create function 函数名([参数])</span><br><span class="line">returns 返回值的数据类型 </span><br><span class="line">[特征]</span><br><span class="line">begin</span><br><span class="line">	...</span><br><span class="line">	return ...;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">特征说明(在开启二进制日志时，此选项必须填写)：</span><br><span class="line">deterministic:与输入参数类型相同</span><br><span class="line">no sql:不含sql语句</span><br><span class="line">reads sql data:只包含select</span><br><span class="line">modifies sql data:只包含update，delete</span><br><span class="line"></span><br><span class="line">LANGUAGE SQL</span><br><span class="line">存储过程语言，默认是sql，说明存储过程中使用的是sql语言编写的，暂时只支持sql，后续可能会支持其他语言</span><br><span class="line"></span><br><span class="line">NOT DETERMINISTIC</span><br><span class="line">默认是NOT DETERMINISTIC，只对于同样的输入，输出也是一样的，当前这个值还没有使用</span><br><span class="line"></span><br><span class="line">CONTAINS SQL</span><br><span class="line">包括以下四种选择</span><br><span class="line">1.CONTAINS SQL：不包含读写</span><br><span class="line">2.NO SQL：不包含sql</span><br><span class="line">3.READS SQL DATA：包含读，不包含写</span><br><span class="line">4.MODIFIES SQL DATA：包含写</span><br></pre></td></tr></table></figure>
-
-<h2 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h2><p><a href="#jump1">回到目录</a></p>
-<p>在insert&#x2F;update&#x2F;delete之前或之后，出发并执行触发器中定义的sql语句集合；<br>协助应用在数据库端确保数据的完整性，日志记录，数据校验等操作</p>
-<table>
-<thead>
-<tr>
-<th>触发器类型</th>
-<th>new和old</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>insert型触发器</td>
-<td>new表示新增数据</td>
-</tr>
-<tr>
-<td>update型触发器</td>
-<td>old表示修改前的数据，new表示将要或已更新的数据</td>
-</tr>
-<tr>
-<td>delete型触发器</td>
-<td>old表示将要或已删除的数据</td>
-</tr>
-</tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- 创建</span><br><span class="line">create trigger 名称</span><br><span class="line">	before|after insert|update|delete </span><br><span class="line">	on 表名 for each row -- 行级触发器</span><br><span class="line">begin</span><br><span class="line">	...</span><br><span class="line">	new.列名 就表示新的某一数据</span><br><span class="line">	old.列名 就表示旧的某一数据</span><br><span class="line">end</span><br><span class="line">-- 查看</span><br><span class="line">show triggers</span><br><span class="line">-- 删除</span><br><span class="line">drop trigger [数据库名.]触发器名 -- 默认为当前数据库</span><br></pre></td></tr></table></figure>
-
-<h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><p><a href="#jump1">回到目录</a></p>
-<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a href="https://www.bilibili.com/video/BV1po4y1M7k5?p=2&vd_source=c75d57452dfe6d1e8dca457f1ab7a2ac">这一章很乱建议看视频</a></p>
-<pre class="mermaid">graph TD
-锁--> 粒度分类
-粒度分类--> 全局锁
-粒度分类--> 表锁锁
-粒度分类--> 行锁
-锁--> 模式分类
-模式分类--> 乐观锁
-模式分类--> 悲观锁
-锁--> 属性分类
-属性分类--> 共享锁
-属性分类--> 排他锁
-锁--> 状态分类
-状态分类--> 意向共享锁
-状态分类--> 意向排他锁
-锁--> 算法分类
-算法分类--> 间隙锁
-算法分类--> 记录锁
-算法分类--> 临键锁</pre>
-
-<h3 id="全局锁-一致性数据备份"><a href="#全局锁-一致性数据备份" class="headerlink" title="全局锁(一致性数据备份)"></a>全局锁(一致性数据备份)</h3><p>1.为当前数据库加全局锁：flush tables with read lock</p>
-<p>2.备份:mysqldump -h[数据库服务器主机ip] -uroot -p[密码] 库名&gt;[备份的存储路径文件.sql]<br>备份语句不用在登录mysql服务器后执行</p>
-<p>3.释放全局锁：unlock tables</p>
-<p>不加锁的一致性数据备份(innodb通过快照读实现):mysqldump <strong>[–single-transaction]</strong> -h[数据库服务器主机ip] -uroot -p[密码] 库名&gt;[备份的存储路径文件.sql]</p>
-<h3 id="表级锁"><a href="#表级锁" class="headerlink" title="表级锁"></a>表级锁</h3><pre class="mermaid">graph LR
-表级锁--> 表锁
-表锁--> 表共享读锁readlock--> 读锁皆可读
-表锁--> 表独占写锁writelock--> 写锁我读写
-表级锁--> 元数据锁DML
-元数据锁DML--> 增删改查时读锁--> 共享写锁shared_write
-增删改查时读锁--> 共享读锁shared_read
-元数据锁DML--> 表结构变更时写锁--> 排他锁exclusive
-表级锁--> 意向锁--> 意向共共享锁IS
-意向锁--> 意向共排他锁IX</pre>
-
-<h4 id="表锁-避免DML和DDL冲突"><a href="#表锁-避免DML和DDL冲突" class="headerlink" title="表锁(避免DML和DDL冲突)"></a>表锁(避免DML和DDL冲突)</h4><p>加锁：lock tables 表名 read|write<br>释放锁：unlock tables&#x2F;客户端连接关闭</p>
-<h4 id="元数据锁"><a href="#元数据锁" class="headerlink" title="元数据锁"></a>元数据锁</h4><p>系统自动控制，维护元数据的数据一致性；表上有事务时不可对元数据进行写入<br>增删改查时加读锁(共享读和共享写)；改变表结果时加写锁(排他)</p>
-<p>查看元数据锁：<br>select object_type,object_schema,object_name,lock_type,lock_duration from performance_schema.metadata_locks</p>
-<h4 id="意向锁"><a href="#意向锁" class="headerlink" title="意向锁"></a>意向锁</h4><p>当<strong>加行锁</strong>时，为了不和**[想要加表锁的另一方]<strong>冲突，会</strong>默认加意向锁**，这样加表锁的一方可以通过检测意向锁来确顶此时是否可以加表锁<br>意向共享锁IS：select…lock in share mode<br>意向排他锁IX：insert&#x2F;update&#x2F;delete&#x2F;select…for update</p>
-<h3 id="行级锁"><a href="#行级锁" class="headerlink" title="行级锁"></a>行级锁</h3><p>通过对索引上的索引项加锁来实现</p>
-<h4 id="行锁-Record-lock"><a href="#行锁-Record-lock" class="headerlink" title="行锁(Record lock)"></a>行锁(Record lock)</h4><p>锁定单个行记录，防止update和delete，在Read Commited，Repeat Read隔离级别下支持</p>
-<p>当通过没有索引的条件检索数据时,行锁会自动升级成表锁</p>
-<p>共享S：兼容S，冲突X<br>排他X：冲突S和X</p>
-<h4 id="间隙锁-Gap-lock"><a href="#间隙锁-Gap-lock" class="headerlink" title="间隙锁(Gap lock)"></a>间隙锁(Gap lock)</h4><p>锁定索引记录间隙，防止在事务间隙insert，产生幻读，在RR隔离级别下支持</p>
-<h4 id="临键锁-Next-key-lock"><a href="#临键锁-Next-key-lock" class="headerlink" title="临键锁(Next-key lock)"></a>临键锁(Next-key lock)</h4><p>行锁和间隙锁组合，锁行数据和数据前的间隙，在RR隔离级别下支持<br>innodb在rr隔离级别下使用临键锁进行搜索和索引扫面，防止幻读</p>
-<ul>
-<li>等值查询(唯一索引)时，对不存在的记录加锁会优化成间隙锁</li>
-<li>等值查询(普通索引)时，不满足查询需求，临键锁退化成间隙锁</li>
-<li>范围查询(唯一索引)时，访问不满足第一个条件的值</li>
-</ul>
-<h1 id="运维篇"><a href="#运维篇" class="headerlink" title="运维篇"></a>运维篇</h1><h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><p><a href="#jump1">回到目录</a></p>
-<h3 id="错误日志"><a href="#错误日志" class="headerlink" title="错误日志"></a>错误日志</h3><p>show variables like ‘%log_error%’<br>linux存放路径：&#x2F;var&#x2F;log&#x2F;mysqld.log<br>刷新错误日志文件：flush logs;</p>
-<p>配置文件mysqld：log-error&#x3D;&#x2F;</p>
-<h3 id="二进制日志"><a href="#二进制日志" class="headerlink" title="二进制日志"></a>二进制日志</h3><p>show variables ‘%log_bin%’</p>
-<p>记录所有的DDL和DML数据变更，不包括数据查询语言</p>
-<ul>
-<li><p>灾难时的<strong>数据恢复</strong></p>
-</li>
-<li><p>mysql的<strong>主从复制</strong>,mysql8二进制日志默认开启</p>
-</li>
-</ul>
-<p>show variables ‘%binlog_format%’<br>更改格式：vim &#x2F;etc&#x2F;my.cnf</p>
-<table>
-<thead>
-<tr>
-<th>日志格式</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>statement</td>
-<td>基于sql语句的日志记录，对数据进行修改的sql都会记录</td>
-</tr>
-<tr>
-<td>row</td>
-<td>基于行的记录，记录没一行的数据变更(默认)</td>
-</tr>
-<tr>
-<td>mixed</td>
-<td>混合上两种，某些情况下自动切换为row格式</td>
-</tr>
-</tbody></table>
-<p>二进制日志查询工具<br>mysqlbinlog [参数选项] 二进制日志文件名<br>参数选项：</p>
-<ul>
-<li>-d     指定数据库名称，只列出指定数据库的日志文件</li>
-<li>-o     忽略掉日志中的前n行命令</li>
-<li>-v     将行事件重构为sql语句</li>
-<li>-w    将行事件重构为sql语句，并输出注释</li>
-</ul>
-<p>日志删除</p>
-<table>
-<thead>
-<tr>
-<th>指令</th>
-<th>含义</th>
-<th></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>reset master</td>
-<td>删除全部binloog日志，删除后日志编号从000001重新开始</td>
-<td></td>
-</tr>
-<tr>
-<td>purge master logs to ‘binlog.xxxxxx’</td>
-<td>删除xxxxxx编号之前的所有日志</td>
-<td></td>
-</tr>
-<tr>
-<td>purge master logs before ‘yyyy-mm-dd hh24:mi:ss’</td>
-<td>删除日志为’yyyy-mm-dd hh24:mi:ss’之前的所有日志</td>
-<td></td>
-</tr>
-</tbody></table>
-<p>配置二进制日志过期时间：show variables like ‘%binlog_expire%’</p>
-<h3 id="查询日志"><a href="#查询日志" class="headerlink" title="查询日志"></a>查询日志</h3><p>默认情况下，查询日志未开启<br>开启：set global general_log&#x3D;on<br>默认文件名:general_log_file&#x3D;host_name.log<br>show variables like ‘%general%’</p>
-<h3 id="慢查询日志-1"><a href="#慢查询日志-1" class="headerlink" title="慢查询日志"></a>慢查询日志</h3><p>默认未开启，记录执行时间超过long_query_time并且扫面记录数不小于min_examined_row_limit的所有sql语句日志</p>
-<p>开启方式：linux下mysql配置文件&#x2F;etc&#x2F;my.cnf<br>                     windows下mysql配置文件my.ini或者mysql.ini<br><img src="/images/loading/loading.gif" data-original="/images/慢查询.png" alt="innodb" style="zoom: 200%;" /></p>
-<p>慢查询日志：linux下的路径&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;localhost-slow.log</p>
-<p>记录执行<strong>较慢的管理</strong>语句：log_slow_admin_statements&#x3D;1<br>记录执行较慢的<strong>未使用索引</strong>的语句：log_queries_not_using_indexs&#x3D;1</p>
-<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><p><a href="#jump1">回到目录</a></p>
-<p>将主库master的DDL和DML操作通过二进制日志传到从库，然后在从库slave上重做</p>
-<ul>
-<li>主库出现问题，快速切换到从库提供服务</li>
-<li>实现读写分离，降低主库的访问压力</li>
-<li>在从库中执行备份，避免备份期间影响主库服务</li>
-</ul>
-<h3 id="过程原理"><a href="#过程原理" class="headerlink" title="过程原理"></a>过程原理</h3><p>1.master主库提交事务时，把数据变更记录在二进制日志文件里binlog<br>2.从库用IOthread读取主库的二进制日志binlog文件，写入从库的中继日志relaylog中<br>3.salve从库用SQLthread执行中继日志relaylog中的事件，改变它自己的数据</p>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>开放指定的3306端口号：<br>firewall-cmd –zone&#x3D;public –add-port&#x3D;3306&#x2F;tcp-permanent<br>firewall-cmd-reload<br>关闭防火墙和开机自启<br>systemctl stop firewalld<br>systemctl disable firewalld</p>
-<p><strong>主库master配置</strong></p>
-<p>1.修改配置<br>[mysqld]<br>#mysql服务ID，保证整个集群环境中唯一<br>server-id&#x3D;1<br>#是否只读,1表示该数据库只能读(select)<br>read-only&#x3D;0<br>#启用二进制日志<br>log-bin&#x3D;mysql-bin<br>#不需要同步的数据库<br>binlog-ignore-db&#x3D;mysql<br>#要同步的数据库<br>#binlog-do-db&#x3D;数据库名</p>
-<p>2.重启mysql服务器<br>systemctl restart mysqld</p>
-<p>3.登录mysql，创建远程连接的账号，并授权主从复制权限<br>#创建用户，设置密码，该用户可在任意主机连接该mysql服务<br>create user ‘用户名‘@’%’ identified by ‘密码’<br>#为该用户分配主从复制权限<br>grant replication slave on * . * to ‘从库‘@’%’</p>
-<p>4.查看二进制日志坐标<br>show master status</p>
-<p><strong>从库slave配置</strong></p>
-<p>1.修改配置<br>server-id&#x3D;2        只要和主库不一样就行<br>read-only&#x3D;1       可以读写</p>
-<p>2.重启systemctl restart mysqld</p>
-<p>3，登录mysql，设置主库配置<br>change master to master_host&#x3D;’xxx.xxx’,master_user&#x3D;’xxx’,master_password&#x3D;’xxx’,<br>master_log_file&#x3D;’xxx’,master_log_pos&#x3D;xxx<br><strong>mysql8.0.23后的版本</strong><br>change republication source to source_host&#x3D;’xxx.xxx’,source_user&#x3D;’xxx’,source_password&#x3D;’xxx’,<br>source_log_file&#x3D;’xxx’,source_log_pos&#x3D;xxx</p>
-<table>
-<thead>
-<tr>
-<th>8.0.23前的参数</th>
-<th>8.0.23及之后的参数</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>master_host</td>
-<td>source_host</td>
-<td>主库ip地址</td>
-</tr>
-<tr>
-<td>master_user</td>
-<td>source_user</td>
-<td>连接主库的用户名</td>
-</tr>
-<tr>
-<td>master_password</td>
-<td>source_password</td>
-<td>连接主库的密码</td>
-</tr>
-<tr>
-<td>master_log_file</td>
-<td>source_log_file</td>
-<td>binlog日志文件名</td>
-</tr>
-<tr>
-<td>master_log_pos</td>
-<td>source_log_pos</td>
-<td>binlog日志文件当前位置</td>
-</tr>
-</tbody></table>
-<p>4.开启同步操作<br>start replica；   8.0.22后<br>start slave；      8.0.22前</p>
-<p>5.查看主从同步状态<br>show replica status&#x2F;G；   8.0.22之后    &#x2F;G由列换成行显示<br>关键字Replica_IO_Running和Replica_SQL_Running</p>
-<p>show slave status；    8.0.22之前</p>
-<h2 id="docker实现主从复制"><a href="#docker实现主从复制" class="headerlink" title="docker实现主从复制"></a>docker实现主从复制</h2><p>修改主机名：hostnamectl set-hostname 新名称<br>ip和主机名映射：修改文件&#x2F;etc&#x2F;hosts</p>
-<p>多台虚拟机之间建立免密登录：</p>
-<ul>
-<li>ssh-keygen 三次回车生成密钥</li>
-<li>ssh-copy-id 主机账号名root@主机名</li>
-<li>测试，ssh root@主机名</li>
-</ul>
-<h3 id="启动主服务器"><a href="#启动主服务器" class="headerlink" title="启动主服务器"></a>启动主服务器</h3><p>docker run -p 3307:3306 –name mysql-master -v 容器卷映射(一般映射配置文件，日志文件，data文件) -e MYSQL_ROOT_PASSWORD&#x3D;123456 -d mysql:版本号</p>
-<p>-v &#x2F;myapps&#x2F;mysql-master&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;  &#x2F;<br>-v &#x2F;myapps&#x2F;mysql-master&#x2F;logs:&#x2F;var&#x2F;log&#x2F;mysql&#x2F;   &#x2F;<br>-v &#x2F;myapps&#x2F;mysql-master&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql  &#x2F;</p>
-<p>例如：docker run -p 3307:3306 –name mysql-master -v &#x2F;myapps&#x2F;mysql-master&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;  -v &#x2F;myapps&#x2F;mysql-master&#x2F;logs:&#x2F;var&#x2F;log&#x2F;mysql&#x2F;  -v &#x2F;myapps&#x2F;mysql-master&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql  -e MYSQL_ROOT_PASSWORD&#x3D;123456 -d mysql:5.7</p>
-<h3 id="修改配置主mysql的配置"><a href="#修改配置主mysql的配置" class="headerlink" title="修改配置主mysql的配置"></a>修改配置主mysql的配置</h3><p>在&#x2F;myapps&#x2F;mysql-master&#x2F;conf下创建配置文件my.cnf<br>1.修改配置<br>[mysqld]<br>#mysql服务ID，保证整个集群环境中唯一<br>server-id&#x3D;1<br>#是否只读,1表示该数据库只能读(select)<br>read-only&#x3D;0<br>#忽略的数据，不需要同步的数据库<br>#binlog-ignore-db&#x3D;mysql<br>#指定要同步的数据<br>#binlog-do-db&#x3D;db01<br>##开启二进制日志功能<br>log-bin&#x3D;mall-mysql-bin<br>##设置二进制日志使用内存大小<br>binlog_cache_size&#x3D;1M<br>##设置使用的二进制日志格式<br>binlog_format&#x3D;mixed<br>##二进制日志过期清理时间，默认值为0，表示不自动清理<br>expire_logs_days&#x3D;7<br>##跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制##中断。1062指一些主键重复，1032主从数据库数据不一致<br>slave_skip_errors&#x3D;1062</p>
-<p>2.登录mysql，创建远程连接的账号，并授权主从复制权限<br>docker exec -it mysql-master bash<br>#创建用户，设置密码，该用户可在任意主机连接该mysql服务<br>create user ‘从库用户名‘@’%’ identified with mysql_native_password by ‘密码’<br>#为该用户分配主从复制权限<br>grant replication slave on * . * to ‘库‘@’’</p>
-<p>4.查看主从复制状态<br>show master status</p>
-<h3 id="启动从服务器"><a href="#启动从服务器" class="headerlink" title="启动从服务器"></a>启动从服务器</h3><p>docker run -p 3308:3306 –name slave </p>
-<p>-v &#x2F;myapps&#x2F;mysql-slave&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;conf.d<br>-v &#x2F;myapps&#x2F;mysql-slave&#x2F;logs:&#x2F;logs<br>-v &#x2F;myapps&#x2F;mysql-slave&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql </p>
-<p>-e MYSQL_ROOT_PASSWORD&#x3D;123456<br>-d mysql:5.7</p>
-<h3 id="配置从服务器配置文件"><a href="#配置从服务器配置文件" class="headerlink" title="配置从服务器配置文件"></a>配置从服务器配置文件</h3><p>在&#x2F;myapps&#x2F;mysql-slave&#x2F;conf下创建配置文件my.cnf<br>[mysqld]<br>##设置server_id，同一局域网中需要唯一<br>server_id&#x3D;2<br>##设置只读<br>read_only&#x3D;1<br>##relay_log配置中继日志<br>relay_log&#x3D;slave-relay-bin<br>##指定不需要同步的数据库名称<br>binlog-ignore-db&#x3D;mysql<br>##开启二进制日志功能,以备slave作为其他数据库实例的master时使用<br>log-bin&#x3D;mall-mysql-slave1-bin<br>##设置二进制日志使用内存大小<br>binlog_cache_size&#x3D;1M<br>##设置使用的二进制日志格式<br>binlog_format&#x3D;mixed<br>##二进制日志过期清理时间，默认值为0，表示不自动清理<br>expire_logs_days&#x3D;7<br>##跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制##中断。1062指一些主键重复，1032主从数据库数据不一致<br>slave_skip_errors&#x3D;1062<br>##slave将复制事件写进自己的二进制日志<br>log_slave_updates&#x3D;1</p>
-<p>C、重启slave实例<br>D、在主数据库中查看主从同步状态 show master status;<br>E、进入到从数据库中配置主从复制<br>change master to master_host&#x3D;’192.168.100.188’,master_user&#x3D;’slave’,<br>master_password&#x3D;’123456’,master_port&#x3D;3307,master_log_file&#x3D;’mall-mysql-bin.000001’,master_log_pos&#x3D; 154,master_connect_retry&#x3D;30;<br>F、从数据库中查看主从同步状态 show slave status;<br>G、从数据库中开启主从同步  start slave;<br>H、再次从数据库中查看主从同步状态 show slave status;<br>I、测试主从功能：</p>
-<h2 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h2><p><a href="#jump1">回到目录</a></p>
-<p>垂直拆分：</p>
-<ul>
-<li>垂直分库：以表为依据，根据业务将不同表拆分(每个库的表结构不一样)，库的并集为全量数据</li>
-<li>垂直分表：以字段为依据，将表结构拆分(每个表的结构不同)，表的并集为全量数据</li>
-</ul>
-<p>水平拆分：</p>
-<ul>
-<li>水平分库：以字段为依据，将数据拆分到别的库(表结构一样，数据不一样)，库的并集为全量数据</li>
-<li>水平分表：对表水平拆分，将数据拆分到库(表结构一致，数据不一致)，表的并集为全量数据</li>
-</ul>
-<h3 id="使用mycat分库分表"><a href="#使用mycat分库分表" class="headerlink" title="使用mycat分库分表"></a>使用mycat分库分表</h3><p>阿里巴巴开源的mysql数据库中间件</p>
-<h2 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h2><p><a href="#jump1">回到目录</a></p>
-]]></content>
-      <categories>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>mysql</tag>
       </tags>
   </entry>
   <entry>
