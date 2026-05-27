@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="zh-CN"><head>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
@@ -10,10 +12,10 @@
   <link rel="manifest" href="/images/manifest.json">
   <meta name="msapplication-config" content="/images/browserconfig.xml">
 
+<link rel="stylesheet" href="/css/main.css">
 
 
-
-
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
@@ -88,13 +90,13 @@
   </style>
 </noscript>
 
-<script>function loadCss(l){var d=document,h=d.head,s=d.createElement('link');s.rel='stylesheet';s.href=l;!function e(f){if (d.body)return f();setTimeout(function(){e(f)})}(function(){h.appendChild(s);});}loadCss('/style.css');</script></head>
+</head>
 
-<body itemscope="" itemtype="http://schema.org/WebPage">
+<body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
     <div class="headband"></div>
 
-    <header class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏">
@@ -172,7 +174,9 @@
     <i class="fa fa-search"></i>
   </span>
   <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off" placeholder="搜索..." spellcheck="false" type="search" class="search-input">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
   </div>
   <span class="popup-btn-close">
     <i class="fa fa-times-circle"></i>
@@ -210,16 +214,16 @@
     
   
   
-  <article itemscope="" itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://maofe3o4.github.io/2024/05/10/sql/MYSQL/">
 
-    <span hidden="" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/%E5%85%AD%E8%8A%B1.gif">
       <meta itemprop="name" content="我真不是雪上加霜">
       <meta itemprop="description" content="失败总是贯穿人生始终">
     </span>
 
-    <span hidden="" itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="我真不是雪上加霜">
     </span>
       <header class="post-header">
@@ -248,7 +252,7 @@
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
                 </span>
             </span>
@@ -265,7 +269,7 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-                <span class="post-meta-item-text">阅读时长 ≈</span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
               <span>19 分钟</span>
             </span>
             <div class="post-description">跟着黑马的mysql自己做的笔记(不全是黑马)</div>
@@ -282,9 +286,9 @@
         <p><span id="jump1">目录</span></p>
 <p>[TOC]</p>
 <h1 id="基础篇"><a href="#基础篇" class="headerlink" title="基础篇"></a>基础篇</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><a href="#jump1">回到目录</a></p>
-<p>进Mysql配置文件设置客户端和服务端的字符集编码<br>路径：找到Mysql安装路径，*/data/my.ini        也可能是mysql.ini</p>
-<p>/# 设置客户端字符集编码<br>default-character-set=gbk</p>
-<p>/# 设置服务端字符集编码<br>character-set-server=utf8</p>
+<p>进Mysql配置文件设置客户端和服务端的字符集编码<br>路径：找到Mysql安装路径，*&#x2F;data&#x2F;my.ini        也可能是mysql.ini</p>
+<p>&#x2F;# 设置客户端字符集编码<br>default-character-set&#x3D;gbk</p>
+<p>&#x2F;# 设置服务端字符集编码<br>character-set-server&#x3D;utf8</p>
 <p>Mysql关系型数据库（由多张互相连接的二维表），SQL，结构化查询语言<br>DMQC:definition定义，manipulation操作，query查询，control控制<br>DDL:对库、表创建修改删除  DML：对表内数据增删改   DQL：对数据表查询 DCL：权限，安全，用户<br>登录：mysql -uroot -p123456 [-h192.168.181.3]</p>
 <table>
 <thead>
@@ -314,12 +318,12 @@
 <td>数据备份工具</td>
 </tr>
 <tr>
-<td>mysqlimport/source</td>
-<td>数据导入工具(mysqldump导出的txt)/sql文件导入</td>
+<td>mysqlimport&#x2F;source</td>
+<td>数据导入工具(mysqldump导出的txt)&#x2F;sql文件导入</td>
 </tr>
 </tbody></table>
-<h3 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h3><p>备份：mysqldump -uroot -p 库名&gt;路径/自命名.sql        路径不能有空格<br>还原：mysql -uroot -p 库名&lt;路径/自命名.sql<br>备份所有库–all-databases</p>
-<p>数据库基本数据类型：<br>设置时区：set time zone=’+8:00’ </p>
+<h3 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h3><p>备份：mysqldump -uroot -p 库名&gt;路径&#x2F;自命名.sql        路径不能有空格<br>还原：mysql -uroot -p 库名&lt;路径&#x2F;自命名.sql<br>备份所有库–all-databases</p>
+<p>数据库基本数据类型：<br>设置时区：set time zone&#x3D;’+8:00’ </p>
 <table>
 <thead>
 <tr>
@@ -384,7 +388,7 @@
 <h4 id="sys"><a href="#sys" class="headerlink" title="sys"></a>sys</h4><p>通过视图把information_schema和performance_schema结合起来，让程序员可以更方便的了解MySQL服务器的一些性能信息。</p>
 <h4 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h4><p>存储MySQL用户账户和权限信息，还有一些存储过程、事件的定义信息，一些运行过程中产生的日志信息，一些帮助信息以及时区信息等。</p>
 <h2 id="DDL"><a href="#DDL" class="headerlink" title="DDL"></a>DDL</h2><p><a href="#jump1">回到目录</a></p>
-<h3 id="对库定义"><a href="#对库定义" class="headerlink" title="对库定义"></a>对库定义</h3><p>–查看数据库<br>show DATABASES;<br>–创建数据库<br>create database <code>数据库名</code>;<br>create database if no exists <code>数据库名</code>;<br>复制表结构和数据：<strong>create table</strong> 新表 <strong>as</strong> (select * from 旧表);<br>复制表结构：<strong>create table</strong> 新表 <strong>as</strong> (select * from 旧表 where 1=2);<br>复制表数据:insert into 新表 (column1,column2…) select column1,column2… from table_name_old;<br>sql server：select * into 新表 from 旧表</p>
+<h3 id="对库定义"><a href="#对库定义" class="headerlink" title="对库定义"></a>对库定义</h3><p>–查看数据库<br>show DATABASES;<br>–创建数据库<br>create database <code>数据库名</code>;<br>create database if no exists <code>数据库名</code>;<br>复制表结构和数据：<strong>create table</strong> 新表 <strong>as</strong> (select * from 旧表);<br>复制表结构：<strong>create table</strong> 新表 <strong>as</strong> (select * from 旧表 where 1&#x3D;2);<br>复制表数据:insert into 新表 (column1,column2…) select column1,column2… from table_name_old;<br>sql server：select * into 新表 from 旧表</p>
 <p>–删除数据库<br>drop database <code>数据库名</code>;<br>drop database if exists <code>数据库名</code>;<br>–查看当前使用的哪个数据库<br>select database();<br>–切换数据库<br>use <code>数据库名</code>;</p>
 <h3 id="对表定义"><a href="#对表定义" class="headerlink" title="对表定义"></a>对表定义</h3><p>–查看当前数据库下所有表<br>show tables;<br>–查看表结构<br>desc <code>表名</code>;<br>–创建表<br>create table <code>表名</code>(<br><code>字段名</code> 数据类型,<br><code>字段名</code> 数据类型，<br>primary key(<code>列</code>),<br>foreign key(<code>列</code>) references 主表(列)<br>);<br>–删除表<br>drop table <code>表名</code>；<br>drop table if exists <code>表名</code>;</p>
 <p>开发时使用DDL里面的：truncate table 表名;<br>delete支持回滚，truncate不支持回滚<br>–<strong>修改表的数据类型表名，（修改数据用update）</strong><br>–修改名字，新增一列，修改数据类型，修改列名和数据类型，删除列<br>alter table <code>表名</code> rename to <code>表名</code>;<br>alter table <code>表名</code> add <code>列名</code> <code>数据类型</code>;<br>alter table <code>表名</code> modify <code>列名</code> <code>新数据类型</code>;<br>alter table <code>表名</code> change <code>列名</code> <code>新列名</code> <code>新数据类型</code>;也可以保持数据类型不动<br>alter table <code>表名</code> drop <code>列名</code>;</p>
@@ -418,17 +422,17 @@
 </tbody></table>
 <h2 id="DML"><a href="#DML" class="headerlink" title="DML"></a>DML</h2><p><a href="#jump1">回到目录</a></p>
 <p>–添加数据insert<br>1.指定列添加<br>insert into 表名 (列名1,列名3) values (数据1,数据3);<br>2.所有列添加数据<br>insert into 表名 values (数据1,数据2,数据3);<br>3.批量添加数据<br>insert into 表名(列名1，列名3)  values (数据1,数据3)，(数据1,数据3)，(数据1,数据3);<br>4.通过复制来插入数据<br>复制表数据:insert into 表名(列1,列2…) select 列1,列2… from 表名;</p>
-<p>–修改数据update<br>–不设条件会改全部，不建议<br>修改整个表：update 表名 set 列名1=新值,列名2=新值….;       可以撤回<br>修改指定行数据：update 表名 set 列名1=新值,列名2=新值…. where 条件；</p>
+<p>–修改数据update<br>–不设条件会改全部，不建议<br>修改整个表：update 表名 set 列名1&#x3D;新值,列名2&#x3D;新值….;       可以撤回<br>修改指定行数据：update 表名 set 列名1&#x3D;新值,列名2&#x3D;新值…. where 条件；</p>
 <p>–删除数据delete from<br>–删除满足条件的行记录<br>delete from 表名 where 条件:<br>–删除所有行,两者区别,前者一行行删,后者先drop再create<br>delete from 表名 where 真;<br>开发时使用DDL里面的：truncate table 表名;<br>delete支持回滚,truncate不支持回滚（sqlsever可以回滚）</p>
 <h2 id="DQL"><a href="#DQL" class="headerlink" title="DQL"></a>DQL</h2><p><a href="#jump1">回到目录</a></p>
 <p><img src="/images/loading/loading.gif" data-original="/images/%E6%9D%A1%E4%BB%B6%E7%AC%A6%E5%8F%B7.png" alt="条件符号"></p>
-<p>!!! like模糊查询：%表示0个或1个或多个任意字符,_表示一个字符；比如姓马的人like ‘马%’,<strong>如果要直接查询含有%的”/%”</strong></p>
+<p>!!! like模糊查询：%表示0个或1个或多个任意字符,_表示一个字符；比如姓马的人like ‘马%’,<strong>如果要直接查询含有%的”&#x2F;%”</strong></p>
 <p>在sql server中还有范围匹配[]         [0-9a-zA-Z] 为数字大小写字母</p>
 <p>自定义转义字符：like ‘!%!%’ ESCAPE ‘!’         – 自定义转义字符！</p>
 <p>聚合函数不能对NULL进行计算，使用时可以**avg(ifnull(列名，0))**，如果为，设置为0</p>
 <p><img src="/images/loading/loading.gif" data-original="/images/%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0.png" alt="聚合函数"></p>
 <p>[]里面可写可不写，<strong>当有多个排序条件时，当前边的条件值一样时，才会根据第二个条件排序</strong>。</p>
-<p>变量：用户变量，@变量名<br>赋值：set 变量名=值       select 变量名:=值</p>
+<p>变量：用户变量，@变量名<br>赋值：set 变量名&#x3D;值       select 变量名:&#x3D;值</p>
 <p>select [distinct]（去除重复记录）<br>    字段列表 [as]  别名<br>from [as]  别名<br>    表名列表<br>where         –条件查询<br>    条件<br>group by    –分组查询（select什么就分什么组，其他用聚合函数，按唯一值分组可以写所有列，group_concat(字段[order by 字段]) 将未分组的列拼接）<br>    分组列表<br>having    –注意和where的区别，where中不能使用聚合函数<br>    分组后条件<br>[with rollup] 分组后在最后一行加一个汇总行<br>order by   –排序查询<br>    排序字段1 [desc|asc]（默认升序，desc降序），排序字段2 [desc|asc]（默认升序，desc降序）<br>limit  n,m  –分页查询     1，3查询结果为第234条    0，5简写5<br>    起始索引，查询行数</p>
 <p>！mysql分页查询limit，Oracle分页查询rownumber，sql sever分页查询top</p>
 <p> <strong>sql执行顺序：</strong><br>from-where-group by-having-select-order by-limit</p>
@@ -438,7 +442,7 @@
 <p>刷新权限：flush pivileges;</p>
 <h2 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h2><p><a href="#jump1">回到目录</a></p>
 <p><strong>《维护和保证数据一致性和完整性》，mysql5个约束+Oracle check检查约束</strong></p>
-<p>约束可以在创建表的时候在字段后添加，也可以使用alter添加<br><strong>主键约束：primary key  [auto_increment]</strong>      					<br>auto_increment=起始值 设置起始值</p>
+<p>约束可以在创建表的时候在字段后添加，也可以使用alter添加<br><strong>主键约束：primary key  [auto_increment]</strong>      					<br>auto_increment&#x3D;起始值 设置起始值</p>
 <p>添加主键：alter table 表名 add prinmary key（字段）;<br>删除主键：alter table 表名 drop primary key;</p>
 <p><strong>唯一约束：unique</strong>      不能重复</p>
 <p>添加唯一约束：alter table 表名 add unique（字段）</p>
@@ -448,21 +452,21 @@
 <p>添加唯一约束：alter table 表名 modify 字段 类型 default 默认值<br>sql sever添加默认值约束：alter table 表名 add constraint default 默认值 for 列名</p>
 <p><strong>外键约束：constraint 外键名 foreign key(字段) references 主表名(主表主键)</strong>       限制外键中数据来自主键</p>
 <p>表关系：<strong>一对多</strong>，多方表设外键指向另一表的主键；<strong>多对多</strong>，创建第三张表作为中间表，设置两个外键分别指向各自主键；<strong>一对一</strong>，合并或者设置任意一个外键指向另一个主键</p>
-<p>主键外键关系：添加先主再从；删除先从再主；修改主键被引用不能修改(外键级联：on update/delete cascade设置外键时设置该项)</p>
+<p>主键外键关系：添加先主再从；删除先从再主；修改主键被引用不能修改(外键级联：on update&#x2F;delete cascade设置外键时设置该项)</p>
 <p>添加外键约束：alter table 表名 add constraint 外键名 froeign key(当前表外键字段) references 主表(主表主键)</p>
 <h2 id="多表查询"><a href="#多表查询" class="headerlink" title="多表查询"></a>多表查询</h2><p><a href="#jump1">回到目录</a></p>
-<h3 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h3><p>笛卡尔积是两张表每一项互相交叉组合的结果。<strong>消除笛卡尔积：主表.主键字段=从表.外键字段</strong></p>
-<h3 id="内连接join和inner-join和where"><a href="#内连接join和inner-join和where" class="headerlink" title="内连接join和inner join和where"></a>内连接join和inner join和where</h3><p>隐式内连接:select 列名 from 左表，右表 where 主表.主键=从表.外键</p>
-<p><strong>显式内连接</strong>:select 列名 from 左表 inner join 右表 on 主表.主键=从表.外键<br>                                           from 表1 join 表2 using(同名的列名)</p>
+<h3 id="笛卡尔积"><a href="#笛卡尔积" class="headerlink" title="笛卡尔积"></a>笛卡尔积</h3><p>笛卡尔积是两张表每一项互相交叉组合的结果。<strong>消除笛卡尔积：主表.主键字段&#x3D;从表.外键字段</strong></p>
+<h3 id="内连接join和inner-join和where"><a href="#内连接join和inner-join和where" class="headerlink" title="内连接join和inner join和where"></a>内连接join和inner join和where</h3><p>隐式内连接:select 列名 from 左表，右表 where 主表.主键&#x3D;从表.外键</p>
+<p><strong>显式内连接</strong>:select 列名 from 左表 inner join 右表 on 主表.主键&#x3D;从表.外键<br>                                           from 表1 join 表2 using(同名的列名)</p>
 <p>区别：隐式内连接先做笛卡尔积再过滤不匹配的行；显示内连接先匹配连接条件再返回匹配的行。</p>
 <h3 id="外连接"><a href="#外连接" class="headerlink" title="外连接"></a>外连接</h3><p><strong>左外连接</strong>：左表所有记录都出现在结果中，如果右表没有匹配的记录，使用NULL填充，</p>
-<p>select 列名 from 左表 left join 右表 on 主表.主键=从表.外键</p>
+<p>select 列名 from 左表 left join 右表 on 主表.主键&#x3D;从表.外键</p>
 <p><strong>右外连接</strong>：同上，改为右表</p>
-<p>select 列名 from 左表 right join 右表 on 主表.主键=从表.外键</p>
+<p>select 列名 from 左表 right join 右表 on 主表.主键&#x3D;从表.外键</p>
 <p><strong>全外连接</strong></p>
 <p>mysql不支持，既左右外连接</p>
-<h3 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h3><p>子查询结果为<strong>单行单列</strong>，父查询使用比较运算符**&lt;&gt;=<strong>;<strong>多行单列</strong>，父查询使用</strong>in、any、all<strong>；</strong>多行多列<strong>，需要</strong>取别名**当作临时表来使用该子查询的表格</p>
-<p>查询工资大于5000的员工信息<br>select id，name，gender，salary，dept_id from emp<br>where salary&gt;5000；<br>基于以上结果，关联dept表进行多表查询<br>实现方式一：select emp.id,emp.name.emp.gender,emp.salary<br>from dept inner join (select id，name，gender，salary，dept_id from emp<br>where salary&gt;5000；) as emp<br>on dept.id=emp.dept_id<br>实现方式二：select emp.id,emp.name,emp.gender,emp.salary,dept.id,dept.name<br>from dept right join emp<br>    on dept.id=emp.dept_id<br>where emp.salary in (select salary from emp where salary&gt;5000)</p>
+<h3 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h3><p>子查询结果为<strong>单行单列</strong>，父查询使用比较运算符**&lt;&gt;&#x3D;<strong>;<strong>多行单列</strong>，父查询使用</strong>in、any、all<strong>；</strong>多行多列<strong>，需要</strong>取别名**当作临时表来使用该子查询的表格</p>
+<p>查询工资大于5000的员工信息<br>select id，name，gender，salary，dept_id from emp<br>where salary&gt;5000；<br>基于以上结果，关联dept表进行多表查询<br>实现方式一：select emp.id,emp.name.emp.gender,emp.salary<br>from dept inner join (select id，name，gender，salary，dept_id from emp<br>where salary&gt;5000；) as emp<br>on dept.id&#x3D;emp.dept_id<br>实现方式二：select emp.id,emp.name,emp.gender,emp.salary,dept.id,dept.name<br>from dept right join emp<br>    on dept.id&#x3D;emp.dept_id<br>where emp.salary in (select salary from emp where salary&gt;5000)</p>
 <h3 id="联合查询union"><a href="#联合查询union" class="headerlink" title="联合查询union"></a>联合查询union</h3><p>select ……union [all] select …..<br>前后列数和[数据类型]要一致,all是不去重</p>
 <h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><p><a href="#jump1">回到目录</a></p>
 <p>一种机制，操作序列，包含多个步骤的业务操作，通过临时事务日志实现</p>
@@ -502,7 +506,7 @@
 </tbody></table>
 <p>一个事务要么提交（Commit），要么回滚（Rollback），提交意味着成功，回滚意味着失败。编写事务代码时，以 BEGIN 命令开头，后跟一条或者多条 SQL 语句，最后书写 COMMIT 或者 ROLLBACK 命令；<strong>COMMIT 和 ROLLBACK 对应事务的两种状态，只能出现一个</strong>。</p>
 <p>事务控制命令仅能与 INSERT、UPDATE、DELETE 和 SELECT一起使用，在创建或者删除表时不能使用事务，因为这些操作在数据库中是自动提交的。</p>
-<h3 id="系统设置"><a href="#系统设置" class="headerlink" title="系统设置"></a>系统设置</h3><p>select @@autocommit；查看mysql的事务默认提交方式<br>set autocommit=0;           修改mysql默认提交方式，改为手动</p>
+<h3 id="系统设置"><a href="#系统设置" class="headerlink" title="系统设置"></a>系统设置</h3><p>select @@autocommit；查看mysql的事务默认提交方式<br>set autocommit&#x3D;0;           修改mysql默认提交方式，改为手动</p>
 <h3 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h3><p>安全：串行化&gt;可重复读&gt;读已提交&gt;读未提交    性能相反<br>查看隔离级别：show variables like ‘%isolation%’<br>设置隔离级别（<strong>设置全局事务隔离水平</strong>）：set [session|global] transcation isolation level [read uncommitted|…..] </p>
 <ul>
 <li>脏读：读到其他事务未提交(回滚 )的数据；</li>
@@ -562,13 +566,13 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>返回当前日期/时间/日期和时间</td>
-<td>current_date<br>current_time<br>current_timestamp</td>
+<td>返回当前日期&#x2F;时间&#x2F;日期和时间</td>
+<td>current_date<br />current_time<br />current_timestamp</td>
 <td></td>
 </tr>
 <tr>
-<td>返回月/周/年的第几天</td>
-<td>dayofmonth()<br>dayofweek()<br>dayofyear()</td>
+<td>返回月&#x2F;周&#x2F;年的第几天</td>
+<td>dayofmonth()<br />dayofweek()<br />dayofyear()</td>
 <td></td>
 </tr>
 <tr>
@@ -578,7 +582,7 @@
 </tr>
 <tr>
 <td>日期 d 加上一个时间段后的日期</td>
-<td>date_add(d,INTERVAL 值 type)<br>date_sub()</td>
+<td>date_add(d,INTERVAL 值 type)<br />date_sub()</td>
 <td></td>
 </tr>
 <tr>
@@ -663,7 +667,7 @@
 <h3 id="高级函数"><a href="#高级函数" class="headerlink" title="高级函数"></a>高级函数</h3><table>
 <thead>
 <tr>
-<th>排序函数/分布函数/聚合函数</th>
+<th>排序函数&#x2F;分布函数&#x2F;聚合函数</th>
 <th>高级函数</th>
 <th>内置参数</th>
 </tr>
@@ -684,20 +688,20 @@
 <td>rows between 开始行 and 结束行</td>
 </tr>
 <tr>
-<td>percent_rank() 每行(rank-1) / (rows-1)</td>
+<td>percent_rank() 每行(rank-1) &#x2F; (rows-1)</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
-<td>cume_dist() 分组内&lt;=当前 rank 值的行数 / 分组内总行数</td>
+<td>cume_dist() 分组内&lt;&#x3D;当前 rank 值的行数 &#x2F; 分组内总行数</td>
 <td></td>
 <td></td>
 </tr>
 </tbody></table>
-<p>低版本的mysql没有窗口函数，通过用户变量@来添加行号<br>set @i=0;<br>select @i:=@i+1</p>
+<p>低版本的mysql没有窗口函数，通过用户变量@来添加行号<br>set @i&#x3D;0;<br>select @i:&#x3D;@i+1</p>
 <h1 id="进阶篇"><a href="#进阶篇" class="headerlink" title="进阶篇"></a>进阶篇</h1><h2 id="innodb存储引擎"><a href="#innodb存储引擎" class="headerlink" title="innodb存储引擎"></a>innodb存储引擎</h2><p><a href="#jump1">回到目录</a></p>
 <p>innoDB存储逻辑:支持事务，外键，行级锁提高并发性能</p>
-<h3 id="逻辑存储结果"><a href="#逻辑存储结果" class="headerlink" title="逻辑存储结果"></a>逻辑存储结果</h3><img src="/images/loading/loading.gif" data-original="/images/innodb.png" alt="innodb" style="zoom: 200%;">
+<h3 id="逻辑存储结果"><a href="#逻辑存储结果" class="headerlink" title="逻辑存储结果"></a>逻辑存储结果</h3><img src="/images/loading/loading.gif" data-original="/images/innodb.png" alt="innodb" style="zoom: 200%;" />
 
 <table>
 <thead>
@@ -733,7 +737,7 @@
 <td></td>
 </tr>
 </tbody></table>
-<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><img src="/images/loading/loading.gif" data-original="/images/innodb架构.png" alt="innodb" style="zoom: 200%;">
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><img src="/images/loading/loading.gif" data-original="/images/innodb架构.png" alt="innodb" style="zoom: 200%;" />
 
 <p>内存结构：缓冲池、更改缓冲区、日志缓冲区、自适应哈希索引<br>磁盘结构：系统表空间、每个表的表空间、通用表空间、撤销(undo)表空间、临时表空间、双写缓冲区、重做日志redo(重做日志缓冲(内存中)+重做日志文件(磁盘中))<br>后台线程：master thread、IO thread、purge thread回收已提交的撤销日志、page cleaner thread协助master thread刷新脏页到磁盘</p>
 <h3 id="事务原理"><a href="#事务原理" class="headerlink" title="事务原理 "></a>事务原理<span id="jump2"> </span></h3><p>redo log+undo log负责acd     原子，一致，持久<br>锁机制+MVCC负责i        隔离</p>
@@ -786,7 +790,7 @@
 <td>readview创建者的事务id</td>
 </tr>
 </tbody></table>
-<img src="/images/loading/loading.gif" data-original="/images/版本链数据访问规则.png" alt="innodb" style="zoom: 200%;">
+<img src="/images/loading/loading.gif" data-original="/images/版本链数据访问规则.png" alt="innodb" style="zoom: 200%;" />
 
 <p>不同的隔离级别，生成readview的时机不同：<br>read committed：事务每次执行快照读时生成<br>repeatable read：仅在事务第一次执行快照读时生成</p>
 <h2 id="索引-数据结构，B-tree"><a href="#索引-数据结构，B-tree" class="headerlink" title="索引(数据结构，B+tree)"></a>索引(数据结构，B+tree)</h2><p><a href="#jump1">回到目录</a></p>
@@ -808,10 +812,10 @@
 </ul>
 <p><strong>索引失效</strong>：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1992920">https://cloud.tencent.com/developer/article/1992920</a></p>
 <h2 id="sql性能分析"><a href="#sql性能分析" class="headerlink" title="sql性能分析"></a>sql性能分析</h2><p><a href="#jump1">回到目录</a></p>
-<h3 id="慢查询日志"><a href="#慢查询日志" class="headerlink" title="慢查询日志"></a>慢查询日志</h3><p>来分析哪些语句的执行时间过长<br>开启方式：linux下mysql配置文件/etc/my.cnf<br>                     windows下mysql配置文件my.ini或者mysql.ini<br><img src="/images/loading/loading.gif" data-original="/images/慢查询.png" alt="innodb" style="zoom: 200%;"></p>
-<p>慢查询日志：linux下的路径/var/lib/mysql/localhost-slow.log</p>
-<h3 id="profile"><a href="#profile" class="headerlink" title="profile"></a>profile</h3><p>分析时间耗费情况<br>查看是否有该功能：select @@have_profiling<br>开启：set profiling = 1<br>查看sql’耗时情况:show profiles<br>查看指定query_id的sql语句各阶段的耗时情况：show profile for query 查询id<br>查看该查询的cpu占比：show profile cpu for query 查询id</p>
-<h3 id="explain"><a href="#explain" class="headerlink" title="explain"></a>explain</h3><p>explain/desc 来提前预览select语句的执行过程<br>explain select ………</p>
+<h3 id="慢查询日志"><a href="#慢查询日志" class="headerlink" title="慢查询日志"></a>慢查询日志</h3><p>来分析哪些语句的执行时间过长<br>开启方式：linux下mysql配置文件&#x2F;etc&#x2F;my.cnf<br>                     windows下mysql配置文件my.ini或者mysql.ini<br><img src="/images/loading/loading.gif" data-original="/images/慢查询.png" alt="innodb" style="zoom: 200%;" /></p>
+<p>慢查询日志：linux下的路径&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;localhost-slow.log</p>
+<h3 id="profile"><a href="#profile" class="headerlink" title="profile"></a>profile</h3><p>分析时间耗费情况<br>查看是否有该功能：select @@have_profiling<br>开启：set profiling &#x3D; 1<br>查看sql’耗时情况:show profiles<br>查看指定query_id的sql语句各阶段的耗时情况：show profile for query 查询id<br>查看该查询的cpu占比：show profile cpu for query 查询id</p>
+<h3 id="explain"><a href="#explain" class="headerlink" title="explain"></a>explain</h3><p>explain&#x2F;desc 来提前预览select语句的执行过程<br>explain select ………</p>
 <table>
 <thead>
 <tr>
@@ -860,7 +864,7 @@
 <li>大批量插入insert-&gt;load</li>
 </ul>
 <p>load使用</p>
-<img src="/images/loading/loading.gif" data-original="/images/load插入数据.png" alt="innodb" style="zoom: 200%;">
+<img src="/images/loading/loading.gif" data-original="/images/load插入数据.png" alt="innodb" style="zoom: 200%;" />
 
 <h3 id="主键优化"><a href="#主键优化" class="headerlink" title="主键优化"></a>主键优化</h3><ul>
 <li>尽量降低主键长度</li>
@@ -880,7 +884,7 @@
 <li>索引满足最左前缀法则</li>
 </ul>
 <h3 id="limit优化"><a href="#limit优化" class="headerlink" title="limit优化"></a>limit优化</h3><p>当查询limit a,b，对于a过大，而b较小时,例如limit 20000000,10<br>优化思路覆盖索引+子查询</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- 优化前</span><br><span class="line">select * from table limit 900000,10;</span><br><span class="line">-- 优化后（id有索引）</span><br><span class="line">select t.*,(select id from table order by id limit 9000000,10) a from table t where s.id=a.id </span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-- 优化前</span><br><span class="line">select * from table limit 900000,10;</span><br><span class="line">-- 优化后（id有索引）</span><br><span class="line">select t.*,(select id from table order by id limit 9000000,10) a from table t where s.id=a.id </span><br></pre></td></tr></table></figure>
 
 <h3 id="count优化"><a href="#count优化" class="headerlink" title="count优化"></a>count优化</h3><p>没有较好的方法，一般通过redis自己计数<br>效率：count(字段)&lt;count(主键id)&lt;count(1)≈count(*)</p>
 <h3 id="update优化"><a href="#update优化" class="headerlink" title="update优化"></a>update优化</h3><p>由于innodb支持行锁，在update行数据时，如果更新条件有索引，则为行锁；如果没有索引，则为表锁(并发性能降低)。因此避免更新条件没有索引</p>
@@ -906,38 +910,38 @@
 <thead>
 <tr>
 <th>类型</th>
-<th>设置/声明</th>
+<th>设置&#x2F;声明</th>
 <th>查看</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>系统变量[全局变量/会话变量]</td>
-<td>set <strong>[global/|session]</strong> 变量名=值<br>重启服务后全局变量恢复默认值，永久更改需更改配置文件</td>
-<td>show <strong>[global/|session]</strong> variables [like ‘…’]<br>select @@<strong>[global/|session]</strong>.变量名</td>
+<td>系统变量[全局变量&#x2F;会话变量]</td>
+<td>set <strong>[global&#x2F;|session]</strong> 变量名&#x3D;值<br>重启服务后全局变量恢复默认值，永久更改需更改配置文件</td>
+<td>show <strong>[global&#x2F;|session]</strong> variables [like ‘…’]<br>select @@<strong>[global&#x2F;|session]</strong>.变量名</td>
 </tr>
 <tr>
 <td>用户变量</td>
-<td>set/|select @名称:=值<br>select 字段名 into @名称 from 表</td>
+<td>set&#x2F;|select @名称:&#x3D;值<br>select 字段名 into @名称 from 表</td>
 <td>select @名称</td>
 </tr>
 <tr>
 <td>局部变量(begin-end范围内有效)</td>
-<td>create procedure 存储过程名()<br>begin <br>declare 变量名 类型[default…]<br>set 变量名:=值<br>end</td>
+<td>create procedure 存储过程名()<br>begin <br>declare 变量名 类型[default…]<br>set 变量名:&#x3D;值<br>end</td>
 <td>同上</td>
 </tr>
 </tbody></table>
-<h3 id="创建、调用、查看和删除"><a href="#创建、调用、查看和删除" class="headerlink" title="创建、调用、查看和删除"></a>创建、调用、查看和删除</h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">在命令行中把语句结束符号换成自定义符号，避免存储过程创建中断(图形化界面不用)</span><br><span class="line">delimiter //     自定义//为结束符</span><br><span class="line">-- 创建</span><br><span class="line">create precedure 存储过程名称([in|out|inout 参数 参数类型])</span><br><span class="line">约束</span><br><span class="line">begin</span><br><span class="line">declare 变量名 数据类型 [default 值];</span><br><span class="line">set @变量名=值</span><br><span class="line">.....</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">约束：</span><br><span class="line"></span><br><span class="line">-- 调用(in参数直接写值，out参数@变量名，inout参数提前设好值然后@变量名)</span><br><span class="line">call 名称([参数])</span><br><span class="line"></span><br><span class="line">-- 查看</span><br><span class="line">-- 查询指定数据库xxx的存储过程及状态信息</span><br><span class="line">select * from information_schema.routines where routine_schema='xxx'</span><br><span class="line">-- 查询你某个存储过程的定义</span><br><span class="line">show create procedure</span><br><span class="line"></span><br><span class="line">-- 删除</span><br><span class="line">drop procedure [if exists] 名称</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+<h3 id="创建、调用、查看和删除"><a href="#创建、调用、查看和删除" class="headerlink" title="创建、调用、查看和删除"></a>创建、调用、查看和删除</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">在命令行中把语句结束符号换成自定义符号，避免存储过程创建中断(图形化界面不用)</span><br><span class="line">delimiter //     自定义//为结束符</span><br><span class="line">-- 创建</span><br><span class="line">create precedure 存储过程名称([in|out|inout 参数 参数类型])</span><br><span class="line">约束</span><br><span class="line">begin</span><br><span class="line">declare 变量名 数据类型 [default 值];</span><br><span class="line">set @变量名=值</span><br><span class="line">.....</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">约束：</span><br><span class="line"></span><br><span class="line">-- 调用(in参数直接写值，out参数@变量名，inout参数提前设好值然后@变量名)</span><br><span class="line">call 名称([参数])</span><br><span class="line"></span><br><span class="line">-- 查看</span><br><span class="line">-- 查询指定数据库xxx的存储过程及状态信息</span><br><span class="line">select * from information_schema.routines where routine_schema=&#x27;xxx&#x27;</span><br><span class="line">-- 查询你某个存储过程的定义</span><br><span class="line">show create procedure</span><br><span class="line"></span><br><span class="line">-- 删除</span><br><span class="line">drop procedure [if exists] 名称</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="关键词用法"><a href="#关键词用法" class="headerlink" title="关键词用法"></a>关键词用法</h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">-- if</span><br><span class="line">if 条件 then ...;</span><br><span class="line">elseif 条件 then ...;</span><br><span class="line">else ...;</span><br><span class="line">end if;</span><br><span class="line"></span><br><span class="line">-- case</span><br><span class="line">case [表达式]</span><br><span class="line">	when 情况1 then ...</span><br><span class="line">	when 情况2 then ...</span><br><span class="line">	else ...</span><br><span class="line">end [case]</span><br><span class="line"></span><br><span class="line">-- while</span><br><span class="line">[标记:]while 条件 do</span><br><span class="line">	...</span><br><span class="line">end while [标记]</span><br><span class="line"></span><br><span class="line">-- repeat</span><br><span class="line">[标记:]repeat</span><br><span class="line">	...</span><br><span class="line">	until 条件</span><br><span class="line">end repeat [标记]</span><br><span class="line"></span><br><span class="line">-- loop</span><br><span class="line">-- 标记就是给这个循环取个名字</span><br><span class="line">[标记:] loop</span><br><span class="line">	...</span><br><span class="line">end loop [标记]</span><br><span class="line"></span><br><span class="line">-- 跳出循环 leave(退出循环)和iterate(跳过此次循环)</span><br><span class="line">	leave 标记;</span><br><span class="line">	iterate 标记;</span><br><span class="line"></span><br><span class="line">-- 条件处理程序hander(自定义异常处理)</span><br><span class="line">-- 声明</span><br><span class="line">declare [continue继续|exit退出] hander for 情况 [应对操作]</span><br><span class="line">-- 情况有一下几种</span><br><span class="line">sqlstate 状态码;</span><br><span class="line">sqlwarning;01开头的状态码</span><br><span class="line">not found;02开头的状态码</span><br><span class="line">sqlexception;非01和02的状态码</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="关键词用法"><a href="#关键词用法" class="headerlink" title="关键词用法"></a>关键词用法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">-- if</span><br><span class="line">if 条件 then ...;</span><br><span class="line">elseif 条件 then ...;</span><br><span class="line">else ...;</span><br><span class="line">end if;</span><br><span class="line"></span><br><span class="line">-- case</span><br><span class="line">case [表达式]</span><br><span class="line">	when 情况1 then ...</span><br><span class="line">	when 情况2 then ...</span><br><span class="line">	else ...</span><br><span class="line">end [case]</span><br><span class="line"></span><br><span class="line">-- while</span><br><span class="line">[标记:]while 条件 do</span><br><span class="line">	...</span><br><span class="line">end while [标记]</span><br><span class="line"></span><br><span class="line">-- repeat</span><br><span class="line">[标记:]repeat</span><br><span class="line">	...</span><br><span class="line">	until 条件</span><br><span class="line">end repeat [标记]</span><br><span class="line"></span><br><span class="line">-- loop</span><br><span class="line">-- 标记就是给这个循环取个名字</span><br><span class="line">[标记:] loop</span><br><span class="line">	...</span><br><span class="line">end loop [标记]</span><br><span class="line"></span><br><span class="line">-- 跳出循环 leave(退出循环)和iterate(跳过此次循环)</span><br><span class="line">	leave 标记;</span><br><span class="line">	iterate 标记;</span><br><span class="line"></span><br><span class="line">-- 条件处理程序hander(自定义异常处理)</span><br><span class="line">-- 声明</span><br><span class="line">declare [continue继续|exit退出] hander for 情况 [应对操作]</span><br><span class="line">-- 情况有一下几种</span><br><span class="line">sqlstate 状态码;</span><br><span class="line">sqlwarning;01开头的状态码</span><br><span class="line">not found;02开头的状态码</span><br><span class="line">sqlexception;非01和02的状态码</span><br></pre></td></tr></table></figure>
 
-<h3 id="游标"><a href="#游标" class="headerlink" title="游标"></a>游标</h3><figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 游标cursor(用来存储查询结果集的数据类型)</span></span><br><span class="line"><span class="comment">-- 声明(游标的声明要在普通变量之后)</span></span><br><span class="line"><span class="keyword">declare</span> 游标名称 <span class="keyword">cursor</span> <span class="keyword">for</span> 查询语句</span><br><span class="line"><span class="comment">-- 打开</span></span><br><span class="line"><span class="keyword">open</span> 游标名称</span><br><span class="line"><span class="comment">-- 获取游标记录(把查询结果里面的列分别赋值给对应的变量名)</span></span><br><span class="line"><span class="keyword">fetch</span> 游标名称 <span class="keyword">into</span> 变量<span class="number">1</span>,变量<span class="number">2.</span>..</span><br><span class="line"><span class="comment">-- 关闭游标</span></span><br><span class="line"><span class="keyword">close</span> 游标名称</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="游标"><a href="#游标" class="headerlink" title="游标"></a>游标</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 游标cursor(用来存储查询结果集的数据类型)</span></span><br><span class="line"><span class="comment">-- 声明(游标的声明要在普通变量之后)</span></span><br><span class="line"><span class="keyword">declare</span> 游标名称 <span class="keyword">cursor</span> <span class="keyword">for</span> 查询语句</span><br><span class="line"><span class="comment">-- 打开</span></span><br><span class="line"><span class="keyword">open</span> 游标名称</span><br><span class="line"><span class="comment">-- 获取游标记录(把查询结果里面的列分别赋值给对应的变量名)</span></span><br><span class="line"><span class="keyword">fetch</span> 游标名称 <span class="keyword">into</span> 变量<span class="number">1</span>,变量<span class="number">2.</span>..</span><br><span class="line"><span class="comment">-- 关闭游标</span></span><br><span class="line"><span class="keyword">close</span> 游标名称</span><br></pre></td></tr></table></figure>
 
 <h2 id="存储函数"><a href="#存储函数" class="headerlink" title="存储函数"></a>存储函数</h2><p><a href="#jump1">回到目录</a></p>
 <p>有返回值的存储过程，且参数只有in类型(无须声明，默认就是in)</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">create function 函数名([参数])</span><br><span class="line">returns 返回值的数据类型 </span><br><span class="line">[特征]</span><br><span class="line">begin</span><br><span class="line">	...</span><br><span class="line">	return ...;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">特征说明(在开启二进制日志时，此选项必须填写)：</span><br><span class="line">deterministic:与输入参数类型相同</span><br><span class="line">no sql:不含sql语句</span><br><span class="line">reads sql data:只包含select</span><br><span class="line">modifies sql data:只包含update，delete</span><br><span class="line"></span><br><span class="line">LANGUAGE SQL</span><br><span class="line">存储过程语言，默认是sql，说明存储过程中使用的是sql语言编写的，暂时只支持sql，后续可能会支持其他语言</span><br><span class="line"></span><br><span class="line">NOT DETERMINISTIC</span><br><span class="line">默认是NOT DETERMINISTIC，只对于同样的输入，输出也是一样的，当前这个值还没有使用</span><br><span class="line"></span><br><span class="line">CONTAINS SQL</span><br><span class="line">包括以下四种选择</span><br><span class="line">1.CONTAINS SQL：不包含读写</span><br><span class="line">2.NO SQL：不包含sql</span><br><span class="line">3.READS SQL DATA：包含读，不包含写</span><br><span class="line">4.MODIFIES SQL DATA：包含写</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">create function 函数名([参数])</span><br><span class="line">returns 返回值的数据类型 </span><br><span class="line">[特征]</span><br><span class="line">begin</span><br><span class="line">	...</span><br><span class="line">	return ...;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">特征说明(在开启二进制日志时，此选项必须填写)：</span><br><span class="line">deterministic:与输入参数类型相同</span><br><span class="line">no sql:不含sql语句</span><br><span class="line">reads sql data:只包含select</span><br><span class="line">modifies sql data:只包含update，delete</span><br><span class="line"></span><br><span class="line">LANGUAGE SQL</span><br><span class="line">存储过程语言，默认是sql，说明存储过程中使用的是sql语言编写的，暂时只支持sql，后续可能会支持其他语言</span><br><span class="line"></span><br><span class="line">NOT DETERMINISTIC</span><br><span class="line">默认是NOT DETERMINISTIC，只对于同样的输入，输出也是一样的，当前这个值还没有使用</span><br><span class="line"></span><br><span class="line">CONTAINS SQL</span><br><span class="line">包括以下四种选择</span><br><span class="line">1.CONTAINS SQL：不包含读写</span><br><span class="line">2.NO SQL：不包含sql</span><br><span class="line">3.READS SQL DATA：包含读，不包含写</span><br><span class="line">4.MODIFIES SQL DATA：包含写</span><br></pre></td></tr></table></figure>
 
 <h2 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h2><p><a href="#jump1">回到目录</a></p>
-<p>在insert/update/delete之前或之后，出发并执行触发器中定义的sql语句集合；<br>协助应用在数据库端确保数据的完整性，日志记录，数据校验等操作</p>
+<p>在insert&#x2F;update&#x2F;delete之前或之后，出发并执行触发器中定义的sql语句集合；<br>协助应用在数据库端确保数据的完整性，日志记录，数据校验等操作</p>
 <table>
 <thead>
 <tr>
@@ -958,48 +962,48 @@
 <td>old表示将要或已删除的数据</td>
 </tr>
 </tbody></table>
-<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-- 创建</span><br><span class="line">create trigger 名称</span><br><span class="line">	before|after insert|update|delete </span><br><span class="line">	on 表名 for each row -- 行级触发器</span><br><span class="line">begin</span><br><span class="line">	...</span><br><span class="line">	new.列名 就表示新的某一数据</span><br><span class="line">	old.列名 就表示旧的某一数据</span><br><span class="line">end</span><br><span class="line">-- 查看</span><br><span class="line">show triggers</span><br><span class="line">-- 删除</span><br><span class="line">drop trigger [数据库名.]触发器名 -- 默认为当前数据库</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-- 创建</span><br><span class="line">create trigger 名称</span><br><span class="line">	before|after insert|update|delete </span><br><span class="line">	on 表名 for each row -- 行级触发器</span><br><span class="line">begin</span><br><span class="line">	...</span><br><span class="line">	new.列名 就表示新的某一数据</span><br><span class="line">	old.列名 就表示旧的某一数据</span><br><span class="line">end</span><br><span class="line">-- 查看</span><br><span class="line">show triggers</span><br><span class="line">-- 删除</span><br><span class="line">drop trigger [数据库名.]触发器名 -- 默认为当前数据库</span><br></pre></td></tr></table></figure>
 
 <h2 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h2><p><a href="#jump1">回到目录</a></p>
-<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1po4y1M7k5?p=2&amp;vd_source=c75d57452dfe6d1e8dca457f1ab7a2ac">这一章很乱建议看视频</a></p>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1po4y1M7k5?p=2&vd_source=c75d57452dfe6d1e8dca457f1ab7a2ac">这一章很乱建议看视频</a></p>
 <pre class="mermaid">graph TD
-锁--&gt; 粒度分类
-粒度分类--&gt; 全局锁
-粒度分类--&gt; 表锁锁
-粒度分类--&gt; 行锁
-锁--&gt; 模式分类
-模式分类--&gt; 乐观锁
-模式分类--&gt; 悲观锁
-锁--&gt; 属性分类
-属性分类--&gt; 共享锁
-属性分类--&gt; 排他锁
-锁--&gt; 状态分类
-状态分类--&gt; 意向共享锁
-状态分类--&gt; 意向排他锁
-锁--&gt; 算法分类
-算法分类--&gt; 间隙锁
-算法分类--&gt; 记录锁
-算法分类--&gt; 临键锁</pre>
+锁--> 粒度分类
+粒度分类--> 全局锁
+粒度分类--> 表锁锁
+粒度分类--> 行锁
+锁--> 模式分类
+模式分类--> 乐观锁
+模式分类--> 悲观锁
+锁--> 属性分类
+属性分类--> 共享锁
+属性分类--> 排他锁
+锁--> 状态分类
+状态分类--> 意向共享锁
+状态分类--> 意向排他锁
+锁--> 算法分类
+算法分类--> 间隙锁
+算法分类--> 记录锁
+算法分类--> 临键锁</pre>
 
 <h3 id="全局锁-一致性数据备份"><a href="#全局锁-一致性数据备份" class="headerlink" title="全局锁(一致性数据备份)"></a>全局锁(一致性数据备份)</h3><p>1.为当前数据库加全局锁：flush tables with read lock</p>
 <p>2.备份:mysqldump -h[数据库服务器主机ip] -uroot -p[密码] 库名&gt;[备份的存储路径文件.sql]<br>备份语句不用在登录mysql服务器后执行</p>
 <p>3.释放全局锁：unlock tables</p>
 <p>不加锁的一致性数据备份(innodb通过快照读实现):mysqldump <strong>[–single-transaction]</strong> -h[数据库服务器主机ip] -uroot -p[密码] 库名&gt;[备份的存储路径文件.sql]</p>
 <h3 id="表级锁"><a href="#表级锁" class="headerlink" title="表级锁"></a>表级锁</h3><pre class="mermaid">graph LR
-表级锁--&gt; 表锁
-表锁--&gt; 表共享读锁readlock--&gt; 读锁皆可读
-表锁--&gt; 表独占写锁writelock--&gt; 写锁我读写
-表级锁--&gt; 元数据锁DML
-元数据锁DML--&gt; 增删改查时读锁--&gt; 共享写锁shared_write
-增删改查时读锁--&gt; 共享读锁shared_read
-元数据锁DML--&gt; 表结构变更时写锁--&gt; 排他锁exclusive
-表级锁--&gt; 意向锁--&gt; 意向共共享锁IS
-意向锁--&gt; 意向共排他锁IX</pre>
+表级锁--> 表锁
+表锁--> 表共享读锁readlock--> 读锁皆可读
+表锁--> 表独占写锁writelock--> 写锁我读写
+表级锁--> 元数据锁DML
+元数据锁DML--> 增删改查时读锁--> 共享写锁shared_write
+增删改查时读锁--> 共享读锁shared_read
+元数据锁DML--> 表结构变更时写锁--> 排他锁exclusive
+表级锁--> 意向锁--> 意向共共享锁IS
+意向锁--> 意向共排他锁IX</pre>
 
-<h4 id="表锁-避免DML和DDL冲突"><a href="#表锁-避免DML和DDL冲突" class="headerlink" title="表锁(避免DML和DDL冲突)"></a>表锁(避免DML和DDL冲突)</h4><p>加锁：lock tables 表名 read|write<br>释放锁：unlock tables/客户端连接关闭</p>
+<h4 id="表锁-避免DML和DDL冲突"><a href="#表锁-避免DML和DDL冲突" class="headerlink" title="表锁(避免DML和DDL冲突)"></a>表锁(避免DML和DDL冲突)</h4><p>加锁：lock tables 表名 read|write<br>释放锁：unlock tables&#x2F;客户端连接关闭</p>
 <h4 id="元数据锁"><a href="#元数据锁" class="headerlink" title="元数据锁"></a>元数据锁</h4><p>系统自动控制，维护元数据的数据一致性；表上有事务时不可对元数据进行写入<br>增删改查时加读锁(共享读和共享写)；改变表结果时加写锁(排他)</p>
 <p>查看元数据锁：<br>select object_type,object_schema,object_name,lock_type,lock_duration from performance_schema.metadata_locks</p>
-<h4 id="意向锁"><a href="#意向锁" class="headerlink" title="意向锁"></a>意向锁</h4><p>当<strong>加行锁</strong>时，为了不和**[想要加表锁的另一方]<strong>冲突，会</strong>默认加意向锁**，这样加表锁的一方可以通过检测意向锁来确顶此时是否可以加表锁<br>意向共享锁IS：select…lock in share mode<br>意向排他锁IX：insert/update/delete/select…for update</p>
+<h4 id="意向锁"><a href="#意向锁" class="headerlink" title="意向锁"></a>意向锁</h4><p>当<strong>加行锁</strong>时，为了不和**[想要加表锁的另一方]<strong>冲突，会</strong>默认加意向锁**，这样加表锁的一方可以通过检测意向锁来确顶此时是否可以加表锁<br>意向共享锁IS：select…lock in share mode<br>意向排他锁IX：insert&#x2F;update&#x2F;delete&#x2F;select…for update</p>
 <h3 id="行级锁"><a href="#行级锁" class="headerlink" title="行级锁"></a>行级锁</h3><p>通过对索引上的索引项加锁来实现</p>
 <h4 id="行锁-Record-lock"><a href="#行锁-Record-lock" class="headerlink" title="行锁(Record lock)"></a>行锁(Record lock)</h4><p>锁定单个行记录，防止update和delete，在Read Commited，Repeat Read隔离级别下支持</p>
 <p>当通过没有索引的条件检索数据时,行锁会自动升级成表锁</p>
@@ -1012,8 +1016,8 @@
 <li>范围查询(唯一索引)时，访问不满足第一个条件的值</li>
 </ul>
 <h1 id="运维篇"><a href="#运维篇" class="headerlink" title="运维篇"></a>运维篇</h1><h2 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h2><p><a href="#jump1">回到目录</a></p>
-<h3 id="错误日志"><a href="#错误日志" class="headerlink" title="错误日志"></a>错误日志</h3><p>show variables like ‘%log_error%’<br>linux存放路径：/var/log/mysqld.log<br>刷新错误日志文件：flush logs;</p>
-<p>配置文件mysqld：log-error=/</p>
+<h3 id="错误日志"><a href="#错误日志" class="headerlink" title="错误日志"></a>错误日志</h3><p>show variables like ‘%log_error%’<br>linux存放路径：&#x2F;var&#x2F;log&#x2F;mysqld.log<br>刷新错误日志文件：flush logs;</p>
+<p>配置文件mysqld：log-error&#x3D;&#x2F;</p>
 <h3 id="二进制日志"><a href="#二进制日志" class="headerlink" title="二进制日志"></a>二进制日志</h3><p>show variables ‘%log_bin%’</p>
 <p>记录所有的DDL和DML数据变更，不包括数据查询语言</p>
 <ul>
@@ -1022,7 +1026,7 @@
 <li><p>mysql的<strong>主从复制</strong>,mysql8二进制日志默认开启</p>
 </li>
 </ul>
-<p>show variables ‘%binlog_format%’<br>更改格式：vim /etc/my.cnf</p>
+<p>show variables ‘%binlog_format%’<br>更改格式：vim &#x2F;etc&#x2F;my.cnf</p>
 <table>
 <thead>
 <tr>
@@ -1076,11 +1080,11 @@
 </tr>
 </tbody></table>
 <p>配置二进制日志过期时间：show variables like ‘%binlog_expire%’</p>
-<h3 id="查询日志"><a href="#查询日志" class="headerlink" title="查询日志"></a>查询日志</h3><p>默认情况下，查询日志未开启<br>开启：set global general_log=on<br>默认文件名:general_log_file=host_name.log<br>show variables like ‘%general%’</p>
+<h3 id="查询日志"><a href="#查询日志" class="headerlink" title="查询日志"></a>查询日志</h3><p>默认情况下，查询日志未开启<br>开启：set global general_log&#x3D;on<br>默认文件名:general_log_file&#x3D;host_name.log<br>show variables like ‘%general%’</p>
 <h3 id="慢查询日志-1"><a href="#慢查询日志-1" class="headerlink" title="慢查询日志"></a>慢查询日志</h3><p>默认未开启，记录执行时间超过long_query_time并且扫面记录数不小于min_examined_row_limit的所有sql语句日志</p>
-<p>开启方式：linux下mysql配置文件/etc/my.cnf<br>                     windows下mysql配置文件my.ini或者mysql.ini<br><img src="/images/loading/loading.gif" data-original="/images/慢查询.png" alt="innodb" style="zoom: 200%;"></p>
-<p>慢查询日志：linux下的路径/var/lib/mysql/localhost-slow.log</p>
-<p>记录执行<strong>较慢的管理</strong>语句：log_slow_admin_statements=1<br>记录执行较慢的<strong>未使用索引</strong>的语句：log_queries_not_using_indexs=1</p>
+<p>开启方式：linux下mysql配置文件&#x2F;etc&#x2F;my.cnf<br>                     windows下mysql配置文件my.ini或者mysql.ini<br><img src="/images/loading/loading.gif" data-original="/images/慢查询.png" alt="innodb" style="zoom: 200%;" /></p>
+<p>慢查询日志：linux下的路径&#x2F;var&#x2F;lib&#x2F;mysql&#x2F;localhost-slow.log</p>
+<p>记录执行<strong>较慢的管理</strong>语句：log_slow_admin_statements&#x3D;1<br>记录执行较慢的<strong>未使用索引</strong>的语句：log_queries_not_using_indexs&#x3D;1</p>
 <h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><p><a href="#jump1">回到目录</a></p>
 <p>将主库master的DDL和DML操作通过二进制日志传到从库，然后在从库slave上重做</p>
 <ul>
@@ -1089,16 +1093,16 @@
 <li>在从库中执行备份，避免备份期间影响主库服务</li>
 </ul>
 <h3 id="过程原理"><a href="#过程原理" class="headerlink" title="过程原理"></a>过程原理</h3><p>1.master主库提交事务时，把数据变更记录在二进制日志文件里binlog<br>2.从库用IOthread读取主库的二进制日志binlog文件，写入从库的中继日志relaylog中<br>3.salve从库用SQLthread执行中继日志relaylog中的事件，改变它自己的数据</p>
-<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>开放指定的3306端口号：<br>firewall-cmd –zone=public –add-port=3306/tcp-permanent<br>firewall-cmd-reload<br>关闭防火墙和开机自启<br>systemctl stop firewalld<br>systemctl disable firewalld</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>开放指定的3306端口号：<br>firewall-cmd –zone&#x3D;public –add-port&#x3D;3306&#x2F;tcp-permanent<br>firewall-cmd-reload<br>关闭防火墙和开机自启<br>systemctl stop firewalld<br>systemctl disable firewalld</p>
 <p><strong>主库master配置</strong></p>
-<p>1.修改配置<br>[mysqld]<br>#mysql服务ID，保证整个集群环境中唯一<br>server-id=1<br>#是否只读,1表示该数据库只能读(select)<br>read-only=0<br>#启用二进制日志<br>log-bin=mysql-bin<br>#不需要同步的数据库<br>binlog-ignore-db=mysql<br>#要同步的数据库<br>#binlog-do-db=数据库名</p>
+<p>1.修改配置<br>[mysqld]<br>#mysql服务ID，保证整个集群环境中唯一<br>server-id&#x3D;1<br>#是否只读,1表示该数据库只能读(select)<br>read-only&#x3D;0<br>#启用二进制日志<br>log-bin&#x3D;mysql-bin<br>#不需要同步的数据库<br>binlog-ignore-db&#x3D;mysql<br>#要同步的数据库<br>#binlog-do-db&#x3D;数据库名</p>
 <p>2.重启mysql服务器<br>systemctl restart mysqld</p>
 <p>3.登录mysql，创建远程连接的账号，并授权主从复制权限<br>#创建用户，设置密码，该用户可在任意主机连接该mysql服务<br>create user ‘用户名‘@’%’ identified by ‘密码’<br>#为该用户分配主从复制权限<br>grant replication slave on * . * to ‘从库‘@’%’</p>
 <p>4.查看二进制日志坐标<br>show master status</p>
 <p><strong>从库slave配置</strong></p>
-<p>1.修改配置<br>server-id=2        只要和主库不一样就行<br>read-only=1       可以读写</p>
+<p>1.修改配置<br>server-id&#x3D;2        只要和主库不一样就行<br>read-only&#x3D;1       可以读写</p>
 <p>2.重启systemctl restart mysqld</p>
-<p>3，登录mysql，设置主库配置<br>change master to master_host=’xxx.xxx’,master_user=’xxx’,master_password=’xxx’,<br>master_log_file=’xxx’,master_log_pos=xxx<br><strong>mysql8.0.23后的版本</strong><br>change republication source to source_host=’xxx.xxx’,source_user=’xxx’,source_password=’xxx’,<br>source_log_file=’xxx’,source_log_pos=xxx</p>
+<p>3，登录mysql，设置主库配置<br>change master to master_host&#x3D;’xxx.xxx’,master_user&#x3D;’xxx’,master_password&#x3D;’xxx’,<br>master_log_file&#x3D;’xxx’,master_log_pos&#x3D;xxx<br><strong>mysql8.0.23后的版本</strong><br>change republication source to source_host&#x3D;’xxx.xxx’,source_user&#x3D;’xxx’,source_password&#x3D;’xxx’,<br>source_log_file&#x3D;’xxx’,source_log_pos&#x3D;xxx</p>
 <table>
 <thead>
 <tr>
@@ -1134,26 +1138,26 @@
 </tr>
 </tbody></table>
 <p>4.开启同步操作<br>start replica；   8.0.22后<br>start slave；      8.0.22前</p>
-<p>5.查看主从同步状态<br>show replica status/G；   8.0.22之后    /G由列换成行显示<br>关键字Replica_IO_Running和Replica_SQL_Running</p>
+<p>5.查看主从同步状态<br>show replica status&#x2F;G；   8.0.22之后    &#x2F;G由列换成行显示<br>关键字Replica_IO_Running和Replica_SQL_Running</p>
 <p>show slave status；    8.0.22之前</p>
-<h2 id="docker实现主从复制"><a href="#docker实现主从复制" class="headerlink" title="docker实现主从复制"></a>docker实现主从复制</h2><p>修改主机名：hostnamectl set-hostname 新名称<br>ip和主机名映射：修改文件/etc/hosts</p>
+<h2 id="docker实现主从复制"><a href="#docker实现主从复制" class="headerlink" title="docker实现主从复制"></a>docker实现主从复制</h2><p>修改主机名：hostnamectl set-hostname 新名称<br>ip和主机名映射：修改文件&#x2F;etc&#x2F;hosts</p>
 <p>多台虚拟机之间建立免密登录：</p>
 <ul>
 <li>ssh-keygen 三次回车生成密钥</li>
 <li>ssh-copy-id 主机账号名root@主机名</li>
 <li>测试，ssh root@主机名</li>
 </ul>
-<h3 id="启动主服务器"><a href="#启动主服务器" class="headerlink" title="启动主服务器"></a>启动主服务器</h3><p>docker run -p 3307:3306 –name mysql-master -v 容器卷映射(一般映射配置文件，日志文件，data文件) -e MYSQL_ROOT_PASSWORD=123456 -d mysql:版本号</p>
-<p>-v /myapps/mysql-master/conf:/etc/mysql/  /<br>-v /myapps/mysql-master/logs:/var/log/mysql/   /<br>-v /myapps/mysql-master/data:/var/lib/mysql  /</p>
-<p>例如：docker run -p 3307:3306 –name mysql-master -v /myapps/mysql-master/conf:/etc/mysql/  -v /myapps/mysql-master/logs:/var/log/mysql/  -v /myapps/mysql-master/data:/var/lib/mysql  -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7</p>
-<h3 id="修改配置主mysql的配置"><a href="#修改配置主mysql的配置" class="headerlink" title="修改配置主mysql的配置"></a>修改配置主mysql的配置</h3><p>在/myapps/mysql-master/conf下创建配置文件my.cnf<br>1.修改配置<br>[mysqld]<br>#mysql服务ID，保证整个集群环境中唯一<br>server-id=1<br>#是否只读,1表示该数据库只能读(select)<br>read-only=0<br>#忽略的数据，不需要同步的数据库<br>#binlog-ignore-db=mysql<br>#指定要同步的数据<br>#binlog-do-db=db01<br>##开启二进制日志功能<br>log-bin=mall-mysql-bin<br>##设置二进制日志使用内存大小<br>binlog_cache_size=1M<br>##设置使用的二进制日志格式<br>binlog_format=mixed<br>##二进制日志过期清理时间，默认值为0，表示不自动清理<br>expire_logs_days=7<br>##跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制##中断。1062指一些主键重复，1032主从数据库数据不一致<br>slave_skip_errors=1062</p>
+<h3 id="启动主服务器"><a href="#启动主服务器" class="headerlink" title="启动主服务器"></a>启动主服务器</h3><p>docker run -p 3307:3306 –name mysql-master -v 容器卷映射(一般映射配置文件，日志文件，data文件) -e MYSQL_ROOT_PASSWORD&#x3D;123456 -d mysql:版本号</p>
+<p>-v &#x2F;myapps&#x2F;mysql-master&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;  &#x2F;<br>-v &#x2F;myapps&#x2F;mysql-master&#x2F;logs:&#x2F;var&#x2F;log&#x2F;mysql&#x2F;   &#x2F;<br>-v &#x2F;myapps&#x2F;mysql-master&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql  &#x2F;</p>
+<p>例如：docker run -p 3307:3306 –name mysql-master -v &#x2F;myapps&#x2F;mysql-master&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;  -v &#x2F;myapps&#x2F;mysql-master&#x2F;logs:&#x2F;var&#x2F;log&#x2F;mysql&#x2F;  -v &#x2F;myapps&#x2F;mysql-master&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql  -e MYSQL_ROOT_PASSWORD&#x3D;123456 -d mysql:5.7</p>
+<h3 id="修改配置主mysql的配置"><a href="#修改配置主mysql的配置" class="headerlink" title="修改配置主mysql的配置"></a>修改配置主mysql的配置</h3><p>在&#x2F;myapps&#x2F;mysql-master&#x2F;conf下创建配置文件my.cnf<br>1.修改配置<br>[mysqld]<br>#mysql服务ID，保证整个集群环境中唯一<br>server-id&#x3D;1<br>#是否只读,1表示该数据库只能读(select)<br>read-only&#x3D;0<br>#忽略的数据，不需要同步的数据库<br>#binlog-ignore-db&#x3D;mysql<br>#指定要同步的数据<br>#binlog-do-db&#x3D;db01<br>##开启二进制日志功能<br>log-bin&#x3D;mall-mysql-bin<br>##设置二进制日志使用内存大小<br>binlog_cache_size&#x3D;1M<br>##设置使用的二进制日志格式<br>binlog_format&#x3D;mixed<br>##二进制日志过期清理时间，默认值为0，表示不自动清理<br>expire_logs_days&#x3D;7<br>##跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制##中断。1062指一些主键重复，1032主从数据库数据不一致<br>slave_skip_errors&#x3D;1062</p>
 <p>2.登录mysql，创建远程连接的账号，并授权主从复制权限<br>docker exec -it mysql-master bash<br>#创建用户，设置密码，该用户可在任意主机连接该mysql服务<br>create user ‘从库用户名‘@’%’ identified with mysql_native_password by ‘密码’<br>#为该用户分配主从复制权限<br>grant replication slave on * . * to ‘库‘@’’</p>
 <p>4.查看主从复制状态<br>show master status</p>
 <h3 id="启动从服务器"><a href="#启动从服务器" class="headerlink" title="启动从服务器"></a>启动从服务器</h3><p>docker run -p 3308:3306 –name slave </p>
-<p>-v /myapps/mysql-slave/conf:/etc/mysql/conf.d<br>-v /myapps/mysql-slave/logs:/logs<br>-v /myapps/mysql-slave/data:/var/lib/mysql </p>
-<p>-e MYSQL_ROOT_PASSWORD=123456<br>-d mysql:5.7</p>
-<h3 id="配置从服务器配置文件"><a href="#配置从服务器配置文件" class="headerlink" title="配置从服务器配置文件"></a>配置从服务器配置文件</h3><p>在/myapps/mysql-slave/conf下创建配置文件my.cnf<br>[mysqld]<br>##设置server_id，同一局域网中需要唯一<br>server_id=2<br>##设置只读<br>read_only=1<br>##relay_log配置中继日志<br>relay_log=slave-relay-bin<br>##指定不需要同步的数据库名称<br>binlog-ignore-db=mysql<br>##开启二进制日志功能,以备slave作为其他数据库实例的master时使用<br>log-bin=mall-mysql-slave1-bin<br>##设置二进制日志使用内存大小<br>binlog_cache_size=1M<br>##设置使用的二进制日志格式<br>binlog_format=mixed<br>##二进制日志过期清理时间，默认值为0，表示不自动清理<br>expire_logs_days=7<br>##跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制##中断。1062指一些主键重复，1032主从数据库数据不一致<br>slave_skip_errors=1062<br>##slave将复制事件写进自己的二进制日志<br>log_slave_updates=1</p>
-<p>C、重启slave实例<br>D、在主数据库中查看主从同步状态 show master status;<br>E、进入到从数据库中配置主从复制<br>change master to master_host=’192.168.100.188’,master_user=’slave’,<br>master_password=’123456’,master_port=3307,master_log_file=’mall-mysql-bin.000001’,master_log_pos= 154,master_connect_retry=30;<br>F、从数据库中查看主从同步状态 show slave status;<br>G、从数据库中开启主从同步  start slave;<br>H、再次从数据库中查看主从同步状态 show slave status;<br>I、测试主从功能：</p>
+<p>-v &#x2F;myapps&#x2F;mysql-slave&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;conf.d<br>-v &#x2F;myapps&#x2F;mysql-slave&#x2F;logs:&#x2F;logs<br>-v &#x2F;myapps&#x2F;mysql-slave&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql </p>
+<p>-e MYSQL_ROOT_PASSWORD&#x3D;123456<br>-d mysql:5.7</p>
+<h3 id="配置从服务器配置文件"><a href="#配置从服务器配置文件" class="headerlink" title="配置从服务器配置文件"></a>配置从服务器配置文件</h3><p>在&#x2F;myapps&#x2F;mysql-slave&#x2F;conf下创建配置文件my.cnf<br>[mysqld]<br>##设置server_id，同一局域网中需要唯一<br>server_id&#x3D;2<br>##设置只读<br>read_only&#x3D;1<br>##relay_log配置中继日志<br>relay_log&#x3D;slave-relay-bin<br>##指定不需要同步的数据库名称<br>binlog-ignore-db&#x3D;mysql<br>##开启二进制日志功能,以备slave作为其他数据库实例的master时使用<br>log-bin&#x3D;mall-mysql-slave1-bin<br>##设置二进制日志使用内存大小<br>binlog_cache_size&#x3D;1M<br>##设置使用的二进制日志格式<br>binlog_format&#x3D;mixed<br>##二进制日志过期清理时间，默认值为0，表示不自动清理<br>expire_logs_days&#x3D;7<br>##跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制##中断。1062指一些主键重复，1032主从数据库数据不一致<br>slave_skip_errors&#x3D;1062<br>##slave将复制事件写进自己的二进制日志<br>log_slave_updates&#x3D;1</p>
+<p>C、重启slave实例<br>D、在主数据库中查看主从同步状态 show master status;<br>E、进入到从数据库中配置主从复制<br>change master to master_host&#x3D;’192.168.100.188’,master_user&#x3D;’slave’,<br>master_password&#x3D;’123456’,master_port&#x3D;3307,master_log_file&#x3D;’mall-mysql-bin.000001’,master_log_pos&#x3D; 154,master_connect_retry&#x3D;30;<br>F、从数据库中查看主从同步状态 show slave status;<br>G、从数据库中开启主从同步  start slave;<br>H、再次从数据库中查看主从同步状态 show slave status;<br>I、测试主从功能：</p>
 <h2 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h2><p><a href="#jump1">回到目录</a></p>
 <p>垂直拆分：</p>
 <ul>
@@ -1255,8 +1259,9 @@
       <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="我真不是雪上加霜" src="/images/%E5%85%AD%E8%8A%B1.gif">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="我真不是雪上加霜"
+      src="/images/%E5%85%AD%E8%8A%B1.gif">
   <p class="site-author-name" itemprop="name">我真不是雪上加霜</p>
   <div class="site-description" itemprop="description">失败总是贯穿人生始终</div>
 </div>
@@ -1285,10 +1290,10 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <a href="https://github.com/maofe3o4" title="GitHub → https://github.com/maofe3o4" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+        <a href="https://github.com/maofe3o4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;maofe3o4" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="https://space.bilibili.com/646326155" title="Bilibili → https://space.bilibili.com/646326155" rel="noopener" target="_blank"><i class="fas fa-tv fa-fw"></i>Bilibili</a>
+        <a href="https://space.bilibili.com/646326155" title="Bilibili → https:&#x2F;&#x2F;space.bilibili.com&#x2F;646326155" rel="noopener" target="_blank"><i class="fas fa-tv fa-fw"></i>Bilibili</a>
       </span>
   </div>
 
@@ -1312,7 +1317,7 @@
 
 <div class="copyright">
   
-  © 
+  &copy; 
   <span itemprop="copyrightYear">2026</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
@@ -1329,7 +1334,7 @@
     </span>
     <span title="站点阅读时长">5:30</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> &amp; <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
 
         
@@ -1346,32 +1351,32 @@
   </div>
 
   
-  
-  
-  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
+<script src="/js/schemes/muse.js"></script>
 
 
+<script src="/js/next-boot.js"></script>
 
-
-
-
-
-
-
-
-
-
-
-
-  
+<script src="/js/bookmark.js"></script>
 
 
 
 
   
 
+
+
+
+  
+<script src="/js/local-search.js"></script>
 
 
 
@@ -1396,14 +1401,11 @@
                 background-color: #eee !important;
             }
         </style>
-        
-
-<script src="/bundle.js"></script><script>
+        <script>
             window.imageLazyLoadSetting = {
                 isSPA: false,
                 preloadRatio: 1,
                 processImages: null,
             };
-        ;
-window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});;
-(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body></html>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>
