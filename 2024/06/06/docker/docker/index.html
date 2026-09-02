@@ -254,7 +254,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>4.1k</span>
+              <span>4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -275,7 +275,7 @@
 
       
         <p>[toc]</p>
-<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Docker是一个C&#x2F;S结构的系统，Docker守护进程运行在主机上， 然后通过Socket连接从客户端访问，守护进程从客户端接受命令并管理运行在主机上的容器。 容器，是一个运行时环境，就是我们前面说到的集装箱。</p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Docker是一个C/S结构的系统，Docker守护进程运行在主机上， 然后通过Socket连接从客户端访问，守护进程从客户端接受命令并管理运行在主机上的容器。 容器，是一个运行时环境，就是我们前面说到的集装箱。</p>
 <h2 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h2><h3 id="镜像image：一个特殊的文件系统"><a href="#镜像image：一个特殊的文件系统" class="headerlink" title="镜像image：一个特殊的文件系统"></a>镜像image：一个特殊的文件系统</h3><p><strong>除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。</strong> 镜像不包含任何动态数据，其内容在构建之后也不会被改变。</p>
 <p>镜像实际是由多层文件系统联合组成。</p>
 <p><strong>镜像构建时，会一层层构建，前一层是后一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。</strong>　比如，删除前一层文件的操作，实际不是真的删除前一层的文件，而是仅在当前层标记为该文件已删除。在最终容器运行的时候，虽然不会看到这个文件，但是实际上该文件会一直跟随镜像。因此，在构建镜像的时候，需要额外小心，每一层尽量只包含该层需要添加的东西，任何额外的东西应该在该层构建结束前清理掉。</p>
@@ -284,17 +284,15 @@
 <p>　　<strong>容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的</strong> <strong>命名空间。</strong>前面讲过镜像使用的是分层存储，容器也是如此。</p>
 <p>　　<strong>容器存储层的生存周期和容器一样，容器消亡时，容器存储层也随之消亡。因此，任何保存于容器存储层的信息都会随容器删除而丢失。</strong></p>
 <p>　　按照 Docker 最佳实践的要求，<strong>容器不应该向其存储层内写入任何数据</strong> ，容器存储层要保持无状态化。<strong>所有的文件写入操作，都应该使用数据卷（Volume）、或者绑定宿主目录，</strong>在这些位置的读写会跳过容器存储层，直接对宿主(或网络存储)发生读写，其性能和稳定性更高。数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此， <strong>使用数据卷后，容器可以随意删除、重新</strong> <strong>run</strong> <strong>，数据却不会丢失。</strong></p>
-<h3 id="仓库：repository：集中存放镜像文件的地方"><a href="#仓库：repository：集中存放镜像文件的地方" class="headerlink" title="仓库：repository：集中存放镜像文件的地方"></a>仓库：repository：集中存放镜像文件的地方</h3><p> 镜像构建完成后，可以很容易的在当前宿主上运行，但是， <strong>如果需要在其它服务器上使用这个镜像，我们就需要一个集中的存储、分发镜像的服务，<strong><strong>Docker Registry</strong></strong>就是这样的服务。</strong></p>
-<p>  一个 Docker Registry中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。所以说：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/product/tcr?from_column=20065&from=20065">镜像仓库</a>是Docker用来集中存放镜像文件的地方类似于我们之前常用的代码仓库。</p>
+<h3 id="仓库：repository：集中存放镜像文件的地方"><a href="#仓库：repository：集中存放镜像文件的地方" class="headerlink" title="仓库：repository：集中存放镜像文件的地方"></a>仓库：repository：集中存放镜像文件的地方</h3><p> 镜像构建完成后，可以很容易的在当前宿主上运行，但是， <strong>如果需要在其它服务器上使用这个镜像，我们就需要一个集中的存储、分发镜像的服务，**</strong>Docker Registry<strong>**就是这样的服务。</strong></p>
+<p>  一个 Docker Registry中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。所以说：<a target="_blank" rel="noopener" href="https://cloud.tencent.com/product/tcr?from_column=20065&amp;from=20065">镜像仓库</a>是Docker用来集中存放镜像文件的地方类似于我们之前常用的代码仓库。</p>
 <p>  通常，<strong>一个仓库会包含同一个软件不同版本的镜像</strong>，而标签就常用于对应该软件的各个版本 。我们可以通过&lt;仓库名&gt;:&lt;标签&gt;的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 latest 作为默认标签.。</p>
 <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><h2 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移除旧版本docker</span></span><br><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置docker yum源</span></span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">--add-repo \</span><br><span class="line">http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 最新 docker</span></span><br><span class="line">sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动&amp; 开机启动docker； <span class="built_in">enable</span> + start 二合一</span></span><br><span class="line">systemctl enable docker --now</span><br></pre></td></tr></table></figure>
-
 <h2 id="配置自己的镜像加速器"><a href="#配置自己的镜像加速器" class="headerlink" title="配置自己的镜像加速器"></a>配置自己的镜像加速器</h2><p>docker镜像加速器配置需登录阿里云<a target="_blank" rel="noopener" href="https://cr.console.aliyun.com/cn-hangzhou/instances">https://cr.console.aliyun.com/cn-hangzhou/instances</a><br>我这里配置了两项，一个是阿里云个人的镜像服务，一个是中科大的</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span><br><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://f3fprrzr.mirror.aliyuncs.com&quot;,</span><br><span class="line">  &quot;https://docker.mirrors.ustc.edu.cn&quot;,</span><br><span class="line">  &quot;https://registry.docker-cn.com&quot;,</span><br><span class="line">   &quot;https://hub-mirror.c.163.com&quot;,</span><br><span class="line">   &quot;https://mirror.baidubce.com&quot;,</span><br><span class="line">   &quot;https://ccr.ccs.tencentyun.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
-
-<h1 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h1><p>删除docker：yum remove docker-ce<br>rm -rf &#x2F;var&#x2F;lib&#x2F;docker</p>
-<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><img src="/images/loading/loading.gif" data-original="/images/docker命令.png" alt="docker命令" style="zoom: 200%;" />
-
+<h1 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h1><p>删除docker：yum remove docker-ce<br>rm -rf /var/lib/docker</p>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><p><img src="/images/loading/loading.gif" data-original="/images/docker命令.png" alt="docker命令" style="zoom: 200%;" /></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -303,7 +301,8 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>docker search</td>
 <td></td>
 <td>在官方dockerhub搜索镜像</td>
@@ -374,12 +373,12 @@
 <td>进入容器</td>
 </tr>
 <tr>
-<td>docker save&#x2F;export</td>
+<td>docker save/export</td>
 <td>&gt;tar文件</td>
 <td>保存镜像到本地压缩文件</td>
 </tr>
 <tr>
-<td>docker load&#x2F;import</td>
+<td>docker load/import</td>
 <td>&lt;tar文件</td>
 <td>加载本地压缩文件到镜像</td>
 </tr>
@@ -399,28 +398,30 @@
 <td>设置docker开机自启</td>
 </tr>
 <tr>
-<td>docker update –restart&#x3D;always [容器名&#x2F;容器ID]</td>
+<td>docker update —restart=always [容器名/容器ID]</td>
 <td></td>
 <td>设置docker容器开机自启</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h1 id="使用docker拉取镜像运行容器"><a href="#使用docker拉取镜像运行容器" class="headerlink" title="使用docker拉取镜像运行容器"></a>使用docker拉取镜像运行容器</h1><h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h2><h2 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h2><p>1.拉取镜像<br>docker pull nginx</p>
 <p>2.查看镜像<br>docker images</p>
-<p>3.创建并运行nginx容器<br>docker run -d –name mynginx -p 80:80 nginx</p>
+<p>3.创建并运行nginx容器<br>docker run -d —name mynginx -p 80:80 nginx</p>
 <p>5.查看运行的容器<br>docker ps</p>
 <p>6.通过网页访问nginx<br>docker的宿主机IP:宿主机对应的端口</p>
-<h2 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h2><p>拉，创，进<br>合成一句<br>docker run -itd <br>-p 6379:6379 <br>–name myredis <br>-v &#x2F;home&#x2F;redis&#x2F;conf:&#x2F;etc&#x2F;redis&#x2F; <br>-v &#x2F;home&#x2F;redis&#x2F;data:&#x2F;data <br>redis redis-server</p>
-<p>docker exec -it 容器名 bash<br>可以直接执行redis-cli<br>配置文件在&#x2F;etc&#x2F;redis</p>
+<h2 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h2><p>拉，创，进<br>合成一句<br>docker run -itd \<br>-p 6379:6379 \<br>—name myredis \<br>-v /home/redis/conf:/etc/redis/ \<br>-v /home/redis/data:/data \<br>redis redis-server</p>
+<p>docker exec -it 容器名 bash<br>可以直接执行redis-cli<br>配置文件在/etc/redis</p>
 <h1 id="镜像的分层"><a href="#镜像的分层" class="headerlink" title="镜像的分层"></a>镜像的分层</h1><p>创建一个镜像需要根据dockerfile文件里面的shell脚本来一层一层的构建，这种层级的文件系统称为UnionFS</p>
 <p>1、镜像：轻量级、可执行的独立软件包，包含运行某个软件所需要的所有内容，我们把应用程序和配置依赖打包好形成一个可交付的运行环境（包括代码、运行时环境、环境变量和配置文件等）。</p>
 <p>2、UnionFS(联合文件系统):是一种分层，轻量级高性能的文件系统、支持对文件系统的修改作为一次提交来一层层的叠加，同时将不同目录挂载到同一个虚拟文件系统下。联合文件系统是Docker镜像的基础，镜像可以通过分层进行继承，基于基础镜像可以制作各种具体的应用镜像。</p>
 <p>3、 Docker镜像加载原理</p>
 <p>(1)   docker的镜像实际上由一层一层的文件系统组成，这种层级的文件系统UnionFS。</p>
-<p>(2)   bootfs(boot file system)主要包含bootloader和kernel, bootloader主要是引导加载kernel, Linux刚启动时会加载bootfs文件系统，在Docker镜像的最底层是bootfs。这一层与我们典型的Linux&#x2F;Unix系统是一样的，包含boot加载器和内核。当boot加载完成之后整个内核就都在内存中了，此时内存的使用权已由bootfs转交给内核，此时系统也会卸载bootfs。</p>
+<p>(2)   bootfs(boot file system)主要包含bootloader和kernel, bootloader主要是引导加载kernel, Linux刚启动时会加载bootfs文件系统，在Docker镜像的最底层是bootfs。这一层与我们典型的Linux/Unix系统是一样的，包含boot加载器和内核。当boot加载完成之后整个内核就都在内存中了，此时内存的使用权已由bootfs转交给内核，此时系统也会卸载bootfs。</p>
 <h1 id="设置个人或企业版阿里云镜像仓库"><a href="#设置个人或企业版阿里云镜像仓库" class="headerlink" title="设置个人或企业版阿里云镜像仓库"></a>设置个人或企业版阿里云镜像仓库</h1><p><a target="_blank" rel="noopener" href="https://cr.console.aliyun.com/cn-hangzhou/instances">https://cr.console.aliyun.com/cn-hangzhou/instances</a></p>
 <p>①  选择实例列表，点击个人版进入“个人实例”</p>
 <p>②  创建命名空间</p>
-<p>③  创建镜像仓库–&gt;选择刚刚创建的命名空间—&gt;选择本地仓库，创建</p>
+<p>③  创建镜像仓库—&gt;选择刚刚创建的命名空间—-&gt;选择本地仓库，创建</p>
 <p>④  在成功节目根据第三点“将镜像推送到Registry”</p>
 <p>⑤  然后尝试下载上传的镜像</p>
 <p>具体命令在阿里云镜像服务里面有</p>
@@ -580,12 +581,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">366k</span>
+    <span title="站点总字数">362k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:33</span>
+    <span title="站点阅读时长">5:29</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

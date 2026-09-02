@@ -258,14 +258,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5.4k</span>
+              <span>4.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>4 分钟</span>
             </span>
             <div class="post-description">linux常用指令，包括文件，用户，进程，磁盘，服务等等</div>
 
@@ -280,14 +280,16 @@
       
         <p><span id="jump1">目录</span></p>
 <p>[toc]</p>
-<h1 id="常用简单指令"><a href="#常用简单指令" class="headerlink" title="常用简单指令"></a>常用简单指令</h1><table>
+<h1 id="常用简单指令"><a href="#常用简单指令" class="headerlink" title="常用简单指令"></a>常用简单指令</h1><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>运行等级</th>
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>init 0</td>
 <td>关机</td>
 </tr>
@@ -315,16 +317,19 @@
 <td>init 6</td>
 <td>重启</td>
 </tr>
-</tbody></table>
-<p>内存中的数据同步到磁盘：sync<br>查看当前目录：pwd<br>切换目录：cd 目录名       （cd只能进入目录）<br>进入文件：cat 文件路径<br>显示(当前)目录中的文件：ls [-a包括隐藏文件] [-l列表详细信息] [目录名]<br>创建目录：mkdir [-p] 目录名&#x2F;路径<br>删除空目录(非空删除失败)：rmdir [-p] 目录名<br>清屏：clear<br>在终端使用之前用到的命令(历史命令保存在.bash_history文件中)：上下光标调取<br>命令自动补全：tab<br>正则表达式：*多个字符,?一个字符<br>查看&#x2F;设置时间：date                date -s “2024-01-02 09:11:42”<br>帮助指令：man      help<br>修改主机名：hostname set-hostname 新名称</p>
+</tbody>
+</table>
+</div>
+<p>内存中的数据同步到磁盘：sync<br>查看当前目录：pwd<br>切换目录：cd 目录名       （cd只能进入目录）<br>进入文件：cat 文件路径<br>显示(当前)目录中的文件：ls [-a包括隐藏文件] [-l列表详细信息] [目录名]<br>创建目录：mkdir [-p] 目录名/路径<br>删除空目录(非空删除失败)：rmdir [-p] 目录名<br>清屏：clear<br>在终端使用之前用到的命令(历史命令保存在.bash_history文件中)：上下光标调取<br>命令自动补全：tab<br>正则表达式：*多个字符,?一个字符<br>查看/设置时间：date                date -s “2024-01-02 09:11:42”<br>帮助指令：man      help<br>修改主机名：hostname set-hostname 新名称</p>
 <h1 id="Linux目录和文件-简单介绍"><a href="#Linux目录和文件-简单介绍" class="headerlink" title="Linux目录和文件(简单介绍)"></a>Linux目录和文件(简单介绍)</h1><p><a href="#jump1">回到目录</a></p>
-<p><img src="/images/loading/loading.gif" data-original="/images/%E5%9B%BE%E7%89%871.png" alt="image-20240604094822494"></p>
-<p>绝对路径：&#x2F;usr&#x2F;include&#x2F;a.h<br>相对路径：如果当前目录为&#x2F;usr，则include&#x2F;a.h为相对路径等同于上面<br>当前目录：.<br>上一级目录：..<br>家目录：~<br>系统启动必须：&#x2F;boot、&#x2F;etc、&#x2F;lib<br>命令集合：&#x2F;sbin、&#x2F;bin<br>设备相关：&#x2F;dev、&#x2F;media、&#x2F;mnt<br>临时文件：&#x2F;run、&#x2F;lost+found、&#x2F;tmp<br>账户相关：&#x2F;root、&#x2F;home、&#x2F;usr<br>运行过程：&#x2F;var、&#x2F;proc<br>拓展相关：&#x2F;opt、&#x2F;srv</p>
+<p><img src="/images/loading/loading.gif" data-original="/images/图片1.png" alt="image-20240604094822494"></p>
+<p>绝对路径：/usr/include/a.h<br>相对路径：如果当前目录为/usr，则include/a.h为相对路径等同于上面<br>当前目录：.<br>上一级目录：..<br>家目录：~<br>系统启动必须：/boot、/etc、/lib<br>命令集合：/sbin、/bin<br>设备相关：/dev、/media、/mnt<br>临时文件：/run、/lost+found、/tmp<br>账户相关：/root、/home、/usr<br>运行过程：/var、/proc<br>拓展相关：/opt、/srv</p>
 <p>bin执行，lib库，etc是配置，usr和home是’我的’，dev管设备，opt装软件</p>
 <h1 id="vi编辑器"><a href="#vi编辑器" class="headerlink" title="vi编辑器"></a>vi编辑器</h1><p><a href="#jump1">回到目录</a></p>
 <p><img src="/images/loading/loading.gif" data-original="/images/vim.png" alt="vim工作模式"></p>
-<p><img src="/images/loading/loading.gif" data-original="/images/vim%E9%94%AE%E7%9B%98.png" alt="vim键盘"></p>
+<p><img src="/images/loading/loading.gif" data-original="/images/vim键盘.png" alt="vim键盘"></p>
 <p>命令模式</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -332,7 +337,8 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>:set nu</td>
 <td>显示行号</td>
 </tr>
@@ -349,7 +355,7 @@
 <td></td>
 </tr>
 <tr>
-<td>&#x2F;字符</td>
+<td>/字符</td>
 <td>查找指定字符，按n查找下一个</td>
 </tr>
 <tr>
@@ -364,65 +370,72 @@
 <td>数字 G</td>
 <td>查看指定行</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>i:当前位置开始编辑<br>o：在下面插入一行编辑<br>a：当前位置后一个位置插入<br>r：当前位置替换<br>I:当前行首个位置编辑<br>O：在上面插入一行编辑<br>A：当前行最后一个位置插入<br>R：从当位置开始替换</p>
 <h1 id="用户-组-管理"><a href="#用户-组-管理" class="headerlink" title="用户(组)管理"></a>用户(组)管理</h1><p><a href="#jump1">回到目录</a></p>
-<h3 id="组"><a href="#组" class="headerlink" title="组"></a>组</h3><p>组的信息保存在&#x2F;etc&#x2F;group文件<br>创建组：groupadd 组名<br>修改组：groupmod [-n 新组] 旧组<br>删除组：groupdel 组名</p>
-<h3 id="用户"><a href="#用户" class="headerlink" title="用户"></a>用户</h3><p><strong>创建删除</strong><br>用户信息保存在&#x2F;etc&#x2F;passwd文件<br>用户密码保存在&#x2F;etc&#x2F;shadow文件<br>创建用户：useradd  [-g 组名] [-d 用户主目录] [-r系统用户不可登录系统] 用户名<br>修改用户：usermod [-l 新名字] [-g 新组] [-d 新目录] 用户名<br>删除用户：userdel [-r删除组目录] 用户名<br><strong>修改密码</strong><br>root用户修改其他用户：passwd 用户名<br>普通用户修改自己：passwd<br><strong>切换用户</strong><br>root用户免密码切换：su -用户名<br>普通用户：su -用户名 然后输入密码<br><strong>查看用户信息</strong><br>id 用户名</p>
+<h3 id="组"><a href="#组" class="headerlink" title="组"></a>组</h3><p>组的信息保存在/etc/group文件<br>创建组：groupadd 组名<br>修改组：groupmod [-n 新组] 旧组<br>删除组：groupdel 组名</p>
+<h3 id="用户"><a href="#用户" class="headerlink" title="用户"></a>用户</h3><p><strong>创建删除</strong><br>用户信息保存在/etc/passwd文件<br>用户密码保存在/etc/shadow文件<br>创建用户：useradd  [-g 组名] [-d 用户主目录] [-r系统用户不可登录系统] 用户名<br>修改用户：usermod [-l 新名字] [-g 新组] [-d 新目录] 用户名<br>删除用户：userdel [-r删除组目录] 用户名<br><strong>修改密码</strong><br>root用户修改其他用户：passwd 用户名<br>普通用户修改自己：passwd<br><strong>切换用户</strong><br>root用户免密码切换：su -用户名<br>普通用户：su -用户名 然后输入密码<br><strong>查看用户信息</strong><br>id 用户名</p>
 <h1 id="目录文件操作"><a href="#目录文件操作" class="headerlink" title="目录文件操作"></a>目录文件操作</h1><p><a href="#jump1">回到目录</a></p>
 <p>目录和文件的详细信息：ls [-l] [目录名]             按时间降序显示ls -lt [目录名]<br>-a:列出全部文件，包括隐藏文件<br>快捷方式显示按当前目录下详细信息：ll</p>
-<h2 id="文件-目录属性"><a href="#文件-目录属性" class="headerlink" title="文件&#x2F;目录属性"></a>文件&#x2F;目录属性</h2><p>drwxr-xr-x. 4 root root 80 9月 26 17：05 aaa</p>
+<h2 id="文件-目录属性"><a href="#文件-目录属性" class="headerlink" title="文件/目录属性"></a>文件/目录属性</h2><p>drwxr-xr-x. 4 root root 80 9月 26 17：05 aaa</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">对应信息</th>
-<th align="center">介绍</th>
-<th align="center">例子</th>
+<th style="text-align:center">对应信息</th>
+<th style="text-align:center">介绍</th>
+<th style="text-align:center">例子</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">文件类型</td>
-<td align="center">d目录-普通文件l链接p管道文件b块设备文件c字符设备文件s套接字文件</td>
-<td align="center">d</td>
+<tbody>
+<tr>
+<td style="text-align:center">文件类型</td>
+<td style="text-align:center">d目录-普通文件l链接p管道文件b块设备文件c字符设备文件s套接字文件</td>
+<td style="text-align:center">d</td>
 </tr>
 <tr>
-<td align="center">文件权限</td>
-<td align="center">r读w写x可执行-无权限；三个为一组代表所有者，同组用户，其他用户</td>
-<td align="center">rwxr-xr-x</td>
+<td style="text-align:center">文件权限</td>
+<td style="text-align:center">r读w写x可执行-无权限；三个为一组代表所有者，同组用户，其他用户</td>
+<td style="text-align:center">rwxr-xr-x</td>
 </tr>
 <tr>
-<td align="center">文件硬链接数或目录的子目录数</td>
-<td align="center">文件硬链接，初始为1；空目录初始为2；</td>
-<td align="center">4</td>
+<td style="text-align:center">文件硬链接数或目录的子目录数</td>
+<td style="text-align:center">文件硬链接，初始为1；空目录初始为2；</td>
+<td style="text-align:center">4</td>
 </tr>
 <tr>
-<td align="center">文件拥有者</td>
-<td align="center"></td>
-<td align="center">root</td>
+<td style="text-align:center">文件拥有者</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">root</td>
 </tr>
 <tr>
-<td align="center">文件拥有者所在组</td>
-<td align="center"></td>
-<td align="center">root</td>
+<td style="text-align:center">文件拥有者所在组</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">root</td>
 </tr>
 <tr>
-<td align="center">目录或文件大小</td>
-<td align="center">文件大小单位字节；目录大小不包括目录下的文件和子目录</td>
-<td align="center">80</td>
+<td style="text-align:center">目录或文件大小</td>
+<td style="text-align:center">文件大小单位字节；目录大小不包括目录下的文件和子目录</td>
+<td style="text-align:center">80</td>
 </tr>
 <tr>
-<td align="center">最后一次被修改的时间</td>
-<td align="center">创建&#x2F;last修改</td>
-<td align="center">9月 26 17：05</td>
+<td style="text-align:center">最后一次被修改的时间</td>
+<td style="text-align:center">创建/last修改</td>
+<td style="text-align:center">9月 26 17：05</td>
 </tr>
 <tr>
-<td align="center">目录或文件名</td>
-<td align="center"></td>
-<td align="center">aaa</td>
+<td style="text-align:center">目录或文件名</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">aaa</td>
 </tr>
-</tbody></table>
-<p><img src="/images/loading/loading.gif" data-original="/images/%E5%9B%BE%E7%89%872.png" alt="image-20240604094822494"></p>
+</tbody>
+</table>
+</div>
+<p><img src="/images/loading/loading.gif" data-original="/images/图片2.png" alt="image-20240604094822494"></p>
 <h2 id="修改目录和文件权限"><a href="#修改目录和文件权限" class="headerlink" title="修改目录和文件权限"></a>修改目录和文件权限</h2><p>修改拥有者：chown [-R递归赋予权限] 用户：组 目录和文件列表<br>设置权限：chmod [-R] whooperatorpermission 目录和文件列表</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -431,7 +444,8 @@
 <th>permission</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>u所有者</td>
 <td>+增加权限</td>
 <td>x进入目录或执行文件</td>
@@ -443,24 +457,27 @@
 </tr>
 <tr>
 <td>o其他用户</td>
-<td>&#x3D;重新设置权限</td>
+<td>=重新设置权限</td>
 <td>w修改文件内容或在目录中增删改</td>
 </tr>
 <tr>
 <td>a全部用户</td>
 <td></td>
-<td></td>
 </tr>
-</tbody></table>
-<p>r&#x3D;4 w&#x3D;2 x&#x3D;1 rwx&#x3D;4+2+1&#x3D;7<br>chmod -R 777 文件名&#x2F;目录 给所有人用给rwx权限</p>
-<h2 id="查看-查找文件内容"><a href="#查看-查找文件内容" class="headerlink" title="查看&#x2F;查找文件内容"></a>查看&#x2F;查找文件内容</h2><table>
+</tbody>
+</table>
+</div>
+<p>r=4 w=2 x=1 rwx=4+2+1=7<br>chmod -R 777 文件名/目录 给所有人用给rwx权限</p>
+<h2 id="查看-查找文件内容"><a href="#查看-查找文件内容" class="headerlink" title="查看/查找文件内容"></a>查看/查找文件内容</h2><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>查看文件内容</th>
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>cat 文件名</td>
 <td>显示</td>
 </tr>
@@ -486,7 +503,8 @@
 </tr>
 <tr>
 <td>grep [-n]</td>
-<td>过滤查找， 内容|grep 指定查找内容</td>
+<td>过滤查找， 内容\</td>
+<td>grep 指定查找内容</td>
 </tr>
 <tr>
 <td>find 目录 -name 文件名</td>
@@ -496,17 +514,21 @@
 <td>locate 文件名</td>
 <td>locate之前updatedb</td>
 </tr>
-</tbody></table>
-<h2 id="文件-目录的创建删除复制移动"><a href="#文件-目录的创建删除复制移动" class="headerlink" title="文件&#x2F;目录的创建删除复制移动"></a>文件&#x2F;目录的创建删除复制移动</h2><table>
+</tbody>
+</table>
+</div>
+<h2 id="文件-目录的创建删除复制移动"><a href="#文件-目录的创建删除复制移动" class="headerlink" title="文件/目录的创建删除复制移动"></a>文件/目录的创建删除复制移动</h2><div class="table-container">
+<table>
 <thead>
 <tr>
-<th>创建目录&#x2F;空文件</th>
+<th>创建目录/空文件</th>
 <th>删除</th>
 <th>复制</th>
-<th>移动&#x2F;重命名</th>
+<th>移动/重命名</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>mkdir [-mp] 目录名</td>
 <td>rm [-rf] 目录和文件</td>
 <td>cp [-r] 旧名 新名</td>
@@ -522,11 +544,13 @@
 <td>-m配置权限；-p目录递归创建</td>
 <td>rmdir是删空目录</td>
 <td>\cp强制覆盖</td>
-<td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>在不同的linux服务器之间进行文件传输：<br>scp [-r] 文件 目标用户名@目标服务器名或ip:目标服务器上的保存路径</p>
-<h2 id="安装和打包"><a href="#安装和打包" class="headerlink" title="安装和打包"></a>安装和打包</h2><h3 id="rpm包管理"><a href="#rpm包管理" class="headerlink" title="rpm包管理"></a>rpm包管理</h3><table>
+<h2 id="安装和打包"><a href="#安装和打包" class="headerlink" title="安装和打包"></a>安装和打包</h2><h3 id="rpm包管理"><a href="#rpm包管理" class="headerlink" title="rpm包管理"></a>rpm包管理</h3><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>命令</th>
@@ -534,7 +558,8 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>rpm</td>
 <td>-q 包名</td>
 <td>查询是否安装</td>
@@ -564,41 +589,49 @@
 <td>-e 包名</td>
 <td>卸载包</td>
 </tr>
-</tbody></table>
-<h3 id="yum安装"><a href="#yum安装" class="headerlink" title="yum安装"></a>yum安装</h3><p>mv &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo.backup</p>
-<p>curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo <a target="_blank" rel="noopener" href="http://mirrors.aliyun.com/repo/Centos-7.repo">http://mirrors.aliyun.com/repo/Centos-7.repo</a></p>
+</tbody>
+</table>
+</div>
+<h3 id="yum安装"><a href="#yum安装" class="headerlink" title="yum安装"></a>yum安装</h3><p>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup</p>
+<p>curl -o /etc/yum.repos.d/CentOS-Base.repo <a target="_blank" rel="noopener" href="http://mirrors.aliyun.com/repo/Centos-7.repo">http://mirrors.aliyun.com/repo/Centos-7.repo</a></p>
 <p>yum makecache</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">命令</th>
+<th style="text-align:left">命令</th>
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">yum [-y&#x2F;d&#x2F;n] install 包名</td>
+<tbody>
+<tr>
+<td style="text-align:left">yum [-y/d/n] install 包名</td>
 <td>安装</td>
 </tr>
 <tr>
-<td align="left">yum -y remove</td>
+<td style="text-align:left">yum -y remove</td>
 <td>删除</td>
 </tr>
 <tr>
-<td align="left">yum update 包名</td>
+<td style="text-align:left">yum update 包名</td>
 <td>升级</td>
 </tr>
 <tr>
-<td align="left">yum list | grep 软件名</td>
+<td style="text-align:left">yum list \</td>
+<td>grep 软件名</td>
 <td>查找能够安装的包</td>
 </tr>
 <tr>
-<td align="left">yum check-update</td>
+<td style="text-align:left">yum check-update</td>
 <td>显示可更新的包</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h3 id="打包和压缩"><a href="#打包和压缩" class="headerlink" title="打包和压缩"></a>打包和压缩</h3><p>zip命令和tar命令</p>
 <p>压缩：zip [-qrd] 压缩包文件名 目录和文件名列表<br>解压：unzip [-d 指定放的位置] 压缩包文件名</p>
 <p>压缩：tar [-zcvf] 压缩包文件名.tar.gz 目录和文件名列表<br>解压：tar [-xzvf] 压缩包文件名  [-C 指定放的位置]</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -608,7 +641,8 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>-q</td>
 <td>不显示命令执行过程</td>
 <td>-z</td>
@@ -617,12 +651,12 @@
 <tr>
 <td>-r</td>
 <td>递归压缩</td>
-<td>-c&#x2F;x</td>
-<td>打包&#x2F;解包</td>
+<td>-c/x</td>
+<td>打包/解包</td>
 </tr>
 <tr>
 <td>-u</td>
-<td>把文件增加&#x2F;替换到压缩包中</td>
+<td>把文件增加/替换到压缩包中</td>
 <td>-v</td>
 <td>显示文件详细信息</td>
 </tr>
@@ -630,7 +664,7 @@
 <td>-d</td>
 <td>指定压缩或解压缩后产生的文件放的地方</td>
 <td>-f</td>
-<td>指定压缩&#x2F;解压的文件名</td>
+<td>指定压缩/解压的文件名</td>
 </tr>
 <tr>
 <td></td>
@@ -644,15 +678,18 @@
 <td>-C</td>
 <td>指定压缩或解压缩后产生的文件放的地方</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><p><a href="#jump1">回到目录</a></p>
 <p>硬链接：ln 文件名 链接名<br>软链接：ln -s 目录或文件 链接名</p>
 <p>硬链接是文件指针；软链接是一个保存了文件路径的文件</p>
 <p>尽量为目录做软链接，为文件做硬链接</p>
 <h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><p><a href="#jump1">回到目录</a></p>
-<h2 id="查看进程"><a href="#查看进程" class="headerlink" title="查看进程"></a>查看进程</h2><p>ps [-aux]&#x2F;[-ef]<br>选项说明：<br>-a 查全部进程(前台)<br>-x 查全部进程(包括后台)<br>-u 显示该进程的用户<br>-e 显示所有进程<br>-f 全格式</p>
-<p>以树状形式显示<br>pstree [-p]&#x2F;[-u]<br>选项说明：p：进程pid；u进程所属用户</p>
+<h2 id="查看进程"><a href="#查看进程" class="headerlink" title="查看进程"></a>查看进程</h2><p>ps [-aux]/[-ef]<br>选项说明：<br>-a 查全部进程(前台)<br>-x 查全部进程(包括后台)<br>-u 显示该进程的用户<br>-e 显示所有进程<br>-f 全格式</p>
+<p>以树状形式显示<br>pstree [-p]/[-u]<br>选项说明：p：进程pid；u进程所属用户</p>
 <p>实时显示top [选项]</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -660,7 +697,8 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>-d</td>
 <td>每各d秒更新显示内容</td>
 </tr>
@@ -692,8 +730,11 @@
 <td>q</td>
 <td>退出top</td>
 </tr>
-</tbody></table>
-<p><img src="/images/loading/loading.gif" data-original="/images/top%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90.png" alt="top性能分析"></p>
+</tbody>
+</table>
+</div>
+<p><img src="/images/loading/loading.gif" data-original="/images/top性能分析.png" alt="top性能分析"></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -705,7 +746,8 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>top - 11：03：25</td>
 <td>up 4 min</td>
 <td>3 users</td>
@@ -751,29 +793,35 @@
 <td></td>
 <td></td>
 <td></td>
-<td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="终止进程"><a href="#终止进程" class="headerlink" title="终止进程"></a>终止进程</h2><p>kill [-9] 进程号<br>kill all 进程名称       可用通配符</p>
 <h2 id="按端口查"><a href="#按端口查" class="headerlink" title="按端口查"></a>按端口查</h2><p>lsof -t -i:端口号<br>-t只显示进程号<br>杀死某一端口的进程：kill $(lsof -t -i:端口号)</p>
 <h1 id="磁盘分区和挂载"><a href="#磁盘分区和挂载" class="headerlink" title="磁盘分区和挂载"></a>磁盘分区和挂载</h1><p><a href="#jump1">回到目录</a></p>
 <p>linux独特的挂载使得其只有一个根目录<br>查挂载情况-分区-分区格式化-挂载-查磁盘分区使用情况</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
 <th>分区方式</th>
-<th align="center">特点</th>
+<th style="text-align:center">特点</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>mbr</td>
-<td align="center">最多支持4个主分区，系统只能在主分区，扩展分区占一个主分区，最大2TB，兼容性好</td>
+<td style="text-align:center">最多支持4个主分区，系统只能在主分区，扩展分区占一个主分区，最大2TB，兼容性好</td>
 </tr>
 <tr>
 <td>gtp</td>
-<td align="center">无限多个主分区(windows限制128个)，最大18EB</td>
+<td style="text-align:center">无限多个主分区(windows限制128个)，最大18EB</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -782,7 +830,8 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>IDE</td>
 <td></td>
 <td>驱动器标识符hdx~   例如hda3表示第一个IDE硬盘的第三个分区</td>
@@ -792,7 +841,10 @@
 <td></td>
 <td>sdx~</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -803,7 +855,8 @@
 <th></th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>lsblk</td>
 <td>-f</td>
 <td>会显示uuid和挂载点</td>
@@ -811,28 +864,28 @@
 <td></td>
 </tr>
 <tr>
-<td>fdisk &#x2F;dev&#x2F;sdb</td>
+<td>fdisk /dev/sdb</td>
 <td>m p q w n</td>
 <td>m显示命令;p显示磁盘分区;q不保存退出;w写入并退出;n新增分区;e扩展分区</td>
-<td>对&#x2F;sdb分区,输入n,新增分区然后选择p ，分区类型为主分区。两次回车默认剩余全部空间。最后w写入分区并退出，或者q。</td>
+<td>对/sdb分区,输入n,新增分区然后选择p ，分区类型为主分区。两次回车默认剩余全部空间。最后w写入分区并退出，或者q。</td>
 <td></td>
 </tr>
 <tr>
-<td>mkfs -t ext4 &#x2F;dev&#x2F;sdb1</td>
+<td>mkfs -t ext4 /dev/sdb1</td>
 <td>-t</td>
 <td>设置分区类型</td>
 <td>对刚刚的主分区格式化</td>
 <td></td>
 </tr>
 <tr>
-<td>mount &#x2F;dev&#x2F;sdb1 被挂载的目录</td>
+<td>mount /dev/sdb1 被挂载的目录</td>
 <td>-a -o</td>
-<td>修改&#x2F;etc&#x2F;fstab后mount -a即可永久挂载 o选择何种方式挂载</td>
+<td>修改/etc/fstab后mount -a即可永久挂载 o选择何种方式挂载</td>
 <td>不永久挂载重启会失效<br>-o ro  只读方式挂载<br>-o rw 读写方式挂载</td>
 <td></td>
 </tr>
 <tr>
-<td>umount 被挂载的目录&#x2F;分区</td>
+<td>umount 被挂载的目录/分区</td>
 <td></td>
 <td></td>
 <td>取消挂载</td>
@@ -846,17 +899,19 @@
 <td></td>
 </tr>
 <tr>
-<td>du &#x2F;目录</td>
-<td>-s -h -a -c –max-depth&#x3D;1</td>
+<td>du /目录</td>
+<td>-s -h -a -c —max-depth=1</td>
 <td>s占用大小汇总a含文件c列出明细同时增加汇总值max深度为1查看</td>
 <td>查询指定目录的磁盘使用情况</td>
-<td></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h1 id="系统服务管理systemctl"><a href="#系统服务管理systemctl" class="headerlink" title="系统服务管理systemctl"></a>系统服务管理systemctl</h1><p><a href="#jump1">回到目录</a></p>
 <p>systemctl start|stop|restart|staus|enable|reload 服务名<br>Centos7后不再使用service(可以用，会自动重定向到systemctl命令)<br>service 服务名 start|stop|restart</p>
-<p>查看服务名：<br>方式1：使用seup-&gt;系统服务<br>方式2：&#x2F;etc&#x2F;init.d&#x2F;服务名称</p>
+<p>查看服务名：<br>方式1：使用seup-&gt;系统服务<br>方式2：/etc/init.d/服务名称</p>
 <h1 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h1><p><a href="#jump1">回到目录</a></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -864,77 +919,87 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>systemctl start|restart|stop firewalld</td>
+<tbody>
+<tr>
+<td>systemctl start\</td>
+<td>restart\</td>
+<td>stop firewalld</td>
 <td>启动、重启、关闭防火墙</td>
 </tr>
 <tr>
-<td>firewall-cmd –zone&#x3D;public –add-port&#x3D;80-100&#x2F;tcp –permanent</td>
+<td>firewall-cmd —zone=public —add-port=80-100/tcp —permanent</td>
 <td>开通指定端口<br />也可以设置一个范围的端口80到100</td>
 </tr>
 <tr>
-<td>firewall-cmd –zone&#x3D;public –remove-port&#x3D;80&#x2F;tcp –permanent</td>
+<td>firewall-cmd —zone=public —remove-port=80/tcp —permanent</td>
 <td>关闭指定端口</td>
 </tr>
 <tr>
-<td>firewall-cmd –zone&#x3D;public –add-service&#x3D;ftp –permanent</td>
+<td>firewall-cmd —zone=public —add-service=ftp —permanent</td>
 <td>开通服务</td>
 </tr>
 <tr>
-<td>firewall-cmd –zone&#x3D;public –remove-service&#x3D;http –permanent</td>
+<td>firewall-cmd —zone=public —remove-service=http —permanent</td>
 <td>移去服务</td>
 </tr>
 <tr>
-<td>firewall-cmd –reload</td>
+<td>firewall-cmd —reload</td>
 <td>重载</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>常用服务的端口：ssh(22）、HTTP(80、8080)、MySQL(3306)、Oracle(1521) 、ftp(21）、<br>telnet(23）。</p>
-<p>查看已经开放端口<br>firewall-cmd –list-ports #查看已经开放的端口</p>
+<p>查看已经开放端口<br>firewall-cmd —list-ports #查看已经开放的端口</p>
 <h1 id="环境变量（shell）"><a href="#环境变量（shell）" class="headerlink" title="环境变量（shell）"></a>环境变量（shell）</h1><p><a href="#jump1">回到目录</a></p>
 <p>输出内容<br>echo ‘任务已开启’<br>echo $PATH<br>查看环境变量：env</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">命令</th>
-<th align="left">说明</th>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">说明</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">command &gt; file</td>
-<td align="left">将输出重定向到 file。</td>
+<tbody>
+<tr>
+<td style="text-align:left">command &gt; file</td>
+<td style="text-align:left">将输出重定向到 file。</td>
 </tr>
 <tr>
-<td align="left">command &lt; file</td>
-<td align="left">将输入重定向到 file。</td>
+<td style="text-align:left">command &lt; file</td>
+<td style="text-align:left">将输入重定向到 file。</td>
 </tr>
 <tr>
-<td align="left">command &gt;&gt; file</td>
-<td align="left">将输出以追加的方式重定向到 file。</td>
+<td style="text-align:left">command &gt;&gt; file</td>
+<td style="text-align:left">将输出以追加的方式重定向到 file。</td>
 </tr>
 <tr>
-<td align="left">n &gt; file</td>
-<td align="left">将文件描述符为 n 的文件重定向到 file。</td>
+<td style="text-align:left">n &gt; file</td>
+<td style="text-align:left">将文件描述符为 n 的文件重定向到 file。</td>
 </tr>
 <tr>
-<td align="left">n &gt;&gt; file</td>
-<td align="left">将文件描述符为 n 的文件以追加的方式重定向到 file。</td>
+<td style="text-align:left">n &gt;&gt; file</td>
+<td style="text-align:left">将文件描述符为 n 的文件以追加的方式重定向到 file。</td>
 </tr>
 <tr>
-<td align="left">n &gt;&amp; m</td>
-<td align="left">将输出文件 m 和 n 合并。</td>
+<td style="text-align:left">n &gt;&amp; m</td>
+<td style="text-align:left">将输出文件 m 和 n 合并。</td>
 </tr>
 <tr>
-<td align="left">n &lt;&amp; m</td>
-<td align="left">将输入文件 m 和 n 合并。</td>
+<td style="text-align:left">n &lt;&amp; m</td>
+<td style="text-align:left">将输入文件 m 和 n 合并。</td>
 </tr>
 <tr>
-<td align="left">&lt;&lt; tag</td>
-<td align="left">将开始标记 tag 和结束标记 tag 之间的内容作为输入。</td>
+<td style="text-align:left">&lt;&lt; tag</td>
+<td style="text-align:left">将开始标记 tag 和结束标记 tag 之间的内容作为输入。</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h1 id="任务调度crontab"><a href="#任务调度crontab" class="headerlink" title="任务调度crontab"></a>任务调度crontab</h1><p>分时天月周</p>
-<p>*任意<br>,不连续<br>-连续<br>*&#x2F;n</p>
+<p><em>任意<br>,不连续<br>-连续
+</em>/n</p>
 <p>-e编辑<br>-r清空任务<br>-l列出任务</p>
 <h1 id="开机启动程序"><a href="#开机启动程序" class="headerlink" title="开机启动程序"></a>开机启动程序</h1><p><a href="#jump1">回到目录</a></p>
 <p>init.d</p>
@@ -1095,12 +1160,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">366k</span>
+    <span title="站点总字数">362k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:33</span>
+    <span title="站点阅读时长">5:29</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

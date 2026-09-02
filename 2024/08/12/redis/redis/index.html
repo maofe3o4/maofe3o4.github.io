@@ -254,7 +254,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.5k</span>
+              <span>2.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -281,22 +281,22 @@
 <li>压缩包解压</li>
 <li>进解压文件执行make</li>
 <li>创建安装目录mkdir 安装路径</li>
-<li>开始安装make PREFIX&#x3D;安装路径 install</li>
+<li>开始安装make PREFIX=安装路径 install</li>
 </ul>
-<p>如果要使用bin&#x2F;redis-server .&#x2F;redis.conf启动redis服务<br>.&#x2F;bin&#x2F;redis-server .&#x2F;redis.conf<br>容器内直接输入redis-server </p>
+<p>如果要使用bin/redis-server ./redis.conf启动redis服务<br>./bin/redis-server ./redis.conf<br>容器内直接输入redis-server </p>
 <p>提前配置好redis.conf</p>
 <ul>
-<li>容器里面在&#x2F;etc&#x2F;redis目录</li>
+<li>容器里面在/etc/redis目录</li>
 <li>直接部署在linux，位置在解压的文件里面，要复制一份到安装路径下</li>
 <li>修改配置文件bind 127.0.0.1 -::1 修改成0.0.0.0</li>
-<li>如果是容器内不改这个   daemonize no 改成daemonize yes</li>
+<li>如果是容器内不改这个   daemonize no 改成daemonize yes </li>
 </ul>
 <p>启动登录</p>
 <ul>
 <li>刚开始没有密码，直接redis-cli</li>
 <li>后面设了密码和用户名，reis-cli  -a 密码</li>
 </ul>
-<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><p>参考<a target="_blank" rel="noopener" href="http://redisdoc.com/">http://redisdoc.com</a></p>
+<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><p>参考<a target="_blank" rel="noopener" href="http://redisdoc.com">http://redisdoc.com</a></p>
 <ul>
 <li>string字符串</li>
 <li>hash哈希</li>
@@ -305,14 +305,16 @@
 <li>zset有序集合</li>
 </ul>
 <p>查数据库大小：dbsize</p>
-<h2 id="键key"><a href="#键key" class="headerlink" title="键key"></a>键key</h2><table>
+<h2 id="键key"><a href="#键key" class="headerlink" title="键key"></a>键key</h2><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>命令(key全为键名)</th>
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>del key</td>
 <td>删除</td>
 </tr>
@@ -333,8 +335,8 @@
 <td></td>
 </tr>
 <tr>
-<td>expire&#x2F;expireat key 秒&#x2F;时间戳</td>
-<td>设置过期时间&#x2F;设置过期时间点</td>
+<td>expire/expireat key 秒/时间戳</td>
+<td>设置过期时间/设置过期时间点</td>
 </tr>
 <tr>
 <td>persist key</td>
@@ -356,8 +358,11 @@
 <td>keys pattern</td>
 <td>查看所有符合模式的key，通配符*, ? ,[]</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="字符串string"><a href="#字符串string" class="headerlink" title="字符串string"></a>字符串string</h2><p>可以包含任何数据(因为是用二进制存的)，比如图片或者序列化的对象<br>最大512M</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -365,13 +370,14 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>set&#x2F;mset&#x2F;get&#x2F;mget&#x2F;del&#x2F;append&#x2F;strlen key value [key value]</td>
-<td>设值&#x2F;设多个值&#x2F;获取值&#x2F;获取多个key的值&#x2F;删除key&#x2F;字符串追加&#x2F;获取长度</td>
+<tbody>
+<tr>
+<td>set/mset/get/mget/del/append/strlen key value [key value]</td>
+<td>设值/设多个值/获取值/获取多个key的值/删除key/字符串追加/获取长度</td>
 </tr>
 <tr>
-<td>incrby&#x2F;decrby&#x2F;incrfloat&#x2F;decrfloat key 值</td>
-<td>增加&#x2F;减少&#x2F;增加浮点数&#x2F;减少浮点数</td>
+<td>incrby/decrby/incrfloat/decrfloat key 值</td>
+<td>增加/减少/增加浮点数/减少浮点数</td>
 </tr>
 <tr>
 <td>getrange key start end</td>
@@ -397,8 +403,11 @@
 <td>setnx key value</td>
 <td>在key不存在时设置key的值</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="列表list"><a href="#列表list" class="headerlink" title="列表list"></a>列表list</h2><p>用链表实现</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -406,8 +415,9 @@
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>lpush&#x2F;rpush key value1 value2 …</td>
+<tbody>
+<tr>
+<td>lpush/rpush key value1 value2 …</td>
 <td>头插或尾插一个或多个值</td>
 </tr>
 <tr>
@@ -415,8 +425,8 @@
 <td>查指定范围内的元素，-1表示最后一位</td>
 </tr>
 <tr>
-<td>lpop&#x2F;rpop&#x2F;blpop&#x2F;brpop key</td>
-<td>移出并获取&#x2F;若为空会一直等到进来元素 头&#x2F;尾的元素</td>
+<td>lpop/rpop/blpop/brpop key</td>
+<td>移出并获取/若为空会一直等到进来元素 头/尾的元素</td>
 </tr>
 <tr>
 <td>lindex key index</td>
@@ -432,14 +442,14 @@
 </tr>
 <tr>
 <td>lrem key count value</td>
-<td>删除列表里的value，并返回实际删除个数，count&gt;0,从左边开始删，count&#x3D;0删除全部</td>
+<td>删除列表里的value，并返回实际删除个数，count&gt;0,从左边开始删，count=0删除全部</td>
 </tr>
 <tr>
 <td>ltrim key start stop</td>
 <td>保留从start到stop的元素</td>
 </tr>
 <tr>
-<td>rpoplpush&#x2F;brpoplpush key1 key2</td>
+<td>rpoplpush/brpoplpush key1 key2</td>
 <td>剪切列表1的最后一个元素到列表2<br />加上b就是若列表为空会等到出现值</td>
 </tr>
 <tr>
@@ -447,18 +457,22 @@
 <td></td>
 </tr>
 <tr>
-<td>linsert key before&#x2F;after 值1 值2</td>
+<td>linsert key before/after 值1 值2</td>
 <td>在值1前或者后插入值2</td>
 </tr>
-</tbody></table>
-<h2 id="集合set"><a href="#集合set" class="headerlink" title="集合set"></a>集合set</h2><table>
+</tbody>
+</table>
+</div>
+<h2 id="集合set"><a href="#集合set" class="headerlink" title="集合set"></a>集合set</h2><div class="table-container">
+<table>
 <thead>
 <tr>
 <th>命令</th>
 <th>说明</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>sadd key member1 member2 …</td>
 <td>增加成员</td>
 </tr>
@@ -487,29 +501,31 @@
 <td>将member从集合1移到集合2</td>
 </tr>
 <tr>
-<td>sinter&#x2F;sdiff&#x2F;sunion 一个或多个集合</td>
-<td>返回 交&#x2F;并&#x2F;差 后面的集合</td>
+<td>sinter/sdiff/sunion 一个或多个集合</td>
+<td>返回 交/并/差 后面的集合</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="哈希hash"><a href="#哈希hash" class="headerlink" title="哈希hash"></a>哈希hash</h2><h2 id="有序集合zset"><a href="#有序集合zset" class="headerlink" title="有序集合zset"></a>有序集合zset</h2><h1 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h1><h2 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h2><ul>
 <li>最后一次持久化的数据可能丢失</li>
 <li>创建子进程fork来执行快照会占用两倍的空间</li>
-<li>redis&#x2F;data下的dump.rdb文件整个内存压缩过后的快照</li>
+<li>redis/data下的dump.rdb文件整个内存压缩过后的快照</li>
 </ul>
 <p>开启rdb自动来持久化：redis.conf<br>配置文件中搜索save<br>save  &lt; seconds &gt;  &lt; changes &gt;</p>
 <p>save和bgsave：保存rdb到内存上，前者只保存，后者是异步保存<br>lastsave：获取最后一次成功执行快照的时间</p>
-<h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2><p><img src="/images/loading/loading.gif" data-original="/images/%E6%8C%81%E4%B9%85%E5%8C%96.png" alt="image-20240813172014778"></p>
+<h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2><p><img src="/images/loading/loading.gif" data-original="/images/持久化.png" alt="image-20240813172014778"></p>
 <p>Redis会记录上次重写时的AOF大小，默认配置是当AOF文件大小是上次rewrite后大小的一倍且文件大于64M时触发</p>
 <ul>
 <li>以日志形式来记录每个写操作(读不记录)</li>
 <li>只追加文件，不改写文件</li>
-<li>保存在&#x2F;redis&#x2F;data&#x2F;appendonly.aof</li>
+<li>保存在/redis/data/appendonly.aof</li>
 </ul>
 <p>开启AOF：redis.conf<br>配置文件中搜索appendonly<br>appendonly yes</p>
 <p>修复AOF文件</p>
 <ul>
 <li>备份损坏的文件</li>
-<li>执行redis-check-aof –fix</li>
+<li>执行redis-check-aof —fix</li>
 <li>重启redis</li>
 </ul>
 <p>重写AOF(aof有冗余记录)</p>
@@ -517,7 +533,7 @@
 <li>执行bgrewriteaof</li>
 <li>fork一条新进程来重写AOF文件</li>
 <li>重写触发条件在redis.conf中</li>
-<li>auto-aof-rewrite-percentage 100   &#x2F;&#x2F;每次达到重写后的一倍就重写<br>auto-aof-rewrite-min-size 64mb</li>
+<li>auto-aof-rewrite-percentage 100   //每次达到重写后的一倍就重写<br>auto-aof-rewrite-min-size 64mb</li>
 </ul>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li>持久化方式，两种同时启动</li>
@@ -680,12 +696,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">366k</span>
+    <span title="站点总字数">362k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:33</span>
+    <span title="站点阅读时长">5:29</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>

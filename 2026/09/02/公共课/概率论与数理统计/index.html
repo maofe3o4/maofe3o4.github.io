@@ -247,7 +247,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.4k</span>
+              <span>1.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -267,89 +267,108 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="概率论"><a href="#概率论" class="headerlink" title="概率论"></a>概率论</h1><h2 id="随机事件的关系与运算"><a href="#随机事件的关系与运算" class="headerlink" title="随机事件的关系与运算"></a>随机事件的关系与运算</h2><table>
-<thead>
-<tr>
-<th align="center">关系</th>
-<th align="center">符号</th>
-<th align="center">解释</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">包含</td>
-<td align="center">$A\subset B $</td>
-<td align="center">A发生必然导致B发生</td>
-</tr>
-<tr>
-<td align="center">相等</td>
-<td align="center">$A&#x3D; B $</td>
-<td align="center">A和B相等</td>
-</tr>
-<tr>
-<td align="center">互斥</td>
-<td align="center">$A \cap B &#x3D; \varnothing $</td>
-<td align="center">A和B不可能同时发生</td>
-</tr>
-</tbody></table>
+        <h1 id="概率论"><a href="#概率论" class="headerlink" title="概率论"></a>概率论</h1><h2 id="随机事件的关系与运算"><a href="#随机事件的关系与运算" class="headerlink" title="随机事件的关系与运算"></a>随机事件的关系与运算</h2><div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">运算</th>
-<th align="center">符号</th>
-<th align="center">解释</th>
+<th style="text-align:center">关系</th>
+<th style="text-align:center">符号</th>
+<th style="text-align:center">解释</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">并</td>
-<td align="center">$A\cup B &#x3D;A+B  $</td>
-<td align="center">AB至少有一个发生</td>
+<tbody>
+<tr>
+<td style="text-align:center">包含</td>
+<td style="text-align:center">$A\subset B $</td>
+<td style="text-align:center">A发生必然导致B发生</td>
 </tr>
 <tr>
-<td align="center">交</td>
-<td align="center">$A\cap B &#x3D;AB  $</td>
-<td align="center">AB同时发生</td>
+<td style="text-align:center">相等</td>
+<td style="text-align:center">$A= B $</td>
+<td style="text-align:center">A和B相等</td>
 </tr>
 <tr>
-<td align="center">差</td>
-<td align="center">$A - B&#x3D;A\overline{B} $</td>
-<td align="center">A发生B不发生</td>
+<td style="text-align:center">互斥</td>
+<td style="text-align:center">$A \cap B = \varnothing $</td>
+<td style="text-align:center">A和B不可能同时发生</td>
 </tr>
-<tr>
-<td align="center">对立</td>
-<td align="center">$\overline{A}$</td>
-<td align="center">A不发生</td>
-</tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">运算性质</th>
-<th align="center">符号表示</th>
+<th style="text-align:center">运算</th>
+<th style="text-align:center">符号</th>
+<th style="text-align:center">解释</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">交换律</td>
-<td align="center">$A \cup B &#x3D; B \cup A \ A \cap B &#x3D; B \cap A$</td>
+<tbody>
+<tr>
+<td style="text-align:center">并</td>
+<td style="text-align:center">$A\cup B =A+B  $</td>
+<td style="text-align:center">AB至少有一个发生</td>
 </tr>
 <tr>
-<td align="center">结合律</td>
-<td align="center">$(A \cup B) \cup C &#x3D; A \cup (B \cup C) \ (A \cap B) \cap C &#x3D; A \cap (B \cap C)$</td>
+<td style="text-align:center">交</td>
+<td style="text-align:center">$A\cap B =AB  $</td>
+<td style="text-align:center">AB同时发生</td>
 </tr>
 <tr>
-<td align="center">分配律</td>
-<td align="center">$A \cap (B \cup C) &#x3D; (A \cap B) \cup (A \cap C) \ A \cup (B \cap C) &#x3D; (A \cup B) \cap (A \cup C)$</td>
+<td style="text-align:center">差</td>
+<td style="text-align:center">$A - B=A\overline{B} $</td>
+<td style="text-align:center">A发生B不发生</td>
 </tr>
 <tr>
-<td align="center">对偶律 (德摩根公式)</td>
-<td align="center">$\overline{A \cap B} &#x3D; \overline{A} \cup \overline{B} \ \overline{A \cup B} &#x3D; \overline{A} \cap \overline{B}$</td>
+<td style="text-align:center">对立</td>
+<td style="text-align:center">$\overline{A}$</td>
+<td style="text-align:center">A不发生</td>
 </tr>
-</tbody></table>
-<p><strong>德摩根公式推广</strong>到多个事件以及可列个事件的场合：<br>$$<br>\begin{align*}<br>\overline{\bigcup_{i&#x3D;1}^{\infty} A_i} &#x3D; \bigcap_{i&#x3D;1}^{\infty} \overline{A_i} \qquad &amp; \overline{\bigcap_{i&#x3D;1}^{\infty} A_i} &#x3D; \bigcup_{i&#x3D;1}^{\infty} \overline{A_i}<br>\end{align*}<br>\<br>\begin{align*}<br>\overline{\bigcup_{i&#x3D;1}^{n} A_i} &#x3D; \bigcap_{i&#x3D;1}^{n} \overline{A_i} \qquad &amp; \overline{\bigcap_{i&#x3D;1}^{n} A_i} &#x3D; \bigcup_{i&#x3D;1}^{n} \overline{A_i}<br>\end{align*}<br>$$</p>
-<h2 id="事件域"><a href="#事件域" class="headerlink" title="事件域*"></a>事件域*</h2><h2 id="条件概率基本公式"><a href="#条件概率基本公式" class="headerlink" title="条件概率基本公式"></a>条件概率基本公式</h2><p>$<br>P(A+B)&#x3D;<br>\begin{cases}<br>P(A)+P(B)-P(AB) &amp; AB任意 \<br>P(A)+P(B) &amp; AB互斥 \<br>P(A) | P(B) &amp; B \subset A | A \subset B \<br>P(A)+P(B)-P(A)P(B) &amp; AB独立<br>\end{cases}<br>$</p>
-<p>$<br>P(A-B)&#x3D;<br>\begin{cases}<br>P(A)-P(AB) &amp; AB任意 \<br>P(A)-P(B) &amp;  \<br>P(A) &amp;<br>\end{cases}<br>$</p>
-<p>乘法公式<br>$<br>P(AB)&#x3D;P(A)P(B\mid A)<br>$</p>
-<p>全概率公式<br>$<br>P(B) &#x3D; \sum\limits_{i&#x3D;1}^{n} P(A_i) P(B\mid A_i)<br>$</p>
-<p>贝叶斯公式<br>$<br>P(A_i\mid B) &#x3D; \frac{P(A_i) P(B|A_i)}{\sum\limits_{j&#x3D;1}^{n} P(A_j) P(B|A_j)}<br>$</p>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">运算性质</th>
+<th style="text-align:center">符号表示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">交换律</td>
+<td style="text-align:center">$A \cup B = B \cup A \\ A \cap B = B \cap A$</td>
+</tr>
+<tr>
+<td style="text-align:center">结合律</td>
+<td style="text-align:center">$(A \cup B) \cup C = A \cup (B \cup C) \\ (A \cap B) \cap C = A \cap (B \cap C)$</td>
+</tr>
+<tr>
+<td style="text-align:center">分配律</td>
+<td style="text-align:center">$A \cap (B \cup C) = (A \cap B) \cup (A \cap C) \\ A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$</td>
+</tr>
+<tr>
+<td style="text-align:center">对偶律 (德摩根公式)</td>
+<td style="text-align:center">$\overline{A \cap B} = \overline{A} \cup \overline{B} \\ \overline{A \cup B} = \overline{A} \cap \overline{B}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>德摩根公式推广</strong>到多个事件以及可列个事件的场合：</p>
+<script type="math/tex; mode=display">
+\begin{align*}
+\overline{\bigcup_{i=1}^{\infty} A_i} = \bigcap_{i=1}^{\infty} \overline{A_i} \qquad & \overline{\bigcap_{i=1}^{\infty} A_i} = \bigcup_{i=1}^{\infty} \overline{A_i}
+\end{align*}
+\\
+\begin{align*}
+\overline{\bigcup_{i=1}^{n} A_i} = \bigcap_{i=1}^{n} \overline{A_i} \qquad & \overline{\bigcap_{i=1}^{n} A_i} = \bigcup_{i=1}^{n} \overline{A_i}
+\end{align*}</script><h2 id="事件域"><a href="#事件域" class="headerlink" title="事件域*"></a>事件域*</h2><h2 id="条件概率基本公式"><a href="#条件概率基本公式" class="headerlink" title="条件概率基本公式"></a>条件概率基本公式</h2><p>$<br>P(A+B)=<br>\begin{cases}<br>P(A)+P(B)-P(AB) &amp; AB任意 \\<br>P(A)+P(B) &amp; AB互斥 \\<br>P(A) | P(B) &amp; B \subset A | A \subset B \\<br>P(A)+P(B)-P(A)P(B) &amp; AB独立<br>\end{cases}<br>$</p>
+<p>$<br>P(A-B)=<br>\begin{cases}<br>P(A)-P(AB) &amp; AB任意 \\<br>P(A)-P(B) &amp;  \\<br>P(A) &amp;<br>\end{cases}<br>$</p>
+<p>乘法公式<br>$<br>P(AB)=P(A)P(B\mid A)<br>$</p>
+<p>全概率公式<br>$<br>P(B) = \sum\limits_{i=1}^{n} P(A_i) P(B\mid A_i)<br>$</p>
+<p>贝叶斯公式<br>$<br>P(A_i\mid B) = \frac{P(A_i) P(B|A_i)}{\sum\limits_{j=1}^{n} P(A_j) P(B|A_j)}<br>$</p>
 <h1 id="数理统计"><a href="#数理统计" class="headerlink" title="数理统计"></a>数理统计</h1>
     </div>
 
@@ -504,12 +523,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">366k</span>
+    <span title="站点总字数">362k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:33</span>
+    <span title="站点阅读时长">5:29</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
