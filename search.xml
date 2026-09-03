@@ -18,189 +18,6 @@
       </tags>
   </entry>
   <entry>
-    <title>docker使用操作</title>
-    <url>/2024/06/06/docker/docker/</url>
-    <content><![CDATA[<p>[toc]</p>
-<h1 id="简介">简介</h1>
-<p>Docker是一个C/S结构的系统，Docker守护进程运行在主机上， 然后通过Socket连接从客户端访问，守护进程从客户端接受命令并管理运行在主机上的容器。 容器，是一个运行时环境，就是我们前面说到的集装箱。</p>
-<h2 id="组成">组成</h2>
-<h3 id="镜像image一个特殊的文件系统">镜像image：一个特殊的文件系统</h3>
-<p><strong>除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。</strong> 镜像不包含任何动态数据，其内容在构建之后也不会被改变。</p>
-<p>镜像实际是由多层文件系统联合组成。</p>
-<p><strong>镜像构建时，会一层层构建，前一层是后一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。</strong>　比如，删除前一层文件的操作，实际不是真的删除前一层的文件，而是仅在当前层标记为该文件已删除。在最终容器运行的时候，虽然不会看到这个文件，但是实际上该文件会一直跟随镜像。因此，在构建镜像的时候，需要额外小心，每一层尽量只包含该层需要添加的东西，任何额外的东西应该在该层构建结束前清理掉。</p>
-<p>分层存储的特征还使得镜像的复用、定制变的更为容易。甚至可以用之前构建好的镜像作为基础层，然后进一步添加新的层，以定制自己所需的内容，构建新的镜像。</p>
-<h3 id="容器container镜像运行时的实体">容器container：镜像运行时的实体</h3>
-<p><strong>容器可以被创建、启动、停止、删除、暂停等</strong> <strong>。</strong></p>
-<p>　　<strong>容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的</strong> <strong>命名空间。</strong>前面讲过镜像使用的是分层存储，容器也是如此。</p>
-<p>　　<strong>容器存储层的生存周期和容器一样，容器消亡时，容器存储层也随之消亡。因此，任何保存于容器存储层的信息都会随容器删除而丢失。</strong></p>
-<p>　　按照 Docker 最佳实践的要求，<strong>容器不应该向其存储层内写入任何数据</strong> ，容器存储层要保持无状态化。<strong>所有的文件写入操作，都应该使用数据卷（Volume）、或者绑定宿主目录，</strong>在这些位置的读写会跳过容器存储层，直接对宿主(或网络存储)发生读写，其性能和稳定性更高。数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此， <strong>使用数据卷后，容器可以随意删除、重新</strong> <strong>run</strong> <strong>，数据却不会丢失。</strong></p>
-<h3 id="仓库repository集中存放镜像文件的地方">仓库：repository：集中存放镜像文件的地方</h3>
-<p>镜像构建完成后，可以很容易的在当前宿主上运行，但是， <strong>如果需要在其它服务器上使用这个镜像，我们就需要一个集中的存储、分发镜像的服务，Docker Registry就是这样的服务。</strong></p>
-<p>一个 Docker Registry中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。所以说：<a href="https://cloud.tencent.com/product/tcr?from_column=20065&amp;from=20065">镜像仓库</a>是Docker用来集中存放镜像文件的地方类似于我们之前常用的代码仓库。</p>
-<p>通常，<strong>一个仓库会包含同一个软件不同版本的镜像</strong>，而标签就常用于对应该软件的各个版本 。我们可以通过<仓库名>:<标签>的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 latest 作为默认标签.。</p>
-<h1 id="安装">安装</h1>
-<h2 id="指令">指令</h2>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移除旧版本docker</span></span><br><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置docker yum源</span></span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">--add-repo \</span><br><span class="line">http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 最新 docker</span></span><br><span class="line">sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动&amp; 开机启动docker； <span class="built_in">enable</span> + start 二合一</span></span><br><span class="line">systemctl enable docker --now</span><br></pre></td></tr></table></figure>
-<h2 id="配置自己的镜像加速器">配置自己的镜像加速器</h2>
-<p>docker镜像加速器配置需登录阿里云https://cr.console.aliyun.com/cn-hangzhou/instances 我这里配置了两项，一个是阿里云个人的镜像服务，一个是中科大的</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span><br><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://f3fprrzr.mirror.aliyuncs.com&quot;,</span><br><span class="line">  &quot;https://docker.mirrors.ustc.edu.cn&quot;,</span><br><span class="line">  &quot;https://registry.docker-cn.com&quot;,</span><br><span class="line">   &quot;https://hub-mirror.c.163.com&quot;,</span><br><span class="line">   &quot;https://mirror.baidubce.com&quot;,</span><br><span class="line">   &quot;https://ccr.ccs.tencentyun.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
-<h1 id="卸载">卸载</h1>
-<p>删除docker：yum remove docker-ce rm -rf /var/lib/docker</p>
-<h1 id="常用命令">常用命令</h1>
-<p><img src="/images/loading/loading.gif" data-original="/images/docker命令.png" alt="docker命令" style="zoom: 200%;" /></p>
-<table>
-<thead>
-<tr class="header">
-<th>命令</th>
-<th>选项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>docker search</td>
-<td></td>
-<td>在官方dockerhub搜索镜像</td>
-</tr>
-<tr class="even">
-<td>docker build</td>
-<td></td>
-<td>通过dockerfile创建一个镜像</td>
-</tr>
-<tr class="odd">
-<td>docker pull</td>
-<td></td>
-<td>拉取镜像</td>
-</tr>
-<tr class="even">
-<td>docker push</td>
-<td></td>
-<td>推送镜像到DockerRegistry</td>
-</tr>
-<tr class="odd">
-<td>docker images</td>
-<td></td>
-<td>查看本地镜像</td>
-</tr>
-<tr class="even">
-<td>docker rmi</td>
-<td></td>
-<td>删除本地镜像</td>
-</tr>
-<tr class="odd">
-<td>docker run</td>
-<td>-d后台运行<br>-i交互运行<br>-t伪终端<br>-p指定端口映射<br />-P随机端口映射<br />-v容器卷映射</td>
-<td>创建并运行容器</td>
-</tr>
-<tr class="even">
-<td>docker stop</td>
-<td></td>
-<td>停止指定容器</td>
-</tr>
-<tr class="odd">
-<td>docker start</td>
-<td></td>
-<td>启动指定容器</td>
-</tr>
-<tr class="even">
-<td>docker restart</td>
-<td></td>
-<td>重启指定容器</td>
-</tr>
-<tr class="odd">
-<td>docker rm</td>
-<td>-f强制删除</td>
-<td>强制删除指定容器</td>
-</tr>
-<tr class="even">
-<td>docker ps</td>
-<td>-a查看所有容器<br />-q只显示容器ID</td>
-<td>查看容器基本信息</td>
-</tr>
-<tr class="odd">
-<td>docker logs</td>
-<td>-f标准查看</td>
-<td>查看容器内运行的日志</td>
-</tr>
-<tr class="even">
-<td>docker exec</td>
-<td>-it内部命令行</td>
-<td>进入容器</td>
-</tr>
-<tr class="odd">
-<td>docker save/export</td>
-<td>&gt;tar文件</td>
-<td>保存镜像到本地压缩文件</td>
-</tr>
-<tr class="even">
-<td>docker load/import</td>
-<td>&lt;tar文件</td>
-<td>加载本地压缩文件到镜像</td>
-</tr>
-<tr class="odd">
-<td>docker commit 容器ID 仓库名：版本号</td>
-<td>-m新增功能</td>
-<td>将容器提交到镜像</td>
-</tr>
-<tr class="even">
-<td>docker inspect</td>
-<td></td>
-<td>查看容器详细信息</td>
-</tr>
-<tr class="odd">
-<td>systemctl enable docker</td>
-<td></td>
-<td>设置docker开机自启</td>
-</tr>
-<tr class="even">
-<td>docker update –restart=always [容器名/容器ID]</td>
-<td></td>
-<td>设置docker容器开机自启</td>
-</tr>
-</tbody>
-</table>
-<h1 id="使用docker拉取镜像运行容器">使用docker拉取镜像运行容器</h1>
-<h2 id="mysql">mysql</h2>
-<h2 id="nginx">nginx</h2>
-<p>1.拉取镜像 docker pull nginx</p>
-<p>2.查看镜像 docker images</p>
-<p>3.创建并运行nginx容器 docker run -d –name mynginx -p 80:80 nginx</p>
-<p>5.查看运行的容器 docker ps</p>
-<p>6.通过网页访问nginx docker的宿主机IP:宿主机对应的端口</p>
-<h2 id="redis">redis</h2>
-<p>拉，创，进 合成一句 docker run -itd<br />
--p 6379:6379<br />
-–name myredis<br />
--v /home/redis/conf:/etc/redis/<br />
--v /home/redis/data:/data<br />
-redis redis-server</p>
-<p>docker exec -it 容器名 bash 可以直接执行redis-cli 配置文件在/etc/redis</p>
-<h1 id="镜像的分层">镜像的分层</h1>
-<p>创建一个镜像需要根据dockerfile文件里面的shell脚本来一层一层的构建，这种层级的文件系统称为UnionFS</p>
-<p>1、镜像：轻量级、可执行的独立软件包，包含运行某个软件所需要的所有内容，我们把应用程序和配置依赖打包好形成一个可交付的运行环境（包括代码、运行时环境、环境变量和配置文件等）。</p>
-<p>2、UnionFS(联合文件系统):是一种分层，轻量级高性能的文件系统、支持对文件系统的修改作为一次提交来一层层的叠加，同时将不同目录挂载到同一个虚拟文件系统下。联合文件系统是Docker镜像的基础，镜像可以通过分层进行继承，基于基础镜像可以制作各种具体的应用镜像。</p>
-<p>3、 Docker镜像加载原理</p>
-<ol type="1">
-<li><p>docker的镜像实际上由一层一层的文件系统组成，这种层级的文件系统UnionFS。</p></li>
-<li><p>bootfs(boot file system)主要包含bootloader和kernel, bootloader主要是引导加载kernel, Linux刚启动时会加载bootfs文件系统，在Docker镜像的最底层是bootfs。这一层与我们典型的Linux/Unix系统是一样的，包含boot加载器和内核。当boot加载完成之后整个内核就都在内存中了，此时内存的使用权已由bootfs转交给内核，此时系统也会卸载bootfs。</p></li>
-</ol>
-<h1 id="设置个人或企业版阿里云镜像仓库">设置个人或企业版阿里云镜像仓库</h1>
-<p>https://cr.console.aliyun.com/cn-hangzhou/instances</p>
-<p>① 选择实例列表，点击个人版进入“个人实例”</p>
-<p>② 创建命名空间</p>
-<p>③ 创建镜像仓库–&gt;选择刚刚创建的命名空间—&gt;选择本地仓库，创建</p>
-<p>④ 在成功节目根据第三点“将镜像推送到Registry”</p>
-<p>⑤ 然后尝试下载上传的镜像</p>
-<p>具体命令在阿里云镜像服务里面有</p>
-]]></content>
-      <categories>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>docker</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>算法海</title>
     <url>/2026/03/05/%E7%AE%97%E6%B3%95/</url>
     <content><![CDATA[<h1 id="tips">tips</h1>
@@ -1840,180 +1657,186 @@ redis redis-server</p>
       </tags>
   </entry>
   <entry>
-    <title>k8s集群部署以及实用操作</title>
-    <url>/2024/07/29/kubernetes/k8s%E5%AE%9E%E7%94%A8%E6%93%8D%E4%BD%9C/</url>
+    <title>docker使用操作</title>
+    <url>/2024/06/06/docker/docker/</url>
     <content><![CDATA[<p>[toc]</p>
-<h1 id="配置k8s集群">配置k8s集群</h1>
-<h2 id="基础环境">基础环境</h2>
-<p>在这之前保证每台服务器都安装有docker</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">各个机器设置自己的域名</span></span><br><span class="line">hostnamectl set-hostname xxxx</span><br><span class="line">vi /etc/hosts</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 SELinux 设置为 permissive 模式（相当于将其禁用）</span></span><br><span class="line">sudo setenforce 0</span><br><span class="line">sudo sed -i &#x27;s/^SELINUX=enforcing$/SELINUX=permissive/&#x27; /etc/selinux/config</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">关闭swap</span></span><br><span class="line">swapoff -a  </span><br><span class="line">sed -ri &#x27;s/.*swap.*/#&amp;/&#x27; /etc/fstab</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">允许 iptables 检查桥接流量</span></span><br><span class="line">cat &lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf</span><br><span class="line">br_netfilter</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;EOF | sudo tee /etc/sysctl.d/k8s.conf</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">EOF</span><br><span class="line">sudo sysctl --system</span><br></pre></td></tr></table></figure>
-<h2 id="安装kubeletkubeadmkubectl">安装kubelet、kubeadm、kubectl</h2>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cat &lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=0</span><br><span class="line">repo_gpgcheck=0</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg</span><br><span class="line">   http://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg</span><br><span class="line">exclude=kubelet kubeadm kubectl</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">sudo yum install -y kubelet-1.20.9 kubeadm-1.20.9 kubectl-1.20.9 --disableexcludes=kubernetes</span><br><span class="line"></span><br><span class="line">sudo systemctl enable --now kubelet</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">kubelet 现在每隔几秒就会重启，因为它陷入了一个等待 kubeadm 指令的死循环</span></span><br></pre></td></tr></table></figure>
-<h2 id="下载所需镜像">下载所需镜像</h2>
-<p>这里在当前目录下通过sh文件来批量安装镜像</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo tee ./images.sh &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line">images=(</span><br><span class="line">kube-apiserver:v1.20.9</span><br><span class="line">kube-proxy:v1.20.9</span><br><span class="line">kube-controller-manager:v1.20.9</span><br><span class="line">kube-scheduler:v1.20.9</span><br><span class="line">coredns:1.7.0</span><br><span class="line">etcd:3.4.13-0</span><br><span class="line">pause:3.2</span><br><span class="line">)</span><br><span class="line">for imageName in $&#123;images[@]&#125; ; do</span><br><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/lfy_k8s_images/$imageName</span><br><span class="line">done</span><br><span class="line">EOF</span><br><span class="line">   </span><br><span class="line">chmod +x ./images.sh &amp;&amp; ./images.sh</span><br></pre></td></tr></table></figure>
-<p>以上操作每台服务器都要进行 接下来只需要在主节点上操作</p>
-<h2 id="初始化主节点">初始化主节点</h2>
-<h3 id="初始化">初始化</h3>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">主节点初始化</span></span><br><span class="line">kubeadm init \</span><br><span class="line">--apiserver-advertise-address=172.19.39.156 \</span><br><span class="line">--control-plane-endpoint=centos7-156 \</span><br><span class="line">--image-repository registry.cn-hangzhou.aliyuncs.com/lfy_k8s_images \</span><br><span class="line">--kubernetes-version v1.20.9 \</span><br><span class="line">--service-cidr=10.96.0.0/16 \</span><br><span class="line">--pod-network-cidr=192.168.0.0/16</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">更改你自己的master主节点的ip(第一项)和主机名(第二项)，之前在/etc/hosts文件中有配置过</span></span><br></pre></td></tr></table></figure>
-<p>说明：</p>
-<table>
-<thead>
-<tr class="header">
-<th>命令</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>kubeadm init</td>
-<td>主节点初始化</td>
-</tr>
-<tr class="even">
-<td>–apiserver-advertise-address=</td>
-<td>主服务器的(私有)IP</td>
-</tr>
-<tr class="odd">
-<td>–control-plane-endpoint=</td>
-<td>控制结点的域名/IP</td>
-</tr>
-<tr class="even">
-<td>–image-repository</td>
-<td>镜像仓库</td>
-</tr>
-<tr class="odd">
-<td>–kubernetes-version</td>
-<td>k8s版本</td>
-</tr>
-<tr class="even">
-<td>–service-cidr=</td>
-<td>集群中结点的虚拟IP范围</td>
-</tr>
-<tr class="odd">
-<td>–pod-network-cidr=</td>
-<td>pod的IP范围</td>
-</tr>
-</tbody>
-</table>
-<h3 id="初始化信息">初始化信息</h3>
-<p>在初始化完成后，保留系统的初始化信息,这里面有口令，如果忘记保存了就重新在master主机上生成 kubeadm token create –print-join-command</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Your Kubernetes control-plane has initialized successfully!</span><br><span class="line"></span><br><span class="line">To start using your cluster, you need to run the following as a regular user:</span><br><span class="line"></span><br><span class="line">  mkdir -p $HOME/.kube</span><br><span class="line">  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">  sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br><span class="line"></span><br><span class="line">Alternatively, if you are the root user, you can run:</span><br><span class="line"></span><br><span class="line">  export KUBECONFIG=/etc/kubernetes/admin.conf</span><br><span class="line"></span><br><span class="line">You should now deploy a pod network to the cluster.</span><br><span class="line">Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:</span><br><span class="line">  https://kubernetes.io/docs/concepts/cluster-administration/addons/</span><br><span class="line"></span><br><span class="line">You can now join any number of control-plane nodes by copying certificate authorities</span><br><span class="line">and service account keys on each node and then running the following as root:</span><br><span class="line"></span><br><span class="line">  kubeadm join centos7-156:6443 --token 6jxsq5.81s2v6tnq2yv934k \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:605505eea7c3d7f85adc7b1703921009006db845d018b97b33f33407996ebe8f \</span><br><span class="line">    --control-plane </span><br><span class="line"></span><br><span class="line">Then you can join any number of worker nodes by running the following on each as root:</span><br><span class="line"></span><br><span class="line">kubeadm join centos7-156:6443 --token 6jxsq5.81s2v6tnq2yv934k \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:605505eea7c3d7f85adc7b1703921009006db845d018b97b33f33407996ebe8f</span><br></pre></td></tr></table></figure>
-<p>根据初始化信息继续操作</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">管理用户的配置文件</span></span><br><span class="line">mkdir -p $HOME/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果你是root用户，添加环境变量</span></span><br><span class="line">export KUBECONFIG=/etc/kubernetes/admin.conf</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">给集群配置pod网络</span></span><br><span class="line">curl https://docs.projectcalico.org/v3.20/manifests/calico.yaml -O</span><br><span class="line">kubectl apply -f calico.yaml</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将一个结点作为管理节点添加到集群(在副结点命令行执行)</span></span><br><span class="line">kubeadm join [主结点服务器名]:6443 --token 6jxsq5.81s2v6tnq2yv934k \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:605505eea7c3d7f85adc7b1703921009006db845d018b97b33f33407996ebe8f \</span><br><span class="line">    --control-plane</span><br><span class="line">    </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将一个结点作为副节点添加到集群(在副结点命令行执行)</span></span><br><span class="line">kubeadm join [主结点服务器名]:6443 --token 6jxsq5.81s2v6tnq2yv934k \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:605505eea7c3d7f85adc7b1703921009006db845d018b97b33f33407996ebe8f</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看集群所有节点或pods</span></span><br><span class="line">kubectl get nodes    //全部状态ready</span><br><span class="line">kubectl get pods -A</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">主机重新生成令牌(如果有出现结点加不进去的情况)</span></span><br><span class="line">kubeadm token create --print-join-command</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">副结点加入失败后</span></span><br><span class="line">rm -rf /etc/kubenetes/*</span><br><span class="line">kubeadm reset</span><br><span class="line">再用主机生成的令牌加入</span><br></pre></td></tr></table></figure>
-<h2 id="部署dashborad">部署dashborad</h2>
-<h3 id="下载dashborad并创建用户">下载dashborad并创建用户</h3>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">从后面网址下yaml文件并应用(如果执行失败，自己去下这个文件)</span></span><br><span class="line">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.3.1/aio/deploy/recommended.yaml</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置访问端口，将<span class="built_in">type</span>: ClusterIP 改为 <span class="built_in">type</span>: NodePort</span></span><br><span class="line">kubectl edit svc kubernetes-dashboard -n kubernetes-dashboard</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">找到端口，并打开该端口的防火墙(云服务器需设置安全组)</span></span><br><span class="line">kubectl get svc -A |grep kubernetes-dashboard</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建访问账号，准备一个yaml文件； vi dash.yaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: ServiceAccount</span><br><span class="line">metadata:</span><br><span class="line">  name: admin-user</span><br><span class="line">  namespace: kubernetes-dashboard</span><br><span class="line">---</span><br><span class="line">apiVersion: rbac.authorization.k8s.io/v1</span><br><span class="line">kind: ClusterRoleBinding</span><br><span class="line">metadata:</span><br><span class="line">  name: admin-user</span><br><span class="line">roleRef:</span><br><span class="line">  apiGroup: rbac.authorization.k8s.io</span><br><span class="line">  kind: ClusterRole</span><br><span class="line">  name: cluster-admin</span><br><span class="line">subjects:</span><br><span class="line">- kind: ServiceAccount</span><br><span class="line">  name: admin-user</span><br><span class="line">  namespace: kubernetes-dashboard</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">制作好上面的文件然后执行下面的命令</span></span><br><span class="line">kubectl apply -f dash.yaml</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取访问令牌并复制</span></span><br><span class="line">kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath=&quot;&#123;.secrets[0].name&#125;&quot;) -o go-template=&quot;&#123;&#123;.data.token | base64decode&#125;&#125;&quot;</span><br></pre></td></tr></table></figure>
-<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">eyJhbGciOiJSUzI1NiIsImtpZCI6IlJraHBhdHJBV0x1bWVUanVtc3l3WGdTMVo0cVVhOF9PYmVyN2JMWXc5bTQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLTRienE5Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJiY2UzMTA3MC05ZDA3LTQ4OTctYTIzOC0wYjIxZWEzNDdiMzgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.KD7RbvNBTvcWWZkHQmRQfCcUesoo9H4vZebyu-DnXT70ZPVkKNBkq0SxFtdqk0fjuzb9_xUhYtqLatZT2jixMUnN29GHAptbG6fxQvHcQCerrAz8POMkBylZevY_C1QwY-JUiSGTwy42pEkNNHE-cA7iZWE3jU9-Rnb9YCefKI1OsO7Mutopz-T4P7OoCPVjdzvnGqXSBZTK4qqaKR9_2t58iIIuWUFe8Z8uIdEZhauyHMFqAVdiMlTRXI7GeIHwsxwDwhBSHEFutjWf5ugqZRfj6ug4OyzpiLuy8ijs6-YYQamvtgsejGfYJXirmBCYawTvrQI2Iwx-Qw4CshbDTQ</span><br></pre></td></tr></table></figure>
-<h3 id="浏览器访问">浏览器访问</h3>
-<p>https://任意一台集群中的公网IP:端口 此处端口kubectl get svc -A |grep kubernetes-dashboard查看</p>
-<h2 id="使用token登录">使用token登录</h2>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看用户</span></span><br><span class="line">kubectl get sa</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看default用户的信息</span></span><br><span class="line">kubectl describe sa default</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">获取上面用户对应的token值</span></span><br><span class="line">kubectl describe secret default-token-[自己的token行] | awk &#x27;$1==&quot;token:&quot;&#123;print $2&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h1 id="简介">简介</h1>
+<p>Docker是一个C/S结构的系统，Docker守护进程运行在主机上， 然后通过Socket连接从客户端访问，守护进程从客户端接受命令并管理运行在主机上的容器。 容器，是一个运行时环境，就是我们前面说到的集装箱。</p>
+<h2 id="组成">组成</h2>
+<h3 id="镜像image一个特殊的文件系统">镜像image：一个特殊的文件系统</h3>
+<p><strong>除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。</strong> 镜像不包含任何动态数据，其内容在构建之后也不会被改变。</p>
+<p>镜像实际是由多层文件系统联合组成。</p>
+<p><strong>镜像构建时，会一层层构建，前一层是后一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。</strong>　比如，删除前一层文件的操作，实际不是真的删除前一层的文件，而是仅在当前层标记为该文件已删除。在最终容器运行的时候，虽然不会看到这个文件，但是实际上该文件会一直跟随镜像。因此，在构建镜像的时候，需要额外小心，每一层尽量只包含该层需要添加的东西，任何额外的东西应该在该层构建结束前清理掉。</p>
+<p>分层存储的特征还使得镜像的复用、定制变的更为容易。甚至可以用之前构建好的镜像作为基础层，然后进一步添加新的层，以定制自己所需的内容，构建新的镜像。</p>
+<h3 id="容器container镜像运行时的实体">容器container：镜像运行时的实体</h3>
+<p><strong>容器可以被创建、启动、停止、删除、暂停等</strong> <strong>。</strong></p>
+<p>　　<strong>容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的</strong> <strong>命名空间。</strong>前面讲过镜像使用的是分层存储，容器也是如此。</p>
+<p>　　<strong>容器存储层的生存周期和容器一样，容器消亡时，容器存储层也随之消亡。因此，任何保存于容器存储层的信息都会随容器删除而丢失。</strong></p>
+<p>　　按照 Docker 最佳实践的要求，<strong>容器不应该向其存储层内写入任何数据</strong> ，容器存储层要保持无状态化。<strong>所有的文件写入操作，都应该使用数据卷（Volume）、或者绑定宿主目录，</strong>在这些位置的读写会跳过容器存储层，直接对宿主(或网络存储)发生读写，其性能和稳定性更高。数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此， <strong>使用数据卷后，容器可以随意删除、重新</strong> <strong>run</strong> <strong>，数据却不会丢失。</strong></p>
+<h3 id="仓库repository集中存放镜像文件的地方">仓库：repository：集中存放镜像文件的地方</h3>
+<p>镜像构建完成后，可以很容易的在当前宿主上运行，但是， <strong>如果需要在其它服务器上使用这个镜像，我们就需要一个集中的存储、分发镜像的服务，Docker Registry就是这样的服务。</strong></p>
+<p>一个 Docker Registry中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。所以说：<a href="https://cloud.tencent.com/product/tcr?from_column=20065&amp;from=20065">镜像仓库</a>是Docker用来集中存放镜像文件的地方类似于我们之前常用的代码仓库。</p>
+<p>通常，<strong>一个仓库会包含同一个软件不同版本的镜像</strong>，而标签就常用于对应该软件的各个版本 。我们可以通过<仓库名>:<标签>的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 latest 作为默认标签.。</p>
+<h1 id="安装">安装</h1>
+<h2 id="指令">指令</h2>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移除旧版本docker</span></span><br><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置docker yum源</span></span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">--add-repo \</span><br><span class="line">http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 最新 docker</span></span><br><span class="line">sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动&amp; 开机启动docker； <span class="built_in">enable</span> + start 二合一</span></span><br><span class="line">systemctl enable docker --now</span><br></pre></td></tr></table></figure>
+<h2 id="配置自己的镜像加速器">配置自己的镜像加速器</h2>
+<p>docker镜像加速器配置需登录阿里云https://cr.console.aliyun.com/cn-hangzhou/instances 我这里配置了两项，一个是阿里云个人的镜像服务，一个是中科大的</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span><br><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://f3fprrzr.mirror.aliyuncs.com&quot;,</span><br><span class="line">  &quot;https://docker.mirrors.ustc.edu.cn&quot;,</span><br><span class="line">  &quot;https://registry.docker-cn.com&quot;,</span><br><span class="line">   &quot;https://hub-mirror.c.163.com&quot;,</span><br><span class="line">   &quot;https://mirror.baidubce.com&quot;,</span><br><span class="line">   &quot;https://ccr.ccs.tencentyun.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<h1 id="卸载">卸载</h1>
+<p>删除docker：yum remove docker-ce rm -rf /var/lib/docker</p>
 <h1 id="常用命令">常用命令</h1>
-<h2 id="命名空间">命名空间</h2>
+<p><img src="/images/loading/loading.gif" data-original="/images/docker命令.png" alt="docker命令" style="zoom: 200%;" /></p>
 <table>
 <thead>
 <tr class="header">
 <th>命令</th>
-<th></th>
+<th>选项</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>kubectl create ns hello</td>
-<td>创建</td>
+<td>docker search</td>
+<td></td>
+<td>在官方dockerhub搜索镜像</td>
 </tr>
 <tr class="even">
-<td>kubectl delete ns hello</td>
-<td>删除</td>
+<td>docker build</td>
+<td></td>
+<td>通过dockerfile创建一个镜像</td>
 </tr>
 <tr class="odd">
-<td>kubectl get pods -n 命令空间</td>
-<td>查指定命名空间里的pods</td>
+<td>docker pull</td>
+<td></td>
+<td>拉取镜像</td>
+</tr>
+<tr class="even">
+<td>docker push</td>
+<td></td>
+<td>推送镜像到DockerRegistry</td>
+</tr>
+<tr class="odd">
+<td>docker images</td>
+<td></td>
+<td>查看本地镜像</td>
+</tr>
+<tr class="even">
+<td>docker rmi</td>
+<td></td>
+<td>删除本地镜像</td>
+</tr>
+<tr class="odd">
+<td>docker run</td>
+<td>-d后台运行<br>-i交互运行<br>-t伪终端<br>-p指定端口映射<br />-P随机端口映射<br />-v容器卷映射</td>
+<td>创建并运行容器</td>
+</tr>
+<tr class="even">
+<td>docker stop</td>
+<td></td>
+<td>停止指定容器</td>
+</tr>
+<tr class="odd">
+<td>docker start</td>
+<td></td>
+<td>启动指定容器</td>
+</tr>
+<tr class="even">
+<td>docker restart</td>
+<td></td>
+<td>重启指定容器</td>
+</tr>
+<tr class="odd">
+<td>docker rm</td>
+<td>-f强制删除</td>
+<td>强制删除指定容器</td>
+</tr>
+<tr class="even">
+<td>docker ps</td>
+<td>-a查看所有容器<br />-q只显示容器ID</td>
+<td>查看容器基本信息</td>
+</tr>
+<tr class="odd">
+<td>docker logs</td>
+<td>-f标准查看</td>
+<td>查看容器内运行的日志</td>
+</tr>
+<tr class="even">
+<td>docker exec</td>
+<td>-it内部命令行</td>
+<td>进入容器</td>
+</tr>
+<tr class="odd">
+<td>docker save/export</td>
+<td>&gt;tar文件</td>
+<td>保存镜像到本地压缩文件</td>
+</tr>
+<tr class="even">
+<td>docker load/import</td>
+<td>&lt;tar文件</td>
+<td>加载本地压缩文件到镜像</td>
+</tr>
+<tr class="odd">
+<td>docker commit 容器ID 仓库名：版本号</td>
+<td>-m新增功能</td>
+<td>将容器提交到镜像</td>
+</tr>
+<tr class="even">
+<td>docker inspect</td>
+<td></td>
+<td>查看容器详细信息</td>
+</tr>
+<tr class="odd">
+<td>systemctl enable docker</td>
+<td></td>
+<td>设置docker开机自启</td>
+</tr>
+<tr class="even">
+<td>docker update –restart=always [容器名/容器ID]</td>
+<td></td>
+<td>设置docker容器开机自启</td>
 </tr>
 </tbody>
 </table>
-<h2 id="pod操作">pod操作</h2>
-<p><img src="/images/loading/loading.gif" data-original="D:\admin_file\自学笔记\myblog_hexo\source\_posts\kubernetes\k8s工作负载.png" alt="k8s" style="zoom:150%;" /></p>
-<table>
-<thead>
-<tr class="header">
-<th>工作负载</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>deployment</td>
-<td>无状态应用，微服务，提供多副本功能</td>
-</tr>
-<tr class="even">
-<td>statefulset</td>
-<td>有状态应用，redis，提供稳定存储和网络功能</td>
-</tr>
-<tr class="odd">
-<td>DaemonSet</td>
-<td>守护星应用，日志收集，每个机器都运行</td>
-</tr>
-<tr class="even">
-<td>Job/CronJob</td>
-<td>定时任务，垃圾清理</td>
-</tr>
-</tbody>
-</table>
-<h3 id="使用run和deployment命令创建">使用run和deployment命令创建</h3>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl run mynginx --image=nginx</span><br><span class="line">或</span><br><span class="line">kubectl create deployment mynginx --image=nginx</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看default名称空间的Pod</span></span><br><span class="line">kubectl get pod </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">描述</span></span><br><span class="line">kubectl describe pod|deploy Pod名|部署名</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改yaml文件</span></span><br><span class="line">kubectl edit deployment|pod pod名|部署名</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除</span></span><br><span class="line">kubectl delete pod Pod名字</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看Pod的运行日志</span></span><br><span class="line">kubectl logs Pod名字</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">每个Pod - k8s都会分配一个ip</span></span><br><span class="line">kubectl get pod -owide</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使用Pod的ip+pod里面运行容器的端口</span></span><br><span class="line">curl 192.168.169.136</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">集群中的任意一个机器以及任意的应用都能通过Pod分配的ip来访问这个Pod</span></span><br></pre></td></tr></table></figure>
-<p>两个不同命令的区别：</p>
-<ul>
-<li>deployment控制Pod，使Pod拥有多副本，自愈，扩缩容等能力</li>
-</ul>
-<h4 id="deployment扩缩容">deployment扩缩容</h4>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改复制数，指定部署名</span></span><br><span class="line">kubectl scale -n 命名空间 --replicas=复制数 deployment/my-dep</span><br></pre></td></tr></table></figure>
-<h3 id="使用yaml文件创建">使用yaml文件创建</h3>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建pod</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">myapp</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">myapp</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">tomcat:8.5.68</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">tomcat</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建deployment</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">my-dep</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">my-dep</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">my-dep</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">my-dep</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">nginx</span></span><br></pre></td></tr></table></figure>
-<h3 id="查看pod实时状态">查看pod实时状态</h3>
-<p>kubectl get pods -w Ctrl+C退出</p>
-<p>watch -n 3 kubectl get pods | grep pod名 3秒刷新一次</p>
-<h2 id="版本控制">版本控制</h2>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置部署pod内容器的版本并记录</span></span><br><span class="line">kubectl set image deployment/deploy名 nginx=nginx:1.16.1 --record</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查特定Deployment的Rollout状态</span></span><br><span class="line">kubectl rollout status deployment/deploy名</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">历史记录</span></span><br><span class="line">kubectl rollout history deployment/deploy名</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看某个历史详情</span></span><br><span class="line">kubectl rollout history deployment/deploy名p --revision=2</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">回滚(回到上次)</span></span><br><span class="line">kubectl rollout undo deployment/deploy名</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">回滚(回到指定版本)</span></span><br><span class="line">kubectl rollout undo deployment/deploy名 --to-revision=2</span><br></pre></td></tr></table></figure>
-<h2 id="服务service">服务service</h2>
-<p>将一组 <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/">Pods</a> 公开为网络服务的抽象方法。</p>
-<p>kubectl get svc</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">暴露Deploy，把deploy里的my-dep服务的8000端口暴露，并和内部pod的80端口对应上</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在加上--NodePort选项之后可以通过 公网ip:生成的端口 访问</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果不加默认--<span class="built_in">type</span>=ClusterIP，只能集群内部访问</span></span><br><span class="line">kubectl expose deployment my-dep --port=8000 --target-port=80</span><br><span class="line">或者</span><br><span class="line">kubectl expose deployment my-dep --port=8000 --target-port=80 --type=NodePort</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">使用标签检索Pod</span></span><br><span class="line">kubectl get pod -l app=my-dep</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">等效yaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    app: my-dep</span><br><span class="line">  name: my-dep</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    app: my-dep</span><br><span class="line">  ports:</span><br><span class="line">  - port: 8000</span><br><span class="line">    protocol: TCP</span><br><span class="line">    targetPort: 80</span><br></pre></td></tr></table></figure>
-<h2 id="ingress统一网关接口">ingress统一网关接口</h2>
-<p><img src="/images/loading/loading.gif" data-original="D:\admin_file\自学笔记\myblog_hexo\source\_posts\kubernetes\ingress.png" alt="ingress" style="zoom:150%;" /></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装</span></span><br><span class="line">wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.47.0/deploy/static/provider/baremetal/deploy.yaml</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">修改镜像</span></span><br><span class="line">vi deploy.yaml</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将image的值改为如下值：</span></span><br><span class="line">registry.cn-hangzhou.aliyuncs.com/lfy_k8s_images/ingress-nginx-controller:v0.46.0</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">应用该文件</span></span><br><span class="line">kubectl apply -f deploy.yaml</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查安装的结果</span></span><br><span class="line">kubectl get pod,svc -n ingress-nginx</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">最后别忘记把svc暴露的端口要放行</span></span><br></pre></td></tr></table></figure>
-<h1 id="存储抽象">存储抽象</h1>
-<h2 id="通过指令挂载">通过指令挂载</h2>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">所有节点</span></span><br><span class="line">yum install -y nfs-utils</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">主节点</span></span><br><span class="line">echo &quot;/nfs/data/ *(insecure,rw,sync,no_root_squash)&quot; &gt; /etc/exports</span><br><span class="line">mkdir -p /nfs/data</span><br><span class="line">systemctl enable rpcbind --now</span><br><span class="line">systemctl enable nfs-server --now</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">配置生效</span></span><br><span class="line">exportfs -r</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">从节点</span></span><br><span class="line">showmount -e 主节点IP    # 查看主节点挂载目录</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">执行以下命令挂载 nfs 服务器上的共享目录到本机路径 /root/nfsmount</span></span><br><span class="line">mkdir -p /nfs/data</span><br><span class="line">mount -t nfs 主结点IP:/nfs/data /nfs/data</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">写入一个测试文件</span></span><br><span class="line">echo &quot;hello nfs server&quot; &gt; /nfs/data/test.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">解绑</span></span><br><span class="line">unmount -lf /nfs/data/</span><br></pre></td></tr></table></figure>
-<h2 id="通过yaml挂载">通过yaml挂载</h2>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx-pv-demo</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-pv-demo</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx-pv-demo</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx-pv-demo</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">html</span></span><br><span class="line">          <span class="attr">mountPath:</span> <span class="string">/usr/share/nginx/html</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">html</span></span><br><span class="line">          <span class="attr">nfs:</span></span><br><span class="line">            <span class="attr">server:</span> <span class="string">主节点IP</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/nfs/data/nginx-pv</span></span><br></pre></td></tr></table></figure>
-<h1 id="pvpvc">PV&amp;PVC</h1>
-<p>PV：持久卷，将应用需要持久化的数据<strong>保存</strong>到指定位置 PVC：持久卷申明，<strong>申明</strong>需要使用的持久卷规格</p>
-<p>pv是提前设置好静态空间，放在那里等人来用 pvc就是发出申请，我要用一个大小多大的pv</p>
-<p><img src="/images/loading/loading.gif" data-original="D:\admin_file\自学笔记\myblog_hexo\source\_posts\kubernetes\PV&PVC.png" alt="PV&PVC" style="zoom:150%;" /></p>
-<h3 id="静态供应创建pv">静态供应(创建pv)</h3>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">nfs主节点</span></span><br><span class="line">mkdir -p /nfs/data/01</span><br><span class="line">mkdir -p /nfs/data/02</span><br><span class="line">mkdir -p /nfs/data/03</span><br></pre></td></tr></table></figure>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolume</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pv01-10m</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">capacity:</span></span><br><span class="line">    <span class="attr">storage:</span> <span class="string">10M</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ReadWriteMany</span></span><br><span class="line">  <span class="attr">storageClassName:</span> <span class="string">nfs</span></span><br><span class="line">  <span class="attr">nfs:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">/nfs/data/01</span></span><br><span class="line">    <span class="attr">server:</span> <span class="number">172.31</span><span class="number">.0</span><span class="number">.4</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolume</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pv02-1gi</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">capacity:</span></span><br><span class="line">    <span class="attr">storage:</span> <span class="string">1Gi</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ReadWriteMany</span></span><br><span class="line">  <span class="attr">storageClassName:</span> <span class="string">nfs</span></span><br><span class="line">  <span class="attr">nfs:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">/nfs/data/02</span></span><br><span class="line">    <span class="attr">server:</span> <span class="number">172.31</span><span class="number">.0</span><span class="number">.4</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolume</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pv03-3gi</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">capacity:</span></span><br><span class="line">    <span class="attr">storage:</span> <span class="string">3Gi</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ReadWriteMany</span></span><br><span class="line">  <span class="attr">storageClassName:</span> <span class="string">nfs</span></span><br><span class="line">  <span class="attr">nfs:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">/nfs/data/03</span></span><br><span class="line">    <span class="attr">server:</span> <span class="number">172.31</span><span class="number">.0</span><span class="number">.4</span></span><br></pre></td></tr></table></figure>
-<h3 id="pvc创建和绑定">pvc创建和绑定</h3>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolumeClaim</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-pvc</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ReadWriteMany</span></span><br><span class="line">  <span class="attr">resources:</span></span><br><span class="line">    <span class="attr">requests:</span></span><br><span class="line">      <span class="attr">storage:</span> <span class="string">200Mi</span></span><br><span class="line">  <span class="attr">storageClassName:</span> <span class="string">nfs</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx-deploy-pvc</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-deploy-pvc</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx-deploy-pvc</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx-deploy-pvc</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">html</span></span><br><span class="line">          <span class="attr">mountPath:</span> <span class="string">/usr/share/nginx/html</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">html</span></span><br><span class="line">          <span class="attr">persistentVolumeClaim:</span></span><br><span class="line">            <span class="attr">claimName:</span> <span class="string">nginx-pvc</span></span><br></pre></td></tr></table></figure>
-<h1 id="configmap应用的配置文件">configmap应用的配置文件</h1>
-<p>查看有哪些配置文件：kubectl get cm</p>
-<h2 id="redis实例">redis实例</h2>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建配置，redis保存到k8s的etcd；</span></span><br><span class="line">kubectl create cm redis-conf --from-file=redis.conf</span><br></pre></td></tr></table></figure>
-<p>等价yaml <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">data:</span>    <span class="comment">#data是所有真正的数据，key：默认是文件名   value：配置文件的内容</span></span><br><span class="line">  <span class="attr">redis.conf:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    appendonly yes</span></span><br><span class="line"><span class="string"></span><span class="attr">kind:</span> <span class="string">ConfigMap</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">redis-conf</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br></pre></td></tr></table></figure></p>
-<p>创建redis的pod同时将该配置对应</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">redis</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">redis</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">redis</span></span><br><span class="line">    <span class="attr">command:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">redis-server</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;/redis-master/redis.conf&quot;</span>  <span class="comment">#指的是redis容器内部的位置</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">6379</span></span><br><span class="line">    <span class="attr">volumeMounts:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">/data</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">data</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">/redis-master</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">config</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">data</span></span><br><span class="line">      <span class="attr">emptyDir:</span> &#123;&#125;</span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">config</span></span><br><span class="line">      <span class="attr">configMap:</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">redis-conf</span></span><br><span class="line">        <span class="attr">items:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">redis.conf</span></span><br><span class="line">          <span class="attr">path:</span> <span class="string">redis.conf</span></span><br></pre></td></tr></table></figure>
-<h1 id="secret敏感信息">secret敏感信息</h1>
-<p>Secret 对象类型用来保存敏感信息，例如密码、OAuth 令牌和 SSH 密钥。 将这些信息放在 secret 中比放在 <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/">Pod</a> 的定义或者 <a href="https://kubernetes.io/zh/docs/reference/glossary/?all=true#term-image">容器镜像</a> 中来说更加安全和灵活。</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create secret docker-registry leifengyang-docker \</span><br><span class="line">--docker-username=leifengyang \</span><br><span class="line">--docker-password=Lfy123456 \</span><br><span class="line">--docker-email=534096094@qq.com</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">#命令格式</span></span></span><br><span class="line">kubectl create secret docker-registry regcred \</span><br><span class="line">  --docker-server=&lt;你的镜像仓库服务器&gt; \</span><br><span class="line">  --docker-username=&lt;你的用户名&gt; \</span><br><span class="line">  --docker-password=&lt;你的密码&gt; \</span><br><span class="line">  --docker-email=&lt;你的邮箱地址&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="使用docker拉取镜像运行容器">使用docker拉取镜像运行容器</h1>
+<h2 id="mysql">mysql</h2>
+<h2 id="nginx">nginx</h2>
+<p>1.拉取镜像 docker pull nginx</p>
+<p>2.查看镜像 docker images</p>
+<p>3.创建并运行nginx容器 docker run -d –name mynginx -p 80:80 nginx</p>
+<p>5.查看运行的容器 docker ps</p>
+<p>6.通过网页访问nginx docker的宿主机IP:宿主机对应的端口</p>
+<h2 id="redis">redis</h2>
+<p>拉，创，进 合成一句 docker run -itd<br />
+-p 6379:6379<br />
+–name myredis<br />
+-v /home/redis/conf:/etc/redis/<br />
+-v /home/redis/data:/data<br />
+redis redis-server</p>
+<p>docker exec -it 容器名 bash 可以直接执行redis-cli 配置文件在/etc/redis</p>
+<h1 id="镜像的分层">镜像的分层</h1>
+<p>创建一个镜像需要根据dockerfile文件里面的shell脚本来一层一层的构建，这种层级的文件系统称为UnionFS</p>
+<p>1、镜像：轻量级、可执行的独立软件包，包含运行某个软件所需要的所有内容，我们把应用程序和配置依赖打包好形成一个可交付的运行环境（包括代码、运行时环境、环境变量和配置文件等）。</p>
+<p>2、UnionFS(联合文件系统):是一种分层，轻量级高性能的文件系统、支持对文件系统的修改作为一次提交来一层层的叠加，同时将不同目录挂载到同一个虚拟文件系统下。联合文件系统是Docker镜像的基础，镜像可以通过分层进行继承，基于基础镜像可以制作各种具体的应用镜像。</p>
+<p>3、 Docker镜像加载原理</p>
+<ol type="1">
+<li><p>docker的镜像实际上由一层一层的文件系统组成，这种层级的文件系统UnionFS。</p></li>
+<li><p>bootfs(boot file system)主要包含bootloader和kernel, bootloader主要是引导加载kernel, Linux刚启动时会加载bootfs文件系统，在Docker镜像的最底层是bootfs。这一层与我们典型的Linux/Unix系统是一样的，包含boot加载器和内核。当boot加载完成之后整个内核就都在内存中了，此时内存的使用权已由bootfs转交给内核，此时系统也会卸载bootfs。</p></li>
+</ol>
+<h1 id="设置个人或企业版阿里云镜像仓库">设置个人或企业版阿里云镜像仓库</h1>
+<p>https://cr.console.aliyun.com/cn-hangzhou/instances</p>
+<p>① 选择实例列表，点击个人版进入“个人实例”</p>
+<p>② 创建命名空间</p>
+<p>③ 创建镜像仓库–&gt;选择刚刚创建的命名空间—&gt;选择本地仓库，创建</p>
+<p>④ 在成功节目根据第三点“将镜像推送到Registry”</p>
+<p>⑤ 然后尝试下载上传的镜像</p>
+<p>具体命令在阿里云镜像服务里面有</p>
 ]]></content>
       <categories>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>k8s</tag>
+        <tag>docker</tag>
       </tags>
   </entry>
   <entry>
@@ -2763,6 +2586,94 @@ A：当前行最后一个位置插入 R：从当位置开始替换</p>
 <p><a href="#jump1">回到目录</a></p>
 <p>init.d</p>
 <p>systemctl enable 服务名 systemctl disable 服务名</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在linux上安装常用环境和网络配置(vm)</title>
+    <url>/2024/08/10/linux/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%8F%8A%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>[toc]</p>
+<h1 id="网络配置dhcp改静态">网络配置(dhcp改静态)</h1>
+<p>nat模式-设置本机vm8的ipv4和网关-修改ifcfg-ens33 -重启-网络图标不见看下面</p>
+<p>网络图标消失不见的解决方案 停止网络配置管理器：systemctl stop NetworkManager.service 删除文件： rm /var/lib/NetworkManager/NetworkManager.state 开启网络配置管理器： systemctl start NetworkManager.service</p>
+<p>vi /etc/sysconfig/network-scripts/ifcfg-ens33</p>
+<p>TYPE=“Ethernet” PROXY_METHOD=“none” BROWSER_ONLY=“no” BOOTPROTO=“static” DEFROUTE=“yes” IPV4_FAILURE_FATAL=“no” IPV6INIT=“yes” IPV6_AUTOCONF=“yes” IPV6_DEFROUTE=“yes” IPV6_FAILURE_FATAL=“no” IPV6_ADDR_GEN_MODE=“stable-privacy” NAME=“ens33” UUID=“5afdee8c-694c-4b47-b78a-9f07ea444acd” DEVICE=“ens33” ONBOOT=“yes” IPADDR=192.168.181.3 NETMASK=255.255.255.0 GATEWAY=192.168.181.2 DNS1=8.8.8.8 DNS2=114.114.114.114</p>
+<h1 id="防火墙设置">防火墙设置</h1>
+<p>打开对应端口</p>
+<ol type="1">
+<li>防火墙打开3306端口号 firewall-cmd –zone=public –add-port=3306/tcp –permanent 下面3行是参数说明 #–zone #作用域 #–add-port=80/tcp #添加端口,格式为:端口/通讯协议 #–permanent #永久生效,没有此参数重启后失效</li>
+<li>重启防火墙 firewall-cmd –reload#重启firewall</li>
+<li>查看是否已经开放3306端口 firewall-cmd –list-ports #查看已经开放的端口</li>
+</ol>
+<p>如果你想再关闭firewall-cmd –zone=public –remove-port=3306/tcp –permanent 然后再重启防火墙</p>
+<h1 id="安装方式">安装方式</h1>
+<p>软件一般安装在根目录下的/usr/local/ | 安装方式 | 特点 | | —————- | ———————————— | | 二进制发布包安装 | 已经编译过只需解压修改配置 | | rpm | 按照包管理规范进行打包，有库依赖问题 | | yum | 本质上还是rpm，需联网，无库依赖问题 | | 源码编译安装 | 将源码工程自行打包发布 |</p>
+<h1 id="没有vim">没有vim</h1>
+<p>apt-get update</p>
+<p>apt-get install vim -y</p>
+<h1 id="安装jdk">安装JDK</h1>
+<h2 id="步骤">步骤</h2>
+<p>下载链接https://www.oracle.com/technetwork/java/javase/downloads/index.html</p>
+<p>1.在/usr/local目录下创建自定义soft目录 2.使用FinalShell自带的上传工具将jdk的二进制发布包上传到Linux 3.切换到soft目录 4.解压安装包 tar -zxvf jdk-8u171-linux-x64.tar.gz 5.配置环境变量：使用vim修改/etc/profile文件 JAVA_HOME=/usr/local/soft/jdk1.8.0_171 JRE_HOME=<span class="math inline">\({JAVA_HOME}/jre CLASSPATH=.:\)</span>JAVA_HOME/lib PATH=<span class="math inline">\(JAVA_HOME/bin:\)</span>PATH export JAVA_HOME JRE_HOME CLASSPATH PATH 6.重新加载profile文件 source /etc/profile 7.检查安装是否成功，java -version</p>
+<h2 id="alternatives管理">alternatives管理</h2>
+<p>如果交给了alternatives来管理java可以不用设置环境变量</p>
+<p>通过alternatives –install [软链接] [链接名] [执行文件路径] [优先级] 例如将自己安装的java交给alternatives管理： alternatives –install /usr/bin/java java ../jdk/bin/java 3 其实就是将安装的java执行文件路径生成软链接放到/usr/bin目录下</p>
+<p>切换java版本:alternatives –config java</p>
+<h1 id="安装tomcat">安装tomcat</h1>
+<p>压缩包直接解压 <a href="https://www.cnblogs.com/wjt-super/p/8018642.html">配置文件</a></p>
+<h1 id="安装mysql8.0">安装mysql8.0</h1>
+<p>tar.gz方式下载路径：https://downloads.mysql.com/archives/community/</p>
+<p>1、ps -ajx |grep mariadb # 先检查是否有mariadb存在 如果存在先停止systemctl stop mariadb.service或者kill -9 进程id 2、检查系统安装包rpm -qa | grep mariadb和rpm -qa | grep mysql 如果存在就删除rpm -e –nodeps 包名或者yum remove mariadb/mysql 3.创建mysql 用户组和用户 groupadd mysql useradd -r -g mysql mysql 4.解压 5.配置文件 /etc/my.cnf [mysql] default-character-set=utf8mb4</p>
+<p>[mysqld] port=3306 #server-id=3306 user=mysql8.0 socket=/tmp/mysql.sock basedir=/opt/mysql8.0 datadir=/opt/mysql8.0/data #字符集，大小写，自动提交事务 character-set-server=utf8mb4 #lower_case_table_names=1 autocommit=1</p>
+<p>#创表默认引擎 default-storage-engine=INNODB lower_case_table_names=1 max_allowed_packet=16M</p>
+<p>#sql模式 sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION</p>
+<p>[mysqld_safe] log-error=/opt/mysql8.0/data/mysql.log pid-file=/opt/mysql8.0/data/mysql.pid</p>
+<p>5、设置权限：chown -R mysql:mysql /opt/ mysql8.0 chmod -R 755 /opt/ mysql8.0</p>
+<p>6、创建data目录:mkdir /opt/mysql8.0/data</p>
+<p>7.初始化并记住初始密码 ./bin/mysqld –initialize –user=mysql8.0 –datadir=/opt/mysql8.0/data –basedir=/opt/mysql8.0 –lower_case_table_names=1</p>
+<p>8.启动 ./support-files/mysql.server start</p>
+<p>9.复制启动脚本文件到init.d下<br />
+cp support-files/mysql.server /etc/init.d/mysqld chmod a+x /etc/init.d/mysqld 设置所有人可以执行权限</p>
+<p>10.启动，停止，重启 service mysqld start #service mysqld stop #service mysqld restart</p>
+<p>11.添加软链接 ln -s /opt/mysql8.0/bin/mysql /usr/bin</p>
+<p>10.登录并改密码，配置远程登陆 mysql -uroot -p 输密码 alter user ‘root’@‘localhost’ identified by ‘123456’; 修改密码 flush privileges; 刷新权限</p>
+<p>配置远程登陆权限(8.0之前直接给root@%赋权就行， 8.0之后需要先新建一个root@%的用户) create user ‘root’@‘%’ IDENTIFIED BY ‘123456’; GRANT ALL PRIVILEGES ON * . * TO ‘root’@‘%’ IDENTIFIED BY ‘111111’ WITH GRANT OPTION; 远程用户用root加密码111111连接</p>
+<p>11.连不上打开3306防火墙 防火墙打开3306端口号 firewall-cmd –zone=public –add-port=3306/tcp –permanent 下面3行是参数说明 #–zone #作用域 #–add-port=80/tcp#添加端口,格式为:端口/通讯协议 #–permanent #永久生效,没有此参数重启后失效</p>
+<p>重启防火墙 firewall-cmd –reload#重启firewall</p>
+<p>查看是否已经开放3306端口 firewall-cmd –list-ports #查看已经开放的端口</p>
+<p>12.mysql开机自启 cp /usr/local/mysql/mysql/support-files/mysql.server /etc/rc.d/init.d/mysqld chmod +x /etc/init.d/mysqld 添加为服务: chkconfig –add mysqld 查看服务列表: chkconfig –list 看到3、4、5状态为开或者为 on 则表示成功。如果是 关或者 off 则执行一下：chkconfig –level 345 mysqld on 重启计算机:reboot</p>
+<h1 id="安装redis">安装redis</h1>
+<p>linux上安装,首先拿到压缩包，方法任意,这里使用在线下载 wget http://download.redis.io/releases/redis-4.0.9.tar.gz</p>
+<p>1.解压然后进到解压的文件里面 2.执行make来编译 3.他会生成src文件夹，进到里面执行redis-server就运行了</p>
+<h1 id="安装docker">安装docker</h1>
+<p>1.卸载之前的docker</p>
+<p>yum remove docker<br />
+docker-client<br />
+docker-client-latest<br />
+docker-common   docker-latest   docker-latest-logrotate   docker-logrotate<br />
+docker-selinux   docker-engine-selinux   docker-engine   docker-ce</p>
+<p>2.建立仓库</p>
+<p>yum install -y yum-utils //安装docker所需要的工具包</p>
+<p>yum-config-manager –add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo //建立docker仓库，映射仓库地址</p>
+<p>3.安装docker引擎</p>
+<p>yum install docker -ce dockerce-cli containerd.io</p>
+<p>4.启动docker</p>
+<p>systemctl start docker</p>
+<p>5.测试安装是否成功</p>
+<p>docker pull hello-world</p>
+<p>docker run hello-world</p>
+<h2 id="其他操作">其他操作</h2>
+<p>docker镜像加速器配置(建立仓库时可提前选择镜像)</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="comment">//重启docker</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+<p>守护进程重启：systemctl daemon-reload</p>
+<p>重启Docker服务：systemctl restart docker / service docker restart</p>
+<p>关闭Docker服务：docker service docker stop / docker systemctl stop docker</p>
+<p>删除docker：yum remove docker-ce rm -rf /var/lib/docker</p>
 ]]></content>
       <categories>
         <category>运维</category>
@@ -4536,6 +4447,183 @@ A：当前行最后一个位置插入 R：从当位置开始替换</p>
       </tags>
   </entry>
   <entry>
+    <title>k8s集群部署以及实用操作</title>
+    <url>/2024/07/29/kubernetes/k8s%E5%AE%9E%E7%94%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<p>[toc]</p>
+<h1 id="配置k8s集群">配置k8s集群</h1>
+<h2 id="基础环境">基础环境</h2>
+<p>在这之前保证每台服务器都安装有docker</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">各个机器设置自己的域名</span></span><br><span class="line">hostnamectl set-hostname xxxx</span><br><span class="line">vi /etc/hosts</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 SELinux 设置为 permissive 模式（相当于将其禁用）</span></span><br><span class="line">sudo setenforce 0</span><br><span class="line">sudo sed -i &#x27;s/^SELINUX=enforcing$/SELINUX=permissive/&#x27; /etc/selinux/config</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">关闭swap</span></span><br><span class="line">swapoff -a  </span><br><span class="line">sed -ri &#x27;s/.*swap.*/#&amp;/&#x27; /etc/fstab</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">允许 iptables 检查桥接流量</span></span><br><span class="line">cat &lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf</span><br><span class="line">br_netfilter</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;EOF | sudo tee /etc/sysctl.d/k8s.conf</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">EOF</span><br><span class="line">sudo sysctl --system</span><br></pre></td></tr></table></figure>
+<h2 id="安装kubeletkubeadmkubectl">安装kubelet、kubeadm、kubectl</h2>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">cat &lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=http://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=0</span><br><span class="line">repo_gpgcheck=0</span><br><span class="line">gpgkey=http://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg</span><br><span class="line">   http://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg</span><br><span class="line">exclude=kubelet kubeadm kubectl</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">sudo yum install -y kubelet-1.20.9 kubeadm-1.20.9 kubectl-1.20.9 --disableexcludes=kubernetes</span><br><span class="line"></span><br><span class="line">sudo systemctl enable --now kubelet</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">kubelet 现在每隔几秒就会重启，因为它陷入了一个等待 kubeadm 指令的死循环</span></span><br></pre></td></tr></table></figure>
+<h2 id="下载所需镜像">下载所需镜像</h2>
+<p>这里在当前目录下通过sh文件来批量安装镜像</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">sudo tee ./images.sh &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line">images=(</span><br><span class="line">kube-apiserver:v1.20.9</span><br><span class="line">kube-proxy:v1.20.9</span><br><span class="line">kube-controller-manager:v1.20.9</span><br><span class="line">kube-scheduler:v1.20.9</span><br><span class="line">coredns:1.7.0</span><br><span class="line">etcd:3.4.13-0</span><br><span class="line">pause:3.2</span><br><span class="line">)</span><br><span class="line">for imageName in $&#123;images[@]&#125; ; do</span><br><span class="line">docker pull registry.cn-hangzhou.aliyuncs.com/lfy_k8s_images/$imageName</span><br><span class="line">done</span><br><span class="line">EOF</span><br><span class="line">   </span><br><span class="line">chmod +x ./images.sh &amp;&amp; ./images.sh</span><br></pre></td></tr></table></figure>
+<p>以上操作每台服务器都要进行 接下来只需要在主节点上操作</p>
+<h2 id="初始化主节点">初始化主节点</h2>
+<h3 id="初始化">初始化</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">主节点初始化</span></span><br><span class="line">kubeadm init \</span><br><span class="line">--apiserver-advertise-address=172.19.39.156 \</span><br><span class="line">--control-plane-endpoint=centos7-156 \</span><br><span class="line">--image-repository registry.cn-hangzhou.aliyuncs.com/lfy_k8s_images \</span><br><span class="line">--kubernetes-version v1.20.9 \</span><br><span class="line">--service-cidr=10.96.0.0/16 \</span><br><span class="line">--pod-network-cidr=192.168.0.0/16</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">更改你自己的master主节点的ip(第一项)和主机名(第二项)，之前在/etc/hosts文件中有配置过</span></span><br></pre></td></tr></table></figure>
+<p>说明：</p>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>kubeadm init</td>
+<td>主节点初始化</td>
+</tr>
+<tr class="even">
+<td>–apiserver-advertise-address=</td>
+<td>主服务器的(私有)IP</td>
+</tr>
+<tr class="odd">
+<td>–control-plane-endpoint=</td>
+<td>控制结点的域名/IP</td>
+</tr>
+<tr class="even">
+<td>–image-repository</td>
+<td>镜像仓库</td>
+</tr>
+<tr class="odd">
+<td>–kubernetes-version</td>
+<td>k8s版本</td>
+</tr>
+<tr class="even">
+<td>–service-cidr=</td>
+<td>集群中结点的虚拟IP范围</td>
+</tr>
+<tr class="odd">
+<td>–pod-network-cidr=</td>
+<td>pod的IP范围</td>
+</tr>
+</tbody>
+</table>
+<h3 id="初始化信息">初始化信息</h3>
+<p>在初始化完成后，保留系统的初始化信息,这里面有口令，如果忘记保存了就重新在master主机上生成 kubeadm token create –print-join-command</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Your Kubernetes control-plane has initialized successfully!</span><br><span class="line"></span><br><span class="line">To start using your cluster, you need to run the following as a regular user:</span><br><span class="line"></span><br><span class="line">  mkdir -p $HOME/.kube</span><br><span class="line">  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">  sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br><span class="line"></span><br><span class="line">Alternatively, if you are the root user, you can run:</span><br><span class="line"></span><br><span class="line">  export KUBECONFIG=/etc/kubernetes/admin.conf</span><br><span class="line"></span><br><span class="line">You should now deploy a pod network to the cluster.</span><br><span class="line">Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:</span><br><span class="line">  https://kubernetes.io/docs/concepts/cluster-administration/addons/</span><br><span class="line"></span><br><span class="line">You can now join any number of control-plane nodes by copying certificate authorities</span><br><span class="line">and service account keys on each node and then running the following as root:</span><br><span class="line"></span><br><span class="line">  kubeadm join centos7-156:6443 --token 6jxsq5.81s2v6tnq2yv934k \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:605505eea7c3d7f85adc7b1703921009006db845d018b97b33f33407996ebe8f \</span><br><span class="line">    --control-plane </span><br><span class="line"></span><br><span class="line">Then you can join any number of worker nodes by running the following on each as root:</span><br><span class="line"></span><br><span class="line">kubeadm join centos7-156:6443 --token 6jxsq5.81s2v6tnq2yv934k \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:605505eea7c3d7f85adc7b1703921009006db845d018b97b33f33407996ebe8f</span><br></pre></td></tr></table></figure>
+<p>根据初始化信息继续操作</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">管理用户的配置文件</span></span><br><span class="line">mkdir -p $HOME/.kube</span><br><span class="line">sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config</span><br><span class="line">sudo chown $(id -u):$(id -g) $HOME/.kube/config</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">如果你是root用户，添加环境变量</span></span><br><span class="line">export KUBECONFIG=/etc/kubernetes/admin.conf</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">给集群配置pod网络</span></span><br><span class="line">curl https://docs.projectcalico.org/v3.20/manifests/calico.yaml -O</span><br><span class="line">kubectl apply -f calico.yaml</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将一个结点作为管理节点添加到集群(在副结点命令行执行)</span></span><br><span class="line">kubeadm join [主结点服务器名]:6443 --token 6jxsq5.81s2v6tnq2yv934k \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:605505eea7c3d7f85adc7b1703921009006db845d018b97b33f33407996ebe8f \</span><br><span class="line">    --control-plane</span><br><span class="line">    </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将一个结点作为副节点添加到集群(在副结点命令行执行)</span></span><br><span class="line">kubeadm join [主结点服务器名]:6443 --token 6jxsq5.81s2v6tnq2yv934k \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:605505eea7c3d7f85adc7b1703921009006db845d018b97b33f33407996ebe8f</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看集群所有节点或pods</span></span><br><span class="line">kubectl get nodes    //全部状态ready</span><br><span class="line">kubectl get pods -A</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">主机重新生成令牌(如果有出现结点加不进去的情况)</span></span><br><span class="line">kubeadm token create --print-join-command</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">副结点加入失败后</span></span><br><span class="line">rm -rf /etc/kubenetes/*</span><br><span class="line">kubeadm reset</span><br><span class="line">再用主机生成的令牌加入</span><br></pre></td></tr></table></figure>
+<h2 id="部署dashborad">部署dashborad</h2>
+<h3 id="下载dashborad并创建用户">下载dashborad并创建用户</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">从后面网址下yaml文件并应用(如果执行失败，自己去下这个文件)</span></span><br><span class="line">kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.3.1/aio/deploy/recommended.yaml</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置访问端口，将<span class="built_in">type</span>: ClusterIP 改为 <span class="built_in">type</span>: NodePort</span></span><br><span class="line">kubectl edit svc kubernetes-dashboard -n kubernetes-dashboard</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">找到端口，并打开该端口的防火墙(云服务器需设置安全组)</span></span><br><span class="line">kubectl get svc -A |grep kubernetes-dashboard</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建访问账号，准备一个yaml文件； vi dash.yaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: ServiceAccount</span><br><span class="line">metadata:</span><br><span class="line">  name: admin-user</span><br><span class="line">  namespace: kubernetes-dashboard</span><br><span class="line">---</span><br><span class="line">apiVersion: rbac.authorization.k8s.io/v1</span><br><span class="line">kind: ClusterRoleBinding</span><br><span class="line">metadata:</span><br><span class="line">  name: admin-user</span><br><span class="line">roleRef:</span><br><span class="line">  apiGroup: rbac.authorization.k8s.io</span><br><span class="line">  kind: ClusterRole</span><br><span class="line">  name: cluster-admin</span><br><span class="line">subjects:</span><br><span class="line">- kind: ServiceAccount</span><br><span class="line">  name: admin-user</span><br><span class="line">  namespace: kubernetes-dashboard</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">制作好上面的文件然后执行下面的命令</span></span><br><span class="line">kubectl apply -f dash.yaml</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">获取访问令牌并复制</span></span><br><span class="line">kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath=&quot;&#123;.secrets[0].name&#125;&quot;) -o go-template=&quot;&#123;&#123;.data.token | base64decode&#125;&#125;&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">eyJhbGciOiJSUzI1NiIsImtpZCI6IlJraHBhdHJBV0x1bWVUanVtc3l3WGdTMVo0cVVhOF9PYmVyN2JMWXc5bTQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLTRienE5Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiJiY2UzMTA3MC05ZDA3LTQ4OTctYTIzOC0wYjIxZWEzNDdiMzgiLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZXJuZXRlcy1kYXNoYm9hcmQ6YWRtaW4tdXNlciJ9.KD7RbvNBTvcWWZkHQmRQfCcUesoo9H4vZebyu-DnXT70ZPVkKNBkq0SxFtdqk0fjuzb9_xUhYtqLatZT2jixMUnN29GHAptbG6fxQvHcQCerrAz8POMkBylZevY_C1QwY-JUiSGTwy42pEkNNHE-cA7iZWE3jU9-Rnb9YCefKI1OsO7Mutopz-T4P7OoCPVjdzvnGqXSBZTK4qqaKR9_2t58iIIuWUFe8Z8uIdEZhauyHMFqAVdiMlTRXI7GeIHwsxwDwhBSHEFutjWf5ugqZRfj6ug4OyzpiLuy8ijs6-YYQamvtgsejGfYJXirmBCYawTvrQI2Iwx-Qw4CshbDTQ</span><br></pre></td></tr></table></figure>
+<h3 id="浏览器访问">浏览器访问</h3>
+<p>https://任意一台集群中的公网IP:端口 此处端口kubectl get svc -A |grep kubernetes-dashboard查看</p>
+<h2 id="使用token登录">使用token登录</h2>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看用户</span></span><br><span class="line">kubectl get sa</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看default用户的信息</span></span><br><span class="line">kubectl describe sa default</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">获取上面用户对应的token值</span></span><br><span class="line">kubectl describe secret default-token-[自己的token行] | awk &#x27;$1==&quot;token:&quot;&#123;print $2&#125;&#x27;</span><br></pre></td></tr></table></figure>
+<h1 id="常用命令">常用命令</h1>
+<h2 id="命名空间">命名空间</h2>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>kubectl create ns hello</td>
+<td>创建</td>
+</tr>
+<tr class="even">
+<td>kubectl delete ns hello</td>
+<td>删除</td>
+</tr>
+<tr class="odd">
+<td>kubectl get pods -n 命令空间</td>
+<td>查指定命名空间里的pods</td>
+</tr>
+</tbody>
+</table>
+<h2 id="pod操作">pod操作</h2>
+<p><img src="/images/loading/loading.gif" data-original="D:\admin_file\自学笔记\myblog_hexo\source\_posts\kubernetes\k8s工作负载.png" alt="k8s" style="zoom:150%;" /></p>
+<table>
+<thead>
+<tr class="header">
+<th>工作负载</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>deployment</td>
+<td>无状态应用，微服务，提供多副本功能</td>
+</tr>
+<tr class="even">
+<td>statefulset</td>
+<td>有状态应用，redis，提供稳定存储和网络功能</td>
+</tr>
+<tr class="odd">
+<td>DaemonSet</td>
+<td>守护星应用，日志收集，每个机器都运行</td>
+</tr>
+<tr class="even">
+<td>Job/CronJob</td>
+<td>定时任务，垃圾清理</td>
+</tr>
+</tbody>
+</table>
+<h3 id="使用run和deployment命令创建">使用run和deployment命令创建</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl run mynginx --image=nginx</span><br><span class="line">或</span><br><span class="line">kubectl create deployment mynginx --image=nginx</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看default名称空间的Pod</span></span><br><span class="line">kubectl get pod </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">描述</span></span><br><span class="line">kubectl describe pod|deploy Pod名|部署名</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改yaml文件</span></span><br><span class="line">kubectl edit deployment|pod pod名|部署名</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除</span></span><br><span class="line">kubectl delete pod Pod名字</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看Pod的运行日志</span></span><br><span class="line">kubectl logs Pod名字</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">每个Pod - k8s都会分配一个ip</span></span><br><span class="line">kubectl get pod -owide</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使用Pod的ip+pod里面运行容器的端口</span></span><br><span class="line">curl 192.168.169.136</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">集群中的任意一个机器以及任意的应用都能通过Pod分配的ip来访问这个Pod</span></span><br></pre></td></tr></table></figure>
+<p>两个不同命令的区别：</p>
+<ul>
+<li>deployment控制Pod，使Pod拥有多副本，自愈，扩缩容等能力</li>
+</ul>
+<h4 id="deployment扩缩容">deployment扩缩容</h4>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">修改复制数，指定部署名</span></span><br><span class="line">kubectl scale -n 命名空间 --replicas=复制数 deployment/my-dep</span><br></pre></td></tr></table></figure>
+<h3 id="使用yaml文件创建">使用yaml文件创建</h3>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建pod</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">myapp</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">myapp</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">tomcat:8.5.68</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">tomcat</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建deployment</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">my-dep</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">my-dep</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">my-dep</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">my-dep</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">nginx</span></span><br></pre></td></tr></table></figure>
+<h3 id="查看pod实时状态">查看pod实时状态</h3>
+<p>kubectl get pods -w Ctrl+C退出</p>
+<p>watch -n 3 kubectl get pods | grep pod名 3秒刷新一次</p>
+<h2 id="版本控制">版本控制</h2>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置部署pod内容器的版本并记录</span></span><br><span class="line">kubectl set image deployment/deploy名 nginx=nginx:1.16.1 --record</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查特定Deployment的Rollout状态</span></span><br><span class="line">kubectl rollout status deployment/deploy名</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">历史记录</span></span><br><span class="line">kubectl rollout history deployment/deploy名</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看某个历史详情</span></span><br><span class="line">kubectl rollout history deployment/deploy名p --revision=2</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">回滚(回到上次)</span></span><br><span class="line">kubectl rollout undo deployment/deploy名</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">回滚(回到指定版本)</span></span><br><span class="line">kubectl rollout undo deployment/deploy名 --to-revision=2</span><br></pre></td></tr></table></figure>
+<h2 id="服务service">服务service</h2>
+<p>将一组 <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/">Pods</a> 公开为网络服务的抽象方法。</p>
+<p>kubectl get svc</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">暴露Deploy，把deploy里的my-dep服务的8000端口暴露，并和内部pod的80端口对应上</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在加上--NodePort选项之后可以通过 公网ip:生成的端口 访问</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果不加默认--<span class="built_in">type</span>=ClusterIP，只能集群内部访问</span></span><br><span class="line">kubectl expose deployment my-dep --port=8000 --target-port=80</span><br><span class="line">或者</span><br><span class="line">kubectl expose deployment my-dep --port=8000 --target-port=80 --type=NodePort</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">使用标签检索Pod</span></span><br><span class="line">kubectl get pod -l app=my-dep</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">等效yaml</span></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    app: my-dep</span><br><span class="line">  name: my-dep</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    app: my-dep</span><br><span class="line">  ports:</span><br><span class="line">  - port: 8000</span><br><span class="line">    protocol: TCP</span><br><span class="line">    targetPort: 80</span><br></pre></td></tr></table></figure>
+<h2 id="ingress统一网关接口">ingress统一网关接口</h2>
+<p><img src="/images/loading/loading.gif" data-original="D:\admin_file\自学笔记\myblog_hexo\source\_posts\kubernetes\ingress.png" alt="ingress" style="zoom:150%;" /></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装</span></span><br><span class="line">wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.47.0/deploy/static/provider/baremetal/deploy.yaml</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">修改镜像</span></span><br><span class="line">vi deploy.yaml</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将image的值改为如下值：</span></span><br><span class="line">registry.cn-hangzhou.aliyuncs.com/lfy_k8s_images/ingress-nginx-controller:v0.46.0</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">应用该文件</span></span><br><span class="line">kubectl apply -f deploy.yaml</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查安装的结果</span></span><br><span class="line">kubectl get pod,svc -n ingress-nginx</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">最后别忘记把svc暴露的端口要放行</span></span><br></pre></td></tr></table></figure>
+<h1 id="存储抽象">存储抽象</h1>
+<h2 id="通过指令挂载">通过指令挂载</h2>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">所有节点</span></span><br><span class="line">yum install -y nfs-utils</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">主节点</span></span><br><span class="line">echo &quot;/nfs/data/ *(insecure,rw,sync,no_root_squash)&quot; &gt; /etc/exports</span><br><span class="line">mkdir -p /nfs/data</span><br><span class="line">systemctl enable rpcbind --now</span><br><span class="line">systemctl enable nfs-server --now</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">配置生效</span></span><br><span class="line">exportfs -r</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">从节点</span></span><br><span class="line">showmount -e 主节点IP    # 查看主节点挂载目录</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">执行以下命令挂载 nfs 服务器上的共享目录到本机路径 /root/nfsmount</span></span><br><span class="line">mkdir -p /nfs/data</span><br><span class="line">mount -t nfs 主结点IP:/nfs/data /nfs/data</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">写入一个测试文件</span></span><br><span class="line">echo &quot;hello nfs server&quot; &gt; /nfs/data/test.txt</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">解绑</span></span><br><span class="line">unmount -lf /nfs/data/</span><br></pre></td></tr></table></figure>
+<h2 id="通过yaml挂载">通过yaml挂载</h2>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx-pv-demo</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-pv-demo</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx-pv-demo</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx-pv-demo</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">html</span></span><br><span class="line">          <span class="attr">mountPath:</span> <span class="string">/usr/share/nginx/html</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">html</span></span><br><span class="line">          <span class="attr">nfs:</span></span><br><span class="line">            <span class="attr">server:</span> <span class="string">主节点IP</span></span><br><span class="line">            <span class="attr">path:</span> <span class="string">/nfs/data/nginx-pv</span></span><br></pre></td></tr></table></figure>
+<h1 id="pvpvc">PV&amp;PVC</h1>
+<p>PV：持久卷，将应用需要持久化的数据<strong>保存</strong>到指定位置 PVC：持久卷申明，<strong>申明</strong>需要使用的持久卷规格</p>
+<p>pv是提前设置好静态空间，放在那里等人来用 pvc就是发出申请，我要用一个大小多大的pv</p>
+<p><img src="/images/loading/loading.gif" data-original="D:\admin_file\自学笔记\myblog_hexo\source\_posts\kubernetes\PV&PVC.png" alt="PV&PVC" style="zoom:150%;" /></p>
+<h3 id="静态供应创建pv">静态供应(创建pv)</h3>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">nfs主节点</span></span><br><span class="line">mkdir -p /nfs/data/01</span><br><span class="line">mkdir -p /nfs/data/02</span><br><span class="line">mkdir -p /nfs/data/03</span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolume</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pv01-10m</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">capacity:</span></span><br><span class="line">    <span class="attr">storage:</span> <span class="string">10M</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ReadWriteMany</span></span><br><span class="line">  <span class="attr">storageClassName:</span> <span class="string">nfs</span></span><br><span class="line">  <span class="attr">nfs:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">/nfs/data/01</span></span><br><span class="line">    <span class="attr">server:</span> <span class="number">172.31</span><span class="number">.0</span><span class="number">.4</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolume</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pv02-1gi</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">capacity:</span></span><br><span class="line">    <span class="attr">storage:</span> <span class="string">1Gi</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ReadWriteMany</span></span><br><span class="line">  <span class="attr">storageClassName:</span> <span class="string">nfs</span></span><br><span class="line">  <span class="attr">nfs:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">/nfs/data/02</span></span><br><span class="line">    <span class="attr">server:</span> <span class="number">172.31</span><span class="number">.0</span><span class="number">.4</span></span><br><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolume</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">pv03-3gi</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">capacity:</span></span><br><span class="line">    <span class="attr">storage:</span> <span class="string">3Gi</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ReadWriteMany</span></span><br><span class="line">  <span class="attr">storageClassName:</span> <span class="string">nfs</span></span><br><span class="line">  <span class="attr">nfs:</span></span><br><span class="line">    <span class="attr">path:</span> <span class="string">/nfs/data/03</span></span><br><span class="line">    <span class="attr">server:</span> <span class="number">172.31</span><span class="number">.0</span><span class="number">.4</span></span><br></pre></td></tr></table></figure>
+<h3 id="pvc创建和绑定">pvc创建和绑定</h3>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">PersistentVolumeClaim</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-pvc</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">accessModes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ReadWriteMany</span></span><br><span class="line">  <span class="attr">resources:</span></span><br><span class="line">    <span class="attr">requests:</span></span><br><span class="line">      <span class="attr">storage:</span> <span class="string">200Mi</span></span><br><span class="line">  <span class="attr">storageClassName:</span> <span class="string">nfs</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">nginx-deploy-pvc</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">nginx-deploy-pvc</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">nginx-deploy-pvc</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">nginx-deploy-pvc</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">volumeMounts:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">html</span></span><br><span class="line">          <span class="attr">mountPath:</span> <span class="string">/usr/share/nginx/html</span></span><br><span class="line">      <span class="attr">volumes:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">html</span></span><br><span class="line">          <span class="attr">persistentVolumeClaim:</span></span><br><span class="line">            <span class="attr">claimName:</span> <span class="string">nginx-pvc</span></span><br></pre></td></tr></table></figure>
+<h1 id="configmap应用的配置文件">configmap应用的配置文件</h1>
+<p>查看有哪些配置文件：kubectl get cm</p>
+<h2 id="redis实例">redis实例</h2>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建配置，redis保存到k8s的etcd；</span></span><br><span class="line">kubectl create cm redis-conf --from-file=redis.conf</span><br></pre></td></tr></table></figure>
+<p>等价yaml <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">data:</span>    <span class="comment">#data是所有真正的数据，key：默认是文件名   value：配置文件的内容</span></span><br><span class="line">  <span class="attr">redis.conf:</span> <span class="string">|</span></span><br><span class="line"><span class="string">    appendonly yes</span></span><br><span class="line"><span class="string"></span><span class="attr">kind:</span> <span class="string">ConfigMap</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">redis-conf</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">default</span></span><br></pre></td></tr></table></figure></p>
+<p>创建redis的pod同时将该配置对应</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">redis</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">redis</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">redis</span></span><br><span class="line">    <span class="attr">command:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">redis-server</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;/redis-master/redis.conf&quot;</span>  <span class="comment">#指的是redis容器内部的位置</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">6379</span></span><br><span class="line">    <span class="attr">volumeMounts:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">/data</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">data</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">mountPath:</span> <span class="string">/redis-master</span></span><br><span class="line">      <span class="attr">name:</span> <span class="string">config</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">data</span></span><br><span class="line">      <span class="attr">emptyDir:</span> &#123;&#125;</span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">config</span></span><br><span class="line">      <span class="attr">configMap:</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">redis-conf</span></span><br><span class="line">        <span class="attr">items:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">key:</span> <span class="string">redis.conf</span></span><br><span class="line">          <span class="attr">path:</span> <span class="string">redis.conf</span></span><br></pre></td></tr></table></figure>
+<h1 id="secret敏感信息">secret敏感信息</h1>
+<p>Secret 对象类型用来保存敏感信息，例如密码、OAuth 令牌和 SSH 密钥。 将这些信息放在 secret 中比放在 <a href="https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/">Pod</a> 的定义或者 <a href="https://kubernetes.io/zh/docs/reference/glossary/?all=true#term-image">容器镜像</a> 中来说更加安全和灵活。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kubectl create secret docker-registry leifengyang-docker \</span><br><span class="line">--docker-username=leifengyang \</span><br><span class="line">--docker-password=Lfy123456 \</span><br><span class="line">--docker-email=534096094@qq.com</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">#命令格式</span></span></span><br><span class="line">kubectl create secret docker-registry regcred \</span><br><span class="line">  --docker-server=&lt;你的镜像仓库服务器&gt; \</span><br><span class="line">  --docker-username=&lt;你的用户名&gt; \</span><br><span class="line">  --docker-password=&lt;你的密码&gt; \</span><br><span class="line">  --docker-email=&lt;你的邮箱地址&gt;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>k8s</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>redis(未完成)</title>
     <url>/2024/08/12/redis/redis/</url>
     <content><![CDATA[<p>[toc]</p>
@@ -4820,6 +4908,143 @@ A：当前行最后一个位置插入 R：从当位置开始替换</p>
       </categories>
       <tags>
         <tag>redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>概率论与数理统计</title>
+    <url>/2026/09/02/%E5%85%AC%E5%85%B1%E8%AF%BE/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/</url>
+    <content><![CDATA[<h1 id="概率论">概率论</h1>
+<h2 id="随机事件的关系与运算">随机事件的关系与运算</h2>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">关系</th>
+<th style="text-align: center;">符号</th>
+<th style="text-align: center;">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">包含</td>
+<td style="text-align: center;"><span class="math inline">\(A \subset B\)</span></td>
+<td style="text-align: center;">A发生必然导致B发生</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">相等</td>
+<td style="text-align: center;"><span class="math inline">\(A = B\)</span></td>
+<td style="text-align: center;">A和B相等</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">互斥</td>
+<td style="text-align: center;"><span class="math inline">\(A \cap B = \varnothing\)</span></td>
+<td style="text-align: center;">A和B不可能同时发生</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">运算</th>
+<th style="text-align: center;">符号</th>
+<th style="text-align: center;">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">并</td>
+<td style="text-align: center;"><span class="math inline">\(A \cup B = A+B\)</span></td>
+<td style="text-align: center;">AB至少有一个发生</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">交</td>
+<td style="text-align: center;"><span class="math inline">\(A \cap B = AB\)</span></td>
+<td style="text-align: center;">AB同时发生</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">差</td>
+<td style="text-align: center;"><span class="math inline">\(A - B=A \overline{B}\)</span></td>
+<td style="text-align: center;">A发生B不发生</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">对立</td>
+<td style="text-align: center;"><span class="math inline">\(\overline{A}\)</span></td>
+<td style="text-align: center;">A不发生</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 87%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">运算性质</th>
+<th style="text-align: center;">符号表示</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">交换律</td>
+<td style="text-align: center;"><span class="math display">\[\begin{aligned}A \cup B = B \cup A \\ A \cap B = B \cap A\end{aligned}\]</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">结合律</td>
+<td style="text-align: center;"><span class="math display">\[\begin{aligned}(A \cup B) \cup C = A \cup (B \cup C) \\ (A \cap B) \cap C = A \cap (B \cap C)\end{aligned}\]</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">分配律</td>
+<td style="text-align: center;"><span class="math display">\[\begin{aligned}A \cap (B \cup C) = (A \cap B) \cup (A \cap C) \\ A \cup (B \cap C) = (A \cup B) \cap (A \cup C)\end{aligned}\]</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">对偶律（德摩根公式）</td>
+<td style="text-align: center;"><span class="math display">\[\begin{aligned}\overline{A \cup B} = \overline{A} \cap \overline{B} \\ \overline{A \cap B} = \overline{A} \cup \overline{B}\end{aligned}\]</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>德摩根公式推广</strong>到多个事件以及可列个事件的场合：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\overline{\bigcup_{i=1}^{\infty} A_i} &amp;= \bigcap_{i=1}^{\infty} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{\infty} A_i} &amp;= \bigcup_{i=1}^{\infty} \overline{A_i} \\
+\overline{\bigcup_{i=1}^{n} A_i} &amp;= \bigcap_{i=1}^{n} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{n} A_i} &amp;= \bigcup_{i=1}^{n} \overline{A_i}
+\end{aligned}
+\]</span></p>
+<h2 id="事件域">事件域*</h2>
+<h2 id="概率基本公式">概率基本公式</h2>
+<p>概率加法公式： <span class="math display">\[
+P(A+B) = 
+\begin{cases}
+P(A)+P(B)-P(AB) &amp; AB\text{任意} \\
+P(A)+P(B) &amp; AB\text{互斥} \\
+P(A) \text{或} P(B) &amp; B \subset A \text{或} A \subset B \\
+P(A)+P(B)-P(A)P(B) &amp; AB\text{独立}
+\end{cases}
+\]</span></p>
+<p>概率减法公式： <span class="math display">\[
+P(A-B) =
+\begin{cases}
+P(A)-P(AB) &amp; AB\text{任意} \\
+P(A)-P(B) &amp; B \subset A \\
+P(A) &amp; A \subset B
+\end{cases}
+\]</span></p>
+<p>乘法公式: <span class="math display">\[
+P(AB)=P(A)P(B\mid A)
+\]</span></p>
+<p>全概率公式： <span class="math display">\[
+P(B) = \sum\limits_{i=1}^{n} P(A_i) P(B \mid A_i)
+\]</span></p>
+<p>贝叶斯公式： <span class="math display">\[
+P(A_i \mid B) = \frac{P(A_i) P(B \mid A_i)}{\sum\limits_{j=1}^{n} P(A_j) P(B \mid A_j)}
+\]</span></p>
+<h1 id="数理统计">数理统计</h1>
+]]></content>
+      <categories>
+        <category>数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>数理统计</tag>
       </tags>
   </entry>
   <entry>
@@ -5847,229 +6072,6 @@ auto_increment=起始值 设置起始值</p>
       </categories>
       <tags>
         <tag>mysql</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在linux上安装常用环境和网络配置(vm)</title>
-    <url>/2024/08/10/linux/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%8F%8A%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<p>[toc]</p>
-<h1 id="网络配置dhcp改静态">网络配置(dhcp改静态)</h1>
-<p>nat模式-设置本机vm8的ipv4和网关-修改ifcfg-ens33 -重启-网络图标不见看下面</p>
-<p>网络图标消失不见的解决方案 停止网络配置管理器：systemctl stop NetworkManager.service 删除文件： rm /var/lib/NetworkManager/NetworkManager.state 开启网络配置管理器： systemctl start NetworkManager.service</p>
-<p>vi /etc/sysconfig/network-scripts/ifcfg-ens33</p>
-<p>TYPE=“Ethernet” PROXY_METHOD=“none” BROWSER_ONLY=“no” BOOTPROTO=“static” DEFROUTE=“yes” IPV4_FAILURE_FATAL=“no” IPV6INIT=“yes” IPV6_AUTOCONF=“yes” IPV6_DEFROUTE=“yes” IPV6_FAILURE_FATAL=“no” IPV6_ADDR_GEN_MODE=“stable-privacy” NAME=“ens33” UUID=“5afdee8c-694c-4b47-b78a-9f07ea444acd” DEVICE=“ens33” ONBOOT=“yes” IPADDR=192.168.181.3 NETMASK=255.255.255.0 GATEWAY=192.168.181.2 DNS1=8.8.8.8 DNS2=114.114.114.114</p>
-<h1 id="防火墙设置">防火墙设置</h1>
-<p>打开对应端口</p>
-<ol type="1">
-<li>防火墙打开3306端口号 firewall-cmd –zone=public –add-port=3306/tcp –permanent 下面3行是参数说明 #–zone #作用域 #–add-port=80/tcp #添加端口,格式为:端口/通讯协议 #–permanent #永久生效,没有此参数重启后失效</li>
-<li>重启防火墙 firewall-cmd –reload#重启firewall</li>
-<li>查看是否已经开放3306端口 firewall-cmd –list-ports #查看已经开放的端口</li>
-</ol>
-<p>如果你想再关闭firewall-cmd –zone=public –remove-port=3306/tcp –permanent 然后再重启防火墙</p>
-<h1 id="安装方式">安装方式</h1>
-<p>软件一般安装在根目录下的/usr/local/ | 安装方式 | 特点 | | —————- | ———————————— | | 二进制发布包安装 | 已经编译过只需解压修改配置 | | rpm | 按照包管理规范进行打包，有库依赖问题 | | yum | 本质上还是rpm，需联网，无库依赖问题 | | 源码编译安装 | 将源码工程自行打包发布 |</p>
-<h1 id="没有vim">没有vim</h1>
-<p>apt-get update</p>
-<p>apt-get install vim -y</p>
-<h1 id="安装jdk">安装JDK</h1>
-<h2 id="步骤">步骤</h2>
-<p>下载链接https://www.oracle.com/technetwork/java/javase/downloads/index.html</p>
-<p>1.在/usr/local目录下创建自定义soft目录 2.使用FinalShell自带的上传工具将jdk的二进制发布包上传到Linux 3.切换到soft目录 4.解压安装包 tar -zxvf jdk-8u171-linux-x64.tar.gz 5.配置环境变量：使用vim修改/etc/profile文件 JAVA_HOME=/usr/local/soft/jdk1.8.0_171 JRE_HOME=<span class="math inline">\({JAVA_HOME}/jre CLASSPATH=.:\)</span>JAVA_HOME/lib PATH=<span class="math inline">\(JAVA_HOME/bin:\)</span>PATH export JAVA_HOME JRE_HOME CLASSPATH PATH 6.重新加载profile文件 source /etc/profile 7.检查安装是否成功，java -version</p>
-<h2 id="alternatives管理">alternatives管理</h2>
-<p>如果交给了alternatives来管理java可以不用设置环境变量</p>
-<p>通过alternatives –install [软链接] [链接名] [执行文件路径] [优先级] 例如将自己安装的java交给alternatives管理： alternatives –install /usr/bin/java java ../jdk/bin/java 3 其实就是将安装的java执行文件路径生成软链接放到/usr/bin目录下</p>
-<p>切换java版本:alternatives –config java</p>
-<h1 id="安装tomcat">安装tomcat</h1>
-<p>压缩包直接解压 <a href="https://www.cnblogs.com/wjt-super/p/8018642.html">配置文件</a></p>
-<h1 id="安装mysql8.0">安装mysql8.0</h1>
-<p>tar.gz方式下载路径：https://downloads.mysql.com/archives/community/</p>
-<p>1、ps -ajx |grep mariadb # 先检查是否有mariadb存在 如果存在先停止systemctl stop mariadb.service或者kill -9 进程id 2、检查系统安装包rpm -qa | grep mariadb和rpm -qa | grep mysql 如果存在就删除rpm -e –nodeps 包名或者yum remove mariadb/mysql 3.创建mysql 用户组和用户 groupadd mysql useradd -r -g mysql mysql 4.解压 5.配置文件 /etc/my.cnf [mysql] default-character-set=utf8mb4</p>
-<p>[mysqld] port=3306 #server-id=3306 user=mysql8.0 socket=/tmp/mysql.sock basedir=/opt/mysql8.0 datadir=/opt/mysql8.0/data #字符集，大小写，自动提交事务 character-set-server=utf8mb4 #lower_case_table_names=1 autocommit=1</p>
-<p>#创表默认引擎 default-storage-engine=INNODB lower_case_table_names=1 max_allowed_packet=16M</p>
-<p>#sql模式 sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION</p>
-<p>[mysqld_safe] log-error=/opt/mysql8.0/data/mysql.log pid-file=/opt/mysql8.0/data/mysql.pid</p>
-<p>5、设置权限：chown -R mysql:mysql /opt/ mysql8.0 chmod -R 755 /opt/ mysql8.0</p>
-<p>6、创建data目录:mkdir /opt/mysql8.0/data</p>
-<p>7.初始化并记住初始密码 ./bin/mysqld –initialize –user=mysql8.0 –datadir=/opt/mysql8.0/data –basedir=/opt/mysql8.0 –lower_case_table_names=1</p>
-<p>8.启动 ./support-files/mysql.server start</p>
-<p>9.复制启动脚本文件到init.d下<br />
-cp support-files/mysql.server /etc/init.d/mysqld chmod a+x /etc/init.d/mysqld 设置所有人可以执行权限</p>
-<p>10.启动，停止，重启 service mysqld start #service mysqld stop #service mysqld restart</p>
-<p>11.添加软链接 ln -s /opt/mysql8.0/bin/mysql /usr/bin</p>
-<p>10.登录并改密码，配置远程登陆 mysql -uroot -p 输密码 alter user ‘root’@‘localhost’ identified by ‘123456’; 修改密码 flush privileges; 刷新权限</p>
-<p>配置远程登陆权限(8.0之前直接给root@%赋权就行， 8.0之后需要先新建一个root@%的用户) create user ‘root’@‘%’ IDENTIFIED BY ‘123456’; GRANT ALL PRIVILEGES ON * . * TO ‘root’@‘%’ IDENTIFIED BY ‘111111’ WITH GRANT OPTION; 远程用户用root加密码111111连接</p>
-<p>11.连不上打开3306防火墙 防火墙打开3306端口号 firewall-cmd –zone=public –add-port=3306/tcp –permanent 下面3行是参数说明 #–zone #作用域 #–add-port=80/tcp#添加端口,格式为:端口/通讯协议 #–permanent #永久生效,没有此参数重启后失效</p>
-<p>重启防火墙 firewall-cmd –reload#重启firewall</p>
-<p>查看是否已经开放3306端口 firewall-cmd –list-ports #查看已经开放的端口</p>
-<p>12.mysql开机自启 cp /usr/local/mysql/mysql/support-files/mysql.server /etc/rc.d/init.d/mysqld chmod +x /etc/init.d/mysqld 添加为服务: chkconfig –add mysqld 查看服务列表: chkconfig –list 看到3、4、5状态为开或者为 on 则表示成功。如果是 关或者 off 则执行一下：chkconfig –level 345 mysqld on 重启计算机:reboot</p>
-<h1 id="安装redis">安装redis</h1>
-<p>linux上安装,首先拿到压缩包，方法任意,这里使用在线下载 wget http://download.redis.io/releases/redis-4.0.9.tar.gz</p>
-<p>1.解压然后进到解压的文件里面 2.执行make来编译 3.他会生成src文件夹，进到里面执行redis-server就运行了</p>
-<h1 id="安装docker">安装docker</h1>
-<p>1.卸载之前的docker</p>
-<p>yum remove docker<br />
-docker-client<br />
-docker-client-latest<br />
-docker-common   docker-latest   docker-latest-logrotate   docker-logrotate<br />
-docker-selinux   docker-engine-selinux   docker-engine   docker-ce</p>
-<p>2.建立仓库</p>
-<p>yum install -y yum-utils //安装docker所需要的工具包</p>
-<p>yum-config-manager –add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo //建立docker仓库，映射仓库地址</p>
-<p>3.安装docker引擎</p>
-<p>yum install docker -ce dockerce-cli containerd.io</p>
-<p>4.启动docker</p>
-<p>systemctl start docker</p>
-<p>5.测试安装是否成功</p>
-<p>docker pull hello-world</p>
-<p>docker run hello-world</p>
-<h2 id="其他操作">其他操作</h2>
-<p>docker镜像加速器配置(建立仓库时可提前选择镜像)</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="comment">//重启docker</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
-<p>守护进程重启：systemctl daemon-reload</p>
-<p>重启Docker服务：systemctl restart docker / service docker restart</p>
-<p>关闭Docker服务：docker service docker stop / docker systemctl stop docker</p>
-<p>删除docker：yum remove docker-ce rm -rf /var/lib/docker</p>
-]]></content>
-      <categories>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>概率论与数理统计</title>
-    <url>/2026/09/02/%E5%85%AC%E5%85%B1%E8%AF%BE/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/</url>
-    <content><![CDATA[<h1 id="概率论">概率论</h1>
-<h2 id="随机事件的关系与运算">随机事件的关系与运算</h2>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: center;">关系</th>
-<th style="text-align: center;">符号</th>
-<th style="text-align: center;">解释</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">包含</td>
-<td style="text-align: center;"><span class="math inline">\(A \subset B\)</span></td>
-<td style="text-align: center;">A发生必然导致B发生</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">相等</td>
-<td style="text-align: center;"><span class="math inline">\(A = B\)</span></td>
-<td style="text-align: center;">A和B相等</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">互斥</td>
-<td style="text-align: center;"><span class="math inline">\(A \cap B = \varnothing\)</span></td>
-<td style="text-align: center;">A和B不可能同时发生</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: center;">运算</th>
-<th style="text-align: center;">符号</th>
-<th style="text-align: center;">解释</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">并</td>
-<td style="text-align: center;"><span class="math inline">\(A \cup B = A+B\)</span></td>
-<td style="text-align: center;">AB至少有一个发生</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">交</td>
-<td style="text-align: center;"><span class="math inline">\(A \cap B = AB\)</span></td>
-<td style="text-align: center;">AB同时发生</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">差</td>
-<td style="text-align: center;"><span class="math inline">\(A - B=A \overline{B}\)</span></td>
-<td style="text-align: center;">A发生B不发生</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">对立</td>
-<td style="text-align: center;"><span class="math inline">\(\overline{A}\)</span></td>
-<td style="text-align: center;">A不发生</td>
-</tr>
-</tbody>
-</table>
-<table>
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 84%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">运算性质</th>
-<th style="text-align: center;">符号表示</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">交换律</td>
-<td style="text-align: center;"><span class="math display">\[\begin{aligned}A \cup B = B \cup A \\ A \cap B = B \cap A\end{aligned}\]</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">结合律</td>
-<td style="text-align: center;"><span class="math display">\[\begin{aligned}(A \cup B) \cup C = A \cup (B \cup C) \\ (A \cap B) \cap C = A \cap (B \cap C)\end{aligned}\]</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">分配律</td>
-<td style="text-align: center;"><span class="math display">\[\begin{aligned}A \cap (B \cup C) = (A \cap B) \cup (A \cap C) \\ A \cup (B \cap C) = (A \cup B) \cap (A \cup C)\end{aligned}\]</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">对偶律（德摩根公式）</td>
-<td style="text-align: center;"><span class="math display">\[\begin{aligned}\overline{A \cup B} = \overline{A} \cap \overline{B} \\ \overline{A \cap B} = \overline{A} \cup \overline{B}\end{aligned}\]</span></td>
-</tr>
-</tbody>
-</table>
-<p><strong>德摩根公式推广</strong>到多个事件以及可列个事件的场合：</p>
-<p><span class="math display">\[
-\begin{aligned}
-\overline{\bigcup_{i=1}^{\infty} A_i} &amp;= \bigcap_{i=1}^{\infty} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{\infty} A_i} &amp;= \bigcup_{i=1}^{\infty} \overline{A_i} \\
-\overline{\bigcup_{i=1}^{n} A_i} &amp;= \bigcap_{i=1}^{n} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{n} A_i} &amp;= \bigcup_{i=1}^{n} \overline{A_i}
-\end{aligned}
-\]</span></p>
-<h2 id="事件域">事件域*</h2>
-<h2 id="条件概率基本公式">条件概率基本公式</h2>
-<p><span class="math display">\[
-P(A+B) = 
-\begin{cases}
-P(A)+P(B)-P(AB) &amp; AB\text{任意} \\
-P(A)+P(B) &amp; AB\text{互斥} \\
-P(A) \text{或} P(B) &amp; B \subset A \text{或} A \subset B \\
-P(A)+P(B)-P(A)P(B) &amp; AB\text{独立}
-\end{cases}
-\]</span></p>
-<p><span class="math display">\[
-P(A-B) =
-\begin{cases}
-P(A)-P(AB) &amp; AB\text{任意} \\
-P(A)-P(B) &amp; B \subset A \\
-P(A) &amp; A \subset B
-\end{cases}
-\]</span></p>
-<p>乘法公式: $ P(AB)=P(A)P(BA) $</p>
-<p>全概率公式： <span class="math display">\[
-P(B) = \sum\limits_{i=1}^{n} P(A_i) P(B \mid A_i)
-\]</span></p>
-<p>贝叶斯公式： <span class="math display">\[
-P(A_i \mid B) = \frac{P(A_i) P(B \mid A_i)}{\sum\limits_{j=1}^{n} P(A_j) P(B \mid A_j)}
-\]</span></p>
-<h1 id="数理统计">数理统计</h1>
-]]></content>
-      <categories>
-        <category>数学</category>
-      </categories>
-      <tags>
-        <tag>数学</tag>
-        <tag>数理统计</tag>
       </tags>
   </entry>
   <entry>
