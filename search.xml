@@ -1840,6 +1840,410 @@ redis redis-server</p>
       </tags>
   </entry>
   <entry>
+    <title>概率论与数理统计</title>
+    <url>/2026/09/02/%E5%85%AC%E5%85%B1%E8%AF%BE/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/</url>
+    <content><![CDATA[<h1 id="概率论">概率论</h1>
+<h2 id="随机事件的关系与运算">随机事件的关系与运算</h2>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">关系</th>
+<th style="text-align: center;">符号</th>
+<th style="text-align: center;">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">包含</td>
+<td style="text-align: center;"><span class="math inline">\(A \subset B\)</span></td>
+<td style="text-align: center;">A发生必然导致B发生</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">相等</td>
+<td style="text-align: center;"><span class="math inline">\(A = B\)</span></td>
+<td style="text-align: center;">A和B相等</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">互斥</td>
+<td style="text-align: center;"><span class="math inline">\(A \cap B = \varnothing\)</span></td>
+<td style="text-align: center;">A和B不可能同时发生</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">运算</th>
+<th style="text-align: center;">符号</th>
+<th style="text-align: center;">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">并</td>
+<td style="text-align: center;"><span class="math inline">\(A \cup B = A+B\)</span></td>
+<td style="text-align: center;">AB至少有一个发生</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">交</td>
+<td style="text-align: center;"><span class="math inline">\(A \cap B = AB\)</span></td>
+<td style="text-align: center;">AB同时发生</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">差</td>
+<td style="text-align: center;"><span class="math inline">\(A - B=A \overline{B}\)</span></td>
+<td style="text-align: center;">A发生B不发生</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">对立</td>
+<td style="text-align: center;"><span class="math inline">\(\overline{A}\)</span></td>
+<td style="text-align: center;">A不发生</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 84%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">运算性质</th>
+<th style="text-align: center;">符号表示</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">交换律</td>
+<td style="text-align: center;"><span class="math inline">\(A \cup B = B \cup A \\ A \cap B = B \cap A\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">结合律</td>
+<td style="text-align: center;"><span class="math inline">\((A \cup B) \cup C = A \cup (B \cup C) \\ (A \cap B) \cap C = A \cap (B \cap C)\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">分配律</td>
+<td style="text-align: center;"><span class="math inline">\(A \cap (B \cup C) = (A \cap B) \cup (A \cap C) \\ A \cup (B \cap C) = (A \cup B) \cap (A \cup C)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">对偶律（德摩根公式）</td>
+<td style="text-align: center;"><span class="math display">\[\overline{A \cup B} = \overline{A} \cap \overline{B} \\ \overline{A \cap B} = \overline{A} \cup \overline{B}\]</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>德摩根公式推广</strong>到多个事件以及可列个事件的场合：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\overline{\bigcup_{i=1}^{\infty} A_i} &amp;= \bigcap_{i=1}^{\infty} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{\infty} A_i} &amp;= \bigcup_{i=1}^{\infty} \overline{A_i} \\
+\overline{\bigcup_{i=1}^{n} A_i} &amp;= \bigcap_{i=1}^{n} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{n} A_i} &amp;= \bigcup_{i=1}^{n} \overline{A_i}
+\end{aligned}
+\]</span></p>
+<h2 id="事件域">事件域*</h2>
+<h2 id="条件概率基本公式">条件概率基本公式</h2>
+<p>$ P(A+B) = \begin{cases} P(A)+P(B)-P(AB) &amp; AB \ P(A)+P(B) &amp; AB \ P(A)  P(B) &amp; B A  A B \ P(A)+P(B)-P(A)P(B) &amp; AB \end{cases} $</p>
+<p>$ P(A-B) = \begin{cases} P(A)-P(AB) &amp; AB \ P(A)-P(B) &amp; B A \ P(A) &amp; A B \end{cases} $</p>
+<p>乘法公式 $ P(AB)=P(A)P(BA) $</p>
+<p>全概率公式 $ P(B) = _{i=1}^{n} P(A_i) P(BA_i) $</p>
+<p>贝叶斯公式</p>
+<p><span class="math inline">\(P(A_i\mid B) = \frac{P(A_i) P(B|A_i)}{\sum\limits_{j=1}^{n} P(A_j) P(B|A_j)}\)</span></p>
+<h1 id="数理统计">数理统计</h1>
+]]></content>
+      <categories>
+        <category>数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>数理统计</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>redis(未完成)</title>
+    <url>/2024/08/12/redis/redis/</url>
+    <content><![CDATA[<p>[toc]</p>
+<h1 id="安装">安装</h1>
+<p>见《linux软件安装》</p>
+<p>简单说一下就是：</p>
+<ul>
+<li>压缩包解压</li>
+<li>进解压文件执行make</li>
+<li>创建安装目录mkdir 安装路径</li>
+<li>开始安装make PREFIX=安装路径 install</li>
+</ul>
+<p>如果要使用bin/redis-server ./redis.conf启动redis服务 ./bin/redis-server ./redis.conf 容器内直接输入redis-server</p>
+<p>提前配置好redis.conf</p>
+<ul>
+<li>容器里面在/etc/redis目录</li>
+<li>直接部署在linux，位置在解压的文件里面，要复制一份到安装路径下</li>
+<li>修改配置文件bind 127.0.0.1 -::1 修改成0.0.0.0</li>
+<li>如果是容器内不改这个 daemonize no 改成daemonize yes</li>
+</ul>
+<p>启动登录</p>
+<ul>
+<li>刚开始没有密码，直接redis-cli</li>
+<li>后面设了密码和用户名，reis-cli -a 密码</li>
+</ul>
+<h1 id="数据类型">数据类型</h1>
+<p>参考http://redisdoc.com</p>
+<ul>
+<li>string字符串</li>
+<li>hash哈希</li>
+<li>list列表</li>
+<li>set集合</li>
+<li>zset有序集合</li>
+</ul>
+<p>查数据库大小：dbsize</p>
+<h2 id="键key">键key</h2>
+<table>
+<thead>
+<tr class="header">
+<th>命令(key全为键名)</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>del key</td>
+<td>删除</td>
+</tr>
+<tr class="even">
+<td>get key</td>
+<td>查key值</td>
+</tr>
+<tr class="odd">
+<td>move key db</td>
+<td>从当前库移到db库</td>
+</tr>
+<tr class="even">
+<td>exists key</td>
+<td>判断是否存在</td>
+</tr>
+<tr class="odd">
+<td><strong>存活时间相关</strong></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>expire/expireat key 秒/时间戳</td>
+<td>设置过期时间/设置过期时间点</td>
+</tr>
+<tr class="odd">
+<td>persist key</td>
+<td>移除过期时间</td>
+</tr>
+<tr class="even">
+<td>ttl key</td>
+<td>返回剩余生存时间，-1永不过期，-2已过期</td>
+</tr>
+<tr class="odd">
+<td>randomkey</td>
+<td>从当前库随机返回一个值</td>
+</tr>
+<tr class="even">
+<td>rename key newkey</td>
+<td>重命名</td>
+</tr>
+<tr class="odd">
+<td>keys pattern</td>
+<td>查看所有符合模式的key，通配符*, ? ,[]</td>
+</tr>
+</tbody>
+</table>
+<h2 id="字符串string">字符串string</h2>
+<p>可以包含任何数据(因为是用二进制存的)，比如图片或者序列化的对象 最大512M</p>
+<table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>set/mset/get/mget/del/append/strlen key value [key value]</td>
+<td>设值/设多个值/获取值/获取多个key的值/删除key/字符串追加/获取长度</td>
+</tr>
+<tr class="even">
+<td>incrby/decrby/incrfloat/decrfloat key 值</td>
+<td>增加/减少/增加浮点数/减少浮点数</td>
+</tr>
+<tr class="odd">
+<td>getrange key start end</td>
+<td>返回key中从start到end的字串</td>
+</tr>
+<tr class="even">
+<td>getbit key offset</td>
+<td>key的字符串值，获取偏移量offset位的bit</td>
+</tr>
+<tr class="odd">
+<td>setbit key offset value</td>
+<td>同上但是是设置该位的值</td>
+</tr>
+<tr class="even">
+<td>setrange key offset value</td>
+<td>设置key从偏移量offset开始的值</td>
+</tr>
+<tr class="odd">
+<td>setex key 秒 vlaue</td>
+<td>设置key的值同时设置过期时间</td>
+</tr>
+<tr class="even">
+<td>setnx key value</td>
+<td>在key不存在时设置key的值</td>
+</tr>
+</tbody>
+</table>
+<h2 id="列表list">列表list</h2>
+<p>用链表实现</p>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>lpush/rpush key value1 value2 …</td>
+<td>头插或尾插一个或多个值</td>
+</tr>
+<tr class="even">
+<td>lrange key start stop</td>
+<td>查指定范围内的元素，-1表示最后一位</td>
+</tr>
+<tr class="odd">
+<td>lpop/rpop/blpop/brpop key</td>
+<td>移出并获取/若为空会一直等到进来元素 头/尾的元素</td>
+</tr>
+<tr class="even">
+<td>lindex key index</td>
+<td>通过索引获取(类似数组下标),-1表示最后一位</td>
+</tr>
+<tr class="odd">
+<td>lset key index value</td>
+<td>通过下标设置列表值</td>
+</tr>
+<tr class="even">
+<td>llen key</td>
+<td>获取列表长度</td>
+</tr>
+<tr class="odd">
+<td>lrem key count value</td>
+<td>删除列表里的value，并返回实际删除个数，count&gt;0,从左边开始删，count=0删除全部</td>
+</tr>
+<tr class="even">
+<td>ltrim key start stop</td>
+<td>保留从start到stop的元素</td>
+</tr>
+<tr class="odd">
+<td>rpoplpush/brpoplpush key1 key2</td>
+<td>剪切列表1的最后一个元素到列表2<br />加上b就是若列表为空会等到出现值</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>linsert key before/after 值1 值2</td>
+<td>在值1前或者后插入值2</td>
+</tr>
+</tbody>
+</table>
+<h2 id="集合set">集合set</h2>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sadd key member1 member2 …</td>
+<td>增加成员</td>
+</tr>
+<tr class="even">
+<td>spop key</td>
+<td>删除并返回随机一个元素</td>
+</tr>
+<tr class="odd">
+<td>srem key value</td>
+<td>删除</td>
+</tr>
+<tr class="even">
+<td>scard key</td>
+<td>获取成员数</td>
+</tr>
+<tr class="odd">
+<td>smembers key</td>
+<td>返回所有成员</td>
+</tr>
+<tr class="even">
+<td>sismember key member</td>
+<td>是否是集合key的成员</td>
+</tr>
+<tr class="odd">
+<td>smove 集合1 集合2 member</td>
+<td>将member从集合1移到集合2</td>
+</tr>
+<tr class="even">
+<td>sinter/sdiff/sunion 一个或多个集合</td>
+<td>返回 交/并/差 后面的集合</td>
+</tr>
+</tbody>
+</table>
+<h2 id="哈希hash">哈希hash</h2>
+<h2 id="有序集合zset">有序集合zset</h2>
+<h1 id="持久化">持久化</h1>
+<h2 id="rdb">RDB</h2>
+<ul>
+<li>最后一次持久化的数据可能丢失</li>
+<li>创建子进程fork来执行快照会占用两倍的空间</li>
+<li>redis/data下的dump.rdb文件整个内存压缩过后的快照</li>
+</ul>
+<p>开启rdb自动来持久化：redis.conf 配置文件中搜索save save &lt; seconds &gt; &lt; changes &gt;</p>
+<p>save和bgsave：保存rdb到内存上，前者只保存，后者是异步保存 lastsave：获取最后一次成功执行快照的时间</p>
+<h2 id="aof">AOF</h2>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/持久化.png" alt="image-20240813172014778" /><figcaption>image-20240813172014778</figcaption>
+</figure>
+<p>Redis会记录上次重写时的AOF大小，默认配置是当AOF文件大小是上次rewrite后大小的一倍且文件大于64M时触发</p>
+<ul>
+<li>以日志形式来记录每个写操作(读不记录)</li>
+<li>只追加文件，不改写文件</li>
+<li>保存在/redis/data/appendonly.aof</li>
+</ul>
+<p>开启AOF：redis.conf 配置文件中搜索appendonly appendonly yes</p>
+<p>修复AOF文件</p>
+<ul>
+<li>备份损坏的文件</li>
+<li>执行redis-check-aof –fix</li>
+<li>重启redis</li>
+</ul>
+<p>重写AOF(aof有冗余记录)</p>
+<ul>
+<li>执行bgrewriteaof</li>
+<li>fork一条新进程来重写AOF文件</li>
+<li>重写触发条件在redis.conf中</li>
+<li>auto-aof-rewrite-percentage 100 //每次达到重写后的一倍就重写 auto-aof-rewrite-min-size 64mb</li>
+</ul>
+<h2 id="总结">总结</h2>
+<ul>
+<li>持久化方式，两种同时启动</li>
+<li>RDB用于备份数据库</li>
+<li>AOF用于恢复</li>
+</ul>
+]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>k8s集群部署以及实用操作</title>
     <url>/2024/07/29/kubernetes/k8s%E5%AE%9E%E7%94%A8%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<p>[toc]</p>
@@ -4624,870 +5028,6 @@ docker-selinux   docker-engine-selinux   docker-engine   docker-ce</p>
       </tags>
   </entry>
   <entry>
-    <title>redis(未完成)</title>
-    <url>/2024/08/12/redis/redis/</url>
-    <content><![CDATA[<p>[toc]</p>
-<h1 id="安装">安装</h1>
-<p>见《linux软件安装》</p>
-<p>简单说一下就是：</p>
-<ul>
-<li>压缩包解压</li>
-<li>进解压文件执行make</li>
-<li>创建安装目录mkdir 安装路径</li>
-<li>开始安装make PREFIX=安装路径 install</li>
-</ul>
-<p>如果要使用bin/redis-server ./redis.conf启动redis服务 ./bin/redis-server ./redis.conf 容器内直接输入redis-server</p>
-<p>提前配置好redis.conf</p>
-<ul>
-<li>容器里面在/etc/redis目录</li>
-<li>直接部署在linux，位置在解压的文件里面，要复制一份到安装路径下</li>
-<li>修改配置文件bind 127.0.0.1 -::1 修改成0.0.0.0</li>
-<li>如果是容器内不改这个 daemonize no 改成daemonize yes</li>
-</ul>
-<p>启动登录</p>
-<ul>
-<li>刚开始没有密码，直接redis-cli</li>
-<li>后面设了密码和用户名，reis-cli -a 密码</li>
-</ul>
-<h1 id="数据类型">数据类型</h1>
-<p>参考http://redisdoc.com</p>
-<ul>
-<li>string字符串</li>
-<li>hash哈希</li>
-<li>list列表</li>
-<li>set集合</li>
-<li>zset有序集合</li>
-</ul>
-<p>查数据库大小：dbsize</p>
-<h2 id="键key">键key</h2>
-<table>
-<thead>
-<tr class="header">
-<th>命令(key全为键名)</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>del key</td>
-<td>删除</td>
-</tr>
-<tr class="even">
-<td>get key</td>
-<td>查key值</td>
-</tr>
-<tr class="odd">
-<td>move key db</td>
-<td>从当前库移到db库</td>
-</tr>
-<tr class="even">
-<td>exists key</td>
-<td>判断是否存在</td>
-</tr>
-<tr class="odd">
-<td><strong>存活时间相关</strong></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>expire/expireat key 秒/时间戳</td>
-<td>设置过期时间/设置过期时间点</td>
-</tr>
-<tr class="odd">
-<td>persist key</td>
-<td>移除过期时间</td>
-</tr>
-<tr class="even">
-<td>ttl key</td>
-<td>返回剩余生存时间，-1永不过期，-2已过期</td>
-</tr>
-<tr class="odd">
-<td>randomkey</td>
-<td>从当前库随机返回一个值</td>
-</tr>
-<tr class="even">
-<td>rename key newkey</td>
-<td>重命名</td>
-</tr>
-<tr class="odd">
-<td>keys pattern</td>
-<td>查看所有符合模式的key，通配符*, ? ,[]</td>
-</tr>
-</tbody>
-</table>
-<h2 id="字符串string">字符串string</h2>
-<p>可以包含任何数据(因为是用二进制存的)，比如图片或者序列化的对象 最大512M</p>
-<table>
-<colgroup>
-<col style="width: 48%" />
-<col style="width: 51%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>set/mset/get/mget/del/append/strlen key value [key value]</td>
-<td>设值/设多个值/获取值/获取多个key的值/删除key/字符串追加/获取长度</td>
-</tr>
-<tr class="even">
-<td>incrby/decrby/incrfloat/decrfloat key 值</td>
-<td>增加/减少/增加浮点数/减少浮点数</td>
-</tr>
-<tr class="odd">
-<td>getrange key start end</td>
-<td>返回key中从start到end的字串</td>
-</tr>
-<tr class="even">
-<td>getbit key offset</td>
-<td>key的字符串值，获取偏移量offset位的bit</td>
-</tr>
-<tr class="odd">
-<td>setbit key offset value</td>
-<td>同上但是是设置该位的值</td>
-</tr>
-<tr class="even">
-<td>setrange key offset value</td>
-<td>设置key从偏移量offset开始的值</td>
-</tr>
-<tr class="odd">
-<td>setex key 秒 vlaue</td>
-<td>设置key的值同时设置过期时间</td>
-</tr>
-<tr class="even">
-<td>setnx key value</td>
-<td>在key不存在时设置key的值</td>
-</tr>
-</tbody>
-</table>
-<h2 id="列表list">列表list</h2>
-<p>用链表实现</p>
-<table>
-<thead>
-<tr class="header">
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>lpush/rpush key value1 value2 …</td>
-<td>头插或尾插一个或多个值</td>
-</tr>
-<tr class="even">
-<td>lrange key start stop</td>
-<td>查指定范围内的元素，-1表示最后一位</td>
-</tr>
-<tr class="odd">
-<td>lpop/rpop/blpop/brpop key</td>
-<td>移出并获取/若为空会一直等到进来元素 头/尾的元素</td>
-</tr>
-<tr class="even">
-<td>lindex key index</td>
-<td>通过索引获取(类似数组下标),-1表示最后一位</td>
-</tr>
-<tr class="odd">
-<td>lset key index value</td>
-<td>通过下标设置列表值</td>
-</tr>
-<tr class="even">
-<td>llen key</td>
-<td>获取列表长度</td>
-</tr>
-<tr class="odd">
-<td>lrem key count value</td>
-<td>删除列表里的value，并返回实际删除个数，count&gt;0,从左边开始删，count=0删除全部</td>
-</tr>
-<tr class="even">
-<td>ltrim key start stop</td>
-<td>保留从start到stop的元素</td>
-</tr>
-<tr class="odd">
-<td>rpoplpush/brpoplpush key1 key2</td>
-<td>剪切列表1的最后一个元素到列表2<br />加上b就是若列表为空会等到出现值</td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>linsert key before/after 值1 值2</td>
-<td>在值1前或者后插入值2</td>
-</tr>
-</tbody>
-</table>
-<h2 id="集合set">集合set</h2>
-<table>
-<thead>
-<tr class="header">
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>sadd key member1 member2 …</td>
-<td>增加成员</td>
-</tr>
-<tr class="even">
-<td>spop key</td>
-<td>删除并返回随机一个元素</td>
-</tr>
-<tr class="odd">
-<td>srem key value</td>
-<td>删除</td>
-</tr>
-<tr class="even">
-<td>scard key</td>
-<td>获取成员数</td>
-</tr>
-<tr class="odd">
-<td>smembers key</td>
-<td>返回所有成员</td>
-</tr>
-<tr class="even">
-<td>sismember key member</td>
-<td>是否是集合key的成员</td>
-</tr>
-<tr class="odd">
-<td>smove 集合1 集合2 member</td>
-<td>将member从集合1移到集合2</td>
-</tr>
-<tr class="even">
-<td>sinter/sdiff/sunion 一个或多个集合</td>
-<td>返回 交/并/差 后面的集合</td>
-</tr>
-</tbody>
-</table>
-<h2 id="哈希hash">哈希hash</h2>
-<h2 id="有序集合zset">有序集合zset</h2>
-<h1 id="持久化">持久化</h1>
-<h2 id="rdb">RDB</h2>
-<ul>
-<li>最后一次持久化的数据可能丢失</li>
-<li>创建子进程fork来执行快照会占用两倍的空间</li>
-<li>redis/data下的dump.rdb文件整个内存压缩过后的快照</li>
-</ul>
-<p>开启rdb自动来持久化：redis.conf 配置文件中搜索save save &lt; seconds &gt; &lt; changes &gt;</p>
-<p>save和bgsave：保存rdb到内存上，前者只保存，后者是异步保存 lastsave：获取最后一次成功执行快照的时间</p>
-<h2 id="aof">AOF</h2>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/持久化.png" alt="image-20240813172014778" /><figcaption>image-20240813172014778</figcaption>
-</figure>
-<p>Redis会记录上次重写时的AOF大小，默认配置是当AOF文件大小是上次rewrite后大小的一倍且文件大于64M时触发</p>
-<ul>
-<li>以日志形式来记录每个写操作(读不记录)</li>
-<li>只追加文件，不改写文件</li>
-<li>保存在/redis/data/appendonly.aof</li>
-</ul>
-<p>开启AOF：redis.conf 配置文件中搜索appendonly appendonly yes</p>
-<p>修复AOF文件</p>
-<ul>
-<li>备份损坏的文件</li>
-<li>执行redis-check-aof –fix</li>
-<li>重启redis</li>
-</ul>
-<p>重写AOF(aof有冗余记录)</p>
-<ul>
-<li>执行bgrewriteaof</li>
-<li>fork一条新进程来重写AOF文件</li>
-<li>重写触发条件在redis.conf中</li>
-<li>auto-aof-rewrite-percentage 100 //每次达到重写后的一倍就重写 auto-aof-rewrite-min-size 64mb</li>
-</ul>
-<h2 id="总结">总结</h2>
-<ul>
-<li>持久化方式，两种同时启动</li>
-<li>RDB用于备份数据库</li>
-<li>AOF用于恢复</li>
-</ul>
-]]></content>
-      <categories>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>概率论与数理统计</title>
-    <url>/2026/09/02/%E5%85%AC%E5%85%B1%E8%AF%BE/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/</url>
-    <content><![CDATA[<h1 id="概率论">概率论</h1>
-<h2 id="随机事件的关系与运算">随机事件的关系与运算</h2>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: center;">关系</th>
-<th style="text-align: center;">符号</th>
-<th style="text-align: center;">解释</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">包含</td>
-<td style="text-align: center;"><span class="math inline">\(A \subset B\)</span></td>
-<td style="text-align: center;">A发生必然导致B发生</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">相等</td>
-<td style="text-align: center;"><span class="math inline">\(A = B\)</span></td>
-<td style="text-align: center;">A和B相等</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">互斥</td>
-<td style="text-align: center;"><span class="math inline">\(A \cap B = \varnothing\)</span></td>
-<td style="text-align: center;">A和B不可能同时发生</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: center;">运算</th>
-<th style="text-align: center;">符号</th>
-<th style="text-align: center;">解释</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">并</td>
-<td style="text-align: center;"><span class="math inline">\(A \cup B = A+B\)</span></td>
-<td style="text-align: center;">AB至少有一个发生</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">交</td>
-<td style="text-align: center;"><span class="math inline">\(A \cap B = AB\)</span></td>
-<td style="text-align: center;">AB同时发生</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">差</td>
-<td style="text-align: center;"><span class="math inline">\(A - B=A \overline{B}\)</span></td>
-<td style="text-align: center;">A发生B不发生</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">对立</td>
-<td style="text-align: center;"><span class="math inline">\(\overline{A}\)</span></td>
-<td style="text-align: center;">A不发生</td>
-</tr>
-</tbody>
-</table>
-<table>
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 84%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: center;">运算性质</th>
-<th style="text-align: center;">符号表示</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">交换律</td>
-<td style="text-align: center;"><span class="math inline">\(A \cup B = B \cup A \\ A \cap B = B \cap A\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">结合律</td>
-<td style="text-align: center;"><span class="math inline">\((A \cup B) \cup C = A \cup (B \cup C) \\ (A \cap B) \cap C = A \cap (B \cap C)\)</span></td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">分配律</td>
-<td style="text-align: center;"><span class="math inline">\(A \cap (B \cup C) = (A \cap B) \cup (A \cap C) \\ A \cup (B \cap C) = (A \cup B) \cap (A \cup C)\)</span></td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">对偶律（德摩根公式）</td>
-<td style="text-align: center;"><span class="math display">\[\overline{A \cup B} = \overline{A} \cap \overline{B} \\ \overline{A \cap B} = \overline{A} \cup \overline{B}\]</span></td>
-</tr>
-</tbody>
-</table>
-<p><strong>德摩根公式推广</strong>到多个事件以及可列个事件的场合：</p>
-<p><span class="math display">\[
-\begin{aligned}
-\overline{\bigcup_{i=1}^{\infty} A_i} &amp;= \bigcap_{i=1}^{\infty} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{\infty} A_i} &amp;= \bigcup_{i=1}^{\infty} \overline{A_i} \\
-\overline{\bigcup_{i=1}^{n} A_i} &amp;= \bigcap_{i=1}^{n} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{n} A_i} &amp;= \bigcup_{i=1}^{n} \overline{A_i}
-\end{aligned}
-\]</span></p>
-<h2 id="事件域">事件域*</h2>
-<h2 id="条件概率基本公式">条件概率基本公式</h2>
-<p>$ P(A+B) = \begin{cases} P(A)+P(B)-P(AB) &amp; AB \ P(A)+P(B) &amp; AB \ P(A)  P(B) &amp; B A  A B \ P(A)+P(B)-P(A)P(B) &amp; AB \end{cases} $</p>
-<p>$ P(A-B) = \begin{cases} P(A)-P(AB) &amp; AB \ P(A)-P(B) &amp; B A \ P(A) &amp; A B \end{cases} $</p>
-<p>乘法公式 $ P(AB)=P(A)P(BA) $</p>
-<p>全概率公式 $ P(B) = _{i=1}^{n} P(A_i) P(BA_i) $</p>
-<p>贝叶斯公式</p>
-<p><span class="math inline">\(P(A_i\mid B) = \frac{P(A_i) P(B|A_i)}{\sum\limits_{j=1}^{n} P(A_j) P(B|A_j)}\)</span></p>
-<h1 id="数理统计">数理统计</h1>
-]]></content>
-      <categories>
-        <category>数学</category>
-      </categories>
-      <tags>
-        <tag>数学</tag>
-        <tag>数理统计</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Oracle数据库(未完成)</title>
-    <url>/2024/06/10/sql/Oracle/</url>
-    <content><![CDATA[<p><span id="jump1">目录</span></p>
-<p>[toc]</p>
-<p>Oracle内容庞大,推荐看《Oracle 11g数据库基础教程》，此文档只包含常用内容</p>
-<h1 id="安装与卸载">安装与卸载</h1>
-<p><a href="#jump1">回到目录</a></p>
-<h2 id="安装">安装</h2>
-<p>setup-&gt;网络配置(监听器)-&gt;SQL PLUS(查看能否登录，用户名system)</p>
-<h2 id="企业管理器oem">企业管理器OEM</h2>
-<p>浏览器https://本机:1158/em 确保Oracle服务、监听服务和控制台服务打开</p>
-<p>默认控制台服务(即OEM控制台服务)端口为1158 查看在\11.2.0_1.int</p>
-<h1 id="文件体系结构">文件体系结构</h1>
-<p><a href="#jump1">回到目录</a></p>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/oracle数据库系统结构.png" alt="oracle数据库系统结构" /><figcaption>oracle数据库系统结构</figcaption>
-</figure>
-<p>admin:以数据库为单位，存放数据库运行过程中产生的跟踪文件 cfgtoologs:运行dbca、emca和netca图像化程序时产生的日志信息 checkpoint:存放数据库检查点信息 diag:以组件为单位，存储数据库各个组件运行的诊断信息 flash_recovery_area:以数据库为单位，数据库自动备份时，存放备份文件和闪回日志文件 oradata:以数据库为单位，存放数据库的物理文件(数据，控制，重做日志) product:存放数据库管理相关的软件，包括可执行文件、网络配置、脚本</p>
-<pre class="mermaid">graph LR
-Oracle数据库--> 存储结构DB
-存储结构DB--> 物理存储结构
-存储结构DB--> 逻辑存储结构
-Oracle数据库--> 数据库管理系统DBMS
-数据库管理系统DBMS--> 实例instance
-实例instance--> 内存结构--> SGA和PGA
-实例instance--> 后台进程</pre>
-<h2 id="物理存储和逻辑存储">物理存储和逻辑存储</h2>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/oracle数据库物理存储结构和逻辑存储结构.png" alt="oracle数据库物理存储结构和逻辑存储结构" /><figcaption>oracle数据库物理存储结构和逻辑存储结构</figcaption>
-</figure>
-<p>表空间：数据文件=1：n 块：OS块=1：n</p>
-<p><strong>物理文件</strong>：参数文件(库名，CTL路径，进程)，跟踪文件(记录运行过程发生的大事)+告警文件（记录后台进程活动） 数据文件：DBF 日志文件：LOG 控制文件：CTL(库名，数据和日志文件路径，建库日期）</p>
-<p>逻辑文件：<strong>表空间</strong>(系统表SYSTEM，辅助系统表SYSAUX，临时表TEMP，撤销表UNDO，USERS)，<strong>段</strong>(数据，索引，临时，回退)，<strong>区</strong>(连续的数据块，存储空间分配的最小单位)，<strong>块</strong>(最小逻辑存储单元)</p>
-<h2 id="内存结构和后台进程">内存结构和后台进程</h2>
-<h3 id="sga和pga">SGA和PGA</h3>
-<p>SGA系统全局区：数据高速缓冲区、共享池（库缓存和数据字典缓存）、重做日志缓冲区、大型池、Java池、流池和其他</p>
-<p>高速缓冲区：脏缓冲块(修改过的数据)+空闲缓冲块(无数据)+命中缓冲块(正在被使用的数据)+干净缓冲块(没被修改的数据)。 库缓存：通过硬解析(未执行的SQL)和软解析(已执行的SQL)来让相同的SQL语句不再编译，提升SQL执行效率。</p>
-<p>PGA程序全局区：排序区、游标信息区、会话信息区、堆栈区(会话变量)</p>
-<h3 id="后台进程">后台进程</h3>
-<table>
-<thead>
-<tr class="header">
-<th>进程名</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>数据库写入进程DBWR</td>
-<td>将高速缓冲区的脏缓冲块写入数据文件</td>
-</tr>
-<tr class="even">
-<td>日志写入进程LGWR</td>
-<td>将重做日志缓冲区的记录写入重做日志文件</td>
-</tr>
-<tr class="odd">
-<td>检查点进程CKPT</td>
-<td>类似时间节点，每到检查点就执行上面的操作，并保存节点</td>
-</tr>
-<tr class="even">
-<td>系统监控进程SMON</td>
-<td>系统崩溃时恢复系统（通过联机重做日志文件）;合并空闲表空间碎片</td>
-</tr>
-<tr class="odd">
-<td>进程监控进程PMON</td>
-<td>同上仅针对用户进程</td>
-</tr>
-<tr class="even">
-<td>归档进程ARCH</td>
-<td>重做日志写满时，复制到归档目标</td>
-</tr>
-<tr class="odd">
-<td>恢复进程RECO</td>
-<td>自动解决分布式数据库出现的事务故障</td>
-</tr>
-<tr class="even">
-<td>锁进程LCKn</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>调度进程Dnnn</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>归档模式开启：LOG_ARCHIVE_START=TRUE</p>
-<h1 id="安全管理">安全管理</h1>
-<p><a href="#jump1">回到目录</a></p>
-<h2 id="用户管理">用户管理</h2>
-<h2 id="权限管理">权限管理</h2>
-<h2 id="角色管理">角色管理</h2>
-<h2 id="表空间管理">表空间管理</h2>
-<p><strong>表空间类型、名称、数据文件、表空间管理方式、区分配方式和段管理方式</strong> 表空间管理：字典dictionary管理方式、(默认)本地管理方式local 区分配方式：在表空间本地管理中，区分配有(默认)自动分配autoallocate和定制分配uniform 管管理饭时：(默认)自动管理auto和手动管理manual</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建表空间</span></span><br><span class="line"><span class="keyword">create</span> [temporary<span class="operator">|</span>bigfile<span class="operator">|</span>undo] tablespace 名字</span><br><span class="line">[datafile<span class="operator">|</span>tempfile] <span class="string">&#x27;文件路径\名字.DBF&#x27;</span> size <span class="number">10</span>M</span><br><span class="line">[autoextent <span class="keyword">on</span> next <span class="number">1</span>M maxsize unlimited] <span class="comment">-- 数据文件自动扩展</span></span><br><span class="line">[extent management <span class="keyword">local</span> uniform size <span class="number">10</span>M] <span class="comment">-- 段定制分配</span></span><br><span class="line">[segment space management manual] <span class="comment">-- 区手动管理</span></span><br><span class="line"></span><br><span class="line">大文件表空间 段只能自动管理,临时表空间和撤销表空间 区只能自动分配</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改表空间</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="语法相关">语法相关</h1>
-<p><a href="#jump1">回到目录</a></p>
-<h2 id="求余">求余</h2>
-<table>
-<thead>
-<tr class="header">
-<th>mysql</th>
-<th>sql server</th>
-<th>Oracle</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>%、mod</td>
-<td>%</td>
-<td>mod</td>
-</tr>
-</tbody>
-</table>
-<h2 id="ddldmldql没写的默认和其他sql一样">DDL、DML、DQL(没写的默认和其他sql一样)</h2>
-<table>
-<colgroup>
-<col style="width: 8%" />
-<col style="width: 45%" />
-<col style="width: 45%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>表相关功能</th>
-<th>语法</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>建表1</td>
-<td>create table 表名(。。。。)</td>
-<td>同mysql</td>
-</tr>
-<tr class="even">
-<td>建表2</td>
-<td>craete table 表名(列…..) as select …..</td>
-<td>用子查询建表</td>
-</tr>
-<tr class="odd">
-<td>修改表</td>
-<td>alter table 表名<br />[add 新列 类型 约束]<br />[modify 列 类型]<br />[set unused coumn 列]<br />[drop column 列]<br />[rename column 旧列名 to 新列名]<br />[rename to 新表名]</td>
-<td><br />加新列<br />改类型<br />设置不使用列<br />删除列<br />重命名列<br />重命名表</td>
-</tr>
-<tr class="even">
-<td>修改约束</td>
-<td>alter table 表名<br />[add constraint 约束名 主键|唯一|检查|外键]<br />[modify 列 not null]<br />[drop constraint 约束名]<br />[drop unique(列)]</td>
-<td><br />添加主键外键唯一检查约束<br />添加非空约束<br />按约束名删除<br />按列约束删除</td>
-</tr>
-<tr class="odd">
-<td>删除表</td>
-<td>drop table 表名<br />[cascade constraints]<br />[purge]</td>
-<td>在Oracle中删除表会重命名表并放在回收站(用来实现闪回删除flashback drop擦操作，清空回收站purge recyclebin)</td>
-</tr>
-</tbody>
-</table>
-<table>
-<colgroup>
-<col style="width: 9%" />
-<col style="width: 45%" />
-<col style="width: 45%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>数据相关功能</th>
-<th>语法</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>插入1</td>
-<td>insert into 表(列…) values (列…)</td>
-<td>单条数据</td>
-</tr>
-<tr class="even">
-<td>插入2</td>
-<td>insert into 表 select …</td>
-<td>子查询</td>
-</tr>
-<tr class="odd">
-<td>插入3</td>
-<td>insert all<br />[into 表1 values(列…)]<br />[into 表2 values(列…)]<br />select…</td>
-<td>多条数据</td>
-</tr>
-<tr class="even">
-<td>插入4</td>
-<td>insert all|first<br />when 条件1 then into 表1(列…)<br />when 条件2 then into 表2(列…)<br />else into 表3(列…)<br />select …</td>
-<td>条件多表插入<br />all表示只要满足条件就插入<br />first表示只插入满足条件的第一个表</td>
-</tr>
-<tr class="odd">
-<td>插入5</td>
-<td>insert / * +append */ into 表 select…</td>
-<td>插入大量数据使用装载(不写入日志)</td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>数据合并</td>
-<td>merge into 目标表 using 源表<br />on(条件)<br />when matched then update set…<br />when not matched then insert values(…)</td>
-<td>将满足on条件的源表数据更新或插入到目标表</td>
-</tr>
-</tbody>
-</table>
-<h2 id="select注意事项">select注意事项</h2>
-<ul>
-<li><p>拼接符号：||</p></li>
-<li><p>交、并、差：intersect、union、minus</p></li>
-<li><p>order by 2 将select结果按第2列排序</p></li>
-<li><p>使用ROWNUM来显示行号，在select结果集里面直接加ROWNUM</p></li>
-<li><p>ROWID是数据的物理地址</p></li>
-</ul>
-<p>rowid=对象编号6+数据文件编号3+块编号6+行编号3</p>
-<h1 id="事务">事务</h1>
-<p>设置事务只读模式(该模式下，开启事务之后只能查询数据) set transaction read only；</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">begin</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">savepoint</span> A;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">rollback</span> <span class="keyword">to</span> [A];<span class="operator">|</span><span class="keyword">commit</span>;<span class="operator">|</span><span class="keyword">rollback</span>;</span><br><span class="line">[exception</span><br><span class="line"> <span class="keyword">when</span> others <span class="keyword">then</span> <span class="keyword">rollback</span> <span class="keyword">to</span> A;]</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
-<p>其他内容同mysql</p>
-<h1 id="序列">序列</h1>
-<p><strong>序列不占用实际存储空间</strong></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建序列</span></span><br><span class="line"><span class="keyword">create</span> sequence 序列名</span><br><span class="line">[<span class="keyword">start</span> <span class="keyword">with</span> n]             <span class="comment">-- 设置初始值，默认1</span></span><br><span class="line">[increment <span class="keyword">by</span> m]           <span class="comment">-- 步长，默认1</span></span><br><span class="line">[maxvalue mm<span class="operator">|</span>nomaxvalue]   <span class="comment">-- 序列最大值mm</span></span><br><span class="line">[minvalue mm<span class="operator">|</span>nominvalue]   <span class="comment">-- 序列最小值mm</span></span><br><span class="line">[<span class="keyword">cycle</span><span class="operator">|</span>nocycle]            <span class="comment">-- 达到最大值或最小值时，循环</span></span><br><span class="line">[cache n<span class="operator">|</span>nocache]   <span class="comment">-- 设置预先分配并保留在内存中的序列个数，默认20</span></span><br><span class="line"><span class="comment">-- 使用序列</span></span><br><span class="line">同rownum伪列，序列有currval和nextval两个伪列</span><br><span class="line">序列名.currval返回当前序列值</span><br><span class="line">序列名.nextval产生新值并返回</span><br><span class="line">使用范围：<span class="keyword">select</span>和<span class="keyword">insert</span>目标列，<span class="keyword">insert</span> <span class="keyword">values</span>子句，<span class="keyword">update</span>的<span class="keyword">set</span>子句</span><br></pre></td></tr></table></figure>
-<h1 id="视图">视图</h1>
-<p>查询简单化、数据安全性、逻辑数据独立性</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace][force<span class="operator">|</span>noforce] <span class="keyword">view</span> 视图名 <span class="comment">-- force不管有无基表强制创建视图</span></span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">select...</span><br><span class="line">[<span class="keyword">with</span> <span class="keyword">check</span> option] <span class="comment">-- 对试图操作时，必须满足子查询中的约束条件</span></span><br><span class="line">[<span class="keyword">with</span> read <span class="keyword">only</span>] <span class="comment">-- 只读</span></span><br></pre></td></tr></table></figure>
-<h1 id="同义词">同义词</h1>
-<p>create synonym 名称 for 表名</p>
-<h1 id="函数">函数</h1>
-<p><a href="#jump1">回到目录</a></p>
-<h2 id="日期函数">日期函数</h2>
-<table>
-<thead>
-<tr class="header">
-<th>函数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>add_months(d,n)</td>
-<td>日期d+n个月,n可为负数</td>
-</tr>
-<tr class="even">
-<td>extract(year from d)</td>
-<td>从日期d中截取,year,month,day,hour,minute,second</td>
-</tr>
-<tr class="odd">
-<td>sysdate</td>
-<td>系统时间</td>
-</tr>
-<tr class="even">
-<td>last_day</td>
-<td>当月最后一天日期</td>
-</tr>
-<tr class="odd">
-<td>months_between(d1,d2)</td>
-<td>相差月数</td>
-</tr>
-</tbody>
-</table>
-<h2 id="其他函数">其他函数</h2>
-<table>
-<thead>
-<tr class="header">
-<th>函数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>nvl(a,b)</td>
-<td>a为空，返回b,否则返回a</td>
-</tr>
-<tr class="even">
-<td>nvl2(a,b,c)</td>
-<td>a为空,返回c，否则返回b</td>
-</tr>
-<tr class="odd">
-<td>nullif(a,b)</td>
-<td>a=b,返回null，否则返回a</td>
-</tr>
-<tr class="even">
-<td>decode(expr,a,b,a1,b1,…..default)</td>
-<td>表达式expr，为a时返回b，为a1时返回b1,….<br />否则默认</td>
-</tr>
-</tbody>
-</table>
-<h1 id="plsql">PL/SQL</h1>
-<table>
-<colgroup>
-<col style="width: 31%" />
-<col style="width: 68%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>orcle功能函数</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>设置打印(默认开启)</td>
-<td>set serveroutput on</td>
-</tr>
-<tr class="even">
-<td>输出内容并换行</td>
-<td>DBMS_OUTPUT.PUT_LINE()</td>
-</tr>
-<tr class="odd">
-<td>放进缓冲区，不换行输出</td>
-<td>dbms_output.put(‘Hello, Lao An’);<br />dbms_output.put(‘Hello, Lao An’);</td>
-</tr>
-<tr class="even">
-<td>输出换行</td>
-<td>dbms_output.new_line();</td>
-</tr>
-<tr class="odd">
-<td>输入(注意&amp;后可以接任意内容)</td>
-<td>i:=&amp;i</td>
-</tr>
-<tr class="even">
-<td>产生从n到m的随机数</td>
-<td>dbms_random_value(n,m)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="数据类型">数据类型</h2>
-<table>
-<thead>
-<tr class="header">
-<th>类型</th>
-<th>种类</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>数字</td>
-<td>number(p,s)</td>
-<td>p有效位，s小数位</td>
-</tr>
-<tr class="even">
-<td>字符</td>
-<td>char()<br />varchar2()</td>
-<td>定长char；变长varchar2</td>
-</tr>
-<tr class="odd">
-<td>日期</td>
-<td>date<br />timestamp</td>
-<td>日期date；时间点timestamp</td>
-</tr>
-<tr class="even">
-<td>布尔</td>
-<td>boolean</td>
-<td>true，false，null</td>
-</tr>
-<tr class="odd">
-<td>LOB</td>
-<td>blob,clob,nclob,bfile</td>
-<td>二进制blob；文本clob,nclob;操作系统文件指针bfile</td>
-</tr>
-<tr class="even">
-<td>记录</td>
-<td>type 名称 is record(<br />…..)</td>
-<td>类似结构体</td>
-</tr>
-</tbody>
-</table>
-<p>%TYPE和%ROWTYPE 已知存在表emp中的sal列，但不知道数据类型，想要定义一个相同的数据类型 a emp.sal%TYPE b emp%ROWTYPE 定义一个与emp表结构一致的记录类型</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">declare</span></span><br><span class="line">声明各种变量</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">select</span> ...into..;</span><br><span class="line"><span class="keyword">insert</span>,<span class="keyword">update</span>,delete...;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="关键词">关键词</h2>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 选择结构</span></span><br><span class="line"><span class="comment">-- if</span></span><br><span class="line">if 条件 <span class="keyword">then</span> 情况<span class="number">1</span>;</span><br><span class="line">elsif 条件<span class="number">2</span> <span class="keyword">then</span> 情况<span class="number">2</span>;</span><br><span class="line"><span class="keyword">else</span> 情况<span class="number">3</span>;</span><br><span class="line"><span class="keyword">end</span> if;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- case</span></span><br><span class="line"><span class="keyword">case</span></span><br><span class="line"><span class="keyword">when</span> ... <span class="keyword">then</span> ...;</span><br><span class="line"><span class="keyword">when</span> ... <span class="keyword">then</span> ...;</span><br><span class="line"><span class="keyword">else</span> ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">case</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 循环while for loop</span></span><br><span class="line"><span class="comment">-- 循环以end loop结束</span></span><br><span class="line">loop</span><br><span class="line">...;</span><br><span class="line">exit <span class="keyword">when</span> 条件;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line">while 条件 loop</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i [reverse] <span class="keyword">in</span> n..m loop   <span class="comment">-- 变量i从n到m循环,反转后从m到n</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 跳转结构GOTO</span></span><br><span class="line">...;</span><br><span class="line"><span class="operator">&lt;&lt;</span>a<span class="operator">&gt;&gt;</span>    <span class="comment">-- 定义跳转点</span></span><br><span class="line">...;</span><br><span class="line">goto a;  <span class="comment">-- goto跳转到跳转点</span></span><br><span class="line">...;</span><br></pre></td></tr></table></figure>
-<h2 id="游标">游标</h2>
-<p>在PL/SQL块中执行select和DML，分配缓冲区，名为上下文区，游标是<strong>指向该缓冲的指针</strong></p>
-<p>显式游标：用户定义、操作，处理返回多行数据的select查询 隐式游标：由系统自动操作，处理DML和返回单行数据的select查询</p>
-<h3 id="显示游标">显示游标</h3>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义(可带参数)</span></span><br><span class="line"><span class="keyword">CURSOR</span> 游标名 <span class="keyword">IS</span> <span class="keyword">select</span>语句</span><br><span class="line"><span class="keyword">CURSOR</span> 游标名(变量) <span class="keyword">IS</span> <span class="keyword">select</span>语句</span><br><span class="line"><span class="comment">-- 打开(open之后游标指向第一行)</span></span><br><span class="line"><span class="keyword">open</span> 游标名</span><br><span class="line"><span class="keyword">open</span> 游标名(<span class="operator">&amp;</span>变量)</span><br><span class="line"><span class="comment">-- 检索(每执行一次fetch指针后移)</span></span><br><span class="line"><span class="keyword">fetch</span> 游标名 <span class="keyword">into</span> 一个能存一行数据的变量</span><br><span class="line"><span class="comment">-- 关闭</span></span><br><span class="line"><span class="keyword">close</span> 游标名</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 通过loop，while，for来循环检索的区别</span></span><br><span class="line">loop</span><br><span class="line">	fetch...into..;</span><br><span class="line">	exit <span class="keyword">when</span> 游标<span class="operator">%</span>notfound;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line">fetch...into..;</span><br><span class="line">while 游标<span class="operator">%</span>notfound loop</span><br><span class="line">	fetch...into..;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> 记录行变量 <span class="keyword">in</span> 游标名 loop</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr class="header">
-<th>游标属性</th>
-<th>语法</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>%isopen</td>
-<td>是否开启</td>
-</tr>
-<tr class="even">
-<td>%found 或者 %notfound</td>
-<td>上次使用fetch时是否检测到数据,可以作为游标循环检索的判断条件</td>
-</tr>
-<tr class="odd">
-<td>%rowcount</td>
-<td>返回检索个数</td>
-</tr>
-<tr class="even">
-<td>%bulk_rowcount(i)</td>
-<td>取得forall语句执行批绑定时第i个元素影响的行数</td>
-</tr>
-</tbody>
-</table>
-<h3 id="隐式游标">隐式游标</h3>
-<p><strong>指向SQL语句执行的缓冲区的指针</strong>，又称SQL游标(静态游标)</p>
-<p>隐式游标属性同显式游标,相当于一个游标名称为SQL的游标 SQL游标主要用来处理insert、update、delete、单行的select…into</p>
-<h4 id="游标变量">游标变量</h4>
-<p>定义游标引用类型：TYPE 游标引用类型名a IS REF CURSOR [RETURN 返回类型] 引用上面定义：游标变量名 a 在Oracle有一个预定义的游标引用类型sys_refcursor</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义游标变量</span></span><br><span class="line">游标名 sys_refcursor;</span><br><span class="line"><span class="comment">-- 打开游标变量</span></span><br><span class="line"><span class="keyword">open</span> 游标变量名 <span class="keyword">for</span> select...</span><br><span class="line"><span class="comment">-- 检索游标变量</span></span><br><span class="line">loop</span><br><span class="line"><span class="keyword">fetch</span> 游标变量 <span class="keyword">into</span> 变量;</span><br><span class="line">...;</span><br><span class="line">exit <span class="keyword">when</span> ...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"><span class="comment">-- 关闭</span></span><br><span class="line"><span class="keyword">close</span> 游标变量名;</span><br></pre></td></tr></table></figure>
-<h2 id="异常">异常</h2>
-<p>预定义异常，非预定义异常，用户定义异常</p>
-<h2 id="存储过程">存储过程</h2>
-<p>声明形参时<strong>不能定义长度或精度</strong>，有默认值的参数放在参数列表最后。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">procedure</span> 存储过程名(变量名 <span class="keyword">in</span><span class="operator">|</span><span class="keyword">out</span><span class="operator">|</span><span class="keyword">in</span> <span class="keyword">out</span> 数据类型 [:<span class="operator">=</span>默认值])</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">定义变量;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">执行部分;</span><br><span class="line">exception</span><br><span class="line">when...then...异常处理部分;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line"><span class="keyword">execute</span><span class="operator">|</span><span class="keyword">call</span> 存储过程名;</span><br><span class="line">在PL<span class="operator">/</span><span class="keyword">SQL</span>直接当成函数执行</span><br></pre></td></tr></table></figure>
-<h2 id="存储函数">存储函数</h2>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">function</span> 函数名(变量名 <span class="keyword">in</span><span class="operator">|</span><span class="keyword">out</span><span class="operator">|</span><span class="keyword">in</span> <span class="keyword">out</span> 数据类型 [:<span class="operator">=</span>默认值])</span><br><span class="line"><span class="keyword">return</span> 数据类型;</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">定义变量;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">执行部分;</span><br><span class="line"><span class="keyword">return</span> 变量;</span><br><span class="line">exception</span><br><span class="line">异常处理部分;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line">PL<span class="operator">/</span><span class="keyword">SQL</span>中使用直接调用</span><br><span class="line">在<span class="keyword">SQL</span>语句中直接使用</span><br></pre></td></tr></table></figure>
-<h2 id="触发器">触发器</h2>
-<p>一种特殊的存储过程系统自动调用执行，不能显式调用，不接受参数</p>
-<table>
-<thead>
-<tr class="header">
-<th>作用对象不同类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>DML触发器</td>
-<td>在基本表上的触发器，响应增删改操作</td>
-</tr>
-<tr class="even">
-<td>INSTEAD OF触发器</td>
-<td>视图上的触发器，响应增删改操作</td>
-</tr>
-<tr class="odd">
-<td>系统触发器</td>
-<td>系统或模式上的触发器，响应系统事件和DDL操作</td>
-</tr>
-</tbody>
-</table>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建DML触发器(语句级、行级for each row使用到:old、:new)</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">trigger</span> 触发器名</span><br><span class="line">before<span class="operator">|</span>after <span class="keyword">insert</span> <span class="keyword">or</span> <span class="keyword">delete</span> <span class="keyword">or</span> <span class="keyword">update</span></span><br><span class="line">[<span class="keyword">of</span> 列名] <span class="keyword">on</span> 表名</span><br><span class="line">[<span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span>]   <span class="comment">-- 行级触发器</span></span><br><span class="line">[<span class="keyword">declare</span> 变量]</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">...;</span><br><span class="line"><span class="comment">-- 条件谓词：inserting、updating、deleting</span></span><br><span class="line"><span class="comment">-- if 判断词 then或者 when 判断词 then</span></span><br><span class="line"><span class="comment">-- 行级DML标识符   :old.列名  :new.列名  在when中使用不加:</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建变异表触发器</span></span><br><span class="line"><span class="comment">-- 更新变异表同时查询变异表：在行级触发器中获取要修改的记录的信息，存放到一个软件包的全局变量中，然后在语句级后触发器中利用软件包中全局变量信息对变异表的查询</span></span><br></pre></td></tr></table></figure>
-<h1 id="备份与恢复">备份与恢复</h1>
-<p>冷热备份，归档模式</p>
-<h2 id="物理备份">物理备份</h2>
-<h2 id="物理恢复">物理恢复</h2>
-<h2 id="rman备份">RMAN备份</h2>
-<h2 id="rman恢复">RMAN恢复</h2>
-<h2 id="逻辑备份">逻辑备份</h2>
-<p>导出：exp exp 用户名/密码@实例名 file=备份文件路径.dmp full=y 存入一个二进制转储文件：*.dmp</p>
-<h2 id="逻辑恢复">逻辑恢复</h2>
-<p>导入：imp</p>
-]]></content>
-      <categories>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>oracle</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>mysql基础篇+进阶篇+运维篇</title>
     <url>/2024/05/10/sql/MYSQL/</url>
     <content><![CDATA[<p><span id="jump1">目录</span></p>
@@ -6512,6 +6052,466 @@ auto_increment=起始值 设置起始值</p>
       </categories>
       <tags>
         <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Oracle数据库(未完成)</title>
+    <url>/2024/06/10/sql/Oracle/</url>
+    <content><![CDATA[<p><span id="jump1">目录</span></p>
+<p>[toc]</p>
+<p>Oracle内容庞大,推荐看《Oracle 11g数据库基础教程》，此文档只包含常用内容</p>
+<h1 id="安装与卸载">安装与卸载</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h2 id="安装">安装</h2>
+<p>setup-&gt;网络配置(监听器)-&gt;SQL PLUS(查看能否登录，用户名system)</p>
+<h2 id="企业管理器oem">企业管理器OEM</h2>
+<p>浏览器https://本机:1158/em 确保Oracle服务、监听服务和控制台服务打开</p>
+<p>默认控制台服务(即OEM控制台服务)端口为1158 查看在\11.2.0_1.int</p>
+<h1 id="文件体系结构">文件体系结构</h1>
+<p><a href="#jump1">回到目录</a></p>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/oracle数据库系统结构.png" alt="oracle数据库系统结构" /><figcaption>oracle数据库系统结构</figcaption>
+</figure>
+<p>admin:以数据库为单位，存放数据库运行过程中产生的跟踪文件 cfgtoologs:运行dbca、emca和netca图像化程序时产生的日志信息 checkpoint:存放数据库检查点信息 diag:以组件为单位，存储数据库各个组件运行的诊断信息 flash_recovery_area:以数据库为单位，数据库自动备份时，存放备份文件和闪回日志文件 oradata:以数据库为单位，存放数据库的物理文件(数据，控制，重做日志) product:存放数据库管理相关的软件，包括可执行文件、网络配置、脚本</p>
+<pre class="mermaid">graph LR
+Oracle数据库--> 存储结构DB
+存储结构DB--> 物理存储结构
+存储结构DB--> 逻辑存储结构
+Oracle数据库--> 数据库管理系统DBMS
+数据库管理系统DBMS--> 实例instance
+实例instance--> 内存结构--> SGA和PGA
+实例instance--> 后台进程</pre>
+<h2 id="物理存储和逻辑存储">物理存储和逻辑存储</h2>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/oracle数据库物理存储结构和逻辑存储结构.png" alt="oracle数据库物理存储结构和逻辑存储结构" /><figcaption>oracle数据库物理存储结构和逻辑存储结构</figcaption>
+</figure>
+<p>表空间：数据文件=1：n 块：OS块=1：n</p>
+<p><strong>物理文件</strong>：参数文件(库名，CTL路径，进程)，跟踪文件(记录运行过程发生的大事)+告警文件（记录后台进程活动） 数据文件：DBF 日志文件：LOG 控制文件：CTL(库名，数据和日志文件路径，建库日期）</p>
+<p>逻辑文件：<strong>表空间</strong>(系统表SYSTEM，辅助系统表SYSAUX，临时表TEMP，撤销表UNDO，USERS)，<strong>段</strong>(数据，索引，临时，回退)，<strong>区</strong>(连续的数据块，存储空间分配的最小单位)，<strong>块</strong>(最小逻辑存储单元)</p>
+<h2 id="内存结构和后台进程">内存结构和后台进程</h2>
+<h3 id="sga和pga">SGA和PGA</h3>
+<p>SGA系统全局区：数据高速缓冲区、共享池（库缓存和数据字典缓存）、重做日志缓冲区、大型池、Java池、流池和其他</p>
+<p>高速缓冲区：脏缓冲块(修改过的数据)+空闲缓冲块(无数据)+命中缓冲块(正在被使用的数据)+干净缓冲块(没被修改的数据)。 库缓存：通过硬解析(未执行的SQL)和软解析(已执行的SQL)来让相同的SQL语句不再编译，提升SQL执行效率。</p>
+<p>PGA程序全局区：排序区、游标信息区、会话信息区、堆栈区(会话变量)</p>
+<h3 id="后台进程">后台进程</h3>
+<table>
+<thead>
+<tr class="header">
+<th>进程名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>数据库写入进程DBWR</td>
+<td>将高速缓冲区的脏缓冲块写入数据文件</td>
+</tr>
+<tr class="even">
+<td>日志写入进程LGWR</td>
+<td>将重做日志缓冲区的记录写入重做日志文件</td>
+</tr>
+<tr class="odd">
+<td>检查点进程CKPT</td>
+<td>类似时间节点，每到检查点就执行上面的操作，并保存节点</td>
+</tr>
+<tr class="even">
+<td>系统监控进程SMON</td>
+<td>系统崩溃时恢复系统（通过联机重做日志文件）;合并空闲表空间碎片</td>
+</tr>
+<tr class="odd">
+<td>进程监控进程PMON</td>
+<td>同上仅针对用户进程</td>
+</tr>
+<tr class="even">
+<td>归档进程ARCH</td>
+<td>重做日志写满时，复制到归档目标</td>
+</tr>
+<tr class="odd">
+<td>恢复进程RECO</td>
+<td>自动解决分布式数据库出现的事务故障</td>
+</tr>
+<tr class="even">
+<td>锁进程LCKn</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>调度进程Dnnn</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>归档模式开启：LOG_ARCHIVE_START=TRUE</p>
+<h1 id="安全管理">安全管理</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h2 id="用户管理">用户管理</h2>
+<h2 id="权限管理">权限管理</h2>
+<h2 id="角色管理">角色管理</h2>
+<h2 id="表空间管理">表空间管理</h2>
+<p><strong>表空间类型、名称、数据文件、表空间管理方式、区分配方式和段管理方式</strong> 表空间管理：字典dictionary管理方式、(默认)本地管理方式local 区分配方式：在表空间本地管理中，区分配有(默认)自动分配autoallocate和定制分配uniform 管管理饭时：(默认)自动管理auto和手动管理manual</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建表空间</span></span><br><span class="line"><span class="keyword">create</span> [temporary<span class="operator">|</span>bigfile<span class="operator">|</span>undo] tablespace 名字</span><br><span class="line">[datafile<span class="operator">|</span>tempfile] <span class="string">&#x27;文件路径\名字.DBF&#x27;</span> size <span class="number">10</span>M</span><br><span class="line">[autoextent <span class="keyword">on</span> next <span class="number">1</span>M maxsize unlimited] <span class="comment">-- 数据文件自动扩展</span></span><br><span class="line">[extent management <span class="keyword">local</span> uniform size <span class="number">10</span>M] <span class="comment">-- 段定制分配</span></span><br><span class="line">[segment space management manual] <span class="comment">-- 区手动管理</span></span><br><span class="line"></span><br><span class="line">大文件表空间 段只能自动管理,临时表空间和撤销表空间 区只能自动分配</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改表空间</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="语法相关">语法相关</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h2 id="求余">求余</h2>
+<table>
+<thead>
+<tr class="header">
+<th>mysql</th>
+<th>sql server</th>
+<th>Oracle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>%、mod</td>
+<td>%</td>
+<td>mod</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ddldmldql没写的默认和其他sql一样">DDL、DML、DQL(没写的默认和其他sql一样)</h2>
+<table>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 45%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>表相关功能</th>
+<th>语法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>建表1</td>
+<td>create table 表名(。。。。)</td>
+<td>同mysql</td>
+</tr>
+<tr class="even">
+<td>建表2</td>
+<td>craete table 表名(列…..) as select …..</td>
+<td>用子查询建表</td>
+</tr>
+<tr class="odd">
+<td>修改表</td>
+<td>alter table 表名<br />[add 新列 类型 约束]<br />[modify 列 类型]<br />[set unused coumn 列]<br />[drop column 列]<br />[rename column 旧列名 to 新列名]<br />[rename to 新表名]</td>
+<td><br />加新列<br />改类型<br />设置不使用列<br />删除列<br />重命名列<br />重命名表</td>
+</tr>
+<tr class="even">
+<td>修改约束</td>
+<td>alter table 表名<br />[add constraint 约束名 主键|唯一|检查|外键]<br />[modify 列 not null]<br />[drop constraint 约束名]<br />[drop unique(列)]</td>
+<td><br />添加主键外键唯一检查约束<br />添加非空约束<br />按约束名删除<br />按列约束删除</td>
+</tr>
+<tr class="odd">
+<td>删除表</td>
+<td>drop table 表名<br />[cascade constraints]<br />[purge]</td>
+<td>在Oracle中删除表会重命名表并放在回收站(用来实现闪回删除flashback drop擦操作，清空回收站purge recyclebin)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 45%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>数据相关功能</th>
+<th>语法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>插入1</td>
+<td>insert into 表(列…) values (列…)</td>
+<td>单条数据</td>
+</tr>
+<tr class="even">
+<td>插入2</td>
+<td>insert into 表 select …</td>
+<td>子查询</td>
+</tr>
+<tr class="odd">
+<td>插入3</td>
+<td>insert all<br />[into 表1 values(列…)]<br />[into 表2 values(列…)]<br />select…</td>
+<td>多条数据</td>
+</tr>
+<tr class="even">
+<td>插入4</td>
+<td>insert all|first<br />when 条件1 then into 表1(列…)<br />when 条件2 then into 表2(列…)<br />else into 表3(列…)<br />select …</td>
+<td>条件多表插入<br />all表示只要满足条件就插入<br />first表示只插入满足条件的第一个表</td>
+</tr>
+<tr class="odd">
+<td>插入5</td>
+<td>insert / * +append */ into 表 select…</td>
+<td>插入大量数据使用装载(不写入日志)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>数据合并</td>
+<td>merge into 目标表 using 源表<br />on(条件)<br />when matched then update set…<br />when not matched then insert values(…)</td>
+<td>将满足on条件的源表数据更新或插入到目标表</td>
+</tr>
+</tbody>
+</table>
+<h2 id="select注意事项">select注意事项</h2>
+<ul>
+<li><p>拼接符号：||</p></li>
+<li><p>交、并、差：intersect、union、minus</p></li>
+<li><p>order by 2 将select结果按第2列排序</p></li>
+<li><p>使用ROWNUM来显示行号，在select结果集里面直接加ROWNUM</p></li>
+<li><p>ROWID是数据的物理地址</p></li>
+</ul>
+<p>rowid=对象编号6+数据文件编号3+块编号6+行编号3</p>
+<h1 id="事务">事务</h1>
+<p>设置事务只读模式(该模式下，开启事务之后只能查询数据) set transaction read only；</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">begin</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">savepoint</span> A;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">rollback</span> <span class="keyword">to</span> [A];<span class="operator">|</span><span class="keyword">commit</span>;<span class="operator">|</span><span class="keyword">rollback</span>;</span><br><span class="line">[exception</span><br><span class="line"> <span class="keyword">when</span> others <span class="keyword">then</span> <span class="keyword">rollback</span> <span class="keyword">to</span> A;]</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
+<p>其他内容同mysql</p>
+<h1 id="序列">序列</h1>
+<p><strong>序列不占用实际存储空间</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建序列</span></span><br><span class="line"><span class="keyword">create</span> sequence 序列名</span><br><span class="line">[<span class="keyword">start</span> <span class="keyword">with</span> n]             <span class="comment">-- 设置初始值，默认1</span></span><br><span class="line">[increment <span class="keyword">by</span> m]           <span class="comment">-- 步长，默认1</span></span><br><span class="line">[maxvalue mm<span class="operator">|</span>nomaxvalue]   <span class="comment">-- 序列最大值mm</span></span><br><span class="line">[minvalue mm<span class="operator">|</span>nominvalue]   <span class="comment">-- 序列最小值mm</span></span><br><span class="line">[<span class="keyword">cycle</span><span class="operator">|</span>nocycle]            <span class="comment">-- 达到最大值或最小值时，循环</span></span><br><span class="line">[cache n<span class="operator">|</span>nocache]   <span class="comment">-- 设置预先分配并保留在内存中的序列个数，默认20</span></span><br><span class="line"><span class="comment">-- 使用序列</span></span><br><span class="line">同rownum伪列，序列有currval和nextval两个伪列</span><br><span class="line">序列名.currval返回当前序列值</span><br><span class="line">序列名.nextval产生新值并返回</span><br><span class="line">使用范围：<span class="keyword">select</span>和<span class="keyword">insert</span>目标列，<span class="keyword">insert</span> <span class="keyword">values</span>子句，<span class="keyword">update</span>的<span class="keyword">set</span>子句</span><br></pre></td></tr></table></figure>
+<h1 id="视图">视图</h1>
+<p>查询简单化、数据安全性、逻辑数据独立性</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace][force<span class="operator">|</span>noforce] <span class="keyword">view</span> 视图名 <span class="comment">-- force不管有无基表强制创建视图</span></span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">select...</span><br><span class="line">[<span class="keyword">with</span> <span class="keyword">check</span> option] <span class="comment">-- 对试图操作时，必须满足子查询中的约束条件</span></span><br><span class="line">[<span class="keyword">with</span> read <span class="keyword">only</span>] <span class="comment">-- 只读</span></span><br></pre></td></tr></table></figure>
+<h1 id="同义词">同义词</h1>
+<p>create synonym 名称 for 表名</p>
+<h1 id="函数">函数</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h2 id="日期函数">日期函数</h2>
+<table>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>add_months(d,n)</td>
+<td>日期d+n个月,n可为负数</td>
+</tr>
+<tr class="even">
+<td>extract(year from d)</td>
+<td>从日期d中截取,year,month,day,hour,minute,second</td>
+</tr>
+<tr class="odd">
+<td>sysdate</td>
+<td>系统时间</td>
+</tr>
+<tr class="even">
+<td>last_day</td>
+<td>当月最后一天日期</td>
+</tr>
+<tr class="odd">
+<td>months_between(d1,d2)</td>
+<td>相差月数</td>
+</tr>
+</tbody>
+</table>
+<h2 id="其他函数">其他函数</h2>
+<table>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>nvl(a,b)</td>
+<td>a为空，返回b,否则返回a</td>
+</tr>
+<tr class="even">
+<td>nvl2(a,b,c)</td>
+<td>a为空,返回c，否则返回b</td>
+</tr>
+<tr class="odd">
+<td>nullif(a,b)</td>
+<td>a=b,返回null，否则返回a</td>
+</tr>
+<tr class="even">
+<td>decode(expr,a,b,a1,b1,…..default)</td>
+<td>表达式expr，为a时返回b，为a1时返回b1,….<br />否则默认</td>
+</tr>
+</tbody>
+</table>
+<h1 id="plsql">PL/SQL</h1>
+<table>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 68%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>orcle功能函数</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>设置打印(默认开启)</td>
+<td>set serveroutput on</td>
+</tr>
+<tr class="even">
+<td>输出内容并换行</td>
+<td>DBMS_OUTPUT.PUT_LINE()</td>
+</tr>
+<tr class="odd">
+<td>放进缓冲区，不换行输出</td>
+<td>dbms_output.put(‘Hello, Lao An’);<br />dbms_output.put(‘Hello, Lao An’);</td>
+</tr>
+<tr class="even">
+<td>输出换行</td>
+<td>dbms_output.new_line();</td>
+</tr>
+<tr class="odd">
+<td>输入(注意&amp;后可以接任意内容)</td>
+<td>i:=&amp;i</td>
+</tr>
+<tr class="even">
+<td>产生从n到m的随机数</td>
+<td>dbms_random_value(n,m)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="数据类型">数据类型</h2>
+<table>
+<thead>
+<tr class="header">
+<th>类型</th>
+<th>种类</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>数字</td>
+<td>number(p,s)</td>
+<td>p有效位，s小数位</td>
+</tr>
+<tr class="even">
+<td>字符</td>
+<td>char()<br />varchar2()</td>
+<td>定长char；变长varchar2</td>
+</tr>
+<tr class="odd">
+<td>日期</td>
+<td>date<br />timestamp</td>
+<td>日期date；时间点timestamp</td>
+</tr>
+<tr class="even">
+<td>布尔</td>
+<td>boolean</td>
+<td>true，false，null</td>
+</tr>
+<tr class="odd">
+<td>LOB</td>
+<td>blob,clob,nclob,bfile</td>
+<td>二进制blob；文本clob,nclob;操作系统文件指针bfile</td>
+</tr>
+<tr class="even">
+<td>记录</td>
+<td>type 名称 is record(<br />…..)</td>
+<td>类似结构体</td>
+</tr>
+</tbody>
+</table>
+<p>%TYPE和%ROWTYPE 已知存在表emp中的sal列，但不知道数据类型，想要定义一个相同的数据类型 a emp.sal%TYPE b emp%ROWTYPE 定义一个与emp表结构一致的记录类型</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">declare</span></span><br><span class="line">声明各种变量</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">select</span> ...into..;</span><br><span class="line"><span class="keyword">insert</span>,<span class="keyword">update</span>,delete...;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="关键词">关键词</h2>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 选择结构</span></span><br><span class="line"><span class="comment">-- if</span></span><br><span class="line">if 条件 <span class="keyword">then</span> 情况<span class="number">1</span>;</span><br><span class="line">elsif 条件<span class="number">2</span> <span class="keyword">then</span> 情况<span class="number">2</span>;</span><br><span class="line"><span class="keyword">else</span> 情况<span class="number">3</span>;</span><br><span class="line"><span class="keyword">end</span> if;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- case</span></span><br><span class="line"><span class="keyword">case</span></span><br><span class="line"><span class="keyword">when</span> ... <span class="keyword">then</span> ...;</span><br><span class="line"><span class="keyword">when</span> ... <span class="keyword">then</span> ...;</span><br><span class="line"><span class="keyword">else</span> ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">case</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 循环while for loop</span></span><br><span class="line"><span class="comment">-- 循环以end loop结束</span></span><br><span class="line">loop</span><br><span class="line">...;</span><br><span class="line">exit <span class="keyword">when</span> 条件;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line">while 条件 loop</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i [reverse] <span class="keyword">in</span> n..m loop   <span class="comment">-- 变量i从n到m循环,反转后从m到n</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 跳转结构GOTO</span></span><br><span class="line">...;</span><br><span class="line"><span class="operator">&lt;&lt;</span>a<span class="operator">&gt;&gt;</span>    <span class="comment">-- 定义跳转点</span></span><br><span class="line">...;</span><br><span class="line">goto a;  <span class="comment">-- goto跳转到跳转点</span></span><br><span class="line">...;</span><br></pre></td></tr></table></figure>
+<h2 id="游标">游标</h2>
+<p>在PL/SQL块中执行select和DML，分配缓冲区，名为上下文区，游标是<strong>指向该缓冲的指针</strong></p>
+<p>显式游标：用户定义、操作，处理返回多行数据的select查询 隐式游标：由系统自动操作，处理DML和返回单行数据的select查询</p>
+<h3 id="显示游标">显示游标</h3>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义(可带参数)</span></span><br><span class="line"><span class="keyword">CURSOR</span> 游标名 <span class="keyword">IS</span> <span class="keyword">select</span>语句</span><br><span class="line"><span class="keyword">CURSOR</span> 游标名(变量) <span class="keyword">IS</span> <span class="keyword">select</span>语句</span><br><span class="line"><span class="comment">-- 打开(open之后游标指向第一行)</span></span><br><span class="line"><span class="keyword">open</span> 游标名</span><br><span class="line"><span class="keyword">open</span> 游标名(<span class="operator">&amp;</span>变量)</span><br><span class="line"><span class="comment">-- 检索(每执行一次fetch指针后移)</span></span><br><span class="line"><span class="keyword">fetch</span> 游标名 <span class="keyword">into</span> 一个能存一行数据的变量</span><br><span class="line"><span class="comment">-- 关闭</span></span><br><span class="line"><span class="keyword">close</span> 游标名</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 通过loop，while，for来循环检索的区别</span></span><br><span class="line">loop</span><br><span class="line">	fetch...into..;</span><br><span class="line">	exit <span class="keyword">when</span> 游标<span class="operator">%</span>notfound;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line">fetch...into..;</span><br><span class="line">while 游标<span class="operator">%</span>notfound loop</span><br><span class="line">	fetch...into..;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> 记录行变量 <span class="keyword">in</span> 游标名 loop</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr class="header">
+<th>游标属性</th>
+<th>语法</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>%isopen</td>
+<td>是否开启</td>
+</tr>
+<tr class="even">
+<td>%found 或者 %notfound</td>
+<td>上次使用fetch时是否检测到数据,可以作为游标循环检索的判断条件</td>
+</tr>
+<tr class="odd">
+<td>%rowcount</td>
+<td>返回检索个数</td>
+</tr>
+<tr class="even">
+<td>%bulk_rowcount(i)</td>
+<td>取得forall语句执行批绑定时第i个元素影响的行数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="隐式游标">隐式游标</h3>
+<p><strong>指向SQL语句执行的缓冲区的指针</strong>，又称SQL游标(静态游标)</p>
+<p>隐式游标属性同显式游标,相当于一个游标名称为SQL的游标 SQL游标主要用来处理insert、update、delete、单行的select…into</p>
+<h4 id="游标变量">游标变量</h4>
+<p>定义游标引用类型：TYPE 游标引用类型名a IS REF CURSOR [RETURN 返回类型] 引用上面定义：游标变量名 a 在Oracle有一个预定义的游标引用类型sys_refcursor</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义游标变量</span></span><br><span class="line">游标名 sys_refcursor;</span><br><span class="line"><span class="comment">-- 打开游标变量</span></span><br><span class="line"><span class="keyword">open</span> 游标变量名 <span class="keyword">for</span> select...</span><br><span class="line"><span class="comment">-- 检索游标变量</span></span><br><span class="line">loop</span><br><span class="line"><span class="keyword">fetch</span> 游标变量 <span class="keyword">into</span> 变量;</span><br><span class="line">...;</span><br><span class="line">exit <span class="keyword">when</span> ...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"><span class="comment">-- 关闭</span></span><br><span class="line"><span class="keyword">close</span> 游标变量名;</span><br></pre></td></tr></table></figure>
+<h2 id="异常">异常</h2>
+<p>预定义异常，非预定义异常，用户定义异常</p>
+<h2 id="存储过程">存储过程</h2>
+<p>声明形参时<strong>不能定义长度或精度</strong>，有默认值的参数放在参数列表最后。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">procedure</span> 存储过程名(变量名 <span class="keyword">in</span><span class="operator">|</span><span class="keyword">out</span><span class="operator">|</span><span class="keyword">in</span> <span class="keyword">out</span> 数据类型 [:<span class="operator">=</span>默认值])</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">定义变量;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">执行部分;</span><br><span class="line">exception</span><br><span class="line">when...then...异常处理部分;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line"><span class="keyword">execute</span><span class="operator">|</span><span class="keyword">call</span> 存储过程名;</span><br><span class="line">在PL<span class="operator">/</span><span class="keyword">SQL</span>直接当成函数执行</span><br></pre></td></tr></table></figure>
+<h2 id="存储函数">存储函数</h2>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">function</span> 函数名(变量名 <span class="keyword">in</span><span class="operator">|</span><span class="keyword">out</span><span class="operator">|</span><span class="keyword">in</span> <span class="keyword">out</span> 数据类型 [:<span class="operator">=</span>默认值])</span><br><span class="line"><span class="keyword">return</span> 数据类型;</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">定义变量;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">执行部分;</span><br><span class="line"><span class="keyword">return</span> 变量;</span><br><span class="line">exception</span><br><span class="line">异常处理部分;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line">PL<span class="operator">/</span><span class="keyword">SQL</span>中使用直接调用</span><br><span class="line">在<span class="keyword">SQL</span>语句中直接使用</span><br></pre></td></tr></table></figure>
+<h2 id="触发器">触发器</h2>
+<p>一种特殊的存储过程系统自动调用执行，不能显式调用，不接受参数</p>
+<table>
+<thead>
+<tr class="header">
+<th>作用对象不同类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>DML触发器</td>
+<td>在基本表上的触发器，响应增删改操作</td>
+</tr>
+<tr class="even">
+<td>INSTEAD OF触发器</td>
+<td>视图上的触发器，响应增删改操作</td>
+</tr>
+<tr class="odd">
+<td>系统触发器</td>
+<td>系统或模式上的触发器，响应系统事件和DDL操作</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建DML触发器(语句级、行级for each row使用到:old、:new)</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">trigger</span> 触发器名</span><br><span class="line">before<span class="operator">|</span>after <span class="keyword">insert</span> <span class="keyword">or</span> <span class="keyword">delete</span> <span class="keyword">or</span> <span class="keyword">update</span></span><br><span class="line">[<span class="keyword">of</span> 列名] <span class="keyword">on</span> 表名</span><br><span class="line">[<span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span>]   <span class="comment">-- 行级触发器</span></span><br><span class="line">[<span class="keyword">declare</span> 变量]</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">...;</span><br><span class="line"><span class="comment">-- 条件谓词：inserting、updating、deleting</span></span><br><span class="line"><span class="comment">-- if 判断词 then或者 when 判断词 then</span></span><br><span class="line"><span class="comment">-- 行级DML标识符   :old.列名  :new.列名  在when中使用不加:</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建变异表触发器</span></span><br><span class="line"><span class="comment">-- 更新变异表同时查询变异表：在行级触发器中获取要修改的记录的信息，存放到一个软件包的全局变量中，然后在语句级后触发器中利用软件包中全局变量信息对变异表的查询</span></span><br></pre></td></tr></table></figure>
+<h1 id="备份与恢复">备份与恢复</h1>
+<p>冷热备份，归档模式</p>
+<h2 id="物理备份">物理备份</h2>
+<h2 id="物理恢复">物理恢复</h2>
+<h2 id="rman备份">RMAN备份</h2>
+<h2 id="rman恢复">RMAN恢复</h2>
+<h2 id="逻辑备份">逻辑备份</h2>
+<p>导出：exp exp 用户名/密码@实例名 file=备份文件路径.dmp full=y 存入一个二进制转储文件：*.dmp</p>
+<h2 id="逻辑恢复">逻辑恢复</h2>
+<p>导入：imp</p>
+]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>oracle</tag>
       </tags>
   </entry>
   <entry>
