@@ -274,47 +274,47 @@
       
         <p><span id="jump1">目录</span></p>
 <p>[toc]</p>
-<h1 id="简介"><a class="markdownIt-Anchor" href="#简介"></a> 简介</h1>
+<h1>简介</h1>
 <p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/sql/t-sql/language-reference?view=sql-server-2016">官方参考文档</a></p>
-<p>MySQL：3306<br />
-SQL Server：1433<br />
-Oracle：1521<br />
-Redis：6379<br />
-PostgreSQL：5432<br />
-MongoDB：27017<br />
+<p>MySQL：3306<br>
+SQL Server：1433<br>
+Oracle：1521<br>
+Redis：6379<br>
+PostgreSQL：5432<br>
+MongoDB：27017<br>
 SQL server 2008版本是10.25 、SQL server 2008R2版本是10.50</p>
-<h2 id="系统数据库"><a class="markdownIt-Anchor" href="#系统数据库"></a> 系统数据库</h2>
-<p>（1）master：SQL SERVER实例的所有<strong>系统级消息</strong>，包括实例范围的元数据（如登录帐号）、端点、链接服务器和系统配置设置。<br />
-（2）msdb：供SQL SERVER <strong>代理服务</strong>调度报警和作业以及记录操作员的使用，保存关于调度报警、作业、操作员等信息。（备份还原时）<br />
-（3）model：SQL SERVER 实例上创建的所有<strong>数据库的模板</strong>。<br />
-（4）tempdb：临时数据库，用于保存临时对象或中间结果集，为数据库的排列等操作提供一个临时工作空间。（每次启动都会重新创建）<br />
-（5）Resource：一个只读数据库，包含了SQL SERVER 的所有系统对象。（隐藏的数据库）<br />
-数据库对象的全名应该由<strong>服务器名、数据库名、拥有者名和对象名</strong>这四个部分组成，格式如下：<br />
+<h2 id="系统数据库">系统数据库</h2>
+<p>（1）master：SQL SERVER实例的所有<strong>系统级消息</strong>，包括实例范围的元数据（如登录帐号）、端点、链接服务器和系统配置设置。<br>
+（2）msdb：供SQL SERVER <strong>代理服务</strong>调度报警和作业以及记录操作员的使用，保存关于调度报警、作业、操作员等信息。（备份还原时）<br>
+（3）model：SQL SERVER 实例上创建的所有<strong>数据库的模板</strong>。<br>
+（4）tempdb：临时数据库，用于保存临时对象或中间结果集，为数据库的排列等操作提供一个临时工作空间。（每次启动都会重新创建）<br>
+（5）Resource：一个只读数据库，包含了SQL SERVER 的所有系统对象。（隐藏的数据库）<br>
+数据库对象的全名应该由<strong>服务器名、数据库名、拥有者名和对象名</strong>这四个部分组成，格式如下：<br>
 [server].[database].[owner_name].[object_name]</p>
-<h2 id="数据库的组成"><a class="markdownIt-Anchor" href="#数据库的组成"></a> 数据库的组成</h2>
-<p>（1）主要数据文件：扩展名为 .mdf ，每个数据库有且只能有一个。<br />
-（2）次要数据文件：扩展名为 .ndf ， 可以没有或有多个。<br />
+<h2 id="数据库的组成">数据库的组成</h2>
+<p>（1）主要数据文件：扩展名为 .mdf ，每个数据库有且只能有一个。<br>
+（2）次要数据文件：扩展名为 .ndf ， 可以没有或有多个。<br>
 （3）日志文件 扩展名为 .ldf ，用于存放恢复数据库的所有日志信息。</p>
-<h2 id="数据的存储分配"><a class="markdownIt-Anchor" href="#数据的存储分配"></a> 数据的存储分配</h2>
-<p>（1）数据的存储分配单位是数据页。一页表是一块8KB的连续磁盘空间。<br />
+<h2 id="数据的存储分配">数据的存储分配</h2>
+<p>（1）数据的存储分配单位是数据页。一页表是一块8KB的连续磁盘空间。<br>
 （2）页是存储数据的最小空间分配单位，页的大小决定了数据库表中一行数据的最大大小。</p>
-<h1 id="创建数据库和用户"><a class="markdownIt-Anchor" href="#创建数据库和用户"></a> 创建数据库和用户</h1>
+<h1>创建数据库和用户</h1>
 <p><a href="#jump1">回到目录</a></p>
 <p>数据库文件包括：数据文件(mdf)和日志文件(ldf)</p>
 <figure class="highlight sql"><figcaption><span>server</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">use master</span><br><span class="line">go</span><br><span class="line"></span><br><span class="line">if <span class="keyword">exists</span>(<span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> sysdatabases <span class="keyword">where</span> name<span class="operator">=</span><span class="string">&#x27;sql_wei&#x27;</span>)    <span class="comment">-- 判断数据库是否存在</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">drop</span> database sql_wei</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	<span class="keyword">create</span> database sql_wei</span><br><span class="line">	<span class="keyword">on</span> <span class="keyword">primary</span>(</span><br><span class="line">	name<span class="operator">=</span><span class="string">&#x27;sql_wei&#x27;</span>,   <span class="comment">-- 文件的逻辑名称</span></span><br><span class="line">	filename<span class="operator">=</span><span class="string">&#x27;D:\Program Files\Microsoft SQL Server\MSSQL10_50.MSSQLSERVER\data\sql_wei.mdf&#x27;</span>, <span class="comment">--文件的路径</span></span><br><span class="line">	size<span class="operator">=</span><span class="number">5</span>mb, <span class="comment">-- 初始化大小，最小3mb</span></span><br><span class="line">	maxsize<span class="operator">=</span><span class="number">100</span>mb, <span class="comment">-- 最大的大小</span></span><br><span class="line">	filegrowth<span class="operator">=</span><span class="number">5</span><span class="operator">%</span>  <span class="comment">-- 自增率</span></span><br><span class="line">	)</span><br><span class="line">	log <span class="keyword">on</span>(</span><br><span class="line">	name<span class="operator">=</span><span class="string">&#x27;sql_wei_log&#x27;</span>,</span><br><span class="line">	filename<span class="operator">=</span><span class="string">&#x27;D:\Program Files\Microsoft SQL Server\MSSQL10_50.MSSQLSERVER\data\sql_wei_log.ldf&#x27;</span>,</span><br><span class="line">	size<span class="operator">=</span><span class="number">5</span>mb,</span><br><span class="line">	maxsize<span class="operator">=</span><span class="number">100</span>mb,</span><br><span class="line">	filegrowth<span class="operator">=</span><span class="number">5</span><span class="operator">%</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">go</span><br></pre></td></tr></table></figure>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 1.创建登录⽤户(在master库下⾯执⾏)</span></span><br><span class="line">USE master</span><br><span class="line">GO</span><br><span class="line"><span class="keyword">CREATE</span> LOGIN readonlylogin <span class="keyword">WITH</span> password<span class="operator">=</span><span class="string">&#x27;abc123...&#x27;</span>;</span><br><span class="line"><span class="comment">-- 2.创建数据库只读⽤户(在某个⽤户数据库下⾯执⾏)</span></span><br><span class="line">USE TestDB</span><br><span class="line">GO</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> readonlyuser <span class="keyword">FROM</span> LOGIN readonlylogin;</span><br><span class="line"><span class="comment">-- 3.将⽤户加⼊数据库角色,例如所有者角色db_owner、只读⾓⾊db_datareader等(在某个⽤户数据库下⾯执⾏)</span></span><br><span class="line">USE TestDB</span><br><span class="line">GO</span><br><span class="line"><span class="keyword">EXEC</span> sp_addrolemember <span class="string">&#x27;db_datareader&#x27;</span>, <span class="string">&#x27;readonlyuser&#x27;</span>;</span><br><span class="line"><span class="comment">--EXEC sp_addrolemember &#x27;db_owner&#x27;, &#x27;readonlyuser&#x27;;----可以将⽤户关联到多个数据库⾓⾊中</span></span><br><span class="line"><span class="comment">--EXEC sp_droprolemember &#x27;db_owner&#x27;, &#x27;readonlyuser&#x27;----从特定的数据⾓⾊中删除⽤户</span></span><br><span class="line"><span class="comment">-- 4.⽤我们刚刚创建的readonlylogin⽤户进⾏登录，登录时要注意将“选项（英⽂是Options）--&gt;连接属性（Connection Properties）--&gt;连接数据库(Connect to database)”改为我们的⽬标数据库例如TestDB下⾯</span></span><br></pre></td></tr></table></figure>
-<h1 id="tsql语言相关区别"><a class="markdownIt-Anchor" href="#tsql语言相关区别"></a> tsql语言相关(区别)</h1>
+<h1>tsql语言相关(区别)</h1>
 <p><a href="#jump1">回到目录</a></p>
-<h2 id="分页查询top"><a class="markdownIt-Anchor" href="#分页查询top"></a> 分页查询top</h2>
+<h2 id="分页查询top">分页查询top</h2>
 <figure class="highlight sql"><figcaption><span>sever</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- percent将表达式结果转为float(按百分比返回),默认为bigint(行号)</span></span><br><span class="line"><span class="comment">-- with this返回多行相同排名的数据（比如返回两个100分的人）</span></span><br><span class="line"><span class="comment">-- 如果有DISTINCT，则在DISTINCT后面</span></span><br><span class="line"><span class="keyword">select</span> top (expression)  [<span class="keyword">percent</span>]  [<span class="keyword">with</span> this]</span><br><span class="line"><span class="keyword">from</span> table_name</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> column_name; </span><br><span class="line"></span><br><span class="line">top <span class="number">3</span>           top(<span class="number">2.5</span>) <span class="keyword">percent</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 利用子查询、窗口函数实现分页查询</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="operator">*</span>,<span class="built_in">row_number</span>() <span class="keyword">over</span>(<span class="keyword">order</span> <span class="keyword">by</span> 字段) hh) s</span><br><span class="line"><span class="keyword">where</span> s.hh <span class="keyword">between</span> beginindex <span class="keyword">and</span> endindex</span><br><span class="line"><span class="comment">-- 或者利用top</span></span><br><span class="line"><span class="keyword">select</span> top (@条数) <span class="operator">*</span> <span class="keyword">from</span> 表名 <span class="keyword">where</span> id <span class="keyword">not</span> <span class="keyword">in</span> (selecct top (@页数<span class="number">-1</span>)<span class="operator">*</span>@条数) id <span class="keyword">from</span> 表名)</span><br></pre></td></tr></table></figure>
-<h2 id="向自增列identity插入数据"><a class="markdownIt-Anchor" href="#向自增列identity插入数据"></a> 向自增列identity插入数据</h2>
-<p>MySQL一张表只能有一个自增列。auto_increment<br />
-插入数据必须<strong>使用null</strong>来表示插入的是自增列。<br />
+<h2 id="向自增列identity插入数据">向自增列identity插入数据</h2>
+<p>MySQL一张表只能有一个自增列。auto_increment<br>
+插入数据必须<strong>使用null</strong>来表示插入的是自增列。<br>
 SQL Server插入数据可以且必须<strong>无视该列</strong>。</p>
-<h2 id="交并差"><a class="markdownIt-Anchor" href="#交并差"></a> 交并差</h2>
-<p>mysql中只有union并集<br />
+<h2 id="交并差">交并差</h2>
+<p>mysql中只有union并集<br>
 sqlserver中有交intersect、并union、差except</p>
-<h2 id="ddl-dml-dql"><a class="markdownIt-Anchor" href="#ddl-dml-dql"></a> DDL、DML、DQL</h2>
+<h2 id="DDL、DML、DQL">DDL、DML、DQL</h2>
 <table>
 <thead>
 <tr>
@@ -376,43 +376,43 @@ sqlserver中有交intersect、并union、差except</p>
 </tr>
 </tbody>
 </table>
-<h1 id="数据类型"><a class="markdownIt-Anchor" href="#数据类型"></a> 数据类型</h1>
+<h1>数据类型</h1>
 <p><a href="#jump1">回到目录</a></p>
-<h2 id="整数"><a class="markdownIt-Anchor" href="#整数"></a> 整数</h2>
-<p>bit:bit数据类型代表0,1或NULL,就是表示true,false.占用1byte.<br />
-int:以4个字节来存储正负数.可存储范围为:-2<sup>31至2</sup>31-1.<br />
-smallint:以2个字节来存储正负数.存储范围为:-2<sup>15至2</sup>15-1<br />
+<h2 id="整数">整数</h2>
+<p>bit:bit数据类型代表0,1或NULL,就是表示true,false.占用1byte.<br>
+int:以4个字节来存储正负数.可存储范围为:-2^31至2^31-1.<br>
+smallint:以2个字节来存储正负数.存储范围为:-2^15至2^15-1<br>
 tinyint: 是最小的整数类型,仅用1字节,范围:0至此2^8-1</p>
-<h2 id="精确数值"><a class="markdownIt-Anchor" href="#精确数值"></a> 精确数值</h2>
-<p>numeric:表示的数字可以达到38位,存储数据时所用的字节数目会随着使用权用位数的多少变化.<br />
+<h2 id="精确数值">精确数值</h2>
+<p>numeric:表示的数字可以达到38位,存储数据时所用的字节数目会随着使用权用位数的多少变化.<br>
 decimal:和numeric差不多</p>
-<h2 id="浮点数"><a class="markdownIt-Anchor" href="#浮点数"></a> 浮点数</h2>
-<p>float:用8个字节来存储数据.最多可为53位.范围为:-1.79E+308至1.79E+308.<br />
+<h2 id="浮点数">浮点数</h2>
+<p>float:用8个字节来存储数据.最多可为53位.范围为:-1.79E+308至1.79E+308.<br>
 real:位数为24,用4个字节,数字范围:-3.04E+38至3.04E+38</p>
-<h2 id="日期时间"><a class="markdownIt-Anchor" href="#日期时间"></a> 日期时间</h2>
-<p>datatime:表示时间范围可以表示从1753/1/1至9999/12/31,时间可以表示到3.33/1000秒.使用8个字节.<br />
+<h2 id="日期时间">日期时间</h2>
+<p>datatime:表示时间范围可以表示从1753/1/1至9999/12/31,时间可以表示到3.33/1000秒.使用8个字节.<br>
 smalldatetime:表示时间范围可以表示从1900/1/1至2079/12/31.使用4个字节.</p>
-<h2 id="字符串"><a class="markdownIt-Anchor" href="#字符串"></a> 字符串</h2>
-<p>char:长度是设定的,最短为1字节,最长为8000个字节.不足的长度会用空白补上.<br />
-varchar:长度也是设定的,最短为1字节,最长为8000个字节,尾部的空白会去掉.<br />
+<h2 id="字符串">字符串</h2>
+<p>char:长度是设定的,最短为1字节,最长为8000个字节.不足的长度会用空白补上.<br>
+varchar:长度也是设定的,最短为1字节,最长为8000个字节,尾部的空白会去掉.<br>
 text:长宽也是设定的,最长可以存放2G的数据.</p>
-<h2 id="unincode字符串"><a class="markdownIt-Anchor" href="#unincode字符串"></a> Unincode字符串</h2>
-<p>nchar:长度是设定的,最短为1字节,最长为4000个字节.不足的长度会用空白补上.储存一个字符需要2个字节.<br />
-nvarchar:长度是设定的,最短为1字节,最长为4000个字节.尾部的空白会去掉.储存一个字符需要2个字节.<br />
+<h2 id="Unincode字符串">Unincode字符串</h2>
+<p>nchar:长度是设定的,最短为1字节,最长为4000个字节.不足的长度会用空白补上.储存一个字符需要2个字节.<br>
+nvarchar:长度是设定的,最短为1字节,最长为4000个字节.尾部的空白会去掉.储存一个字符需要2个字节.<br>
 ntext:长度是设定的,最短为1字节,最长为2G.尾部的空白会去掉,储存一个字符需要2个字节.</p>
-<h2 id="货币数据"><a class="markdownIt-Anchor" href="#货币数据"></a> 货币数据</h2>
-<p>money:记录金额范围为:-92233720368577.5808至92233720368577.5807.需要8 个字节.<br />
+<h2 id="货币数据">货币数据</h2>
+<p>money:记录金额范围为:-92233720368577.5808至92233720368577.5807.需要8 个字节.<br>
 smallmoney:记录金额范围为:-214748.3648至214748.36487.需要4个字节.</p>
-<h2 id="标记"><a class="markdownIt-Anchor" href="#标记"></a> 标记</h2>
-<p>timestamp:该数据类型在每一个表中是唯一的!当表中的一个记录更改时,该记录的timestamp字段会自动更新.<br />
+<h2 id="标记">标记</h2>
+<p>timestamp:该数据类型在每一个表中是唯一的!当表中的一个记录更改时,该记录的timestamp字段会自动更新.<br>
 uniqueidentifier:用于识别数据库里面许多个表的唯一一个记录.</p>
-<h2 id="二进制码字符串"><a class="markdownIt-Anchor" href="#二进制码字符串"></a> 二进制码字符串</h2>
+<h2 id="二进制码字符串">二进制码字符串</h2>
 <p>binary:固定长度的二进制码字符串字段,最短为1,最长为8000.</p>
 <p>image:为可变长度的二进制码字符串,最长2G.</p>
 <p>varbinary:与binary差异为数据尾部是00时,varbinary会将其去掉</p>
-<h1 id="运算符计算区别"><a class="markdownIt-Anchor" href="#运算符计算区别"></a> 运算符计算区别</h1>
+<h1>运算符计算区别</h1>
 <p><a href="#jump1">回到目录</a></p>
-<p>()&gt;算数&gt;比较&gt;逻辑&gt;拼接&gt;赋值<br />
+<p>()&gt;算数&gt;比较&gt;逻辑&gt;拼接&gt;赋值<br>
 not&gt;and&gt;or</p>
 <table>
 <thead>
@@ -458,10 +458,10 @@ not&gt;and&gt;or</p>
 </table>
 <p>向上取整ceiling()           向下取整floor()</p>
 <p>Oracle不能将字符和数字相加,</p>
-<h1 id="常用函数"><a class="markdownIt-Anchor" href="#常用函数"></a> 常用函数</h1>
+<h1>常用函数</h1>
 <p><a href="#jump1">回到目录</a></p>
 <p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/sql/t-sql/functions/functions?view=sql-server-2016">sql server2016官方教程</a></p>
-<h2 id="时间函数"><a class="markdownIt-Anchor" href="#时间函数"></a> 时间函数</h2>
+<h2 id="时间函数">时间函数</h2>
 <table>
 <thead>
 <tr>
@@ -620,7 +620,7 @@ not&gt;and&gt;or</p>
 </tr>
 </tbody>
 </table>
-<h2 id="排序函数"><a class="markdownIt-Anchor" href="#排序函数"></a> 排序函数</h2>
+<h2 id="排序函数">排序函数</h2>
 <table>
 <thead>
 <tr>
@@ -647,7 +647,7 @@ not&gt;and&gt;or</p>
 </tr>
 </tbody>
 </table>
-<h2 id="字符串函数"><a class="markdownIt-Anchor" href="#字符串函数"></a> 字符串函数</h2>
+<h2 id="字符串函数">字符串函数</h2>
 <table>
 <thead>
 <tr>
@@ -719,7 +719,7 @@ not&gt;and&gt;or</p>
 </tr>
 </tbody>
 </table>
-<h2 id="转换函数"><a class="markdownIt-Anchor" href="#转换函数"></a> 转换函数</h2>
+<h2 id="转换函数">转换函数</h2>
 <table>
 <thead>
 <tr>
@@ -738,7 +738,7 @@ not&gt;and&gt;or</p>
 </tr>
 </tbody>
 </table>
-<h2 id="分析函数和over配合"><a class="markdownIt-Anchor" href="#分析函数和over配合"></a> 分析函数(和over配合)</h2>
+<h2 id="分析函数-和over配合">分析函数(和over配合)</h2>
 <table>
 <thead>
 <tr>
@@ -765,9 +765,9 @@ not&gt;and&gt;or</p>
 </tr>
 </tbody>
 </table>
-<h1 id="事务"><a class="markdownIt-Anchor" href="#事务"></a> 事务</h1>
+<h1>事务</h1>
 <p><a href="#jump1">回到目录</a></p>
-<p>默认为自动提交和显示模式<br />
+<p>默认为自动提交和显示模式<br>
 开启隐式事务：set implicit_transactions on</p>
 <table>
 <thead>
@@ -821,9 +821,9 @@ not&gt;and&gt;or</p>
 </tr>
 </tbody>
 </table>
-<h2 id="报错的处理"><a class="markdownIt-Anchor" href="#报错的处理"></a> 报错的处理</h2>
+<h2 id="报错的处理">报错的处理</h2>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">-- 1、使用try...catch</span><br><span class="line">BEGIN TRY</span><br><span class="line">    BEGIN TRANSACTION</span><br><span class="line">    -- 执行一系列操作</span><br><span class="line">    COMMIT TRANSACTION</span><br><span class="line">END TRY</span><br><span class="line">BEGIN CATCH</span><br><span class="line">    ROLLBACK TRANSACTION</span><br><span class="line">    -- 处理错误的逻辑</span><br><span class="line">END CATCH</span><br><span class="line"></span><br><span class="line">-- 2、使用SET XACT_ABORT语句来自动回滚事务</span><br><span class="line">-- 开启后，事务内报错将会回滚全部操作(默认off，推荐开启)</span><br><span class="line">SET XACT_ABORT ON</span><br><span class="line"></span><br><span class="line">BEGIN TRANSACTION</span><br><span class="line">-- 执行一系列操作</span><br><span class="line">IF @@ERROR &lt;&gt; 0</span><br><span class="line">	BEGIN</span><br><span class="line">    	ROLLBACK TRANSACTION</span><br><span class="line">   	 -- 处理错误的逻辑</span><br><span class="line">	END</span><br><span class="line">ELSE</span><br><span class="line">	BEGIN</span><br><span class="line">    	COMMIT TRANSACTION</span><br><span class="line">	END</span><br><span class="line"></span><br><span class="line">-- 3.通过raiseerror来抛出错误</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="存储过程"><a class="markdownIt-Anchor" href="#存储过程"></a> 存储过程</h1>
+<h1>存储过程</h1>
 <p><a href="#jump1">回到目录</a></p>
 <p>一组经过预先编译的sql，来完成特定的事情。当存储过程执行一次后，可以将语句<strong>缓存在内存</strong>中，这样下次执行的时候直接使用缓存中的语句。这样就可以提高存储过程的性能。with recompile取消缓存</p>
 <p>优点：</p>
@@ -832,23 +832,23 @@ not&gt;and&gt;or</p>
 <li>减少网络传输量(在开发架构中只需要向sql发送存储过程即可获取持久化数据)</li>
 <li>提高安全性(不会暴露sql)</li>
 </ul>
-<h2 id="常见存储过程"><a class="markdownIt-Anchor" href="#常见存储过程"></a> 常见存储过程</h2>
+<h2 id="常见存储过程">常见存储过程</h2>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">exec</span> sp_databases; <span class="comment">-- 查看数据库</span></span><br><span class="line"><span class="keyword">exec</span> sp_tables; <span class="comment">-- 查看表 </span></span><br><span class="line"><span class="keyword">exec</span> sp_columns student;<span class="comment">-- 查看列 </span></span><br><span class="line"><span class="keyword">exec</span> sp_helpIndex student;<span class="comment">-- 查看索引 </span></span><br><span class="line"><span class="keyword">exec</span> sp_helpConstraint student;<span class="comment">-- 约束 </span></span><br><span class="line"><span class="keyword">exec</span> sp_stored_procedures; </span><br><span class="line"><span class="comment">-- 查看存储过程的sql语句内容</span></span><br><span class="line"><span class="keyword">exec</span> sp_helptext <span class="string">&#x27;sp_stored_procedures&#x27;</span>;</span><br><span class="line"><span class="comment">-- 重命名表，列，库</span></span><br><span class="line"><span class="keyword">exec</span> sp_rename studentinfo,student</span><br><span class="line"><span class="keyword">exec</span> sp_rename <span class="string">&#x27;student.列&#x27;</span>,<span class="string">&#x27;新列名&#x27;</span>,<span class="string">&#x27;column&#x27;</span></span><br><span class="line"><span class="keyword">exec</span> sp_renamedb myTempDB, myDB;<span class="comment">-- 更改数据库名称 </span></span><br><span class="line"><span class="keyword">exec</span> sp_defaultdb <span class="string">&#x27;master&#x27;</span>, <span class="string">&#x27;myDB&#x27;</span>;<span class="comment">-- 更改登录名的默认数据库 </span></span><br><span class="line"><span class="keyword">exec</span> sp_helpdb;<span class="comment">-- 数据库帮助，查询数据库信息 </span></span><br><span class="line"><span class="keyword">exec</span> sp_helpdb master;</span><br></pre></td></tr></table></figure>
 <p><strong>判断存储过程是否存在的两种方式：</strong></p>
 <p>if exists(select * from sys.objects where name=‘存储过程名’ )</p>
-<p>if (object_id(‘存储过程名’, ‘P’) is not null)   --P是指定存储过程类型<br />
+<p>if (object_id(‘存储过程名’, ‘P’) is not null)   --P是指定存储过程类型<br>
 object_id(‘对象名’,‘类型’)</p>
-<p>常用对象类型：<br />
-<code>C</code> = 检查约束<br />
-<code>D</code> = 默认值（约束或独立）<br />
-<code>F</code> = 外键约束<br />
-<code>P</code> = SQL 存储过程<br />
-<code>PK</code> = 主键约束<br />
-<code>U</code> = 表（用户定义的）<br />
+<p>常用对象类型：<br>
+<code>C</code> = 检查约束<br>
+<code>D</code> = 默认值（约束或独立）<br>
+<code>F</code> = 外键约束<br>
+<code>P</code> = SQL 存储过程<br>
+<code>PK</code> = 主键约束<br>
+<code>U</code> = 表（用户定义的）<br>
 <code>V</code> = 视图</p>
-<h2 id="语法"><a class="markdownIt-Anchor" href="#语法"></a> 语法</h2>
+<h2 id="语法">语法</h2>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建         输入参数为默认，out是输出参数，output会返回给调用方</span></span><br><span class="line">if (object_id(<span class="string">&#x27;存储过程名&#x27;</span>, <span class="string">&#x27;P&#x27;</span>) <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">null</span>)</span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">procedure</span> <span class="string">&#x27;存储过程名&#x27;</span></span><br><span class="line">go</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> 存储过程名称(@参数 参数数据类型 <span class="keyword">out</span><span class="operator">|</span>output) </span><br><span class="line">[<span class="keyword">with</span> 存储过程选项]</span><br><span class="line">[<span class="keyword">for</span> replication]    <span class="comment">-- 该存储过程仅用来复制，不能带参数</span></span><br><span class="line"><span class="keyword">as</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">.....</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">go    <span class="comment">-- 一定要加go</span></span><br><span class="line"></span><br><span class="line">存储过程选项：encryption(加密，无法在视图中查看)、recompile(执行后不再缓存)、<span class="keyword">execute</span> <span class="keyword">as</span> clause</span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line"><span class="keyword">declare</span></span><br><span class="line"><span class="variable">@id</span> <span class="type">int</span><span class="operator">=</span><span class="number">2</span>,</span><br><span class="line"><span class="variable">@name</span> <span class="type">varchar</span>(<span class="number">20</span>)</span><br><span class="line"><span class="keyword">exec</span> proc_find_stu1 <span class="variable">@id</span> ,<span class="variable">@name</span> <span class="keyword">out</span> </span><br><span class="line"><span class="keyword">exec</span> 存储过程名 @变量 [参数类型]</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 删除</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">procedure</span> [if <span class="keyword">exists</span>] 名称</span><br></pre></td></tr></table></figure>
-<h2 id="常用关键词"><a class="markdownIt-Anchor" href="#常用关键词"></a> 常用关键词</h2>
+<h2 id="常用关键词">常用关键词</h2>
 <table>
 <thead>
 <tr>
@@ -872,11 +872,11 @@ object_id(‘对象名’,‘类型’)</p>
 </tbody>
 </table>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- if</span></span><br><span class="line">if(条件)</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line"> ...</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line"> ...</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- while</span></span><br><span class="line">while(条件)</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">	...</span><br><span class="line">	break</span><br><span class="line">	continue</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- case</span></span><br><span class="line"><span class="keyword">case</span> <span class="keyword">when</span> ... <span class="keyword">then</span> ...</span><br><span class="line">     <span class="keyword">when</span> ... <span class="keyword">then</span> ...</span><br><span class="line">     <span class="keyword">else</span> ...</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<h2 id="动态执行高度自定义存储过程sql"><a class="markdownIt-Anchor" href="#动态执行高度自定义存储过程sql"></a> 动态执行(高度自定义)存储过程sql</h2>
+<h2 id="动态执行-高度自定义-存储过程sql">动态执行(高度自定义)存储过程sql</h2>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- exec sp_executesql @变量,参数设置,实际参数</span></span><br><span class="line"><span class="keyword">set</span> <span class="variable">@sqlName</span><span class="operator">=</span><span class="string">&#x27;select @i = COUNT(0) from students&#x27;</span>;</span><br><span class="line"><span class="keyword">exec</span> sp_executesql <span class="variable">@sqlName</span>,N<span class="string">&#x27;@i int output&#x27;</span>,<span class="variable">@i</span> output</span><br><span class="line"></span><br><span class="line"><span class="variable">@sqlName</span>：需要执行的<span class="keyword">sql</span></span><br><span class="line"></span><br><span class="line">N<span class="string">&#x27;@i int output&#x27;</span>：参数，相当于定义时候的参数 N开头意思为后⾯的数据类型为<span class="type">NChar</span>或者NVarchar 使⽤N前缀 </span><br><span class="line"></span><br><span class="line"><span class="variable">@i</span> output：相当于调用，调用之后就能获取到数据</span><br></pre></td></tr></table></figure>
-<p>一般表名和列名不会作为动态sql的参数传入，使用<code>QUOTENAME</code>函数来设置sql语句中的表名和列名，用于确保表名是安全的，防止SQL注入。<br />
+<p>一般表名和列名不会作为动态sql的参数传入，使用<code>QUOTENAME</code>函数来设置sql语句中的表名和列名，用于确保表名是安全的，防止SQL注入。<br>
 例如：'select * from ’ + quotename(@tablename)</p>
-<h1 id="索引"><a class="markdownIt-Anchor" href="#索引"></a> 索引</h1>
+<h1>索引</h1>
 <p><a href="#jump1">回到目录</a></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查看表中索引</span></span><br><span class="line"><span class="keyword">exec</span> sp_helpindex 表名</span><br><span class="line"><span class="comment">-- 创建</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">unique</span><span class="operator">|</span>clustered<span class="operator">|</span>noclustered] index 索引名</span><br><span class="line"><span class="keyword">on</span> 表名(列名 [<span class="keyword">desc</span><span class="operator">|</span><span class="keyword">asc</span>])</span><br><span class="line"><span class="comment">-- 添加</span></span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">add</span> index(字段)</span><br><span class="line"><span class="comment">-- 删除</span></span><br><span class="line"><span class="keyword">drop</span> index 索引名 <span class="keyword">on</span> 表名</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> 表名 <span class="keyword">drop</span> index 索引名</span><br></pre></td></tr></table></figure>
 <ol>
@@ -887,17 +887,17 @@ object_id(‘对象名’,‘类型’)</p>
 <li>对于包含多个列的查询条件，创建复合索引，确保索引的列顺序与查询条件匹配。</li>
 <li>使用特定的索引类型，如全文索引，适用于文本搜索。</li>
 </ol>
-<h1 id="其他"><a class="markdownIt-Anchor" href="#其他"></a> 其他</h1>
-<p>分离，备份，恢复<br />
-1.右键数据库名-&gt;’属性‘-&gt;选项-&gt;状态-&gt;设置单用户single-user<br />
-2.右键数据库名-&gt;‘任务’-&gt;‘分离’<br />
-然后将mdf和ldf文件移到别的地方<br />
-3.右键数据库选‘附加’<br />
+<h1>其他</h1>
+<p>分离，备份，恢复<br>
+1.右键数据库名-&gt;’属性‘-&gt;选项-&gt;状态-&gt;设置单用户single-user<br>
+2.右键数据库名-&gt;‘任务’-&gt;‘分离’<br>
+然后将mdf和ldf文件移到别的地方<br>
+3.右键数据库选‘附加’<br>
 4.将之前分离的数据库文件路径附加到新数据库引擎</p>
 <p>第一范式（1NF): 确保每列的原子性(强调的是列的原子性，即列不能够再分成其他几列)。实际上，第一范式是所有关系型数据库的最基本要求。</p>
-<p>第二范式（2NF): 是在第一范式（1NF）的基础上建立起来的，即满足第二范式（2NF）必须先满足第一范式（1NF）<br />
+<p>第二范式（2NF): 是在第一范式（1NF）的基础上建立起来的，即满足第二范式（2NF）必须先满足第一范式（1NF）<br>
 第二范式要求确保表中每列与主键相关，而不能只与主键的某部分相关（主要针对联合主键），主键列与非主键列遵循完全函数依赖关系，也就是完全依赖</p>
-<p>第三范式（3NF): 是在第二范式的基础上建立起来的。第三范式指：属性不依赖于其他非主属性<br />
+<p>第三范式（3NF): 是在第二范式的基础上建立起来的。第三范式指：属性不依赖于其他非主属性<br>
 第三范式确保主键列之间没有传递函数依赖关系，也就是消除传递依赖</p>
 
     </div>
@@ -982,7 +982,7 @@ object_id(‘对象名’,‘类型’)</p>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-text"> 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text"> 系统数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%BB%84%E6%88%90"><span class="nav-text"> 数据库的组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E5%88%86%E9%85%8D"><span class="nav-text"> 数据的存储分配</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E7%94%A8%E6%88%B7"><span class="nav-text"> 创建数据库和用户</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tsql%E8%AF%AD%E8%A8%80%E7%9B%B8%E5%85%B3%E5%8C%BA%E5%88%AB"><span class="nav-text"> tsql语言相关(区别)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2top"><span class="nav-text"> 分页查询top</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E8%87%AA%E5%A2%9E%E5%88%97identity%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-text"> 向自增列identity插入数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%B9%B6%E5%B7%AE"><span class="nav-text"> 交并差</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ddl-dml-dql"><span class="nav-text"> DDL、DML、DQL</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text"> 数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E6%95%B0"><span class="nav-text"> 整数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B2%BE%E7%A1%AE%E6%95%B0%E5%80%BC"><span class="nav-text"> 精确数值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="nav-text"> 浮点数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4"><span class="nav-text"> 日期时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-text"> 字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unincode%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-text"> Unincode字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%A7%E5%B8%81%E6%95%B0%E6%8D%AE"><span class="nav-text"> 货币数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0"><span class="nav-text"> 标记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%A0%81%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-text"> 二进制码字符串</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E8%AE%A1%E7%AE%97%E5%8C%BA%E5%88%AB"><span class="nav-text"> 运算符计算区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-text"> 常用函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0"><span class="nav-text"> 时间函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E5%87%BD%E6%95%B0"><span class="nav-text"> 排序函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0"><span class="nav-text"> 字符串函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E5%87%BD%E6%95%B0"><span class="nav-text"> 转换函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E5%87%BD%E6%95%B0%E5%92%8Cover%E9%85%8D%E5%90%88"><span class="nav-text"> 分析函数(和over配合)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-text"> 事务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%A5%E9%94%99%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-text"> 报错的处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="nav-text"> 存储过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="nav-text"> 常见存储过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-text"> 语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="nav-text"> 常用关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E6%89%A7%E8%A1%8C%E9%AB%98%E5%BA%A6%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8Bsql"><span class="nav-text"> 动态执行(高度自定义)存储过程sql</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95"><span class="nav-text"> 索引</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-text"> 其他</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">系统数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E7%BB%84%E6%88%90"><span class="nav-text">数据库的组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E5%AD%98%E5%82%A8%E5%88%86%E9%85%8D"><span class="nav-text">数据的存储分配</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">创建数据库和用户</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">tsql语言相关(区别)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E9%A1%B5%E6%9F%A5%E8%AF%A2top"><span class="nav-text">分页查询top</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%91%E8%87%AA%E5%A2%9E%E5%88%97identity%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-text">向自增列identity插入数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E5%B9%B6%E5%B7%AE"><span class="nav-text">交并差</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DDL%E3%80%81DML%E3%80%81DQL"><span class="nav-text">DDL、DML、DQL</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E6%95%B0"><span class="nav-text">整数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B2%BE%E7%A1%AE%E6%95%B0%E5%80%BC"><span class="nav-text">精确数值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="nav-text">浮点数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4"><span class="nav-text">日期时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unincode%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-text">Unincode字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%A7%E5%B8%81%E6%95%B0%E6%8D%AE"><span class="nav-text">货币数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0"><span class="nav-text">标记</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%A0%81%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-text">二进制码字符串</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">运算符计算区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">常用函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0"><span class="nav-text">时间函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E5%87%BD%E6%95%B0"><span class="nav-text">排序函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0"><span class="nav-text">字符串函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AC%E6%8D%A2%E5%87%BD%E6%95%B0"><span class="nav-text">转换函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%9E%90%E5%87%BD%E6%95%B0-%E5%92%8Cover%E9%85%8D%E5%90%88"><span class="nav-text">分析函数(和over配合)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%A5%E9%94%99%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-text">报错的处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">存储过程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="nav-text">常见存储过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-text">语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="nav-text">常用关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E6%89%A7%E8%A1%8C-%E9%AB%98%E5%BA%A6%E8%87%AA%E5%AE%9A%E4%B9%89-%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8Bsql"><span class="nav-text">动态执行(高度自定义)存储过程sql</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">索引</span></a></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text">其他</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1055,7 +1055,7 @@ object_id(‘对象名’,‘类型’)</p>
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">363k</span>
+    <span title="站点总字数">362k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
