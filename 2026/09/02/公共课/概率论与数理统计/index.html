@@ -30,7 +30,7 @@
 <meta property="og:description" content="概率论，数理统计，应用统计">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-09-02T09:31:00.000Z">
-<meta property="article:modified_time" content="2026-09-03T10:41:31.286Z">
+<meta property="article:modified_time" content="2026-09-03T10:46:01.252Z">
 <meta property="article:author" content="我真不是雪上加霜">
 <meta property="article:tag" content="数学">
 <meta property="article:tag" content="数理统计">
@@ -235,7 +235,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2026-09-03 18:41:31" itemprop="dateModified" datetime="2026-09-03T18:41:31+08:00">2026-09-03</time>
+                <time title="修改时间：2026-09-03 18:46:01" itemprop="dateModified" datetime="2026-09-03T18:46:01+08:00">2026-09-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -253,7 +253,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.3k</span>
+              <span>1.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -350,15 +350,15 @@
 </tr>
 <tr class="even">
 <td style="text-align: center;">结合律</td>
-<td style="text-align: center;"><span class="math inline">\((A \cup B) \cup C = A \cup (B \cup C) \\ (A \cap B) \cap C = A \cap (B \cap C)\)</span></td>
+<td style="text-align: center;"><span class="math display">\[\begin{aligned}(A \cup B) \cup C = A \cup (B \cup C) \\ (A \cap B) \cap C = A \cap (B \cap C)\end{aligned}\]</span></td>
 </tr>
 <tr class="odd">
 <td style="text-align: center;">分配律</td>
-<td style="text-align: center;"><span class="math inline">\(A \cap (B \cup C) = (A \cap B) \cup (A \cap C) \\ A \cup (B \cap C) = (A \cup B) \cap (A \cup C)\)</span></td>
+<td style="text-align: center;"><span class="math display">\[\begin{aligned}A \cap (B \cup C) = (A \cap B) \cup (A \cap C) \\ A \cup (B \cap C) = (A \cup B) \cap (A \cup C)\end{aligned}\]</span></td>
 </tr>
 <tr class="even">
 <td style="text-align: center;">对偶律（德摩根公式）</td>
-<td style="text-align: center;"><span class="math inline">\(\overline{A \cup B} = \overline{A} \cap \overline{B} \\ \overline{A \cap B} = \overline{A} \cup \overline{B}\)</span></td>
+<td style="text-align: center;"><span class="math display">\[\begin{aligned}\overline{A \cup B} = \overline{A} \cap \overline{B} \\ \overline{A \cap B} = \overline{A} \cup \overline{B}\end{aligned}\]</span></td>
 </tr>
 </tbody>
 </table>
@@ -388,10 +388,13 @@ P(A)-P(B) &amp; B \subset A \\
 P(A) &amp; A \subset B
 \end{cases}
 \]</span></p>
-<p>乘法公式 $ P(AB)=P(A)P(BA) $</p>
-<p>全概率公式 $ P(B) = _{i=1}^{n} P(A_i) P(BA_i) $</p>
-<p>贝叶斯公式</p>
-<p><span class="math inline">\(P(A_i\mid B) = \frac{P(A_i) P(B|A_i)}{\sum\limits_{j=1}^{n} P(A_j) P(B|A_j)}\)</span></p>
+<p>乘法公式: $ P(AB)=P(A)P(BA) $</p>
+<p>全概率公式： <span class="math display">\[
+P(B) = \sum\limits_{i=1}^{n} P(A_i) P(B \mid A_i)
+\]</span></p>
+<p>贝叶斯公式： <span class="math display">\[
+P(A_i \mid B) = \frac{P(A_i) P(B \mid A_i)}{\sum\limits_{j=1}^{n} P(A_j) P(B \mid A_j)}
+\]</span></p>
 <h1 id="数理统计">数理统计</h1>
 
     </div>
