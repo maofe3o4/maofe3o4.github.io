@@ -278,13 +278,25 @@
         <p><span id="jump1">目录</span></p>
 <p>[toc]</p>
 <p>Oracle内容庞大,推荐看《Oracle 11g数据库基础教程》，此文档只包含常用内容</p>
-<h1 id="安装与卸载"><a href="#安装与卸载" class="headerlink" title="安装与卸载"></a>安装与卸载</h1><p><a href="#jump1">回到目录</a></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>setup-&gt;网络配置(监听器)-&gt;SQL PLUS(查看能否登录，用户名system)</p>
-<h2 id="企业管理器OEM"><a href="#企业管理器OEM" class="headerlink" title="企业管理器OEM"></a>企业管理器OEM</h2><p>浏览器<a target="_blank" rel="noopener" href="https://本机:1158/em">https://本机:1158/em</a><br>确保Oracle服务、监听服务和控制台服务打开</p>
-<p>默认控制台服务(即OEM控制台服务)端口为1158<br>查看在\app\product\11.2.0\dbhome_1\install\portlist.int</p>
-<h1 id="文件体系结构"><a href="#文件体系结构" class="headerlink" title="文件体系结构"></a>文件体系结构</h1><p><a href="#jump1">回到目录</a></p>
-<p><img src="/images/loading/loading.gif" data-original="/images/oracle数据库系统结构.png" alt="oracle数据库系统结构"></p>
-<p>admin:以数据库为单位，存放数据库运行过程中产生的跟踪文件<br>cfgtoologs:运行dbca、emca和netca图像化程序时产生的日志信息<br>checkpoint:存放数据库检查点信息<br>diag:以组件为单位，存储数据库各个组件运行的诊断信息<br>flash_recovery_area:以数据库为单位，数据库自动备份时，存放备份文件和闪回日志文件<br>oradata:以数据库为单位，存放数据库的物理文件(数据，控制，重做日志)<br>product:存放数据库管理相关的软件，包括可执行文件、网络配置、脚本</p>
+<h1 id="安装与卸载"><a class="markdownIt-Anchor" href="#安装与卸载"></a> 安装与卸载</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h2 id="安装"><a class="markdownIt-Anchor" href="#安装"></a> 安装</h2>
+<p>setup-&gt;网络配置(监听器)-&gt;SQL PLUS(查看能否登录，用户名system)</p>
+<h2 id="企业管理器oem"><a class="markdownIt-Anchor" href="#企业管理器oem"></a> 企业管理器OEM</h2>
+<p>浏览器<a target="_blank" rel="noopener" href="https://xn--8pv2a:1158/em">https://本机:1158/em</a><br />
+确保Oracle服务、监听服务和控制台服务打开</p>
+<p>默认控制台服务(即OEM控制台服务)端口为1158<br />
+查看在\app\product\11.2.0\dbhome_1\install\portlist.int</p>
+<h1 id="文件体系结构"><a class="markdownIt-Anchor" href="#文件体系结构"></a> 文件体系结构</h1>
+<p><a href="#jump1">回到目录</a></p>
+<p><img src="/images/loading/loading.gif" data-original="/images/oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84.png" alt="oracle数据库系统结构" /></p>
+<p>admin:以数据库为单位，存放数据库运行过程中产生的跟踪文件<br />
+cfgtoologs:运行dbca、emca和netca图像化程序时产生的日志信息<br />
+checkpoint:存放数据库检查点信息<br />
+diag:以组件为单位，存储数据库各个组件运行的诊断信息<br />
+flash_recovery_area:以数据库为单位，数据库自动备份时，存放备份文件和闪回日志文件<br />
+oradata:以数据库为单位，存放数据库的物理文件(数据，控制，重做日志)<br />
+product:存放数据库管理相关的软件，包括可执行文件、网络配置、脚本</p>
 <pre class="mermaid">graph LR
 Oracle数据库--> 存储结构DB
 存储结构DB--> 物理存储结构
@@ -293,15 +305,21 @@ Oracle数据库--> 数据库管理系统DBMS
 数据库管理系统DBMS--> 实例instance
 实例instance--> 内存结构--> SGA和PGA
 实例instance--> 后台进程</pre>
-
-<h2 id="物理存储和逻辑存储"><a href="#物理存储和逻辑存储" class="headerlink" title="物理存储和逻辑存储"></a>物理存储和逻辑存储</h2><p><img src="/images/loading/loading.gif" data-original="/images/oracle数据库物理存储结构和逻辑存储结构.png" alt="oracle数据库物理存储结构和逻辑存储结构"></p>
+<h2 id="物理存储和逻辑存储"><a class="markdownIt-Anchor" href="#物理存储和逻辑存储"></a> 物理存储和逻辑存储</h2>
+<p><img src="/images/loading/loading.gif" data-original="/images/oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%89%A9%E7%90%86%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84%E5%92%8C%E9%80%BB%E8%BE%91%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84.png" alt="oracle数据库物理存储结构和逻辑存储结构" /></p>
 <p>表空间：数据文件=1：n             块：OS块=1：n</p>
-<p><strong>物理文件</strong>：参数文件(库名，CTL路径，进程)，跟踪文件(记录运行过程发生的大事)+告警文件（记录后台进程活动）<br>数据文件：DBF<br>日志文件：LOG<br>控制文件：CTL(库名，数据和日志文件路径，建库日期）</p>
+<p><strong>物理文件</strong>：参数文件(库名，CTL路径，进程)，跟踪文件(记录运行过程发生的大事)+告警文件（记录后台进程活动）<br />
+数据文件：DBF<br />
+日志文件：LOG<br />
+控制文件：CTL(库名，数据和日志文件路径，建库日期）</p>
 <p>逻辑文件：<strong>表空间</strong>(系统表SYSTEM，辅助系统表SYSAUX，临时表TEMP，撤销表UNDO，USERS)，<strong>段</strong>(数据，索引，临时，回退)，<strong>区</strong>(连续的数据块，存储空间分配的最小单位)，<strong>块</strong>(最小逻辑存储单元)</p>
-<h2 id="内存结构和后台进程"><a href="#内存结构和后台进程" class="headerlink" title="内存结构和后台进程"></a>内存结构和后台进程</h2><h3 id="SGA和PGA"><a href="#SGA和PGA" class="headerlink" title="SGA和PGA"></a>SGA和PGA</h3><p>SGA系统全局区：数据高速缓冲区、共享池（库缓存和数据字典缓存）、重做日志缓冲区、大型池、Java池、流池和其他</p>
-<p>高速缓冲区：脏缓冲块(修改过的数据)+空闲缓冲块(无数据)+命中缓冲块(正在被使用的数据)+干净缓冲块(没被修改的数据)。<br>库缓存：通过硬解析(未执行的SQL)和软解析(已执行的SQL)来让相同的SQL语句不再编译，提升SQL执行效率。</p>
+<h2 id="内存结构和后台进程"><a class="markdownIt-Anchor" href="#内存结构和后台进程"></a> 内存结构和后台进程</h2>
+<h3 id="sga和pga"><a class="markdownIt-Anchor" href="#sga和pga"></a> SGA和PGA</h3>
+<p>SGA系统全局区：数据高速缓冲区、共享池（库缓存和数据字典缓存）、重做日志缓冲区、大型池、Java池、流池和其他</p>
+<p>高速缓冲区：脏缓冲块(修改过的数据)+空闲缓冲块(无数据)+命中缓冲块(正在被使用的数据)+干净缓冲块(没被修改的数据)。<br />
+库缓存：通过硬解析(未执行的SQL)和软解析(已执行的SQL)来让相同的SQL语句不再编译，提升SQL执行效率。</p>
 <p>PGA程序全局区：排序区、游标信息区、会话信息区、堆栈区(会话变量)</p>
-<h3 id="后台进程"><a href="#后台进程" class="headerlink" title="后台进程"></a>后台进程</h3><div class="table-container">
+<h3 id="后台进程"><a class="markdownIt-Anchor" href="#后台进程"></a> 后台进程</h3>
 <table>
 <thead>
 <tr>
@@ -344,16 +362,25 @@ Oracle数据库--> 数据库管理系统DBMS
 </tr>
 <tr>
 <td>调度进程Dnnn</td>
+<td></td>
 </tr>
 </tbody>
 </table>
-</div>
 <p>归档模式开启：LOG_ARCHIVE_START=TRUE</p>
-<h1 id="安全管理"><a href="#安全管理" class="headerlink" title="安全管理"></a>安全管理</h1><p><a href="#jump1">回到目录</a></p>
-<h2 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h2><h2 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h2><h2 id="角色管理"><a href="#角色管理" class="headerlink" title="角色管理"></a>角色管理</h2><h2 id="表空间管理"><a href="#表空间管理" class="headerlink" title="表空间管理"></a>表空间管理</h2><p><strong>表空间类型、名称、数据文件、表空间管理方式、区分配方式和段管理方式</strong><br>表空间管理：字典dictionary管理方式、(默认)本地管理方式local<br>区分配方式：在表空间本地管理中，区分配有(默认)自动分配autoallocate和定制分配uniform<br>管管理饭时：(默认)自动管理auto和手动管理manual</p>
+<h1 id="安全管理"><a class="markdownIt-Anchor" href="#安全管理"></a> 安全管理</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h2 id="用户管理"><a class="markdownIt-Anchor" href="#用户管理"></a> 用户管理</h2>
+<h2 id="权限管理"><a class="markdownIt-Anchor" href="#权限管理"></a> 权限管理</h2>
+<h2 id="角色管理"><a class="markdownIt-Anchor" href="#角色管理"></a> 角色管理</h2>
+<h2 id="表空间管理"><a class="markdownIt-Anchor" href="#表空间管理"></a> 表空间管理</h2>
+<p><strong>表空间类型、名称、数据文件、表空间管理方式、区分配方式和段管理方式</strong><br />
+表空间管理：字典dictionary管理方式、(默认)本地管理方式local<br />
+区分配方式：在表空间本地管理中，区分配有(默认)自动分配autoallocate和定制分配uniform<br />
+管管理饭时：(默认)自动管理auto和手动管理manual</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建表空间</span></span><br><span class="line"><span class="keyword">create</span> [temporary<span class="operator">|</span>bigfile<span class="operator">|</span>undo] tablespace 名字</span><br><span class="line">[datafile<span class="operator">|</span>tempfile] <span class="string">&#x27;文件路径\名字.DBF&#x27;</span> size <span class="number">10</span>M</span><br><span class="line">[autoextent <span class="keyword">on</span> next <span class="number">1</span>M maxsize unlimited] <span class="comment">-- 数据文件自动扩展</span></span><br><span class="line">[extent management <span class="keyword">local</span> uniform size <span class="number">10</span>M] <span class="comment">-- 段定制分配</span></span><br><span class="line">[segment space management manual] <span class="comment">-- 区手动管理</span></span><br><span class="line"></span><br><span class="line">大文件表空间 段只能自动管理,临时表空间和撤销表空间 区只能自动分配</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改表空间</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="语法相关"><a href="#语法相关" class="headerlink" title="语法相关"></a>语法相关</h1><p><a href="#jump1">回到目录</a></p>
-<h2 id="求余"><a href="#求余" class="headerlink" title="求余"></a>求余</h2><div class="table-container">
+<h1 id="语法相关"><a class="markdownIt-Anchor" href="#语法相关"></a> 语法相关</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h2 id="求余"><a class="markdownIt-Anchor" href="#求余"></a> 求余</h2>
 <table>
 <thead>
 <tr>
@@ -370,8 +397,7 @@ Oracle数据库--> 数据库管理系统DBMS
 </tr>
 </tbody>
 </table>
-</div>
-<h2 id="DDL、DML、DQL-没写的默认和其他sql一样"><a href="#DDL、DML、DQL-没写的默认和其他sql一样" class="headerlink" title="DDL、DML、DQL(没写的默认和其他sql一样)"></a>DDL、DML、DQL(没写的默认和其他sql一样)</h2><div class="table-container">
+<h2 id="ddl-dml-dql没写的默认和其他sql一样"><a class="markdownIt-Anchor" href="#ddl-dml-dql没写的默认和其他sql一样"></a> DDL、DML、DQL(没写的默认和其他sql一样)</h2>
 <table>
 <thead>
 <tr>
@@ -388,7 +414,7 @@ Oracle数据库--> 数据库管理系统DBMS
 </tr>
 <tr>
 <td>建表2</td>
-<td>craete table 表名(列…..) as select …..</td>
+<td>craete table 表名(列…) as select …</td>
 <td>用子查询建表</td>
 </tr>
 <tr>
@@ -398,10 +424,7 @@ Oracle数据库--> 数据库管理系统DBMS
 </tr>
 <tr>
 <td>修改约束</td>
-<td>alter table 表名<br />[add constraint 约束名 主键\</td>
-<td>唯一\</td>
-<td>检查\</td>
-<td>外键]<br />[modify 列 not null]<br />[drop constraint 约束名]<br />[drop unique(列)]</td>
+<td>alter table 表名<br />[add constraint 约束名 主键|唯一|检查|外键]<br />[modify 列 not null]<br />[drop constraint 约束名]<br />[drop unique(列)]</td>
 <td><br />添加主键外键唯一检查约束<br />添加非空约束<br />按约束名删除<br />按列约束删除</td>
 </tr>
 <tr>
@@ -411,8 +434,6 @@ Oracle数据库--> 数据库管理系统DBMS
 </tr>
 </tbody>
 </table>
-</div>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -439,13 +460,12 @@ Oracle数据库--> 数据库管理系统DBMS
 </tr>
 <tr>
 <td>插入4</td>
-<td>insert all\</td>
-<td>first<br />when 条件1 then into 表1(列…)<br />when 条件2 then into 表2(列…)<br />else into 表3(列…)<br />select …</td>
+<td>insert all|first<br />when 条件1 then into 表1(列…)<br />when 条件2 then into 表2(列…)<br />else into 表3(列…)<br />select …</td>
 <td>条件多表插入<br />all表示只要满足条件就插入<br />first表示只插入满足条件的第一个表</td>
 </tr>
 <tr>
 <td>插入5</td>
-<td>insert / <em> +append </em>/ into 表 select…</td>
+<td>insert / * +append */ into 表 select…</td>
 <td>插入大量数据使用装载(不写入日志)</td>
 </tr>
 <tr>
@@ -460,30 +480,41 @@ Oracle数据库--> 数据库管理系统DBMS
 </tr>
 </tbody>
 </table>
-</div>
-<h2 id="select注意事项"><a href="#select注意事项" class="headerlink" title="select注意事项"></a>select注意事项</h2><ul>
-<li><p>拼接符号：||</p>
+<h2 id="select注意事项"><a class="markdownIt-Anchor" href="#select注意事项"></a> select注意事项</h2>
+<ul>
+<li>
+<p>拼接符号：||</p>
 </li>
-<li><p>交、并、差：intersect、union、minus</p>
+<li>
+<p>交、并、差：intersect、union、minus</p>
 </li>
-<li><p>order by 2         将select结果按第2列排序</p>
+<li>
+<p>order by 2         将select结果按第2列排序</p>
 </li>
-<li><p>使用ROWNUM来显示行号，在select结果集里面直接加ROWNUM</p>
+<li>
+<p>使用ROWNUM来显示行号，在select结果集里面直接加ROWNUM</p>
 </li>
-<li><p>ROWID是数据的物理地址</p>
+<li>
+<p>ROWID是数据的物理地址</p>
 </li>
 </ul>
 <p>rowid=对象编号6+数据文件编号3+块编号6+行编号3</p>
-<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><p>设置事务只读模式(该模式下，开启事务之后只能查询数据)<br>set transaction read only；</p>
+<h1 id="事务"><a class="markdownIt-Anchor" href="#事务"></a> 事务</h1>
+<p>设置事务只读模式(该模式下，开启事务之后只能查询数据)<br />
+set transaction read only；</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">begin</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">savepoint</span> A;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">rollback</span> <span class="keyword">to</span> [A];<span class="operator">|</span><span class="keyword">commit</span>;<span class="operator">|</span><span class="keyword">rollback</span>;</span><br><span class="line">[exception</span><br><span class="line"> <span class="keyword">when</span> others <span class="keyword">then</span> <span class="keyword">rollback</span> <span class="keyword">to</span> A;]</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
 <p>其他内容同mysql</p>
-<h1 id="序列"><a href="#序列" class="headerlink" title="序列"></a>序列</h1><p><strong>序列不占用实际存储空间</strong></p>
+<h1 id="序列"><a class="markdownIt-Anchor" href="#序列"></a> 序列</h1>
+<p><strong>序列不占用实际存储空间</strong></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建序列</span></span><br><span class="line"><span class="keyword">create</span> sequence 序列名</span><br><span class="line">[<span class="keyword">start</span> <span class="keyword">with</span> n]             <span class="comment">-- 设置初始值，默认1</span></span><br><span class="line">[increment <span class="keyword">by</span> m]           <span class="comment">-- 步长，默认1</span></span><br><span class="line">[maxvalue mm<span class="operator">|</span>nomaxvalue]   <span class="comment">-- 序列最大值mm</span></span><br><span class="line">[minvalue mm<span class="operator">|</span>nominvalue]   <span class="comment">-- 序列最小值mm</span></span><br><span class="line">[<span class="keyword">cycle</span><span class="operator">|</span>nocycle]            <span class="comment">-- 达到最大值或最小值时，循环</span></span><br><span class="line">[cache n<span class="operator">|</span>nocache]   <span class="comment">-- 设置预先分配并保留在内存中的序列个数，默认20</span></span><br><span class="line"><span class="comment">-- 使用序列</span></span><br><span class="line">同rownum伪列，序列有currval和nextval两个伪列</span><br><span class="line">序列名.currval返回当前序列值</span><br><span class="line">序列名.nextval产生新值并返回</span><br><span class="line">使用范围：<span class="keyword">select</span>和<span class="keyword">insert</span>目标列，<span class="keyword">insert</span> <span class="keyword">values</span>子句，<span class="keyword">update</span>的<span class="keyword">set</span>子句</span><br></pre></td></tr></table></figure>
-<h1 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h1><p>查询简单化、数据安全性、逻辑数据独立性</p>
+<h1 id="视图"><a class="markdownIt-Anchor" href="#视图"></a> 视图</h1>
+<p>查询简单化、数据安全性、逻辑数据独立性</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace][force<span class="operator">|</span>noforce] <span class="keyword">view</span> 视图名 <span class="comment">-- force不管有无基表强制创建视图</span></span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">select...</span><br><span class="line">[<span class="keyword">with</span> <span class="keyword">check</span> option] <span class="comment">-- 对试图操作时，必须满足子查询中的约束条件</span></span><br><span class="line">[<span class="keyword">with</span> read <span class="keyword">only</span>] <span class="comment">-- 只读</span></span><br></pre></td></tr></table></figure>
-<h1 id="同义词"><a href="#同义词" class="headerlink" title="同义词"></a>同义词</h1><p>create synonym 名称 for 表名</p>
-<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><p><a href="#jump1">回到目录</a></p>
-<h2 id="日期函数"><a href="#日期函数" class="headerlink" title="日期函数"></a>日期函数</h2><div class="table-container">
+<h1 id="同义词"><a class="markdownIt-Anchor" href="#同义词"></a> 同义词</h1>
+<p>create synonym 名称 for 表名</p>
+<h1 id="函数"><a class="markdownIt-Anchor" href="#函数"></a> 函数</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h2 id="日期函数"><a class="markdownIt-Anchor" href="#日期函数"></a> 日期函数</h2>
 <table>
 <thead>
 <tr>
@@ -514,8 +545,7 @@ Oracle数据库--> 数据库管理系统DBMS
 </tr>
 </tbody>
 </table>
-</div>
-<h2 id="其他函数"><a href="#其他函数" class="headerlink" title="其他函数"></a>其他函数</h2><div class="table-container">
+<h2 id="其他函数"><a class="markdownIt-Anchor" href="#其他函数"></a> 其他函数</h2>
 <table>
 <thead>
 <tr>
@@ -537,13 +567,12 @@ Oracle数据库--> 数据库管理系统DBMS
 <td>a=b,返回null，否则返回a</td>
 </tr>
 <tr>
-<td>decode(expr,a,b,a1,b1,…..default)</td>
-<td>表达式expr，为a时返回b，为a1时返回b1,….<br />否则默认</td>
+<td>decode(expr,a,b,a1,b1,…default)</td>
+<td>表达式expr，为a时返回b，为a1时返回b1,…<br />否则默认</td>
 </tr>
 </tbody>
 </table>
-</div>
-<h1 id="PL-SQL"><a href="#PL-SQL" class="headerlink" title="PL/SQL"></a>PL/SQL</h1><div class="table-container">
+<h1 id="plsql"><a class="markdownIt-Anchor" href="#plsql"></a> PL/SQL</h1>
 <table>
 <thead>
 <tr>
@@ -562,7 +591,7 @@ Oracle数据库--> 数据库管理系统DBMS
 </tr>
 <tr>
 <td>放进缓冲区，不换行输出</td>
-<td>dbms_output.put(‘Hello, Lao An ‘);<br />dbms_output.put(‘Hello, Lao An ‘);</td>
+<td>dbms_output.put('Hello, Lao An ');<br />dbms_output.put('Hello, Lao An ');</td>
 </tr>
 <tr>
 <td>输出换行</td>
@@ -578,8 +607,7 @@ Oracle数据库--> 数据库管理系统DBMS
 </tr>
 </tbody>
 </table>
-</div>
-<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><div class="table-container">
+<h2 id="数据类型"><a class="markdownIt-Anchor" href="#数据类型"></a> 数据类型</h2>
 <table>
 <thead>
 <tr>
@@ -616,19 +644,24 @@ Oracle数据库--> 数据库管理系统DBMS
 </tr>
 <tr>
 <td>记录</td>
-<td>type 名称 is record(<br />…..)</td>
+<td>type 名称 is record(<br />…)</td>
 <td>类似结构体</td>
 </tr>
 </tbody>
 </table>
-</div>
-<p>%TYPE和%ROWTYPE<br>已知存在表emp中的sal列，但不知道数据类型，想要定义一个相同的数据类型<br>a emp.sal%TYPE<br>b emp%ROWTYPE   定义一个与emp表结构一致的记录类型</p>
+<p>%TYPE和%ROWTYPE<br />
+已知存在表emp中的sal列，但不知道数据类型，想要定义一个相同的数据类型<br />
+a emp.sal%TYPE<br />
+b emp%ROWTYPE   定义一个与emp表结构一致的记录类型</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span></span><br><span class="line">声明各种变量</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">select</span> ...into..;</span><br><span class="line"><span class="keyword">insert</span>,<span class="keyword">update</span>,delete...;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="关键词"><a href="#关键词" class="headerlink" title="关键词"></a>关键词</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 选择结构</span></span><br><span class="line"><span class="comment">-- if</span></span><br><span class="line">if 条件 <span class="keyword">then</span> 情况<span class="number">1</span>;</span><br><span class="line">elsif 条件<span class="number">2</span> <span class="keyword">then</span> 情况<span class="number">2</span>;</span><br><span class="line"><span class="keyword">else</span> 情况<span class="number">3</span>;</span><br><span class="line"><span class="keyword">end</span> if;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- case</span></span><br><span class="line"><span class="keyword">case</span></span><br><span class="line"><span class="keyword">when</span> ... <span class="keyword">then</span> ...;</span><br><span class="line"><span class="keyword">when</span> ... <span class="keyword">then</span> ...;</span><br><span class="line"><span class="keyword">else</span> ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">case</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 循环while for loop</span></span><br><span class="line"><span class="comment">-- 循环以end loop结束</span></span><br><span class="line">loop</span><br><span class="line">...;</span><br><span class="line">exit <span class="keyword">when</span> 条件;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line">while 条件 loop</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i [reverse] <span class="keyword">in</span> n..m loop   <span class="comment">-- 变量i从n到m循环,反转后从m到n</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 跳转结构GOTO</span></span><br><span class="line">...;</span><br><span class="line"><span class="operator">&lt;&lt;</span>a<span class="operator">&gt;&gt;</span>    <span class="comment">-- 定义跳转点</span></span><br><span class="line">...;</span><br><span class="line">goto a;  <span class="comment">-- goto跳转到跳转点</span></span><br><span class="line">...;</span><br></pre></td></tr></table></figure>
-<h2 id="游标"><a href="#游标" class="headerlink" title="游标"></a>游标</h2><p>在PL/SQL块中执行select和DML，分配缓冲区，名为上下文区，游标是<strong>指向该缓冲的指针</strong></p>
-<p>显式游标：用户定义、操作，处理返回多行数据的select查询<br>隐式游标：由系统自动操作，处理DML和返回单行数据的select查询</p>
-<h3 id="显示游标"><a href="#显示游标" class="headerlink" title="显示游标"></a>显示游标</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 定义(可带参数)</span></span><br><span class="line"><span class="keyword">CURSOR</span> 游标名 <span class="keyword">IS</span> <span class="keyword">select</span>语句</span><br><span class="line"><span class="keyword">CURSOR</span> 游标名(变量) <span class="keyword">IS</span> <span class="keyword">select</span>语句</span><br><span class="line"><span class="comment">-- 打开(open之后游标指向第一行)</span></span><br><span class="line"><span class="keyword">open</span> 游标名</span><br><span class="line"><span class="keyword">open</span> 游标名(<span class="operator">&amp;</span>变量)</span><br><span class="line"><span class="comment">-- 检索(每执行一次fetch指针后移)</span></span><br><span class="line"><span class="keyword">fetch</span> 游标名 <span class="keyword">into</span> 一个能存一行数据的变量</span><br><span class="line"><span class="comment">-- 关闭</span></span><br><span class="line"><span class="keyword">close</span> 游标名</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 通过loop，while，for来循环检索的区别</span></span><br><span class="line">loop</span><br><span class="line">	fetch...into..;</span><br><span class="line">	exit <span class="keyword">when</span> 游标<span class="operator">%</span>notfound;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line">fetch...into..;</span><br><span class="line">while 游标<span class="operator">%</span>notfound loop</span><br><span class="line">	fetch...into..;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> 记录行变量 <span class="keyword">in</span> 游标名 loop</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br></pre></td></tr></table></figure>
-<div class="table-container">
+<h2 id="关键词"><a class="markdownIt-Anchor" href="#关键词"></a> 关键词</h2>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 选择结构</span></span><br><span class="line"><span class="comment">-- if</span></span><br><span class="line">if 条件 <span class="keyword">then</span> 情况<span class="number">1</span>;</span><br><span class="line">elsif 条件<span class="number">2</span> <span class="keyword">then</span> 情况<span class="number">2</span>;</span><br><span class="line"><span class="keyword">else</span> 情况<span class="number">3</span>;</span><br><span class="line"><span class="keyword">end</span> if;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- case</span></span><br><span class="line"><span class="keyword">case</span></span><br><span class="line"><span class="keyword">when</span> ... <span class="keyword">then</span> ...;</span><br><span class="line"><span class="keyword">when</span> ... <span class="keyword">then</span> ...;</span><br><span class="line"><span class="keyword">else</span> ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">case</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 循环while for loop</span></span><br><span class="line"><span class="comment">-- 循环以end loop结束</span></span><br><span class="line">loop</span><br><span class="line">...;</span><br><span class="line">exit <span class="keyword">when</span> 条件;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line">while 条件 loop</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i [reverse] <span class="keyword">in</span> n..m loop   <span class="comment">-- 变量i从n到m循环,反转后从m到n</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 跳转结构GOTO</span></span><br><span class="line">...;</span><br><span class="line"><span class="operator">&lt;&lt;</span>a<span class="operator">&gt;&gt;</span>    <span class="comment">-- 定义跳转点</span></span><br><span class="line">...;</span><br><span class="line">goto a;  <span class="comment">-- goto跳转到跳转点</span></span><br><span class="line">...;</span><br></pre></td></tr></table></figure>
+<h2 id="游标"><a class="markdownIt-Anchor" href="#游标"></a> 游标</h2>
+<p>在PL/SQL块中执行select和DML，分配缓冲区，名为上下文区，游标是<strong>指向该缓冲的指针</strong></p>
+<p>显式游标：用户定义、操作，处理返回多行数据的select查询<br />
+隐式游标：由系统自动操作，处理DML和返回单行数据的select查询</p>
+<h3 id="显示游标"><a class="markdownIt-Anchor" href="#显示游标"></a> 显示游标</h3>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 定义(可带参数)</span></span><br><span class="line"><span class="keyword">CURSOR</span> 游标名 <span class="keyword">IS</span> <span class="keyword">select</span>语句</span><br><span class="line"><span class="keyword">CURSOR</span> 游标名(变量) <span class="keyword">IS</span> <span class="keyword">select</span>语句</span><br><span class="line"><span class="comment">-- 打开(open之后游标指向第一行)</span></span><br><span class="line"><span class="keyword">open</span> 游标名</span><br><span class="line"><span class="keyword">open</span> 游标名(<span class="operator">&amp;</span>变量)</span><br><span class="line"><span class="comment">-- 检索(每执行一次fetch指针后移)</span></span><br><span class="line"><span class="keyword">fetch</span> 游标名 <span class="keyword">into</span> 一个能存一行数据的变量</span><br><span class="line"><span class="comment">-- 关闭</span></span><br><span class="line"><span class="keyword">close</span> 游标名</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 通过loop，while，for来循环检索的区别</span></span><br><span class="line">loop</span><br><span class="line">	fetch...into..;</span><br><span class="line">	exit <span class="keyword">when</span> 游标<span class="operator">%</span>notfound;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line">fetch...into..;</span><br><span class="line">while 游标<span class="operator">%</span>notfound loop</span><br><span class="line">	fetch...into..;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> 记录行变量 <span class="keyword">in</span> 游标名 loop</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br></pre></td></tr></table></figure>
 <table>
 <thead>
 <tr>
@@ -655,17 +688,24 @@ Oracle数据库--> 数据库管理系统DBMS
 </tr>
 </tbody>
 </table>
-</div>
-<h3 id="隐式游标"><a href="#隐式游标" class="headerlink" title="隐式游标"></a>隐式游标</h3><p><strong>指向SQL语句执行的缓冲区的指针</strong>，又称SQL游标(静态游标)</p>
-<p>隐式游标属性同显式游标,相当于一个游标名称为SQL的游标<br>SQL游标主要用来处理insert、update、delete、单行的select…into</p>
-<h4 id="游标变量"><a href="#游标变量" class="headerlink" title="游标变量"></a>游标变量</h4><p>定义游标引用类型：TYPE 游标引用类型名a IS REF CURSOR [RETURN 返回类型]<br>引用上面定义：游标变量名 a<br>在Oracle有一个预定义的游标引用类型sys_refcursor</p>
+<h3 id="隐式游标"><a class="markdownIt-Anchor" href="#隐式游标"></a> 隐式游标</h3>
+<p><strong>指向SQL语句执行的缓冲区的指针</strong>，又称SQL游标(静态游标)</p>
+<p>隐式游标属性同显式游标,相当于一个游标名称为SQL的游标<br />
+SQL游标主要用来处理insert、update、delete、单行的select…into</p>
+<h4 id="游标变量"><a class="markdownIt-Anchor" href="#游标变量"></a> 游标变量</h4>
+<p>定义游标引用类型：TYPE 游标引用类型名a IS REF CURSOR [RETURN 返回类型]<br />
+引用上面定义：游标变量名 a<br />
+在Oracle有一个预定义的游标引用类型sys_refcursor</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 定义游标变量</span></span><br><span class="line">游标名 sys_refcursor;</span><br><span class="line"><span class="comment">-- 打开游标变量</span></span><br><span class="line"><span class="keyword">open</span> 游标变量名 <span class="keyword">for</span> select...</span><br><span class="line"><span class="comment">-- 检索游标变量</span></span><br><span class="line">loop</span><br><span class="line"><span class="keyword">fetch</span> 游标变量 <span class="keyword">into</span> 变量;</span><br><span class="line">...;</span><br><span class="line">exit <span class="keyword">when</span> ...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"><span class="comment">-- 关闭</span></span><br><span class="line"><span class="keyword">close</span> 游标变量名;</span><br></pre></td></tr></table></figure>
-<h2 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h2><p>预定义异常，非预定义异常，用户定义异常</p>
-<h2 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a>存储过程</h2><p>声明形参时<strong>不能定义长度或精度</strong>，有默认值的参数放在参数列表最后。</p>
+<h2 id="异常"><a class="markdownIt-Anchor" href="#异常"></a> 异常</h2>
+<p>预定义异常，非预定义异常，用户定义异常</p>
+<h2 id="存储过程"><a class="markdownIt-Anchor" href="#存储过程"></a> 存储过程</h2>
+<p>声明形参时<strong>不能定义长度或精度</strong>，有默认值的参数放在参数列表最后。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 定义</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">procedure</span> 存储过程名(变量名 <span class="keyword">in</span><span class="operator">|</span><span class="keyword">out</span><span class="operator">|</span><span class="keyword">in</span> <span class="keyword">out</span> 数据类型 [:<span class="operator">=</span>默认值])</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">定义变量;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">执行部分;</span><br><span class="line">exception</span><br><span class="line">when...then...异常处理部分;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line"><span class="keyword">execute</span><span class="operator">|</span><span class="keyword">call</span> 存储过程名;</span><br><span class="line">在PL<span class="operator">/</span><span class="keyword">SQL</span>直接当成函数执行</span><br></pre></td></tr></table></figure>
-<h2 id="存储函数"><a href="#存储函数" class="headerlink" title="存储函数"></a>存储函数</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 定义</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">function</span> 函数名(变量名 <span class="keyword">in</span><span class="operator">|</span><span class="keyword">out</span><span class="operator">|</span><span class="keyword">in</span> <span class="keyword">out</span> 数据类型 [:<span class="operator">=</span>默认值])</span><br><span class="line"><span class="keyword">return</span> 数据类型;</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">定义变量;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">执行部分;</span><br><span class="line"><span class="keyword">return</span> 变量;</span><br><span class="line">exception</span><br><span class="line">异常处理部分;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line">PL<span class="operator">/</span><span class="keyword">SQL</span>中使用直接调用</span><br><span class="line">在<span class="keyword">SQL</span>语句中直接使用</span><br></pre></td></tr></table></figure>
-<h2 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h2><p>一种特殊的存储过程系统自动调用执行，不能显式调用，不接受参数</p>
-<div class="table-container">
+<h2 id="存储函数"><a class="markdownIt-Anchor" href="#存储函数"></a> 存储函数</h2>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 定义</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">function</span> 函数名(变量名 <span class="keyword">in</span><span class="operator">|</span><span class="keyword">out</span><span class="operator">|</span><span class="keyword">in</span> <span class="keyword">out</span> 数据类型 [:<span class="operator">=</span>默认值])</span><br><span class="line"><span class="keyword">return</span> 数据类型;</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">定义变量;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">执行部分;</span><br><span class="line"><span class="keyword">return</span> 变量;</span><br><span class="line">exception</span><br><span class="line">异常处理部分;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line">PL<span class="operator">/</span><span class="keyword">SQL</span>中使用直接调用</span><br><span class="line">在<span class="keyword">SQL</span>语句中直接使用</span><br></pre></td></tr></table></figure>
+<h2 id="触发器"><a class="markdownIt-Anchor" href="#触发器"></a> 触发器</h2>
+<p>一种特殊的存储过程系统自动调用执行，不能显式调用，不接受参数</p>
 <table>
 <thead>
 <tr>
@@ -688,11 +728,19 @@ Oracle数据库--> 数据库管理系统DBMS
 </tr>
 </tbody>
 </table>
-</div>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 创建DML触发器(语句级、行级for each row使用到:old、:new)</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">trigger</span> 触发器名</span><br><span class="line">before<span class="operator">|</span>after <span class="keyword">insert</span> <span class="keyword">or</span> <span class="keyword">delete</span> <span class="keyword">or</span> <span class="keyword">update</span></span><br><span class="line">[<span class="keyword">of</span> 列名] <span class="keyword">on</span> 表名</span><br><span class="line">[<span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span>]   <span class="comment">-- 行级触发器</span></span><br><span class="line">[<span class="keyword">declare</span> 变量]</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">...;</span><br><span class="line"><span class="comment">-- 条件谓词：inserting、updating、deleting</span></span><br><span class="line"><span class="comment">-- if 判断词 then或者 when 判断词 then</span></span><br><span class="line"><span class="comment">-- 行级DML标识符   :old.列名  :new.列名  在when中使用不加:</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建变异表触发器</span></span><br><span class="line"><span class="comment">-- 更新变异表同时查询变异表：在行级触发器中获取要修改的记录的信息，存放到一个软件包的全局变量中，然后在语句级后触发器中利用软件包中全局变量信息对变异表的查询</span></span><br></pre></td></tr></table></figure>
-<h1 id="备份与恢复"><a href="#备份与恢复" class="headerlink" title="备份与恢复"></a>备份与恢复</h1><p>冷热备份，归档模式</p>
-<h2 id="物理备份"><a href="#物理备份" class="headerlink" title="物理备份"></a>物理备份</h2><h2 id="物理恢复"><a href="#物理恢复" class="headerlink" title="物理恢复"></a>物理恢复</h2><h2 id="RMAN备份"><a href="#RMAN备份" class="headerlink" title="RMAN备份"></a>RMAN备份</h2><h2 id="RMAN恢复"><a href="#RMAN恢复" class="headerlink" title="RMAN恢复"></a>RMAN恢复</h2><h2 id="逻辑备份"><a href="#逻辑备份" class="headerlink" title="逻辑备份"></a>逻辑备份</h2><p>导出：exp<br>exp 用户名/密码@实例名 file=备份文件路径.dmp full=y<br>存入一个二进制转储文件：*.dmp</p>
-<h2 id="逻辑恢复"><a href="#逻辑恢复" class="headerlink" title="逻辑恢复"></a>逻辑恢复</h2><p>导入：imp</p>
+<h1 id="备份与恢复"><a class="markdownIt-Anchor" href="#备份与恢复"></a> 备份与恢复</h1>
+<p>冷热备份，归档模式</p>
+<h2 id="物理备份"><a class="markdownIt-Anchor" href="#物理备份"></a> 物理备份</h2>
+<h2 id="物理恢复"><a class="markdownIt-Anchor" href="#物理恢复"></a> 物理恢复</h2>
+<h2 id="rman备份"><a class="markdownIt-Anchor" href="#rman备份"></a> RMAN备份</h2>
+<h2 id="rman恢复"><a class="markdownIt-Anchor" href="#rman恢复"></a> RMAN恢复</h2>
+<h2 id="逻辑备份"><a class="markdownIt-Anchor" href="#逻辑备份"></a> 逻辑备份</h2>
+<p>导出：exp<br />
+exp 用户名/密码@实例名 file=备份文件路径.dmp full=y<br />
+存入一个二进制转储文件：*.dmp</p>
+<h2 id="逻辑恢复"><a class="markdownIt-Anchor" href="#逻辑恢复"></a> 逻辑恢复</h2>
+<p>导入：imp</p>
 
     </div>
 
@@ -776,7 +824,7 @@ Oracle数据库--> 数据库管理系统DBMS
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD"><span class="nav-text">安装与卸载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86%E5%99%A8OEM"><span class="nav-text">企业管理器OEM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-text">文件体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%AD%98%E5%82%A8%E5%92%8C%E9%80%BB%E8%BE%91%E5%AD%98%E5%82%A8"><span class="nav-text">物理存储和逻辑存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84%E5%92%8C%E5%90%8E%E5%8F%B0%E8%BF%9B%E7%A8%8B"><span class="nav-text">内存结构和后台进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SGA%E5%92%8CPGA"><span class="nav-text">SGA和PGA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0%E8%BF%9B%E7%A8%8B"><span class="nav-text">后台进程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86"><span class="nav-text">安全管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86"><span class="nav-text">用户管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-text">权限管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%92%E8%89%B2%E7%AE%A1%E7%90%86"><span class="nav-text">角色管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E7%A9%BA%E9%97%B4%E7%AE%A1%E7%90%86"><span class="nav-text">表空间管理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95%E7%9B%B8%E5%85%B3"><span class="nav-text">语法相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E4%BD%99"><span class="nav-text">求余</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DDL%E3%80%81DML%E3%80%81DQL-%E6%B2%A1%E5%86%99%E7%9A%84%E9%BB%98%E8%AE%A4%E5%92%8C%E5%85%B6%E4%BB%96sql%E4%B8%80%E6%A0%B7"><span class="nav-text">DDL、DML、DQL(没写的默认和其他sql一样)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-text">select注意事项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-text">事务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%8F%E5%88%97"><span class="nav-text">序列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%86%E5%9B%BE"><span class="nav-text">视图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E4%B9%89%E8%AF%8D"><span class="nav-text">同义词</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B0"><span class="nav-text">日期函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0"><span class="nav-text">其他函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PL-SQL"><span class="nav-text">PL&#x2F;SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text">数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="nav-text">关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B8%E6%A0%87"><span class="nav-text">游标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E6%B8%B8%E6%A0%87"><span class="nav-text">显示游标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E6%B8%B8%E6%A0%87"><span class="nav-text">隐式游标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%B8%E6%A0%87%E5%8F%98%E9%87%8F"><span class="nav-text">游标变量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8"><span class="nav-text">异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="nav-text">存储过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%87%BD%E6%95%B0"><span class="nav-text">存储函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-text">触发器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D"><span class="nav-text">备份与恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%A4%87%E4%BB%BD"><span class="nav-text">物理备份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E6%81%A2%E5%A4%8D"><span class="nav-text">物理恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RMAN%E5%A4%87%E4%BB%BD"><span class="nav-text">RMAN备份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RMAN%E6%81%A2%E5%A4%8D"><span class="nav-text">RMAN恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%A4%87%E4%BB%BD"><span class="nav-text">逻辑备份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E6%81%A2%E5%A4%8D"><span class="nav-text">逻辑恢复</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E4%B8%8E%E5%8D%B8%E8%BD%BD"><span class="nav-text"> 安装与卸载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text"> 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%81%E4%B8%9A%E7%AE%A1%E7%90%86%E5%99%A8oem"><span class="nav-text"> 企业管理器OEM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-text"> 文件体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%AD%98%E5%82%A8%E5%92%8C%E9%80%BB%E8%BE%91%E5%AD%98%E5%82%A8"><span class="nav-text"> 物理存储和逻辑存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84%E5%92%8C%E5%90%8E%E5%8F%B0%E8%BF%9B%E7%A8%8B"><span class="nav-text"> 内存结构和后台进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sga%E5%92%8Cpga"><span class="nav-text"> SGA和PGA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0%E8%BF%9B%E7%A8%8B"><span class="nav-text"> 后台进程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86"><span class="nav-text"> 安全管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86"><span class="nav-text"> 用户管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="nav-text"> 权限管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%92%E8%89%B2%E7%AE%A1%E7%90%86"><span class="nav-text"> 角色管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E7%A9%BA%E9%97%B4%E7%AE%A1%E7%90%86"><span class="nav-text"> 表空间管理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95%E7%9B%B8%E5%85%B3"><span class="nav-text"> 语法相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E4%BD%99"><span class="nav-text"> 求余</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ddl-dml-dql%E6%B2%A1%E5%86%99%E7%9A%84%E9%BB%98%E8%AE%A4%E5%92%8C%E5%85%B6%E4%BB%96sql%E4%B8%80%E6%A0%B7"><span class="nav-text"> DDL、DML、DQL(没写的默认和其他sql一样)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-text"> select注意事项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-text"> 事务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%8F%E5%88%97"><span class="nav-text"> 序列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%86%E5%9B%BE"><span class="nav-text"> 视图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%90%8C%E4%B9%89%E8%AF%8D"><span class="nav-text"> 同义词</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-text"> 函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E6%9C%9F%E5%87%BD%E6%95%B0"><span class="nav-text"> 日期函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%87%BD%E6%95%B0"><span class="nav-text"> 其他函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#plsql"><span class="nav-text"> PL&#x2F;SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text"> 数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E8%AF%8D"><span class="nav-text"> 关键词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B8%B8%E6%A0%87"><span class="nav-text"> 游标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA%E6%B8%B8%E6%A0%87"><span class="nav-text"> 显示游标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E6%B8%B8%E6%A0%87"><span class="nav-text"> 隐式游标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B8%B8%E6%A0%87%E5%8F%98%E9%87%8F"><span class="nav-text"> 游标变量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8"><span class="nav-text"> 异常</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B"><span class="nav-text"> 存储过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%98%E5%82%A8%E5%87%BD%E6%95%B0"><span class="nav-text"> 存储函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-text"> 触发器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D"><span class="nav-text"> 备份与恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%A4%87%E4%BB%BD"><span class="nav-text"> 物理备份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E6%81%A2%E5%A4%8D"><span class="nav-text"> 物理恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rman%E5%A4%87%E4%BB%BD"><span class="nav-text"> RMAN备份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rman%E6%81%A2%E5%A4%8D"><span class="nav-text"> RMAN恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%A4%87%E4%BB%BD"><span class="nav-text"> 逻辑备份</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E6%81%A2%E5%A4%8D"><span class="nav-text"> 逻辑恢复</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -849,12 +897,12 @@ Oracle数据库--> 数据库管理系统DBMS
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">362k</span>
+    <span title="站点总字数">363k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:29</span>
+    <span title="站点阅读时长">5:30</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
@@ -911,6 +959,8 @@ Oracle数据库--> 数据库管理系统DBMS
 
 
 
+
+  
 
   
 

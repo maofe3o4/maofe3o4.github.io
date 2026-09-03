@@ -275,7 +275,8 @@
 
       
         <p>[toc]</p>
-<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>见《linux软件安装》</p>
+<h1 id="安装"><a class="markdownIt-Anchor" href="#安装"></a> 安装</h1>
+<p>见《linux软件安装》</p>
 <p>简单说一下就是：</p>
 <ul>
 <li>压缩包解压</li>
@@ -283,20 +284,23 @@
 <li>创建安装目录mkdir 安装路径</li>
 <li>开始安装make PREFIX=安装路径 install</li>
 </ul>
-<p>如果要使用bin/redis-server ./redis.conf启动redis服务<br>./bin/redis-server ./redis.conf<br>容器内直接输入redis-server </p>
+<p>如果要使用bin/redis-server ./redis.conf启动redis服务<br />
+./bin/redis-server ./redis.conf<br />
+容器内直接输入redis-server</p>
 <p>提前配置好redis.conf</p>
 <ul>
 <li>容器里面在/etc/redis目录</li>
 <li>直接部署在linux，位置在解压的文件里面，要复制一份到安装路径下</li>
 <li>修改配置文件bind 127.0.0.1 -::1 修改成0.0.0.0</li>
-<li>如果是容器内不改这个   daemonize no 改成daemonize yes </li>
+<li>如果是容器内不改这个   daemonize no 改成daemonize yes</li>
 </ul>
 <p>启动登录</p>
 <ul>
 <li>刚开始没有密码，直接redis-cli</li>
 <li>后面设了密码和用户名，reis-cli  -a 密码</li>
 </ul>
-<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><p>参考<a target="_blank" rel="noopener" href="http://redisdoc.com">http://redisdoc.com</a></p>
+<h1 id="数据类型"><a class="markdownIt-Anchor" href="#数据类型"></a> 数据类型</h1>
+<p>参考<a target="_blank" rel="noopener" href="http://redisdoc.com">http://redisdoc.com</a></p>
 <ul>
 <li>string字符串</li>
 <li>hash哈希</li>
@@ -305,7 +309,7 @@
 <li>zset有序集合</li>
 </ul>
 <p>查数据库大小：dbsize</p>
-<h2 id="键key"><a href="#键key" class="headerlink" title="键key"></a>键key</h2><div class="table-container">
+<h2 id="键key"><a class="markdownIt-Anchor" href="#键key"></a> 键key</h2>
 <table>
 <thead>
 <tr>
@@ -360,9 +364,9 @@
 </tr>
 </tbody>
 </table>
-</div>
-<h2 id="字符串string"><a href="#字符串string" class="headerlink" title="字符串string"></a>字符串string</h2><p>可以包含任何数据(因为是用二进制存的)，比如图片或者序列化的对象<br>最大512M</p>
-<div class="table-container">
+<h2 id="字符串string"><a class="markdownIt-Anchor" href="#字符串string"></a> 字符串string</h2>
+<p>可以包含任何数据(因为是用二进制存的)，比如图片或者序列化的对象<br />
+最大512M</p>
 <table>
 <thead>
 <tr>
@@ -405,9 +409,8 @@
 </tr>
 </tbody>
 </table>
-</div>
-<h2 id="列表list"><a href="#列表list" class="headerlink" title="列表list"></a>列表list</h2><p>用链表实现</p>
-<div class="table-container">
+<h2 id="列表list"><a class="markdownIt-Anchor" href="#列表list"></a> 列表list</h2>
+<p>用链表实现</p>
 <table>
 <thead>
 <tr>
@@ -462,8 +465,7 @@
 </tr>
 </tbody>
 </table>
-</div>
-<h2 id="集合set"><a href="#集合set" class="headerlink" title="集合set"></a>集合set</h2><div class="table-container">
+<h2 id="集合set"><a class="markdownIt-Anchor" href="#集合set"></a> 集合set</h2>
 <table>
 <thead>
 <tr>
@@ -506,26 +508,35 @@
 </tr>
 </tbody>
 </table>
-</div>
-<h2 id="哈希hash"><a href="#哈希hash" class="headerlink" title="哈希hash"></a>哈希hash</h2><h2 id="有序集合zset"><a href="#有序集合zset" class="headerlink" title="有序集合zset"></a>有序集合zset</h2><h1 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h1><h2 id="RDB"><a href="#RDB" class="headerlink" title="RDB"></a>RDB</h2><ul>
+<h2 id="哈希hash"><a class="markdownIt-Anchor" href="#哈希hash"></a> 哈希hash</h2>
+<h2 id="有序集合zset"><a class="markdownIt-Anchor" href="#有序集合zset"></a> 有序集合zset</h2>
+<h1 id="持久化"><a class="markdownIt-Anchor" href="#持久化"></a> 持久化</h1>
+<h2 id="rdb"><a class="markdownIt-Anchor" href="#rdb"></a> RDB</h2>
+<ul>
 <li>最后一次持久化的数据可能丢失</li>
 <li>创建子进程fork来执行快照会占用两倍的空间</li>
 <li>redis/data下的dump.rdb文件整个内存压缩过后的快照</li>
 </ul>
-<p>开启rdb自动来持久化：redis.conf<br>配置文件中搜索save<br>save  &lt; seconds &gt;  &lt; changes &gt;</p>
-<p>save和bgsave：保存rdb到内存上，前者只保存，后者是异步保存<br>lastsave：获取最后一次成功执行快照的时间</p>
-<h2 id="AOF"><a href="#AOF" class="headerlink" title="AOF"></a>AOF</h2><p><img src="/images/loading/loading.gif" data-original="/images/持久化.png" alt="image-20240813172014778"></p>
+<p>开启rdb自动来持久化：redis.conf<br />
+配置文件中搜索save<br />
+save  &lt; seconds &gt;  &lt; changes &gt;</p>
+<p>save和bgsave：保存rdb到内存上，前者只保存，后者是异步保存<br />
+lastsave：获取最后一次成功执行快照的时间</p>
+<h2 id="aof"><a class="markdownIt-Anchor" href="#aof"></a> AOF</h2>
+<p><img src="/images/loading/loading.gif" data-original="/images/%E6%8C%81%E4%B9%85%E5%8C%96.png" alt="image-20240813172014778" /></p>
 <p>Redis会记录上次重写时的AOF大小，默认配置是当AOF文件大小是上次rewrite后大小的一倍且文件大于64M时触发</p>
 <ul>
 <li>以日志形式来记录每个写操作(读不记录)</li>
 <li>只追加文件，不改写文件</li>
 <li>保存在/redis/data/appendonly.aof</li>
 </ul>
-<p>开启AOF：redis.conf<br>配置文件中搜索appendonly<br>appendonly yes</p>
+<p>开启AOF：redis.conf<br />
+配置文件中搜索appendonly<br />
+appendonly yes</p>
 <p>修复AOF文件</p>
 <ul>
 <li>备份损坏的文件</li>
-<li>执行redis-check-aof —fix</li>
+<li>执行redis-check-aof --fix</li>
 <li>重启redis</li>
 </ul>
 <p>重写AOF(aof有冗余记录)</p>
@@ -533,9 +544,11 @@
 <li>执行bgrewriteaof</li>
 <li>fork一条新进程来重写AOF文件</li>
 <li>重写触发条件在redis.conf中</li>
-<li>auto-aof-rewrite-percentage 100   //每次达到重写后的一倍就重写<br>auto-aof-rewrite-min-size 64mb</li>
+<li>auto-aof-rewrite-percentage 100   //每次达到重写后的一倍就重写<br />
+auto-aof-rewrite-min-size 64mb</li>
 </ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<ul>
 <li>持久化方式，两种同时启动</li>
 <li>RDB用于备份数据库</li>
 <li>AOF用于恢复</li>
@@ -623,7 +636,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%AEkey"><span class="nav-text">键key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2string"><span class="nav-text">字符串string</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E8%A1%A8list"><span class="nav-text">列表list</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88set"><span class="nav-text">集合set</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%B8%8Chash"><span class="nav-text">哈希hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88zset"><span class="nav-text">有序集合zset</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RDB"><span class="nav-text">RDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AOF"><span class="nav-text">AOF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text"> 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text"> 数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%AEkey"><span class="nav-text"> 键key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2string"><span class="nav-text"> 字符串string</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E8%A1%A8list"><span class="nav-text"> 列表list</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88set"><span class="nav-text"> 集合set</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%B8%8Chash"><span class="nav-text"> 哈希hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88zset"><span class="nav-text"> 有序集合zset</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text"> 持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rdb"><span class="nav-text"> RDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#aof"><span class="nav-text"> AOF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text"> 总结</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -696,12 +709,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">362k</span>
+    <span title="站点总字数">363k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">5:29</span>
+    <span title="站点阅读时长">5:30</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
   </div>
@@ -758,6 +771,8 @@
 
 
 
+
+  
 
   
 
