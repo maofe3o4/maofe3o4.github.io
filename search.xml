@@ -1840,849 +1840,6 @@ redis redis-server</p>
       </tags>
   </entry>
   <entry>
-    <title>linux常用指令快速入门</title>
-    <url>/2024/08/10/linux/linux%E7%AE%80%E5%8D%95%E6%8C%87%E4%BB%A4/</url>
-    <content><![CDATA[<p><span id="jump1">目录</span></p>
-<p>[toc]</p>
-<h1 id="常用简单指令">常用简单指令</h1>
-<table>
-<thead>
-<tr class="header">
-<th>运行等级</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>init 0</td>
-<td>关机</td>
-</tr>
-<tr class="even">
-<td>init 1</td>
-<td>单用户，root，用于系统维护，禁止远程登陆</td>
-</tr>
-<tr class="odd">
-<td>init 2</td>
-<td>多用户，不支持NFS</td>
-</tr>
-<tr class="even">
-<td>init 3</td>
-<td>命令行模式，完全的多用户，登陆后进入</td>
-</tr>
-<tr class="odd">
-<td>init 4</td>
-<td>安全模式</td>
-</tr>
-<tr class="even">
-<td>init 5</td>
-<td>图形化</td>
-</tr>
-<tr class="odd">
-<td>init 6</td>
-<td>重启</td>
-</tr>
-</tbody>
-</table>
-<p>内存中的数据同步到磁盘：sync 查看当前目录：pwd 切换目录：cd 目录名 （cd只能进入目录） 进入文件：cat 文件路径 显示(当前)目录中的文件：ls [-a包括隐藏文件] [-l列表详细信息] [目录名] 创建目录：mkdir [-p] 目录名/路径 删除空目录(非空删除失败)：rmdir [-p] 目录名 清屏：clear 在终端使用之前用到的命令(历史命令保存在.bash_history文件中)：上下光标调取 命令自动补全：tab 正则表达式：*多个字符,?一个字符 查看/设置时间：date date -s “2024-01-02 09:11:42” 帮助指令：man help 修改主机名：hostname set-hostname 新名称</p>
-<h1 id="linux目录和文件简单介绍">Linux目录和文件(简单介绍)</h1>
-<p><a href="#jump1">回到目录</a></p>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/图片1.png" alt="image-20240604094822494" /><figcaption>image-20240604094822494</figcaption>
-</figure>
-<p>绝对路径：/usr/include/a.h 相对路径：如果当前目录为/usr，则include/a.h为相对路径等同于上面 当前目录：. 上一级目录：.. 家目录：~ 系统启动必须：/boot、/etc、/lib 命令集合：/sbin、/bin 设备相关：/dev、/media、/mnt 临时文件：/run、/lost+found、/tmp 账户相关：/root、/home、/usr 运行过程：/var、/proc 拓展相关：/opt、/srv</p>
-<p>bin执行，lib库，etc是配置，usr和home是’我的’，dev管设备，opt装软件</p>
-<h1 id="vi编辑器">vi编辑器</h1>
-<p><a href="#jump1">回到目录</a></p>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/vim.png" alt="vim工作模式" /><figcaption>vim工作模式</figcaption>
-</figure>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/vim键盘.png" alt="vim键盘" /><figcaption>vim键盘</figcaption>
-</figure>
-<p>命令模式</p>
-<table>
-<thead>
-<tr class="header">
-<th>命令模式</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>:set nu</td>
-<td>显示行号</td>
-</tr>
-<tr class="even">
-<td>:set nonu</td>
-<td>取消行号</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>一般模式</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>/字符</td>
-<td>查找指定字符，按n查找下一个</td>
-</tr>
-<tr class="even">
-<td>gg</td>
-<td>查看行首</td>
-</tr>
-<tr class="odd">
-<td>G</td>
-<td>查看行尾</td>
-</tr>
-<tr class="even">
-<td>数字 G</td>
-<td>查看指定行</td>
-</tr>
-</tbody>
-</table>
-<p>i:当前位置开始编辑<br />
-o：在下面插入一行编辑 a：当前位置后一个位置插入<br />
-r：当前位置替换 I:当前行首个位置编辑<br />
-O：在上面插入一行编辑<br />
-A：当前行最后一个位置插入 R：从当位置开始替换</p>
-<h1 id="用户组管理">用户(组)管理</h1>
-<p><a href="#jump1">回到目录</a></p>
-<h3 id="组">组</h3>
-<p>组的信息保存在/etc/group文件 创建组：groupadd 组名 修改组：groupmod [-n 新组] 旧组 删除组：groupdel 组名</p>
-<h3 id="用户">用户</h3>
-<p><strong>创建删除</strong> 用户信息保存在/etc/passwd文件 用户密码保存在/etc/shadow文件 创建用户：useradd [-g 组名] [-d 用户主目录] [-r系统用户不可登录系统] 用户名 修改用户：usermod [-l 新名字] [-g 新组] [-d 新目录] 用户名 删除用户：userdel [-r删除组目录] 用户名 <strong>修改密码</strong> root用户修改其他用户：passwd 用户名 普通用户修改自己：passwd <strong>切换用户</strong> root用户免密码切换：su -用户名 普通用户：su -用户名 然后输入密码 <strong>查看用户信息</strong> id 用户名</p>
-<h1 id="目录文件操作">目录文件操作</h1>
-<p><a href="#jump1">回到目录</a></p>
-<p>目录和文件的详细信息：ls [-l] [目录名] 按时间降序显示ls -lt [目录名] -a:列出全部文件，包括隐藏文件 快捷方式显示按当前目录下详细信息：ll</p>
-<h2 id="文件目录属性">文件/目录属性</h2>
-<p>drwxr-xr-x. 4 root root 80 9月 26 17：05 aaa</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: center;">对应信息</th>
-<th style="text-align: center;">介绍</th>
-<th style="text-align: center;">例子</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">文件类型</td>
-<td style="text-align: center;">d目录-普通文件l链接p管道文件b块设备文件c字符设备文件s套接字文件</td>
-<td style="text-align: center;">d</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">文件权限</td>
-<td style="text-align: center;">r读w写x可执行-无权限；三个为一组代表所有者，同组用户，其他用户</td>
-<td style="text-align: center;">rwxr-xr-x</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">文件硬链接数或目录的子目录数</td>
-<td style="text-align: center;">文件硬链接，初始为1；空目录初始为2；</td>
-<td style="text-align: center;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">文件拥有者</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">root</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">文件拥有者所在组</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">root</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">目录或文件大小</td>
-<td style="text-align: center;">文件大小单位字节；目录大小不包括目录下的文件和子目录</td>
-<td style="text-align: center;">80</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">最后一次被修改的时间</td>
-<td style="text-align: center;">创建/last修改</td>
-<td style="text-align: center;">9月 26 17：05</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">目录或文件名</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">aaa</td>
-</tr>
-</tbody>
-</table>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/图片2.png" alt="image-20240604094822494" /><figcaption>image-20240604094822494</figcaption>
-</figure>
-<h2 id="修改目录和文件权限">修改目录和文件权限</h2>
-<p>修改拥有者：chown [-R递归赋予权限] 用户：组 目录和文件列表 设置权限：chmod [-R] whooperatorpermission 目录和文件列表</p>
-<table>
-<thead>
-<tr class="header">
-<th>who</th>
-<th>operator</th>
-<th>permission</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>u所有者</td>
-<td>+增加权限</td>
-<td>x进入目录或执行文件</td>
-</tr>
-<tr class="even">
-<td>g所有者所在组</td>
-<td>-取消权限</td>
-<td>r读取文件或查看目录中有哪些子目录和文件</td>
-</tr>
-<tr class="odd">
-<td>o其他用户</td>
-<td>=重新设置权限</td>
-<td>w修改文件内容或在目录中增删改</td>
-</tr>
-<tr class="even">
-<td>a全部用户</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>r=4 w=2 x=1 rwx=4+2+1=7 chmod -R 777 文件名/目录 给所有人用给rwx权限</p>
-<h2 id="查看查找文件内容">查看/查找文件内容</h2>
-<table>
-<thead>
-<tr class="header">
-<th>查看文件内容</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>cat 文件名</td>
-<td>显示</td>
-</tr>
-<tr class="even">
-<td>less 文件名</td>
-<td>分屏查看，</td>
-</tr>
-<tr class="odd">
-<td>more 文件名</td>
-<td>分页查看，空格下一页，b上一页，q退出</td>
-</tr>
-<tr class="even">
-<td>wc 文件名</td>
-<td>统计文件行数</td>
-</tr>
-<tr class="odd">
-<td>head [-n] 文件</td>
-<td>查看前n行，默认10行</td>
-</tr>
-<tr class="even">
-<td>tail [-n] [-f] 文件</td>
-<td>查看尾n行，默认10行,-f实时跟踪</td>
-</tr>
-<tr class="odd">
-<td>grep [-n]</td>
-<td>过滤查找， 内容|grep 指定查找内容</td>
-</tr>
-<tr class="even">
-<td>find 目录 -name 文件名</td>
-<td>在指定目录下按名字查找文件</td>
-</tr>
-<tr class="odd">
-<td>locate 文件名</td>
-<td>locate之前updatedb</td>
-</tr>
-</tbody>
-</table>
-<h2 id="文件目录的创建删除复制移动">文件/目录的创建删除复制移动</h2>
-<table>
-<thead>
-<tr class="header">
-<th>创建目录/空文件</th>
-<th>删除</th>
-<th>复制</th>
-<th>移动/重命名</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>mkdir [-mp] 目录名</td>
-<td>rm [-rf] 目录和文件</td>
-<td>cp [-r] 旧名 新名</td>
-<td>mv 旧名 新名</td>
-</tr>
-<tr class="even">
-<td>touch 文件名</td>
-<td>-r递归删除-f强制删除不提示</td>
-<td>-r递归复制目录</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>-m配置权限；-p目录递归创建</td>
-<td>rmdir是删空目录</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>在不同的linux服务器之间进行文件传输： scp [-r] 文件 目标用户名@目标服务器名或ip:目标服务器上的保存路径</p>
-<h2 id="安装和打包">安装和打包</h2>
-<h3 id="rpm包管理">rpm包管理</h3>
-<table>
-<thead>
-<tr class="header">
-<th>命令</th>
-<th>选项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>rpm</td>
-<td>-q 包名</td>
-<td>查询是否安装</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>-qa</td>
-<td>查询已安装的软件包</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>-ql 包名</td>
-<td>查询软件包中文件</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>-qi 包名</td>
-<td>查询软件包信息</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>-qf 文件全路径名</td>
-<td>查询文件所属软件包</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>-e 包名</td>
-<td>卸载包</td>
-</tr>
-</tbody>
-</table>
-<h3 id="yum安装">yum安装</h3>
-<p>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup</p>
-<p>curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</p>
-<p>yum makecache</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">命令</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">yum [-y/d/n] install 包名</td>
-<td>安装</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">yum -y remove</td>
-<td>删除</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">yum update 包名</td>
-<td>升级</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">yum list | grep 软件名</td>
-<td>查找能够安装的包</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">yum check-update</td>
-<td>显示可更新的包</td>
-</tr>
-</tbody>
-</table>
-<h3 id="打包和压缩">打包和压缩</h3>
-<p>zip命令和tar命令</p>
-<p>压缩：zip [-qrd] 压缩包文件名 目录和文件名列表 解压：unzip [-d 指定放的位置] 压缩包文件名</p>
-<p>压缩：tar [-zcvf] 压缩包文件名.tar.gz 目录和文件名列表 解压：tar [-xzvf] 压缩包文件名 [-C 指定放的位置]</p>
-<table>
-<thead>
-<tr class="header">
-<th>zip</th>
-<th>说明</th>
-<th>tar</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>-q</td>
-<td>不显示命令执行过程</td>
-<td>-z</td>
-<td>打包同时压缩</td>
-</tr>
-<tr class="even">
-<td>-r</td>
-<td>递归压缩</td>
-<td>-c/x</td>
-<td>打包/解包</td>
-</tr>
-<tr class="odd">
-<td>-u</td>
-<td>把文件增加/替换到压缩包中</td>
-<td>-v</td>
-<td>显示文件详细信息</td>
-</tr>
-<tr class="even">
-<td>-d</td>
-<td>指定压缩或解压缩后产生的文件放的地方</td>
-<td>-f</td>
-<td>指定压缩/解压的文件名</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td>-t</td>
-<td>列出压缩包里的文件(不用解压)</td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td>-C</td>
-<td>指定压缩或解压缩后产生的文件放的地方</td>
-</tr>
-</tbody>
-</table>
-<h1 id="链接">链接</h1>
-<p><a href="#jump1">回到目录</a></p>
-<p>硬链接：ln 文件名 链接名 软链接：ln -s 目录或文件 链接名</p>
-<p>硬链接是文件指针；软链接是一个保存了文件路径的文件</p>
-<p>尽量为目录做软链接，为文件做硬链接</p>
-<h1 id="进程">进程</h1>
-<p><a href="#jump1">回到目录</a></p>
-<h2 id="查看进程">查看进程</h2>
-<p>ps [-aux]/[-ef] 选项说明： -a 查全部进程(前台) -x 查全部进程(包括后台) -u 显示该进程的用户 -e 显示所有进程 -f 全格式</p>
-<p>以树状形式显示 pstree [-p]/[-u] 选项说明：p：进程pid；u进程所属用户</p>
-<p>实时显示top [选项]</p>
-<table>
-<thead>
-<tr class="header">
-<th>选项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>-d</td>
-<td>每各d秒更新显示内容</td>
-</tr>
-<tr class="even">
-<td>-i</td>
-<td>不显示闲置和僵尸进程</td>
-</tr>
-<tr class="odd">
-<td>-p</td>
-<td>指定进程ID查看</td>
-</tr>
-<tr class="even">
-<td>执行后操作</td>
-<td>说明</td>
-</tr>
-<tr class="odd">
-<td>P</td>
-<td>以CPU使用率排序(默认)</td>
-</tr>
-<tr class="even">
-<td>M</td>
-<td>以内存使用率排序</td>
-</tr>
-<tr class="odd">
-<td>N</td>
-<td>以PID排序</td>
-</tr>
-<tr class="even">
-<td>q</td>
-<td>退出top</td>
-</tr>
-</tbody>
-</table>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/top性能分析.png" alt="top性能分析" /><figcaption>top性能分析</figcaption>
-</figure>
-<table>
-<thead>
-<tr class="header">
-<th>第一行</th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>top - 11：03：25</td>
-<td>up 4 min</td>
-<td>3 users</td>
-<td></td>
-<td>load average：0.05,0.18,0.10</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>当前时间</td>
-<td>运行了多久</td>
-<td>当前登录用户数</td>
-<td></td>
-<td>系统负载：一段时间内，CPU正在处理和等待处理的进程数之和<br>上面三个数值分别是1分钟，5分钟，15分钟内的平均值</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>第二行:</td>
-<td>统计进程</td>
-<td>的统计</td>
-<td></td>
-<td>信息</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Tasks:209 total</td>
-<td>2 running</td>
-<td>207 sleeping</td>
-<td></td>
-<td>0</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="终止进程">终止进程</h2>
-<p>kill [-9] 进程号 kill all 进程名称 可用通配符</p>
-<h2 id="按端口查">按端口查</h2>
-<p>lsof -t -i:端口号 -t只显示进程号 杀死某一端口的进程：kill $(lsof -t -i:端口号)</p>
-<h1 id="磁盘分区和挂载">磁盘分区和挂载</h1>
-<p><a href="#jump1">回到目录</a></p>
-<p>linux独特的挂载使得其只有一个根目录 查挂载情况-分区-分区格式化-挂载-查磁盘分区使用情况</p>
-<table>
-<thead>
-<tr class="header">
-<th>分区方式</th>
-<th style="text-align: center;">特点</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>mbr</td>
-<td style="text-align: center;">最多支持4个主分区，系统只能在主分区，扩展分区占一个主分区，最大2TB，兼容性好</td>
-</tr>
-<tr class="even">
-<td>gtp</td>
-<td style="text-align: center;">无限多个主分区(windows限制128个)，最大18EB</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr class="header">
-<th>硬盘</th>
-<th></th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>IDE</td>
-<td></td>
-<td>驱动器标识符hdx~ 例如hda3表示第一个IDE硬盘的第三个分区</td>
-</tr>
-<tr class="even">
-<td>SCSI</td>
-<td></td>
-<td>sdx~</td>
-</tr>
-</tbody>
-</table>
-<table style="width:100%;">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 14%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 2%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>常用指令</th>
-<th>选项</th>
-<th>选项说明</th>
-<th>说明</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>lsblk</td>
-<td>-f</td>
-<td>会显示uuid和挂载点</td>
-<td>查看所有设备挂载情况</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>fdisk /dev/sdb</td>
-<td>m p q w n</td>
-<td>m显示命令;p显示磁盘分区;q不保存退出;w写入并退出;n新增分区;e扩展分区</td>
-<td>对/sdb分区,输入n,新增分区然后选择p ，分区类型为主分区。两次回车默认剩余全部空间。最后w写入分区并退出，或者q。</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>mkfs -t ext4 /dev/sdb1</td>
-<td>-t</td>
-<td>设置分区类型</td>
-<td>对刚刚的主分区格式化</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>mount /dev/sdb1 被挂载的目录</td>
-<td>-a -o</td>
-<td>修改/etc/fstab后mount -a即可永久挂载 o选择何种方式挂载</td>
-<td>不永久挂载重启会失效<br>-o ro 只读方式挂载<br>-o rw 读写方式挂载</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>umount 被挂载的目录/分区</td>
-<td></td>
-<td></td>
-<td>取消挂载</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>df</td>
-<td>-h</td>
-<td>带单位</td>
-<td>查询磁盘、分区使用情况</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>du /目录</td>
-<td>-s -h -a -c –max-depth=1</td>
-<td>s占用大小汇总a含文件c列出明细同时增加汇总值max深度为1查看</td>
-<td>查询指定目录的磁盘使用情况</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h1 id="系统服务管理systemctl">系统服务管理systemctl</h1>
-<p><a href="#jump1">回到目录</a></p>
-<p>systemctl start|stop|restart|staus|enable|reload 服务名 Centos7后不再使用service(可以用，会自动重定向到systemctl命令) service 服务名 start|stop|restart</p>
-<p>查看服务名： 方式1：使用seup-&gt;系统服务 方式2：/etc/init.d/服务名称</p>
-<h1 id="防火墙">防火墙</h1>
-<p><a href="#jump1">回到目录</a></p>
-<table>
-<colgroup>
-<col style="width: 54%" />
-<col style="width: 45%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>systemctl start|restart|stop firewalld</td>
-<td>启动、重启、关闭防火墙</td>
-</tr>
-<tr class="even">
-<td>firewall-cmd –zone=public –add-port=80-100/tcp –permanent</td>
-<td>开通指定端口<br />也可以设置一个范围的端口80到100</td>
-</tr>
-<tr class="odd">
-<td>firewall-cmd –zone=public –remove-port=80/tcp –permanent</td>
-<td>关闭指定端口</td>
-</tr>
-<tr class="even">
-<td>firewall-cmd –zone=public –add-service=ftp –permanent</td>
-<td>开通服务</td>
-</tr>
-<tr class="odd">
-<td>firewall-cmd –zone=public –remove-service=http –permanent</td>
-<td>移去服务</td>
-</tr>
-<tr class="even">
-<td>firewall-cmd –reload</td>
-<td>重载</td>
-</tr>
-</tbody>
-</table>
-<p>常用服务的端口：ssh(22）、HTTP(80、8080)、MySQL(3306)、Oracle(1521) 、ftp(21）、 telnet(23）。</p>
-<p>查看已经开放端口 firewall-cmd –list-ports #查看已经开放的端口</p>
-<h1 id="环境变量shell">环境变量（shell）</h1>
-<p><a href="#jump1">回到目录</a></p>
-<p>输出内容 echo ‘任务已开启’ echo $PATH 查看环境变量：env</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">命令</th>
-<th style="text-align: left;">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">command &gt; file</td>
-<td style="text-align: left;">将输出重定向到 file。</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">command &lt; file</td>
-<td style="text-align: left;">将输入重定向到 file。</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">command &gt;&gt; file</td>
-<td style="text-align: left;">将输出以追加的方式重定向到 file。</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">n &gt; file</td>
-<td style="text-align: left;">将文件描述符为 n 的文件重定向到 file。</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">n &gt;&gt; file</td>
-<td style="text-align: left;">将文件描述符为 n 的文件以追加的方式重定向到 file。</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">n &gt;&amp; m</td>
-<td style="text-align: left;">将输出文件 m 和 n 合并。</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">n &lt;&amp; m</td>
-<td style="text-align: left;">将输入文件 m 和 n 合并。</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">&lt;&lt; tag</td>
-<td style="text-align: left;">将开始标记 tag 和结束标记 tag 之间的内容作为输入。</td>
-</tr>
-</tbody>
-</table>
-<h1 id="任务调度crontab">任务调度crontab</h1>
-<p>分时天月周</p>
-<p><em>任意 ,不连续 -连续 </em>/n</p>
-<p>-e编辑 -r清空任务 -l列出任务</p>
-<h1 id="开机启动程序">开机启动程序</h1>
-<p><a href="#jump1">回到目录</a></p>
-<p>init.d</p>
-<p>systemctl enable 服务名 systemctl disable 服务名</p>
-]]></content>
-      <categories>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在linux上安装常用环境和网络配置(vm)</title>
-    <url>/2024/08/10/linux/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%8F%8A%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<p>[toc]</p>
-<h1 id="网络配置dhcp改静态">网络配置(dhcp改静态)</h1>
-<p>nat模式-设置本机vm8的ipv4和网关-修改ifcfg-ens33 -重启-网络图标不见看下面</p>
-<p>网络图标消失不见的解决方案 停止网络配置管理器：systemctl stop NetworkManager.service 删除文件： rm /var/lib/NetworkManager/NetworkManager.state 开启网络配置管理器： systemctl start NetworkManager.service</p>
-<p>vi /etc/sysconfig/network-scripts/ifcfg-ens33</p>
-<p>TYPE=“Ethernet” PROXY_METHOD=“none” BROWSER_ONLY=“no” BOOTPROTO=“static” DEFROUTE=“yes” IPV4_FAILURE_FATAL=“no” IPV6INIT=“yes” IPV6_AUTOCONF=“yes” IPV6_DEFROUTE=“yes” IPV6_FAILURE_FATAL=“no” IPV6_ADDR_GEN_MODE=“stable-privacy” NAME=“ens33” UUID=“5afdee8c-694c-4b47-b78a-9f07ea444acd” DEVICE=“ens33” ONBOOT=“yes” IPADDR=192.168.181.3 NETMASK=255.255.255.0 GATEWAY=192.168.181.2 DNS1=8.8.8.8 DNS2=114.114.114.114</p>
-<h1 id="防火墙设置">防火墙设置</h1>
-<p>打开对应端口</p>
-<ol type="1">
-<li>防火墙打开3306端口号 firewall-cmd –zone=public –add-port=3306/tcp –permanent 下面3行是参数说明 #–zone #作用域 #–add-port=80/tcp #添加端口,格式为:端口/通讯协议 #–permanent #永久生效,没有此参数重启后失效</li>
-<li>重启防火墙 firewall-cmd –reload#重启firewall</li>
-<li>查看是否已经开放3306端口 firewall-cmd –list-ports #查看已经开放的端口</li>
-</ol>
-<p>如果你想再关闭firewall-cmd –zone=public –remove-port=3306/tcp –permanent 然后再重启防火墙</p>
-<h1 id="安装方式">安装方式</h1>
-<p>软件一般安装在根目录下的/usr/local/ | 安装方式 | 特点 | | —————- | ———————————— | | 二进制发布包安装 | 已经编译过只需解压修改配置 | | rpm | 按照包管理规范进行打包，有库依赖问题 | | yum | 本质上还是rpm，需联网，无库依赖问题 | | 源码编译安装 | 将源码工程自行打包发布 |</p>
-<h1 id="没有vim">没有vim</h1>
-<p>apt-get update</p>
-<p>apt-get install vim -y</p>
-<h1 id="安装jdk">安装JDK</h1>
-<h2 id="步骤">步骤</h2>
-<p>下载链接https://www.oracle.com/technetwork/java/javase/downloads/index.html</p>
-<p>1.在/usr/local目录下创建自定义soft目录 2.使用FinalShell自带的上传工具将jdk的二进制发布包上传到Linux 3.切换到soft目录 4.解压安装包 tar -zxvf jdk-8u171-linux-x64.tar.gz 5.配置环境变量：使用vim修改/etc/profile文件 JAVA_HOME=/usr/local/soft/jdk1.8.0_171 JRE_HOME=<span class="math inline">\({JAVA_HOME}/jre CLASSPATH=.:\)</span>JAVA_HOME/lib PATH=<span class="math inline">\(JAVA_HOME/bin:\)</span>PATH export JAVA_HOME JRE_HOME CLASSPATH PATH 6.重新加载profile文件 source /etc/profile 7.检查安装是否成功，java -version</p>
-<h2 id="alternatives管理">alternatives管理</h2>
-<p>如果交给了alternatives来管理java可以不用设置环境变量</p>
-<p>通过alternatives –install [软链接] [链接名] [执行文件路径] [优先级] 例如将自己安装的java交给alternatives管理： alternatives –install /usr/bin/java java ../jdk/bin/java 3 其实就是将安装的java执行文件路径生成软链接放到/usr/bin目录下</p>
-<p>切换java版本:alternatives –config java</p>
-<h1 id="安装tomcat">安装tomcat</h1>
-<p>压缩包直接解压 <a href="https://www.cnblogs.com/wjt-super/p/8018642.html">配置文件</a></p>
-<h1 id="安装mysql8.0">安装mysql8.0</h1>
-<p>tar.gz方式下载路径：https://downloads.mysql.com/archives/community/</p>
-<p>1、ps -ajx |grep mariadb # 先检查是否有mariadb存在 如果存在先停止systemctl stop mariadb.service或者kill -9 进程id 2、检查系统安装包rpm -qa | grep mariadb和rpm -qa | grep mysql 如果存在就删除rpm -e –nodeps 包名或者yum remove mariadb/mysql 3.创建mysql 用户组和用户 groupadd mysql useradd -r -g mysql mysql 4.解压 5.配置文件 /etc/my.cnf [mysql] default-character-set=utf8mb4</p>
-<p>[mysqld] port=3306 #server-id=3306 user=mysql8.0 socket=/tmp/mysql.sock basedir=/opt/mysql8.0 datadir=/opt/mysql8.0/data #字符集，大小写，自动提交事务 character-set-server=utf8mb4 #lower_case_table_names=1 autocommit=1</p>
-<p>#创表默认引擎 default-storage-engine=INNODB lower_case_table_names=1 max_allowed_packet=16M</p>
-<p>#sql模式 sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION</p>
-<p>[mysqld_safe] log-error=/opt/mysql8.0/data/mysql.log pid-file=/opt/mysql8.0/data/mysql.pid</p>
-<p>5、设置权限：chown -R mysql:mysql /opt/ mysql8.0 chmod -R 755 /opt/ mysql8.0</p>
-<p>6、创建data目录:mkdir /opt/mysql8.0/data</p>
-<p>7.初始化并记住初始密码 ./bin/mysqld –initialize –user=mysql8.0 –datadir=/opt/mysql8.0/data –basedir=/opt/mysql8.0 –lower_case_table_names=1</p>
-<p>8.启动 ./support-files/mysql.server start</p>
-<p>9.复制启动脚本文件到init.d下<br />
-cp support-files/mysql.server /etc/init.d/mysqld chmod a+x /etc/init.d/mysqld 设置所有人可以执行权限</p>
-<p>10.启动，停止，重启 service mysqld start #service mysqld stop #service mysqld restart</p>
-<p>11.添加软链接 ln -s /opt/mysql8.0/bin/mysql /usr/bin</p>
-<p>10.登录并改密码，配置远程登陆 mysql -uroot -p 输密码 alter user ‘root’@‘localhost’ identified by ‘123456’; 修改密码 flush privileges; 刷新权限</p>
-<p>配置远程登陆权限(8.0之前直接给root@%赋权就行， 8.0之后需要先新建一个root@%的用户) create user ‘root’@‘%’ IDENTIFIED BY ‘123456’; GRANT ALL PRIVILEGES ON * . * TO ‘root’@‘%’ IDENTIFIED BY ‘111111’ WITH GRANT OPTION; 远程用户用root加密码111111连接</p>
-<p>11.连不上打开3306防火墙 防火墙打开3306端口号 firewall-cmd –zone=public –add-port=3306/tcp –permanent 下面3行是参数说明 #–zone #作用域 #–add-port=80/tcp#添加端口,格式为:端口/通讯协议 #–permanent #永久生效,没有此参数重启后失效</p>
-<p>重启防火墙 firewall-cmd –reload#重启firewall</p>
-<p>查看是否已经开放3306端口 firewall-cmd –list-ports #查看已经开放的端口</p>
-<p>12.mysql开机自启 cp /usr/local/mysql/mysql/support-files/mysql.server /etc/rc.d/init.d/mysqld chmod +x /etc/init.d/mysqld 添加为服务: chkconfig –add mysqld 查看服务列表: chkconfig –list 看到3、4、5状态为开或者为 on 则表示成功。如果是 关或者 off 则执行一下：chkconfig –level 345 mysqld on 重启计算机:reboot</p>
-<h1 id="安装redis">安装redis</h1>
-<p>linux上安装,首先拿到压缩包，方法任意,这里使用在线下载 wget http://download.redis.io/releases/redis-4.0.9.tar.gz</p>
-<p>1.解压然后进到解压的文件里面 2.执行make来编译 3.他会生成src文件夹，进到里面执行redis-server就运行了</p>
-<h1 id="安装docker">安装docker</h1>
-<p>1.卸载之前的docker</p>
-<p>yum remove docker<br />
-docker-client<br />
-docker-client-latest<br />
-docker-common   docker-latest   docker-latest-logrotate   docker-logrotate<br />
-docker-selinux   docker-engine-selinux   docker-engine   docker-ce</p>
-<p>2.建立仓库</p>
-<p>yum install -y yum-utils //安装docker所需要的工具包</p>
-<p>yum-config-manager –add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo //建立docker仓库，映射仓库地址</p>
-<p>3.安装docker引擎</p>
-<p>yum install docker -ce dockerce-cli containerd.io</p>
-<p>4.启动docker</p>
-<p>systemctl start docker</p>
-<p>5.测试安装是否成功</p>
-<p>docker pull hello-world</p>
-<p>docker run hello-world</p>
-<h2 id="其他操作">其他操作</h2>
-<p>docker镜像加速器配置(建立仓库时可提前选择镜像)</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="comment">//重启docker</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
-<p>守护进程重启：systemctl daemon-reload</p>
-<p>重启Docker服务：systemctl restart docker / service docker restart</p>
-<p>关闭Docker服务：docker service docker stop / docker systemctl stop docker</p>
-<p>删除docker：yum remove docker-ce rm -rf /var/lib/docker</p>
-]]></content>
-      <categories>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>k8s核心原理</title>
     <url>/2024/07/29/kubernetes/Kubernetes%E5%8E%9F%E7%90%86/</url>
     <content><![CDATA[<p>[toc]</p>
@@ -4447,293 +3604,6 @@ docker-selinux   docker-engine-selinux   docker-engine   docker-ce</p>
       </tags>
   </entry>
   <entry>
-    <title>redis(未完成)</title>
-    <url>/2024/08/12/redis/redis/</url>
-    <content><![CDATA[<p>[toc]</p>
-<h1 id="安装">安装</h1>
-<p>见《linux软件安装》</p>
-<p>简单说一下就是：</p>
-<ul>
-<li>压缩包解压</li>
-<li>进解压文件执行make</li>
-<li>创建安装目录mkdir 安装路径</li>
-<li>开始安装make PREFIX=安装路径 install</li>
-</ul>
-<p>如果要使用bin/redis-server ./redis.conf启动redis服务 ./bin/redis-server ./redis.conf 容器内直接输入redis-server</p>
-<p>提前配置好redis.conf</p>
-<ul>
-<li>容器里面在/etc/redis目录</li>
-<li>直接部署在linux，位置在解压的文件里面，要复制一份到安装路径下</li>
-<li>修改配置文件bind 127.0.0.1 -::1 修改成0.0.0.0</li>
-<li>如果是容器内不改这个 daemonize no 改成daemonize yes</li>
-</ul>
-<p>启动登录</p>
-<ul>
-<li>刚开始没有密码，直接redis-cli</li>
-<li>后面设了密码和用户名，reis-cli -a 密码</li>
-</ul>
-<h1 id="数据类型">数据类型</h1>
-<p>参考http://redisdoc.com</p>
-<ul>
-<li>string字符串</li>
-<li>hash哈希</li>
-<li>list列表</li>
-<li>set集合</li>
-<li>zset有序集合</li>
-</ul>
-<p>查数据库大小：dbsize</p>
-<h2 id="键key">键key</h2>
-<table>
-<thead>
-<tr class="header">
-<th>命令(key全为键名)</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>del key</td>
-<td>删除</td>
-</tr>
-<tr class="even">
-<td>get key</td>
-<td>查key值</td>
-</tr>
-<tr class="odd">
-<td>move key db</td>
-<td>从当前库移到db库</td>
-</tr>
-<tr class="even">
-<td>exists key</td>
-<td>判断是否存在</td>
-</tr>
-<tr class="odd">
-<td><strong>存活时间相关</strong></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>expire/expireat key 秒/时间戳</td>
-<td>设置过期时间/设置过期时间点</td>
-</tr>
-<tr class="odd">
-<td>persist key</td>
-<td>移除过期时间</td>
-</tr>
-<tr class="even">
-<td>ttl key</td>
-<td>返回剩余生存时间，-1永不过期，-2已过期</td>
-</tr>
-<tr class="odd">
-<td>randomkey</td>
-<td>从当前库随机返回一个值</td>
-</tr>
-<tr class="even">
-<td>rename key newkey</td>
-<td>重命名</td>
-</tr>
-<tr class="odd">
-<td>keys pattern</td>
-<td>查看所有符合模式的key，通配符*, ? ,[]</td>
-</tr>
-</tbody>
-</table>
-<h2 id="字符串string">字符串string</h2>
-<p>可以包含任何数据(因为是用二进制存的)，比如图片或者序列化的对象 最大512M</p>
-<table>
-<colgroup>
-<col style="width: 48%" />
-<col style="width: 51%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>set/mset/get/mget/del/append/strlen key value [key value]</td>
-<td>设值/设多个值/获取值/获取多个key的值/删除key/字符串追加/获取长度</td>
-</tr>
-<tr class="even">
-<td>incrby/decrby/incrfloat/decrfloat key 值</td>
-<td>增加/减少/增加浮点数/减少浮点数</td>
-</tr>
-<tr class="odd">
-<td>getrange key start end</td>
-<td>返回key中从start到end的字串</td>
-</tr>
-<tr class="even">
-<td>getbit key offset</td>
-<td>key的字符串值，获取偏移量offset位的bit</td>
-</tr>
-<tr class="odd">
-<td>setbit key offset value</td>
-<td>同上但是是设置该位的值</td>
-</tr>
-<tr class="even">
-<td>setrange key offset value</td>
-<td>设置key从偏移量offset开始的值</td>
-</tr>
-<tr class="odd">
-<td>setex key 秒 vlaue</td>
-<td>设置key的值同时设置过期时间</td>
-</tr>
-<tr class="even">
-<td>setnx key value</td>
-<td>在key不存在时设置key的值</td>
-</tr>
-</tbody>
-</table>
-<h2 id="列表list">列表list</h2>
-<p>用链表实现</p>
-<table>
-<thead>
-<tr class="header">
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>lpush/rpush key value1 value2 …</td>
-<td>头插或尾插一个或多个值</td>
-</tr>
-<tr class="even">
-<td>lrange key start stop</td>
-<td>查指定范围内的元素，-1表示最后一位</td>
-</tr>
-<tr class="odd">
-<td>lpop/rpop/blpop/brpop key</td>
-<td>移出并获取/若为空会一直等到进来元素 头/尾的元素</td>
-</tr>
-<tr class="even">
-<td>lindex key index</td>
-<td>通过索引获取(类似数组下标),-1表示最后一位</td>
-</tr>
-<tr class="odd">
-<td>lset key index value</td>
-<td>通过下标设置列表值</td>
-</tr>
-<tr class="even">
-<td>llen key</td>
-<td>获取列表长度</td>
-</tr>
-<tr class="odd">
-<td>lrem key count value</td>
-<td>删除列表里的value，并返回实际删除个数，count&gt;0,从左边开始删，count=0删除全部</td>
-</tr>
-<tr class="even">
-<td>ltrim key start stop</td>
-<td>保留从start到stop的元素</td>
-</tr>
-<tr class="odd">
-<td>rpoplpush/brpoplpush key1 key2</td>
-<td>剪切列表1的最后一个元素到列表2<br />加上b就是若列表为空会等到出现值</td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>linsert key before/after 值1 值2</td>
-<td>在值1前或者后插入值2</td>
-</tr>
-</tbody>
-</table>
-<h2 id="集合set">集合set</h2>
-<table>
-<thead>
-<tr class="header">
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>sadd key member1 member2 …</td>
-<td>增加成员</td>
-</tr>
-<tr class="even">
-<td>spop key</td>
-<td>删除并返回随机一个元素</td>
-</tr>
-<tr class="odd">
-<td>srem key value</td>
-<td>删除</td>
-</tr>
-<tr class="even">
-<td>scard key</td>
-<td>获取成员数</td>
-</tr>
-<tr class="odd">
-<td>smembers key</td>
-<td>返回所有成员</td>
-</tr>
-<tr class="even">
-<td>sismember key member</td>
-<td>是否是集合key的成员</td>
-</tr>
-<tr class="odd">
-<td>smove 集合1 集合2 member</td>
-<td>将member从集合1移到集合2</td>
-</tr>
-<tr class="even">
-<td>sinter/sdiff/sunion 一个或多个集合</td>
-<td>返回 交/并/差 后面的集合</td>
-</tr>
-</tbody>
-</table>
-<h2 id="哈希hash">哈希hash</h2>
-<h2 id="有序集合zset">有序集合zset</h2>
-<h1 id="持久化">持久化</h1>
-<h2 id="rdb">RDB</h2>
-<ul>
-<li>最后一次持久化的数据可能丢失</li>
-<li>创建子进程fork来执行快照会占用两倍的空间</li>
-<li>redis/data下的dump.rdb文件整个内存压缩过后的快照</li>
-</ul>
-<p>开启rdb自动来持久化：redis.conf 配置文件中搜索save save &lt; seconds &gt; &lt; changes &gt;</p>
-<p>save和bgsave：保存rdb到内存上，前者只保存，后者是异步保存 lastsave：获取最后一次成功执行快照的时间</p>
-<h2 id="aof">AOF</h2>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/持久化.png" alt="image-20240813172014778" /><figcaption>image-20240813172014778</figcaption>
-</figure>
-<p>Redis会记录上次重写时的AOF大小，默认配置是当AOF文件大小是上次rewrite后大小的一倍且文件大于64M时触发</p>
-<ul>
-<li>以日志形式来记录每个写操作(读不记录)</li>
-<li>只追加文件，不改写文件</li>
-<li>保存在/redis/data/appendonly.aof</li>
-</ul>
-<p>开启AOF：redis.conf 配置文件中搜索appendonly appendonly yes</p>
-<p>修复AOF文件</p>
-<ul>
-<li>备份损坏的文件</li>
-<li>执行redis-check-aof –fix</li>
-<li>重启redis</li>
-</ul>
-<p>重写AOF(aof有冗余记录)</p>
-<ul>
-<li>执行bgrewriteaof</li>
-<li>fork一条新进程来重写AOF文件</li>
-<li>重写触发条件在redis.conf中</li>
-<li>auto-aof-rewrite-percentage 100 //每次达到重写后的一倍就重写 auto-aof-rewrite-min-size 64mb</li>
-</ul>
-<h2 id="总结">总结</h2>
-<ul>
-<li>持久化方式，两种同时启动</li>
-<li>RDB用于备份数据库</li>
-<li>AOF用于恢复</li>
-</ul>
-]]></content>
-      <categories>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>redis</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>k8s集群部署以及实用操作</title>
     <url>/2024/07/29/kubernetes/k8s%E5%AE%9E%E7%94%A8%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<p>[toc]</p>
@@ -5938,120 +4808,1133 @@ auto_increment=起始值 设置起始值</p>
       </tags>
   </entry>
   <entry>
-    <title>概率论与数理统计</title>
-    <url>/2026/09/02/%E5%85%AC%E5%85%B1%E8%AF%BE/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/</url>
-    <content><![CDATA[<h1 id="概率论">概率论</h1>
-<h2 id="随机事件的关系与运算">随机事件的关系与运算</h2>
+    <title>redis(未完成)</title>
+    <url>/2024/08/12/redis/redis/</url>
+    <content><![CDATA[<p>[toc]</p>
+<h1 id="安装">安装</h1>
+<p>见《linux软件安装》</p>
+<p>简单说一下就是：</p>
+<ul>
+<li>压缩包解压</li>
+<li>进解压文件执行make</li>
+<li>创建安装目录mkdir 安装路径</li>
+<li>开始安装make PREFIX=安装路径 install</li>
+</ul>
+<p>如果要使用bin/redis-server ./redis.conf启动redis服务 ./bin/redis-server ./redis.conf 容器内直接输入redis-server</p>
+<p>提前配置好redis.conf</p>
+<ul>
+<li>容器里面在/etc/redis目录</li>
+<li>直接部署在linux，位置在解压的文件里面，要复制一份到安装路径下</li>
+<li>修改配置文件bind 127.0.0.1 -::1 修改成0.0.0.0</li>
+<li>如果是容器内不改这个 daemonize no 改成daemonize yes</li>
+</ul>
+<p>启动登录</p>
+<ul>
+<li>刚开始没有密码，直接redis-cli</li>
+<li>后面设了密码和用户名，reis-cli -a 密码</li>
+</ul>
+<h1 id="数据类型">数据类型</h1>
+<p>参考http://redisdoc.com</p>
+<ul>
+<li>string字符串</li>
+<li>hash哈希</li>
+<li>list列表</li>
+<li>set集合</li>
+<li>zset有序集合</li>
+</ul>
+<p>查数据库大小：dbsize</p>
+<h2 id="键key">键key</h2>
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">关系</th>
-<th style="text-align: left;">符号</th>
-<th style="text-align: left;">解释</th>
+<th>命令(key全为键名)</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">包含</td>
-<td style="text-align: left;"><span class="math inline">\(A \subset B\)</span></td>
-<td style="text-align: left;">A发生必然导致B发生</td>
+<td>del key</td>
+<td>删除</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">相等</td>
-<td style="text-align: left;"><span class="math inline">\(A = B\)</span></td>
-<td style="text-align: left;">A和B相等</td>
+<td>get key</td>
+<td>查key值</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">互斥</td>
-<td style="text-align: left;"><span class="math inline">\(A \cap B = \varnothing\)</span></td>
-<td style="text-align: left;">A和B不可能同时发生</td>
+<td>move key db</td>
+<td>从当前库移到db库</td>
+</tr>
+<tr class="even">
+<td>exists key</td>
+<td>判断是否存在</td>
+</tr>
+<tr class="odd">
+<td><strong>存活时间相关</strong></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>expire/expireat key 秒/时间戳</td>
+<td>设置过期时间/设置过期时间点</td>
+</tr>
+<tr class="odd">
+<td>persist key</td>
+<td>移除过期时间</td>
+</tr>
+<tr class="even">
+<td>ttl key</td>
+<td>返回剩余生存时间，-1永不过期，-2已过期</td>
+</tr>
+<tr class="odd">
+<td>randomkey</td>
+<td>从当前库随机返回一个值</td>
+</tr>
+<tr class="even">
+<td>rename key newkey</td>
+<td>重命名</td>
+</tr>
+<tr class="odd">
+<td>keys pattern</td>
+<td>查看所有符合模式的key，通配符*, ? ,[]</td>
 </tr>
 </tbody>
 </table>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">运算</th>
-<th style="text-align: left;">符号</th>
-<th style="text-align: left;">解释</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">并</td>
-<td style="text-align: left;"><span class="math inline">\(A \cup B = A+B\)</span></td>
-<td style="text-align: left;">AB至少有一个发生</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">交</td>
-<td style="text-align: left;"><span class="math inline">\(A \cap B = AB\)</span></td>
-<td style="text-align: left;">AB同时发生</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">差</td>
-<td style="text-align: left;"><span class="math inline">\(A - B=A \overline{B}\)</span></td>
-<td style="text-align: left;">A发生B不发生</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">对立</td>
-<td style="text-align: left;"><span class="math inline">\(\overline{A}\)</span></td>
-<td style="text-align: left;">A不发生</td>
-</tr>
-</tbody>
-</table>
+<h2 id="字符串string">字符串string</h2>
+<p>可以包含任何数据(因为是用二进制存的)，比如图片或者序列化的对象 最大512M</p>
 <table>
 <colgroup>
-<col style="width: 15%" />
-<col style="width: 84%" />
+<col style="width: 48%" />
+<col style="width: 51%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">运算性质</th>
-<th style="text-align: center;">符号表示</th>
+<th>命令</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">交换律</td>
-<td style="text-align: center;"><span class="math inline">\(A \cup B = B \cup A \\ A \cap B = B \cap A\)</span></td>
+<td>set/mset/get/mget/del/append/strlen key value [key value]</td>
+<td>设值/设多个值/获取值/获取多个key的值/删除key/字符串追加/获取长度</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">结合律</td>
-<td style="text-align: center;"><span class="math inline">\((A \cup B) \cup C = A \cup (B \cup C) \\ (A \cap B) \cap C = A \cap (B \cap C)\)</span></td>
+<td>incrby/decrby/incrfloat/decrfloat key 值</td>
+<td>增加/减少/增加浮点数/减少浮点数</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">分配律</td>
-<td style="text-align: center;"><span class="math inline">\(A \cap (B \cup C) = (A \cap B) \cup (A \cap C) \\ A \cup (B \cap C) = (A \cup B) \cap (A \cup C)\)</span></td>
+<td>getrange key start end</td>
+<td>返回key中从start到end的字串</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">对偶律（德摩根公式）</td>
-<td style="text-align: center;">$ =   \  =   $</td>
+<td>getbit key offset</td>
+<td>key的字符串值，获取偏移量offset位的bit</td>
+</tr>
+<tr class="odd">
+<td>setbit key offset value</td>
+<td>同上但是是设置该位的值</td>
+</tr>
+<tr class="even">
+<td>setrange key offset value</td>
+<td>设置key从偏移量offset开始的值</td>
+</tr>
+<tr class="odd">
+<td>setex key 秒 vlaue</td>
+<td>设置key的值同时设置过期时间</td>
+</tr>
+<tr class="even">
+<td>setnx key value</td>
+<td>在key不存在时设置key的值</td>
 </tr>
 </tbody>
 </table>
-<p><strong>德摩根公式推广</strong>到多个事件以及可列个事件的场合：</p>
-<p><span class="math display">\[
-\begin{align*}
-\overline{\bigcup_{i=1}^{\infty} A_i} &amp;= \bigcap_{i=1}^{\infty} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{\infty} A_i} &amp;= \bigcup_{i=1}^{\infty} \overline{A_i} \\
-\overline{\bigcup_{i=1}^{n} A_i} &amp;= \bigcap_{i=1}^{n} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{n} A_i} &amp;= \bigcup_{i=1}^{n} \overline{A_i}
-\end{align*}
-\]</span></p>
-<h2 id="事件域">事件域*</h2>
-<h2 id="条件概率基本公式">条件概率基本公式</h2>
-<p>$ P(A+B) = \begin{cases} P(A)+P(B)-P(AB) &amp; AB \ P(A)+P(B) &amp; AB \ P(A)  P(B) &amp; B A  A B \ P(A)+P(B)-P(A)P(B) &amp; AB \end{cases} $</p>
-<p>$ P(A-B) = \begin{cases} P(A)-P(AB) &amp; AB \ P(A)-P(B) &amp; B A \ P(A) &amp; A B \end{cases} $</p>
-<p>乘法公式 $ P(AB)=P(A)P(BA) $</p>
-<p>全概率公式 $ P(B) = _{i=1}^{n} P(A_i) P(BA_i) $</p>
-<p>贝叶斯公式</p>
-<p><span class="math inline">\(P(A_i\mid B) = \frac{P(A_i) P(B|A_i)}{\sum\limits_{j=1}^{n} P(A_j) P(B|A_j)}\)</span></p>
-<h1 id="数理统计">数理统计</h1>
+<h2 id="列表list">列表list</h2>
+<p>用链表实现</p>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>lpush/rpush key value1 value2 …</td>
+<td>头插或尾插一个或多个值</td>
+</tr>
+<tr class="even">
+<td>lrange key start stop</td>
+<td>查指定范围内的元素，-1表示最后一位</td>
+</tr>
+<tr class="odd">
+<td>lpop/rpop/blpop/brpop key</td>
+<td>移出并获取/若为空会一直等到进来元素 头/尾的元素</td>
+</tr>
+<tr class="even">
+<td>lindex key index</td>
+<td>通过索引获取(类似数组下标),-1表示最后一位</td>
+</tr>
+<tr class="odd">
+<td>lset key index value</td>
+<td>通过下标设置列表值</td>
+</tr>
+<tr class="even">
+<td>llen key</td>
+<td>获取列表长度</td>
+</tr>
+<tr class="odd">
+<td>lrem key count value</td>
+<td>删除列表里的value，并返回实际删除个数，count&gt;0,从左边开始删，count=0删除全部</td>
+</tr>
+<tr class="even">
+<td>ltrim key start stop</td>
+<td>保留从start到stop的元素</td>
+</tr>
+<tr class="odd">
+<td>rpoplpush/brpoplpush key1 key2</td>
+<td>剪切列表1的最后一个元素到列表2<br />加上b就是若列表为空会等到出现值</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>linsert key before/after 值1 值2</td>
+<td>在值1前或者后插入值2</td>
+</tr>
+</tbody>
+</table>
+<h2 id="集合set">集合set</h2>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>sadd key member1 member2 …</td>
+<td>增加成员</td>
+</tr>
+<tr class="even">
+<td>spop key</td>
+<td>删除并返回随机一个元素</td>
+</tr>
+<tr class="odd">
+<td>srem key value</td>
+<td>删除</td>
+</tr>
+<tr class="even">
+<td>scard key</td>
+<td>获取成员数</td>
+</tr>
+<tr class="odd">
+<td>smembers key</td>
+<td>返回所有成员</td>
+</tr>
+<tr class="even">
+<td>sismember key member</td>
+<td>是否是集合key的成员</td>
+</tr>
+<tr class="odd">
+<td>smove 集合1 集合2 member</td>
+<td>将member从集合1移到集合2</td>
+</tr>
+<tr class="even">
+<td>sinter/sdiff/sunion 一个或多个集合</td>
+<td>返回 交/并/差 后面的集合</td>
+</tr>
+</tbody>
+</table>
+<h2 id="哈希hash">哈希hash</h2>
+<h2 id="有序集合zset">有序集合zset</h2>
+<h1 id="持久化">持久化</h1>
+<h2 id="rdb">RDB</h2>
+<ul>
+<li>最后一次持久化的数据可能丢失</li>
+<li>创建子进程fork来执行快照会占用两倍的空间</li>
+<li>redis/data下的dump.rdb文件整个内存压缩过后的快照</li>
+</ul>
+<p>开启rdb自动来持久化：redis.conf 配置文件中搜索save save &lt; seconds &gt; &lt; changes &gt;</p>
+<p>save和bgsave：保存rdb到内存上，前者只保存，后者是异步保存 lastsave：获取最后一次成功执行快照的时间</p>
+<h2 id="aof">AOF</h2>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/持久化.png" alt="image-20240813172014778" /><figcaption>image-20240813172014778</figcaption>
+</figure>
+<p>Redis会记录上次重写时的AOF大小，默认配置是当AOF文件大小是上次rewrite后大小的一倍且文件大于64M时触发</p>
+<ul>
+<li>以日志形式来记录每个写操作(读不记录)</li>
+<li>只追加文件，不改写文件</li>
+<li>保存在/redis/data/appendonly.aof</li>
+</ul>
+<p>开启AOF：redis.conf 配置文件中搜索appendonly appendonly yes</p>
+<p>修复AOF文件</p>
+<ul>
+<li>备份损坏的文件</li>
+<li>执行redis-check-aof –fix</li>
+<li>重启redis</li>
+</ul>
+<p>重写AOF(aof有冗余记录)</p>
+<ul>
+<li>执行bgrewriteaof</li>
+<li>fork一条新进程来重写AOF文件</li>
+<li>重写触发条件在redis.conf中</li>
+<li>auto-aof-rewrite-percentage 100 //每次达到重写后的一倍就重写 auto-aof-rewrite-min-size 64mb</li>
+</ul>
+<h2 id="总结">总结</h2>
+<ul>
+<li>持久化方式，两种同时启动</li>
+<li>RDB用于备份数据库</li>
+<li>AOF用于恢复</li>
+</ul>
 ]]></content>
       <categories>
-        <category>数学</category>
+        <category>数据库</category>
       </categories>
       <tags>
-        <tag>数学</tag>
-        <tag>数理统计</tag>
+        <tag>redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux常用指令快速入门</title>
+    <url>/2024/08/10/linux/linux%E7%AE%80%E5%8D%95%E6%8C%87%E4%BB%A4/</url>
+    <content><![CDATA[<p><span id="jump1">目录</span></p>
+<p>[toc]</p>
+<h1 id="常用简单指令">常用简单指令</h1>
+<table>
+<thead>
+<tr class="header">
+<th>运行等级</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>init 0</td>
+<td>关机</td>
+</tr>
+<tr class="even">
+<td>init 1</td>
+<td>单用户，root，用于系统维护，禁止远程登陆</td>
+</tr>
+<tr class="odd">
+<td>init 2</td>
+<td>多用户，不支持NFS</td>
+</tr>
+<tr class="even">
+<td>init 3</td>
+<td>命令行模式，完全的多用户，登陆后进入</td>
+</tr>
+<tr class="odd">
+<td>init 4</td>
+<td>安全模式</td>
+</tr>
+<tr class="even">
+<td>init 5</td>
+<td>图形化</td>
+</tr>
+<tr class="odd">
+<td>init 6</td>
+<td>重启</td>
+</tr>
+</tbody>
+</table>
+<p>内存中的数据同步到磁盘：sync 查看当前目录：pwd 切换目录：cd 目录名 （cd只能进入目录） 进入文件：cat 文件路径 显示(当前)目录中的文件：ls [-a包括隐藏文件] [-l列表详细信息] [目录名] 创建目录：mkdir [-p] 目录名/路径 删除空目录(非空删除失败)：rmdir [-p] 目录名 清屏：clear 在终端使用之前用到的命令(历史命令保存在.bash_history文件中)：上下光标调取 命令自动补全：tab 正则表达式：*多个字符,?一个字符 查看/设置时间：date date -s “2024-01-02 09:11:42” 帮助指令：man help 修改主机名：hostname set-hostname 新名称</p>
+<h1 id="linux目录和文件简单介绍">Linux目录和文件(简单介绍)</h1>
+<p><a href="#jump1">回到目录</a></p>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/图片1.png" alt="image-20240604094822494" /><figcaption>image-20240604094822494</figcaption>
+</figure>
+<p>绝对路径：/usr/include/a.h 相对路径：如果当前目录为/usr，则include/a.h为相对路径等同于上面 当前目录：. 上一级目录：.. 家目录：~ 系统启动必须：/boot、/etc、/lib 命令集合：/sbin、/bin 设备相关：/dev、/media、/mnt 临时文件：/run、/lost+found、/tmp 账户相关：/root、/home、/usr 运行过程：/var、/proc 拓展相关：/opt、/srv</p>
+<p>bin执行，lib库，etc是配置，usr和home是’我的’，dev管设备，opt装软件</p>
+<h1 id="vi编辑器">vi编辑器</h1>
+<p><a href="#jump1">回到目录</a></p>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/vim.png" alt="vim工作模式" /><figcaption>vim工作模式</figcaption>
+</figure>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/vim键盘.png" alt="vim键盘" /><figcaption>vim键盘</figcaption>
+</figure>
+<p>命令模式</p>
+<table>
+<thead>
+<tr class="header">
+<th>命令模式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>:set nu</td>
+<td>显示行号</td>
+</tr>
+<tr class="even">
+<td>:set nonu</td>
+<td>取消行号</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>一般模式</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>/字符</td>
+<td>查找指定字符，按n查找下一个</td>
+</tr>
+<tr class="even">
+<td>gg</td>
+<td>查看行首</td>
+</tr>
+<tr class="odd">
+<td>G</td>
+<td>查看行尾</td>
+</tr>
+<tr class="even">
+<td>数字 G</td>
+<td>查看指定行</td>
+</tr>
+</tbody>
+</table>
+<p>i:当前位置开始编辑<br />
+o：在下面插入一行编辑 a：当前位置后一个位置插入<br />
+r：当前位置替换 I:当前行首个位置编辑<br />
+O：在上面插入一行编辑<br />
+A：当前行最后一个位置插入 R：从当位置开始替换</p>
+<h1 id="用户组管理">用户(组)管理</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h3 id="组">组</h3>
+<p>组的信息保存在/etc/group文件 创建组：groupadd 组名 修改组：groupmod [-n 新组] 旧组 删除组：groupdel 组名</p>
+<h3 id="用户">用户</h3>
+<p><strong>创建删除</strong> 用户信息保存在/etc/passwd文件 用户密码保存在/etc/shadow文件 创建用户：useradd [-g 组名] [-d 用户主目录] [-r系统用户不可登录系统] 用户名 修改用户：usermod [-l 新名字] [-g 新组] [-d 新目录] 用户名 删除用户：userdel [-r删除组目录] 用户名 <strong>修改密码</strong> root用户修改其他用户：passwd 用户名 普通用户修改自己：passwd <strong>切换用户</strong> root用户免密码切换：su -用户名 普通用户：su -用户名 然后输入密码 <strong>查看用户信息</strong> id 用户名</p>
+<h1 id="目录文件操作">目录文件操作</h1>
+<p><a href="#jump1">回到目录</a></p>
+<p>目录和文件的详细信息：ls [-l] [目录名] 按时间降序显示ls -lt [目录名] -a:列出全部文件，包括隐藏文件 快捷方式显示按当前目录下详细信息：ll</p>
+<h2 id="文件目录属性">文件/目录属性</h2>
+<p>drwxr-xr-x. 4 root root 80 9月 26 17：05 aaa</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">对应信息</th>
+<th style="text-align: center;">介绍</th>
+<th style="text-align: center;">例子</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">文件类型</td>
+<td style="text-align: center;">d目录-普通文件l链接p管道文件b块设备文件c字符设备文件s套接字文件</td>
+<td style="text-align: center;">d</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">文件权限</td>
+<td style="text-align: center;">r读w写x可执行-无权限；三个为一组代表所有者，同组用户，其他用户</td>
+<td style="text-align: center;">rwxr-xr-x</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">文件硬链接数或目录的子目录数</td>
+<td style="text-align: center;">文件硬链接，初始为1；空目录初始为2；</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">文件拥有者</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">root</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">文件拥有者所在组</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">root</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">目录或文件大小</td>
+<td style="text-align: center;">文件大小单位字节；目录大小不包括目录下的文件和子目录</td>
+<td style="text-align: center;">80</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">最后一次被修改的时间</td>
+<td style="text-align: center;">创建/last修改</td>
+<td style="text-align: center;">9月 26 17：05</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">目录或文件名</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">aaa</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/图片2.png" alt="image-20240604094822494" /><figcaption>image-20240604094822494</figcaption>
+</figure>
+<h2 id="修改目录和文件权限">修改目录和文件权限</h2>
+<p>修改拥有者：chown [-R递归赋予权限] 用户：组 目录和文件列表 设置权限：chmod [-R] whooperatorpermission 目录和文件列表</p>
+<table>
+<thead>
+<tr class="header">
+<th>who</th>
+<th>operator</th>
+<th>permission</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>u所有者</td>
+<td>+增加权限</td>
+<td>x进入目录或执行文件</td>
+</tr>
+<tr class="even">
+<td>g所有者所在组</td>
+<td>-取消权限</td>
+<td>r读取文件或查看目录中有哪些子目录和文件</td>
+</tr>
+<tr class="odd">
+<td>o其他用户</td>
+<td>=重新设置权限</td>
+<td>w修改文件内容或在目录中增删改</td>
+</tr>
+<tr class="even">
+<td>a全部用户</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>r=4 w=2 x=1 rwx=4+2+1=7 chmod -R 777 文件名/目录 给所有人用给rwx权限</p>
+<h2 id="查看查找文件内容">查看/查找文件内容</h2>
+<table>
+<thead>
+<tr class="header">
+<th>查看文件内容</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>cat 文件名</td>
+<td>显示</td>
+</tr>
+<tr class="even">
+<td>less 文件名</td>
+<td>分屏查看，</td>
+</tr>
+<tr class="odd">
+<td>more 文件名</td>
+<td>分页查看，空格下一页，b上一页，q退出</td>
+</tr>
+<tr class="even">
+<td>wc 文件名</td>
+<td>统计文件行数</td>
+</tr>
+<tr class="odd">
+<td>head [-n] 文件</td>
+<td>查看前n行，默认10行</td>
+</tr>
+<tr class="even">
+<td>tail [-n] [-f] 文件</td>
+<td>查看尾n行，默认10行,-f实时跟踪</td>
+</tr>
+<tr class="odd">
+<td>grep [-n]</td>
+<td>过滤查找， 内容|grep 指定查找内容</td>
+</tr>
+<tr class="even">
+<td>find 目录 -name 文件名</td>
+<td>在指定目录下按名字查找文件</td>
+</tr>
+<tr class="odd">
+<td>locate 文件名</td>
+<td>locate之前updatedb</td>
+</tr>
+</tbody>
+</table>
+<h2 id="文件目录的创建删除复制移动">文件/目录的创建删除复制移动</h2>
+<table>
+<thead>
+<tr class="header">
+<th>创建目录/空文件</th>
+<th>删除</th>
+<th>复制</th>
+<th>移动/重命名</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>mkdir [-mp] 目录名</td>
+<td>rm [-rf] 目录和文件</td>
+<td>cp [-r] 旧名 新名</td>
+<td>mv 旧名 新名</td>
+</tr>
+<tr class="even">
+<td>touch 文件名</td>
+<td>-r递归删除-f强制删除不提示</td>
+<td>-r递归复制目录</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>-m配置权限；-p目录递归创建</td>
+<td>rmdir是删空目录</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>在不同的linux服务器之间进行文件传输： scp [-r] 文件 目标用户名@目标服务器名或ip:目标服务器上的保存路径</p>
+<h2 id="安装和打包">安装和打包</h2>
+<h3 id="rpm包管理">rpm包管理</h3>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>rpm</td>
+<td>-q 包名</td>
+<td>查询是否安装</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>-qa</td>
+<td>查询已安装的软件包</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>-ql 包名</td>
+<td>查询软件包中文件</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>-qi 包名</td>
+<td>查询软件包信息</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>-qf 文件全路径名</td>
+<td>查询文件所属软件包</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>-e 包名</td>
+<td>卸载包</td>
+</tr>
+</tbody>
+</table>
+<h3 id="yum安装">yum安装</h3>
+<p>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup</p>
+<p>curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</p>
+<p>yum makecache</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">命令</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">yum [-y/d/n] install 包名</td>
+<td>安装</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">yum -y remove</td>
+<td>删除</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">yum update 包名</td>
+<td>升级</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">yum list | grep 软件名</td>
+<td>查找能够安装的包</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">yum check-update</td>
+<td>显示可更新的包</td>
+</tr>
+</tbody>
+</table>
+<h3 id="打包和压缩">打包和压缩</h3>
+<p>zip命令和tar命令</p>
+<p>压缩：zip [-qrd] 压缩包文件名 目录和文件名列表 解压：unzip [-d 指定放的位置] 压缩包文件名</p>
+<p>压缩：tar [-zcvf] 压缩包文件名.tar.gz 目录和文件名列表 解压：tar [-xzvf] 压缩包文件名 [-C 指定放的位置]</p>
+<table>
+<thead>
+<tr class="header">
+<th>zip</th>
+<th>说明</th>
+<th>tar</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-q</td>
+<td>不显示命令执行过程</td>
+<td>-z</td>
+<td>打包同时压缩</td>
+</tr>
+<tr class="even">
+<td>-r</td>
+<td>递归压缩</td>
+<td>-c/x</td>
+<td>打包/解包</td>
+</tr>
+<tr class="odd">
+<td>-u</td>
+<td>把文件增加/替换到压缩包中</td>
+<td>-v</td>
+<td>显示文件详细信息</td>
+</tr>
+<tr class="even">
+<td>-d</td>
+<td>指定压缩或解压缩后产生的文件放的地方</td>
+<td>-f</td>
+<td>指定压缩/解压的文件名</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td>-t</td>
+<td>列出压缩包里的文件(不用解压)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td>-C</td>
+<td>指定压缩或解压缩后产生的文件放的地方</td>
+</tr>
+</tbody>
+</table>
+<h1 id="链接">链接</h1>
+<p><a href="#jump1">回到目录</a></p>
+<p>硬链接：ln 文件名 链接名 软链接：ln -s 目录或文件 链接名</p>
+<p>硬链接是文件指针；软链接是一个保存了文件路径的文件</p>
+<p>尽量为目录做软链接，为文件做硬链接</p>
+<h1 id="进程">进程</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h2 id="查看进程">查看进程</h2>
+<p>ps [-aux]/[-ef] 选项说明： -a 查全部进程(前台) -x 查全部进程(包括后台) -u 显示该进程的用户 -e 显示所有进程 -f 全格式</p>
+<p>以树状形式显示 pstree [-p]/[-u] 选项说明：p：进程pid；u进程所属用户</p>
+<p>实时显示top [选项]</p>
+<table>
+<thead>
+<tr class="header">
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-d</td>
+<td>每各d秒更新显示内容</td>
+</tr>
+<tr class="even">
+<td>-i</td>
+<td>不显示闲置和僵尸进程</td>
+</tr>
+<tr class="odd">
+<td>-p</td>
+<td>指定进程ID查看</td>
+</tr>
+<tr class="even">
+<td>执行后操作</td>
+<td>说明</td>
+</tr>
+<tr class="odd">
+<td>P</td>
+<td>以CPU使用率排序(默认)</td>
+</tr>
+<tr class="even">
+<td>M</td>
+<td>以内存使用率排序</td>
+</tr>
+<tr class="odd">
+<td>N</td>
+<td>以PID排序</td>
+</tr>
+<tr class="even">
+<td>q</td>
+<td>退出top</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/top性能分析.png" alt="top性能分析" /><figcaption>top性能分析</figcaption>
+</figure>
+<table>
+<thead>
+<tr class="header">
+<th>第一行</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>top - 11：03：25</td>
+<td>up 4 min</td>
+<td>3 users</td>
+<td></td>
+<td>load average：0.05,0.18,0.10</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>当前时间</td>
+<td>运行了多久</td>
+<td>当前登录用户数</td>
+<td></td>
+<td>系统负载：一段时间内，CPU正在处理和等待处理的进程数之和<br>上面三个数值分别是1分钟，5分钟，15分钟内的平均值</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>第二行:</td>
+<td>统计进程</td>
+<td>的统计</td>
+<td></td>
+<td>信息</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Tasks:209 total</td>
+<td>2 running</td>
+<td>207 sleeping</td>
+<td></td>
+<td>0</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="终止进程">终止进程</h2>
+<p>kill [-9] 进程号 kill all 进程名称 可用通配符</p>
+<h2 id="按端口查">按端口查</h2>
+<p>lsof -t -i:端口号 -t只显示进程号 杀死某一端口的进程：kill $(lsof -t -i:端口号)</p>
+<h1 id="磁盘分区和挂载">磁盘分区和挂载</h1>
+<p><a href="#jump1">回到目录</a></p>
+<p>linux独特的挂载使得其只有一个根目录 查挂载情况-分区-分区格式化-挂载-查磁盘分区使用情况</p>
+<table>
+<thead>
+<tr class="header">
+<th>分区方式</th>
+<th style="text-align: center;">特点</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>mbr</td>
+<td style="text-align: center;">最多支持4个主分区，系统只能在主分区，扩展分区占一个主分区，最大2TB，兼容性好</td>
+</tr>
+<tr class="even">
+<td>gtp</td>
+<td style="text-align: center;">无限多个主分区(windows限制128个)，最大18EB</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>硬盘</th>
+<th></th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>IDE</td>
+<td></td>
+<td>驱动器标识符hdx~ 例如hda3表示第一个IDE硬盘的第三个分区</td>
+</tr>
+<tr class="even">
+<td>SCSI</td>
+<td></td>
+<td>sdx~</td>
+</tr>
+</tbody>
+</table>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 14%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 2%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>常用指令</th>
+<th>选项</th>
+<th>选项说明</th>
+<th>说明</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>lsblk</td>
+<td>-f</td>
+<td>会显示uuid和挂载点</td>
+<td>查看所有设备挂载情况</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>fdisk /dev/sdb</td>
+<td>m p q w n</td>
+<td>m显示命令;p显示磁盘分区;q不保存退出;w写入并退出;n新增分区;e扩展分区</td>
+<td>对/sdb分区,输入n,新增分区然后选择p ，分区类型为主分区。两次回车默认剩余全部空间。最后w写入分区并退出，或者q。</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>mkfs -t ext4 /dev/sdb1</td>
+<td>-t</td>
+<td>设置分区类型</td>
+<td>对刚刚的主分区格式化</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>mount /dev/sdb1 被挂载的目录</td>
+<td>-a -o</td>
+<td>修改/etc/fstab后mount -a即可永久挂载 o选择何种方式挂载</td>
+<td>不永久挂载重启会失效<br>-o ro 只读方式挂载<br>-o rw 读写方式挂载</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>umount 被挂载的目录/分区</td>
+<td></td>
+<td></td>
+<td>取消挂载</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>df</td>
+<td>-h</td>
+<td>带单位</td>
+<td>查询磁盘、分区使用情况</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>du /目录</td>
+<td>-s -h -a -c –max-depth=1</td>
+<td>s占用大小汇总a含文件c列出明细同时增加汇总值max深度为1查看</td>
+<td>查询指定目录的磁盘使用情况</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="系统服务管理systemctl">系统服务管理systemctl</h1>
+<p><a href="#jump1">回到目录</a></p>
+<p>systemctl start|stop|restart|staus|enable|reload 服务名 Centos7后不再使用service(可以用，会自动重定向到systemctl命令) service 服务名 start|stop|restart</p>
+<p>查看服务名： 方式1：使用seup-&gt;系统服务 方式2：/etc/init.d/服务名称</p>
+<h1 id="防火墙">防火墙</h1>
+<p><a href="#jump1">回到目录</a></p>
+<table>
+<colgroup>
+<col style="width: 54%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>systemctl start|restart|stop firewalld</td>
+<td>启动、重启、关闭防火墙</td>
+</tr>
+<tr class="even">
+<td>firewall-cmd –zone=public –add-port=80-100/tcp –permanent</td>
+<td>开通指定端口<br />也可以设置一个范围的端口80到100</td>
+</tr>
+<tr class="odd">
+<td>firewall-cmd –zone=public –remove-port=80/tcp –permanent</td>
+<td>关闭指定端口</td>
+</tr>
+<tr class="even">
+<td>firewall-cmd –zone=public –add-service=ftp –permanent</td>
+<td>开通服务</td>
+</tr>
+<tr class="odd">
+<td>firewall-cmd –zone=public –remove-service=http –permanent</td>
+<td>移去服务</td>
+</tr>
+<tr class="even">
+<td>firewall-cmd –reload</td>
+<td>重载</td>
+</tr>
+</tbody>
+</table>
+<p>常用服务的端口：ssh(22）、HTTP(80、8080)、MySQL(3306)、Oracle(1521) 、ftp(21）、 telnet(23）。</p>
+<p>查看已经开放端口 firewall-cmd –list-ports #查看已经开放的端口</p>
+<h1 id="环境变量shell">环境变量（shell）</h1>
+<p><a href="#jump1">回到目录</a></p>
+<p>输出内容 echo ‘任务已开启’ echo $PATH 查看环境变量：env</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">命令</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">command &gt; file</td>
+<td style="text-align: left;">将输出重定向到 file。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">command &lt; file</td>
+<td style="text-align: left;">将输入重定向到 file。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">command &gt;&gt; file</td>
+<td style="text-align: left;">将输出以追加的方式重定向到 file。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">n &gt; file</td>
+<td style="text-align: left;">将文件描述符为 n 的文件重定向到 file。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">n &gt;&gt; file</td>
+<td style="text-align: left;">将文件描述符为 n 的文件以追加的方式重定向到 file。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">n &gt;&amp; m</td>
+<td style="text-align: left;">将输出文件 m 和 n 合并。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">n &lt;&amp; m</td>
+<td style="text-align: left;">将输入文件 m 和 n 合并。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">&lt;&lt; tag</td>
+<td style="text-align: left;">将开始标记 tag 和结束标记 tag 之间的内容作为输入。</td>
+</tr>
+</tbody>
+</table>
+<h1 id="任务调度crontab">任务调度crontab</h1>
+<p>分时天月周</p>
+<p><em>任意 ,不连续 -连续 </em>/n</p>
+<p>-e编辑 -r清空任务 -l列出任务</p>
+<h1 id="开机启动程序">开机启动程序</h1>
+<p><a href="#jump1">回到目录</a></p>
+<p>init.d</p>
+<p>systemctl enable 服务名 systemctl disable 服务名</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>在linux上安装常用环境和网络配置(vm)</title>
+    <url>/2024/08/10/linux/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%8F%8A%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</url>
+    <content><![CDATA[<p>[toc]</p>
+<h1 id="网络配置dhcp改静态">网络配置(dhcp改静态)</h1>
+<p>nat模式-设置本机vm8的ipv4和网关-修改ifcfg-ens33 -重启-网络图标不见看下面</p>
+<p>网络图标消失不见的解决方案 停止网络配置管理器：systemctl stop NetworkManager.service 删除文件： rm /var/lib/NetworkManager/NetworkManager.state 开启网络配置管理器： systemctl start NetworkManager.service</p>
+<p>vi /etc/sysconfig/network-scripts/ifcfg-ens33</p>
+<p>TYPE=“Ethernet” PROXY_METHOD=“none” BROWSER_ONLY=“no” BOOTPROTO=“static” DEFROUTE=“yes” IPV4_FAILURE_FATAL=“no” IPV6INIT=“yes” IPV6_AUTOCONF=“yes” IPV6_DEFROUTE=“yes” IPV6_FAILURE_FATAL=“no” IPV6_ADDR_GEN_MODE=“stable-privacy” NAME=“ens33” UUID=“5afdee8c-694c-4b47-b78a-9f07ea444acd” DEVICE=“ens33” ONBOOT=“yes” IPADDR=192.168.181.3 NETMASK=255.255.255.0 GATEWAY=192.168.181.2 DNS1=8.8.8.8 DNS2=114.114.114.114</p>
+<h1 id="防火墙设置">防火墙设置</h1>
+<p>打开对应端口</p>
+<ol type="1">
+<li>防火墙打开3306端口号 firewall-cmd –zone=public –add-port=3306/tcp –permanent 下面3行是参数说明 #–zone #作用域 #–add-port=80/tcp #添加端口,格式为:端口/通讯协议 #–permanent #永久生效,没有此参数重启后失效</li>
+<li>重启防火墙 firewall-cmd –reload#重启firewall</li>
+<li>查看是否已经开放3306端口 firewall-cmd –list-ports #查看已经开放的端口</li>
+</ol>
+<p>如果你想再关闭firewall-cmd –zone=public –remove-port=3306/tcp –permanent 然后再重启防火墙</p>
+<h1 id="安装方式">安装方式</h1>
+<p>软件一般安装在根目录下的/usr/local/ | 安装方式 | 特点 | | —————- | ———————————— | | 二进制发布包安装 | 已经编译过只需解压修改配置 | | rpm | 按照包管理规范进行打包，有库依赖问题 | | yum | 本质上还是rpm，需联网，无库依赖问题 | | 源码编译安装 | 将源码工程自行打包发布 |</p>
+<h1 id="没有vim">没有vim</h1>
+<p>apt-get update</p>
+<p>apt-get install vim -y</p>
+<h1 id="安装jdk">安装JDK</h1>
+<h2 id="步骤">步骤</h2>
+<p>下载链接https://www.oracle.com/technetwork/java/javase/downloads/index.html</p>
+<p>1.在/usr/local目录下创建自定义soft目录 2.使用FinalShell自带的上传工具将jdk的二进制发布包上传到Linux 3.切换到soft目录 4.解压安装包 tar -zxvf jdk-8u171-linux-x64.tar.gz 5.配置环境变量：使用vim修改/etc/profile文件 JAVA_HOME=/usr/local/soft/jdk1.8.0_171 JRE_HOME=<span class="math inline">\({JAVA_HOME}/jre CLASSPATH=.:\)</span>JAVA_HOME/lib PATH=<span class="math inline">\(JAVA_HOME/bin:\)</span>PATH export JAVA_HOME JRE_HOME CLASSPATH PATH 6.重新加载profile文件 source /etc/profile 7.检查安装是否成功，java -version</p>
+<h2 id="alternatives管理">alternatives管理</h2>
+<p>如果交给了alternatives来管理java可以不用设置环境变量</p>
+<p>通过alternatives –install [软链接] [链接名] [执行文件路径] [优先级] 例如将自己安装的java交给alternatives管理： alternatives –install /usr/bin/java java ../jdk/bin/java 3 其实就是将安装的java执行文件路径生成软链接放到/usr/bin目录下</p>
+<p>切换java版本:alternatives –config java</p>
+<h1 id="安装tomcat">安装tomcat</h1>
+<p>压缩包直接解压 <a href="https://www.cnblogs.com/wjt-super/p/8018642.html">配置文件</a></p>
+<h1 id="安装mysql8.0">安装mysql8.0</h1>
+<p>tar.gz方式下载路径：https://downloads.mysql.com/archives/community/</p>
+<p>1、ps -ajx |grep mariadb # 先检查是否有mariadb存在 如果存在先停止systemctl stop mariadb.service或者kill -9 进程id 2、检查系统安装包rpm -qa | grep mariadb和rpm -qa | grep mysql 如果存在就删除rpm -e –nodeps 包名或者yum remove mariadb/mysql 3.创建mysql 用户组和用户 groupadd mysql useradd -r -g mysql mysql 4.解压 5.配置文件 /etc/my.cnf [mysql] default-character-set=utf8mb4</p>
+<p>[mysqld] port=3306 #server-id=3306 user=mysql8.0 socket=/tmp/mysql.sock basedir=/opt/mysql8.0 datadir=/opt/mysql8.0/data #字符集，大小写，自动提交事务 character-set-server=utf8mb4 #lower_case_table_names=1 autocommit=1</p>
+<p>#创表默认引擎 default-storage-engine=INNODB lower_case_table_names=1 max_allowed_packet=16M</p>
+<p>#sql模式 sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION</p>
+<p>[mysqld_safe] log-error=/opt/mysql8.0/data/mysql.log pid-file=/opt/mysql8.0/data/mysql.pid</p>
+<p>5、设置权限：chown -R mysql:mysql /opt/ mysql8.0 chmod -R 755 /opt/ mysql8.0</p>
+<p>6、创建data目录:mkdir /opt/mysql8.0/data</p>
+<p>7.初始化并记住初始密码 ./bin/mysqld –initialize –user=mysql8.0 –datadir=/opt/mysql8.0/data –basedir=/opt/mysql8.0 –lower_case_table_names=1</p>
+<p>8.启动 ./support-files/mysql.server start</p>
+<p>9.复制启动脚本文件到init.d下<br />
+cp support-files/mysql.server /etc/init.d/mysqld chmod a+x /etc/init.d/mysqld 设置所有人可以执行权限</p>
+<p>10.启动，停止，重启 service mysqld start #service mysqld stop #service mysqld restart</p>
+<p>11.添加软链接 ln -s /opt/mysql8.0/bin/mysql /usr/bin</p>
+<p>10.登录并改密码，配置远程登陆 mysql -uroot -p 输密码 alter user ‘root’@‘localhost’ identified by ‘123456’; 修改密码 flush privileges; 刷新权限</p>
+<p>配置远程登陆权限(8.0之前直接给root@%赋权就行， 8.0之后需要先新建一个root@%的用户) create user ‘root’@‘%’ IDENTIFIED BY ‘123456’; GRANT ALL PRIVILEGES ON * . * TO ‘root’@‘%’ IDENTIFIED BY ‘111111’ WITH GRANT OPTION; 远程用户用root加密码111111连接</p>
+<p>11.连不上打开3306防火墙 防火墙打开3306端口号 firewall-cmd –zone=public –add-port=3306/tcp –permanent 下面3行是参数说明 #–zone #作用域 #–add-port=80/tcp#添加端口,格式为:端口/通讯协议 #–permanent #永久生效,没有此参数重启后失效</p>
+<p>重启防火墙 firewall-cmd –reload#重启firewall</p>
+<p>查看是否已经开放3306端口 firewall-cmd –list-ports #查看已经开放的端口</p>
+<p>12.mysql开机自启 cp /usr/local/mysql/mysql/support-files/mysql.server /etc/rc.d/init.d/mysqld chmod +x /etc/init.d/mysqld 添加为服务: chkconfig –add mysqld 查看服务列表: chkconfig –list 看到3、4、5状态为开或者为 on 则表示成功。如果是 关或者 off 则执行一下：chkconfig –level 345 mysqld on 重启计算机:reboot</p>
+<h1 id="安装redis">安装redis</h1>
+<p>linux上安装,首先拿到压缩包，方法任意,这里使用在线下载 wget http://download.redis.io/releases/redis-4.0.9.tar.gz</p>
+<p>1.解压然后进到解压的文件里面 2.执行make来编译 3.他会生成src文件夹，进到里面执行redis-server就运行了</p>
+<h1 id="安装docker">安装docker</h1>
+<p>1.卸载之前的docker</p>
+<p>yum remove docker<br />
+docker-client<br />
+docker-client-latest<br />
+docker-common   docker-latest   docker-latest-logrotate   docker-logrotate<br />
+docker-selinux   docker-engine-selinux   docker-engine   docker-ce</p>
+<p>2.建立仓库</p>
+<p>yum install -y yum-utils //安装docker所需要的工具包</p>
+<p>yum-config-manager –add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo //建立docker仓库，映射仓库地址</p>
+<p>3.安装docker引擎</p>
+<p>yum install docker -ce dockerce-cli containerd.io</p>
+<p>4.启动docker</p>
+<p>systemctl start docker</p>
+<p>5.测试安装是否成功</p>
+<p>docker pull hello-world</p>
+<p>docker run hello-world</p>
+<h2 id="其他操作">其他操作</h2>
+<p>docker镜像加速器配置(建立仓库时可提前选择镜像)</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="comment">//重启docker</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+<p>守护进程重启：systemctl daemon-reload</p>
+<p>重启Docker服务：systemctl restart docker / service docker restart</p>
+<p>关闭Docker服务：docker service docker stop / docker systemctl stop docker</p>
+<p>删除docker：yum remove docker-ce rm -rf /var/lib/docker</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -7125,6 +7008,123 @@ int:以4个字节来存储正负数.可存储范围为:-2<sup>31至2</sup>31-1. 
       </categories>
       <tags>
         <tag>sql server</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>概率论与数理统计</title>
+    <url>/2026/09/02/%E5%85%AC%E5%85%B1%E8%AF%BE/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/</url>
+    <content><![CDATA[<h1 id="概率论">概率论</h1>
+<h2 id="随机事件的关系与运算">随机事件的关系与运算</h2>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">关系</th>
+<th style="text-align: left;">符号</th>
+<th style="text-align: left;">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">包含</td>
+<td style="text-align: left;"><span class="math inline">\(A \subset B\)</span></td>
+<td style="text-align: left;">A发生必然导致B发生</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">相等</td>
+<td style="text-align: left;"><span class="math inline">\(A = B\)</span></td>
+<td style="text-align: left;">A和B相等</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">互斥</td>
+<td style="text-align: left;"><span class="math inline">\(A \cap B = \varnothing\)</span></td>
+<td style="text-align: left;">A和B不可能同时发生</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">运算</th>
+<th style="text-align: left;">符号</th>
+<th style="text-align: left;">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">并</td>
+<td style="text-align: left;"><span class="math inline">\(A \cup B = A+B\)</span></td>
+<td style="text-align: left;">AB至少有一个发生</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">交</td>
+<td style="text-align: left;"><span class="math inline">\(A \cap B = AB\)</span></td>
+<td style="text-align: left;">AB同时发生</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">差</td>
+<td style="text-align: left;"><span class="math inline">\(A - B=A \overline{B}\)</span></td>
+<td style="text-align: left;">A发生B不发生</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">对立</td>
+<td style="text-align: left;"><span class="math inline">\(\overline{A}\)</span></td>
+<td style="text-align: left;">A不发生</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 84%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">运算性质</th>
+<th style="text-align: center;">符号表示</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">交换律</td>
+<td style="text-align: center;"><span class="math inline">\(A \cup B = B \cup A \\ A \cap B = B \cap A\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">结合律</td>
+<td style="text-align: center;"><span class="math inline">\((A \cup B) \cup C = A \cup (B \cup C) \\ (A \cap B) \cap C = A \cap (B \cap C)\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">分配律</td>
+<td style="text-align: center;"><span class="math inline">\(A \cap (B \cup C) = (A \cap B) \cup (A \cap C) \\ A \cup (B \cap C) = (A \cup B) \cap (A \cup C)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">对偶律（德摩根公式）</td>
+<td style="text-align: center;">$ =   \  =   $</td>
+</tr>
+</tbody>
+</table>
+<p><strong>德摩根公式推广</strong>到多个事件以及可列个事件的场合：</p>
+<p><span class="math display">\[
+\begin{align*}
+\overline{\bigcup_{i=1}^{\infty} A_i} &amp;= \bigcap_{i=1}^{\infty} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{\infty} A_i} &amp;= \bigcup_{i=1}^{\infty} \overline{A_i} \\
+\overline{\bigcup_{i=1}^{n} A_i} &amp;= \bigcap_{i=1}^{n} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{n} A_i} &amp;= \bigcup_{i=1}^{n} \overline{A_i}
+\end{align*}
+\]</span></p>
+<h2 id="事件域">事件域*</h2>
+<h2 id="条件概率基本公式">条件概率基本公式</h2>
+<p>$ P(A+B) = \begin{cases} P(A)+P(B)-P(AB) &amp; AB \ P(A)+P(B) &amp; AB \ P(A)  P(B) &amp; B A  A B \ P(A)+P(B)-P(A)P(B) &amp; AB \end{cases} $</p>
+<p>$ P(A-B) = \begin{cases} P(A)-P(AB) &amp; AB \ P(A)-P(B) &amp; B A \ P(A) &amp; A B \end{cases} $</p>
+<p>乘法公式 $ P(AB)=P(A)P(BA) $</p>
+<p>全概率公式 $ P(B) = _{i=1}^{n} P(A_i) P(BA_i) $</p>
+<p>贝叶斯公式</p>
+<p><span class="math inline">\(P(A_i\mid B) = \frac{P(A_i) P(B|A_i)}{\sum\limits_{j=1}^{n} P(A_j) P(B|A_j)}\)</span></p>
+<h1 id="数理统计">数理统计</h1>
+]]></content>
+      <categories>
+        <category>数学</category>
+      </categories>
+      <tags>
+        <tag>数学</tag>
+        <tag>数理统计</tag>
       </tags>
   </entry>
 </search>
