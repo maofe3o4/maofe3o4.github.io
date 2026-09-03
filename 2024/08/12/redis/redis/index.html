@@ -275,7 +275,7 @@
 
       
         <p>[toc]</p>
-<h1 id="安装"><a class="markdownIt-Anchor" href="#安装"></a> 安装</h1>
+<h1 id="安装">安装</h1>
 <p>见《linux软件安装》</p>
 <p>简单说一下就是：</p>
 <ul>
@@ -284,23 +284,21 @@
 <li>创建安装目录mkdir 安装路径</li>
 <li>开始安装make PREFIX=安装路径 install</li>
 </ul>
-<p>如果要使用bin/redis-server ./redis.conf启动redis服务<br />
-./bin/redis-server ./redis.conf<br />
-容器内直接输入redis-server</p>
+<p>如果要使用bin/redis-server ./redis.conf启动redis服务 ./bin/redis-server ./redis.conf 容器内直接输入redis-server</p>
 <p>提前配置好redis.conf</p>
 <ul>
 <li>容器里面在/etc/redis目录</li>
 <li>直接部署在linux，位置在解压的文件里面，要复制一份到安装路径下</li>
 <li>修改配置文件bind 127.0.0.1 -::1 修改成0.0.0.0</li>
-<li>如果是容器内不改这个   daemonize no 改成daemonize yes</li>
+<li>如果是容器内不改这个 daemonize no 改成daemonize yes</li>
 </ul>
 <p>启动登录</p>
 <ul>
 <li>刚开始没有密码，直接redis-cli</li>
-<li>后面设了密码和用户名，reis-cli  -a 密码</li>
+<li>后面设了密码和用户名，reis-cli -a 密码</li>
 </ul>
-<h1 id="数据类型"><a class="markdownIt-Anchor" href="#数据类型"></a> 数据类型</h1>
-<p>参考<a target="_blank" rel="noopener" href="http://redisdoc.com">http://redisdoc.com</a></p>
+<h1 id="数据类型">数据类型</h1>
+<p>参考http://redisdoc.com</p>
 <ul>
 <li>string字符串</li>
 <li>hash哈希</li>
@@ -309,234 +307,234 @@
 <li>zset有序集合</li>
 </ul>
 <p>查数据库大小：dbsize</p>
-<h2 id="键key"><a class="markdownIt-Anchor" href="#键key"></a> 键key</h2>
+<h2 id="键key">键key</h2>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>命令(key全为键名)</th>
 <th>说明</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>del key</td>
 <td>删除</td>
 </tr>
-<tr>
+<tr class="even">
 <td>get key</td>
 <td>查key值</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>move key db</td>
 <td>从当前库移到db库</td>
 </tr>
-<tr>
+<tr class="even">
 <td>exists key</td>
 <td>判断是否存在</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><strong>存活时间相关</strong></td>
 <td></td>
 </tr>
-<tr>
+<tr class="even">
 <td>expire/expireat key 秒/时间戳</td>
 <td>设置过期时间/设置过期时间点</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>persist key</td>
 <td>移除过期时间</td>
 </tr>
-<tr>
+<tr class="even">
 <td>ttl key</td>
 <td>返回剩余生存时间，-1永不过期，-2已过期</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>randomkey</td>
 <td>从当前库随机返回一个值</td>
 </tr>
-<tr>
+<tr class="even">
 <td>rename key newkey</td>
 <td>重命名</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>keys pattern</td>
 <td>查看所有符合模式的key，通配符*, ? ,[]</td>
 </tr>
 </tbody>
 </table>
-<h2 id="字符串string"><a class="markdownIt-Anchor" href="#字符串string"></a> 字符串string</h2>
-<p>可以包含任何数据(因为是用二进制存的)，比如图片或者序列化的对象<br />
-最大512M</p>
+<h2 id="字符串string">字符串string</h2>
+<p>可以包含任何数据(因为是用二进制存的)，比如图片或者序列化的对象 最大512M</p>
 <table>
+<colgroup>
+<col style="width: 48%" />
+<col style="width: 51%" />
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>命令</th>
 <th>说明</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>set/mset/get/mget/del/append/strlen key value [key value]</td>
 <td>设值/设多个值/获取值/获取多个key的值/删除key/字符串追加/获取长度</td>
 </tr>
-<tr>
+<tr class="even">
 <td>incrby/decrby/incrfloat/decrfloat key 值</td>
 <td>增加/减少/增加浮点数/减少浮点数</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>getrange key start end</td>
 <td>返回key中从start到end的字串</td>
 </tr>
-<tr>
+<tr class="even">
 <td>getbit key offset</td>
 <td>key的字符串值，获取偏移量offset位的bit</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>setbit key offset value</td>
 <td>同上但是是设置该位的值</td>
 </tr>
-<tr>
+<tr class="even">
 <td>setrange key offset value</td>
 <td>设置key从偏移量offset开始的值</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>setex key 秒 vlaue</td>
 <td>设置key的值同时设置过期时间</td>
 </tr>
-<tr>
+<tr class="even">
 <td>setnx key value</td>
 <td>在key不存在时设置key的值</td>
 </tr>
 </tbody>
 </table>
-<h2 id="列表list"><a class="markdownIt-Anchor" href="#列表list"></a> 列表list</h2>
+<h2 id="列表list">列表list</h2>
 <p>用链表实现</p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>命令</th>
 <th>说明</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>lpush/rpush key value1 value2 …</td>
 <td>头插或尾插一个或多个值</td>
 </tr>
-<tr>
+<tr class="even">
 <td>lrange key start stop</td>
 <td>查指定范围内的元素，-1表示最后一位</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>lpop/rpop/blpop/brpop key</td>
 <td>移出并获取/若为空会一直等到进来元素 头/尾的元素</td>
 </tr>
-<tr>
+<tr class="even">
 <td>lindex key index</td>
 <td>通过索引获取(类似数组下标),-1表示最后一位</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>lset key index value</td>
 <td>通过下标设置列表值</td>
 </tr>
-<tr>
+<tr class="even">
 <td>llen key</td>
 <td>获取列表长度</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>lrem key count value</td>
 <td>删除列表里的value，并返回实际删除个数，count&gt;0,从左边开始删，count=0删除全部</td>
 </tr>
-<tr>
+<tr class="even">
 <td>ltrim key start stop</td>
 <td>保留从start到stop的元素</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>rpoplpush/brpoplpush key1 key2</td>
 <td>剪切列表1的最后一个元素到列表2<br />加上b就是若列表为空会等到出现值</td>
 </tr>
-<tr>
+<tr class="even">
 <td></td>
 <td></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>linsert key before/after 值1 值2</td>
 <td>在值1前或者后插入值2</td>
 </tr>
 </tbody>
 </table>
-<h2 id="集合set"><a class="markdownIt-Anchor" href="#集合set"></a> 集合set</h2>
+<h2 id="集合set">集合set</h2>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th>命令</th>
 <th>说明</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>sadd key member1 member2 …</td>
 <td>增加成员</td>
 </tr>
-<tr>
+<tr class="even">
 <td>spop key</td>
 <td>删除并返回随机一个元素</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>srem key value</td>
 <td>删除</td>
 </tr>
-<tr>
+<tr class="even">
 <td>scard key</td>
 <td>获取成员数</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>smembers key</td>
 <td>返回所有成员</td>
 </tr>
-<tr>
+<tr class="even">
 <td>sismember key member</td>
 <td>是否是集合key的成员</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>smove 集合1 集合2 member</td>
 <td>将member从集合1移到集合2</td>
 </tr>
-<tr>
+<tr class="even">
 <td>sinter/sdiff/sunion 一个或多个集合</td>
 <td>返回 交/并/差 后面的集合</td>
 </tr>
 </tbody>
 </table>
-<h2 id="哈希hash"><a class="markdownIt-Anchor" href="#哈希hash"></a> 哈希hash</h2>
-<h2 id="有序集合zset"><a class="markdownIt-Anchor" href="#有序集合zset"></a> 有序集合zset</h2>
-<h1 id="持久化"><a class="markdownIt-Anchor" href="#持久化"></a> 持久化</h1>
-<h2 id="rdb"><a class="markdownIt-Anchor" href="#rdb"></a> RDB</h2>
+<h2 id="哈希hash">哈希hash</h2>
+<h2 id="有序集合zset">有序集合zset</h2>
+<h1 id="持久化">持久化</h1>
+<h2 id="rdb">RDB</h2>
 <ul>
 <li>最后一次持久化的数据可能丢失</li>
 <li>创建子进程fork来执行快照会占用两倍的空间</li>
 <li>redis/data下的dump.rdb文件整个内存压缩过后的快照</li>
 </ul>
-<p>开启rdb自动来持久化：redis.conf<br />
-配置文件中搜索save<br />
-save  &lt; seconds &gt;  &lt; changes &gt;</p>
-<p>save和bgsave：保存rdb到内存上，前者只保存，后者是异步保存<br />
-lastsave：获取最后一次成功执行快照的时间</p>
-<h2 id="aof"><a class="markdownIt-Anchor" href="#aof"></a> AOF</h2>
-<p><img src="/images/loading/loading.gif" data-original="/images/%E6%8C%81%E4%B9%85%E5%8C%96.png" alt="image-20240813172014778" /></p>
+<p>开启rdb自动来持久化：redis.conf 配置文件中搜索save save &lt; seconds &gt; &lt; changes &gt;</p>
+<p>save和bgsave：保存rdb到内存上，前者只保存，后者是异步保存 lastsave：获取最后一次成功执行快照的时间</p>
+<h2 id="aof">AOF</h2>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/持久化.png" alt="image-20240813172014778" /><figcaption>image-20240813172014778</figcaption>
+</figure>
 <p>Redis会记录上次重写时的AOF大小，默认配置是当AOF文件大小是上次rewrite后大小的一倍且文件大于64M时触发</p>
 <ul>
 <li>以日志形式来记录每个写操作(读不记录)</li>
 <li>只追加文件，不改写文件</li>
 <li>保存在/redis/data/appendonly.aof</li>
 </ul>
-<p>开启AOF：redis.conf<br />
-配置文件中搜索appendonly<br />
-appendonly yes</p>
+<p>开启AOF：redis.conf 配置文件中搜索appendonly appendonly yes</p>
 <p>修复AOF文件</p>
 <ul>
 <li>备份损坏的文件</li>
-<li>执行redis-check-aof --fix</li>
+<li>执行redis-check-aof –fix</li>
 <li>重启redis</li>
 </ul>
 <p>重写AOF(aof有冗余记录)</p>
@@ -544,10 +542,9 @@ appendonly yes</p>
 <li>执行bgrewriteaof</li>
 <li>fork一条新进程来重写AOF文件</li>
 <li>重写触发条件在redis.conf中</li>
-<li>auto-aof-rewrite-percentage 100   //每次达到重写后的一倍就重写<br />
-auto-aof-rewrite-min-size 64mb</li>
+<li>auto-aof-rewrite-percentage 100 //每次达到重写后的一倍就重写 auto-aof-rewrite-min-size 64mb</li>
 </ul>
-<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<h2 id="总结">总结</h2>
 <ul>
 <li>持久化方式，两种同时启动</li>
 <li>RDB用于备份数据库</li>
@@ -636,7 +633,7 @@ auto-aof-rewrite-min-size 64mb</li>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text"> 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text"> 数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%AEkey"><span class="nav-text"> 键key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2string"><span class="nav-text"> 字符串string</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E8%A1%A8list"><span class="nav-text"> 列表list</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88set"><span class="nav-text"> 集合set</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%B8%8Chash"><span class="nav-text"> 哈希hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88zset"><span class="nav-text"> 有序集合zset</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text"> 持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rdb"><span class="nav-text"> RDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#aof"><span class="nav-text"> AOF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text"> 总结</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-text">数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%AEkey"><span class="nav-text">键key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2string"><span class="nav-text">字符串string</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E8%A1%A8list"><span class="nav-text">列表list</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%86%E5%90%88set"><span class="nav-text">集合set</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%B8%8Chash"><span class="nav-text">哈希hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88zset"><span class="nav-text">有序集合zset</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rdb"><span class="nav-text">RDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#aof"><span class="nav-text">AOF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

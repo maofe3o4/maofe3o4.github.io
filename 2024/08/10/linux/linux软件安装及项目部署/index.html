@@ -273,218 +273,82 @@
 
       
         <p>[toc]</p>
-<h1 id="网络配置dhcp改静态"><a class="markdownIt-Anchor" href="#网络配置dhcp改静态"></a> 网络配置(dhcp改静态)</h1>
+<h1 id="网络配置dhcp改静态">网络配置(dhcp改静态)</h1>
 <p>nat模式-设置本机vm8的ipv4和网关-修改ifcfg-ens33 -重启-网络图标不见看下面</p>
-<p>网络图标消失不见的解决方案<br />
-停止网络配置管理器：systemctl stop NetworkManager.service<br />
-删除文件： rm /var/lib/NetworkManager/NetworkManager.state<br />
-开启网络配置管理器： systemctl start NetworkManager.service</p>
+<p>网络图标消失不见的解决方案 停止网络配置管理器：systemctl stop NetworkManager.service 删除文件： rm /var/lib/NetworkManager/NetworkManager.state 开启网络配置管理器： systemctl start NetworkManager.service</p>
 <p>vi /etc/sysconfig/network-scripts/ifcfg-ens33</p>
-<p>TYPE=“Ethernet”<br />
-PROXY_METHOD=“none”<br />
-BROWSER_ONLY=“no”<br />
-BOOTPROTO=“static”<br />
-DEFROUTE=“yes”<br />
-IPV4_FAILURE_FATAL=“no”<br />
-IPV6INIT=“yes”<br />
-IPV6_AUTOCONF=“yes”<br />
-IPV6_DEFROUTE=“yes”<br />
-IPV6_FAILURE_FATAL=“no”<br />
-IPV6_ADDR_GEN_MODE=“stable-privacy”<br />
-NAME=“ens33”<br />
-UUID=“5afdee8c-694c-4b47-b78a-9f07ea444acd”<br />
-DEVICE=“ens33”<br />
-ONBOOT=“yes”<br />
-IPADDR=192.168.181.3<br />
-NETMASK=255.255.255.0<br />
-GATEWAY=192.168.181.2<br />
-DNS1=8.8.8.8<br />
-DNS2=114.114.114.114</p>
-<h1 id="防火墙设置"><a class="markdownIt-Anchor" href="#防火墙设置"></a> 防火墙设置</h1>
+<p>TYPE=“Ethernet” PROXY_METHOD=“none” BROWSER_ONLY=“no” BOOTPROTO=“static” DEFROUTE=“yes” IPV4_FAILURE_FATAL=“no” IPV6INIT=“yes” IPV6_AUTOCONF=“yes” IPV6_DEFROUTE=“yes” IPV6_FAILURE_FATAL=“no” IPV6_ADDR_GEN_MODE=“stable-privacy” NAME=“ens33” UUID=“5afdee8c-694c-4b47-b78a-9f07ea444acd” DEVICE=“ens33” ONBOOT=“yes” IPADDR=192.168.181.3 NETMASK=255.255.255.0 GATEWAY=192.168.181.2 DNS1=8.8.8.8 DNS2=114.114.114.114</p>
+<h1 id="防火墙设置">防火墙设置</h1>
 <p>打开对应端口</p>
-<ol>
-<li>防火墙打开3306端口号<br />
-firewall-cmd --zone=public --add-port=3306/tcp --permanent<br />
-下面3行是参数说明<br />
-#–zone                        #作用域<br />
-#–add-port=80/tcp   #添加端口,格式为:端口/通讯协议<br />
-#–permanent             #永久生效,没有此参数重启后失效</li>
-<li>重启防火墙<br />
-firewall-cmd --reload#重启firewall</li>
-<li>查看是否已经开放3306端口<br />
-firewall-cmd --list-ports #查看已经开放的端口</li>
+<ol type="1">
+<li>防火墙打开3306端口号 firewall-cmd –zone=public –add-port=3306/tcp –permanent 下面3行是参数说明 #–zone #作用域 #–add-port=80/tcp #添加端口,格式为:端口/通讯协议 #–permanent #永久生效,没有此参数重启后失效</li>
+<li>重启防火墙 firewall-cmd –reload#重启firewall</li>
+<li>查看是否已经开放3306端口 firewall-cmd –list-ports #查看已经开放的端口</li>
 </ol>
-<p>如果你想再关闭firewall-cmd --zone=public --remove-port=3306/tcp --permanent<br />
-然后再重启防火墙</p>
-<h1 id="安装方式"><a class="markdownIt-Anchor" href="#安装方式"></a> 安装方式</h1>
-<p>软件一般安装在根目录下的/usr/local/</p>
-<table>
-<thead>
-<tr>
-<th>安装方式</th>
-<th>特点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>二进制发布包安装</td>
-<td>已经编译过只需解压修改配置</td>
-</tr>
-<tr>
-<td>rpm</td>
-<td>按照包管理规范进行打包，有库依赖问题</td>
-</tr>
-<tr>
-<td>yum</td>
-<td>本质上还是rpm，需联网，无库依赖问题</td>
-</tr>
-<tr>
-<td>源码编译安装</td>
-<td>将源码工程自行打包发布</td>
-</tr>
-</tbody>
-</table>
-<h1 id="没有vim"><a class="markdownIt-Anchor" href="#没有vim"></a> 没有vim</h1>
+<p>如果你想再关闭firewall-cmd –zone=public –remove-port=3306/tcp –permanent 然后再重启防火墙</p>
+<h1 id="安装方式">安装方式</h1>
+<p>软件一般安装在根目录下的/usr/local/ | 安装方式 | 特点 | | —————- | ———————————— | | 二进制发布包安装 | 已经编译过只需解压修改配置 | | rpm | 按照包管理规范进行打包，有库依赖问题 | | yum | 本质上还是rpm，需联网，无库依赖问题 | | 源码编译安装 | 将源码工程自行打包发布 |</p>
+<h1 id="没有vim">没有vim</h1>
 <p>apt-get update</p>
 <p>apt-get install vim -y</p>
-<h1 id="安装jdk"><a class="markdownIt-Anchor" href="#安装jdk"></a> 安装JDK</h1>
-<h2 id="步骤"><a class="markdownIt-Anchor" href="#步骤"></a> 步骤</h2>
-<p>下载链接<a target="_blank" rel="noopener" href="https://www.oracle.com/technetwork/java/javase/downloads/index.html">https://www.oracle.com/technetwork/java/javase/downloads/index.html</a></p>
-<p>1.在/usr/local目录下创建自定义soft目录<br />
-2.使用FinalShell自带的上传工具将jdk的二进制发布包上传到Linux<br />
-3.切换到soft目录<br />
-4.解压安装包 tar -zxvf jdk-8u171-linux-x64.tar.gz<br />
-5.配置环境变量：使用vim修改/etc/profile文件<br />
-JAVA_HOME=/usr/local/soft/jdk1.8.0_171<br />
-JRE_HOME=<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>J</mi><mi>A</mi><mi>V</mi><msub><mi>A</mi><mi>H</mi></msub><mi>O</mi><mi>M</mi><mi>E</mi></mrow><mi mathvariant="normal">/</mi><mi>j</mi><mi>r</mi><mi>e</mi><mi>C</mi><mi>L</mi><mi>A</mi><mi>S</mi><mi>S</mi><mi>P</mi><mi>A</mi><mi>T</mi><mi>H</mi><mo>=</mo><mi mathvariant="normal">.</mi><mo>:</mo></mrow><annotation encoding="application/x-tex">{JAVA_HOME}/jre
-CLASSPATH=.:</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.09618em;">J</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.08125em;">H</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">L</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord">.</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span></span></span></span>JAVA_HOME/lib<br />
-PATH=<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>J</mi><mi>A</mi><mi>V</mi><msub><mi>A</mi><mi>H</mi></msub><mi>O</mi><mi>M</mi><mi>E</mi><mi mathvariant="normal">/</mi><mi>b</mi><mi>i</mi><mi>n</mi><mo>:</mo></mrow><annotation encoding="application/x-tex">JAVA_HOME/bin:</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.09618em;">J</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.32833099999999993em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.08125em;">H</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.02778em;">O</span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord">/</span><span class="mord mathnormal">b</span><span class="mord mathnormal">i</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span></span></span></span>PATH<br />
-export JAVA_HOME JRE_HOME CLASSPATH PATH<br />
-6.重新加载profile文件 source /etc/profile<br />
-7.检查安装是否成功，java -version</p>
-<h2 id="alternatives管理"><a class="markdownIt-Anchor" href="#alternatives管理"></a> alternatives管理</h2>
+<h1 id="安装jdk">安装JDK</h1>
+<h2 id="步骤">步骤</h2>
+<p>下载链接https://www.oracle.com/technetwork/java/javase/downloads/index.html</p>
+<p>1.在/usr/local目录下创建自定义soft目录 2.使用FinalShell自带的上传工具将jdk的二进制发布包上传到Linux 3.切换到soft目录 4.解压安装包 tar -zxvf jdk-8u171-linux-x64.tar.gz 5.配置环境变量：使用vim修改/etc/profile文件 JAVA_HOME=/usr/local/soft/jdk1.8.0_171 JRE_HOME=<span class="math inline">\({JAVA_HOME}/jre CLASSPATH=.:\)</span>JAVA_HOME/lib PATH=<span class="math inline">\(JAVA_HOME/bin:\)</span>PATH export JAVA_HOME JRE_HOME CLASSPATH PATH 6.重新加载profile文件 source /etc/profile 7.检查安装是否成功，java -version</p>
+<h2 id="alternatives管理">alternatives管理</h2>
 <p>如果交给了alternatives来管理java可以不用设置环境变量</p>
-<p>通过alternatives --install [软链接] [链接名] [执行文件路径] [优先级]<br />
-例如将自己安装的java交给alternatives管理：<br />
-alternatives --install  /usr/bin/java   java     …/jdk/bin/java 3<br />
-其实就是将安装的java执行文件路径生成软链接放到/usr/bin目录下</p>
-<p>切换java版本:alternatives --config java</p>
-<h1 id="安装tomcat"><a class="markdownIt-Anchor" href="#安装tomcat"></a> 安装tomcat</h1>
-<p>压缩包直接解压<br />
-<a target="_blank" rel="noopener" href="https://www.cnblogs.com/wjt-super/p/8018642.html">配置文件</a></p>
-<h1 id="安装mysql80"><a class="markdownIt-Anchor" href="#安装mysql80"></a> 安装mysql8.0</h1>
-<p>tar.gz方式下载路径：<a target="_blank" rel="noopener" href="https://downloads.mysql.com/archives/community/">https://downloads.mysql.com/archives/community/</a></p>
-<p>1、ps -ajx |grep mariadb # 先检查是否有mariadb存在<br />
-如果存在先停止systemctl stop mariadb.service或者kill -9 进程id<br />
-2、检查系统安装包rpm -qa | grep mariadb和rpm -qa | grep mysql<br />
-如果存在就删除rpm -e --nodeps 包名或者yum remove mariadb/mysql<br />
-3.创建mysql 用户组和用户<br />
-groupadd mysql<br />
-useradd -r -g mysql mysql<br />
-4.解压<br />
-5.配置文件 /etc/my.cnf<br />
-[mysql]<br />
-default-character-set=utf8mb4</p>
-<p>[mysqld]<br />
-port=3306<br />
-#server-id=3306<br />
-user=mysql8.0<br />
-socket=/tmp/mysql.sock<br />
-basedir=/opt/mysql8.0<br />
-datadir=/opt/mysql8.0/data<br />
-#字符集，大小写，自动提交事务<br />
-character-set-server=utf8mb4<br />
-#lower_case_table_names=1<br />
-autocommit=1</p>
-<p>#创表默认引擎<br />
-default-storage-engine=INNODB<br />
-lower_case_table_names=1<br />
-max_allowed_packet=16M</p>
-<p>#sql模式<br />
-sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION</p>
-<p>[mysqld_safe]<br />
-log-error=/opt/mysql8.0/data/mysql.log<br />
-pid-file=/opt/mysql8.0/data/mysql.pid</p>
-<p>5、设置权限：chown -R mysql:mysql /opt/ mysql8.0<br />
-chmod -R 755 /opt/ mysql8.0</p>
+<p>通过alternatives –install [软链接] [链接名] [执行文件路径] [优先级] 例如将自己安装的java交给alternatives管理： alternatives –install /usr/bin/java java ../jdk/bin/java 3 其实就是将安装的java执行文件路径生成软链接放到/usr/bin目录下</p>
+<p>切换java版本:alternatives –config java</p>
+<h1 id="安装tomcat">安装tomcat</h1>
+<p>压缩包直接解压 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/wjt-super/p/8018642.html">配置文件</a></p>
+<h1 id="安装mysql8.0">安装mysql8.0</h1>
+<p>tar.gz方式下载路径：https://downloads.mysql.com/archives/community/</p>
+<p>1、ps -ajx |grep mariadb # 先检查是否有mariadb存在 如果存在先停止systemctl stop mariadb.service或者kill -9 进程id 2、检查系统安装包rpm -qa | grep mariadb和rpm -qa | grep mysql 如果存在就删除rpm -e –nodeps 包名或者yum remove mariadb/mysql 3.创建mysql 用户组和用户 groupadd mysql useradd -r -g mysql mysql 4.解压 5.配置文件 /etc/my.cnf [mysql] default-character-set=utf8mb4</p>
+<p>[mysqld] port=3306 #server-id=3306 user=mysql8.0 socket=/tmp/mysql.sock basedir=/opt/mysql8.0 datadir=/opt/mysql8.0/data #字符集，大小写，自动提交事务 character-set-server=utf8mb4 #lower_case_table_names=1 autocommit=1</p>
+<p>#创表默认引擎 default-storage-engine=INNODB lower_case_table_names=1 max_allowed_packet=16M</p>
+<p>#sql模式 sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION</p>
+<p>[mysqld_safe] log-error=/opt/mysql8.0/data/mysql.log pid-file=/opt/mysql8.0/data/mysql.pid</p>
+<p>5、设置权限：chown -R mysql:mysql /opt/ mysql8.0 chmod -R 755 /opt/ mysql8.0</p>
 <p>6、创建data目录:mkdir /opt/mysql8.0/data</p>
-<p>7.初始化并记住初始密码<br />
-./bin/mysqld --initialize --user=mysql8.0 --datadir=/opt/mysql8.0/data --basedir=/opt/mysql8.0 --lower_case_table_names=1</p>
-<p>8.启动<br />
-./support-files/mysql.server start</p>
+<p>7.初始化并记住初始密码 ./bin/mysqld –initialize –user=mysql8.0 –datadir=/opt/mysql8.0/data –basedir=/opt/mysql8.0 –lower_case_table_names=1</p>
+<p>8.启动 ./support-files/mysql.server start</p>
 <p>9.复制启动脚本文件到init.d下<br />
-cp support-files/mysql.server /etc/init.d/mysqld<br />
-chmod a+x /etc/init.d/mysqld  设置所有人可以执行权限</p>
-<p>10.启动，停止，重启<br />
-service mysqld start<br />
-#service mysqld stop<br />
-#service mysqld restart</p>
-<p>11.添加软链接<br />
-ln -s /opt/mysql8.0/bin/mysql  /usr/bin</p>
-<p>10.登录并改密码，配置远程登陆<br />
-mysql -uroot -p<br />
-输密码<br />
-alter user ‘root’@‘localhost’ identified by ‘123456’; 修改密码<br />
-flush privileges; 刷新权限</p>
-<p>配置远程登陆权限(8.0之前直接给root@%赋权就行，<br />
-8.0之后需要先新建一个root@%的用户)<br />
-create user ‘root’@‘%’ IDENTIFIED BY ‘123456’;<br />
-GRANT ALL PRIVILEGES ON * . *  TO ‘root’@‘%’ IDENTIFIED BY ‘111111’ WITH GRANT OPTION; 远程用户用root加密码111111连接</p>
-<p>11.连不上打开3306防火墙<br />
-防火墙打开3306端口号<br />
-firewall-cmd --zone=public --add-port=3306/tcp --permanent<br />
-下面3行是参数说明<br />
-#–zone              #作用域<br />
-#–add-port=80/tcp#添加端口,格式为:端口/通讯协议<br />
-#–permanent         #永久生效,没有此参数重启后失效</p>
-<p>重启防火墙<br />
-firewall-cmd --reload#重启firewall</p>
-<p>查看是否已经开放3306端口<br />
-firewall-cmd --list-ports #查看已经开放的端口</p>
-<p>12.mysql开机自启<br />
-cp /usr/local/mysql/mysql/support-files/mysql.server /etc/rc.d/init.d/mysqld<br />
-chmod +x /etc/init.d/mysqld<br />
-添加为服务: chkconfig --add mysqld<br />
-查看服务列表:  chkconfig --list<br />
-看到3、4、5状态为开或者为 on 则表示成功。如果是 关或者 off 则执行一下：chkconfig --level 345 mysqld on<br />
-重启计算机:reboot</p>
-<h1 id="安装redis"><a class="markdownIt-Anchor" href="#安装redis"></a> 安装redis</h1>
-<p>linux上安装,首先拿到压缩包，方法任意,这里使用在线下载<br />
-wget <a target="_blank" rel="noopener" href="http://download.redis.io/releases/redis-4.0.9.tar.gz">http://download.redis.io/releases/redis-4.0.9.tar.gz</a></p>
-<p>1.解压然后进到解压的文件里面<br />
-2.执行make来编译<br />
-3.他会生成src文件夹，进到里面执行redis-server就运行了</p>
-<h1 id="安装docker"><a class="markdownIt-Anchor" href="#安装docker"></a> 安装docker</h1>
+cp support-files/mysql.server /etc/init.d/mysqld chmod a+x /etc/init.d/mysqld 设置所有人可以执行权限</p>
+<p>10.启动，停止，重启 service mysqld start #service mysqld stop #service mysqld restart</p>
+<p>11.添加软链接 ln -s /opt/mysql8.0/bin/mysql /usr/bin</p>
+<p>10.登录并改密码，配置远程登陆 mysql -uroot -p 输密码 alter user ‘root’@‘localhost’ identified by ‘123456’; 修改密码 flush privileges; 刷新权限</p>
+<p>配置远程登陆权限(8.0之前直接给root@%赋权就行， 8.0之后需要先新建一个root@%的用户) create user ‘root’@‘%’ IDENTIFIED BY ‘123456’; GRANT ALL PRIVILEGES ON * . * TO ‘root’@‘%’ IDENTIFIED BY ‘111111’ WITH GRANT OPTION; 远程用户用root加密码111111连接</p>
+<p>11.连不上打开3306防火墙 防火墙打开3306端口号 firewall-cmd –zone=public –add-port=3306/tcp –permanent 下面3行是参数说明 #–zone #作用域 #–add-port=80/tcp#添加端口,格式为:端口/通讯协议 #–permanent #永久生效,没有此参数重启后失效</p>
+<p>重启防火墙 firewall-cmd –reload#重启firewall</p>
+<p>查看是否已经开放3306端口 firewall-cmd –list-ports #查看已经开放的端口</p>
+<p>12.mysql开机自启 cp /usr/local/mysql/mysql/support-files/mysql.server /etc/rc.d/init.d/mysqld chmod +x /etc/init.d/mysqld 添加为服务: chkconfig –add mysqld 查看服务列表: chkconfig –list 看到3、4、5状态为开或者为 on 则表示成功。如果是 关或者 off 则执行一下：chkconfig –level 345 mysqld on 重启计算机:reboot</p>
+<h1 id="安装redis">安装redis</h1>
+<p>linux上安装,首先拿到压缩包，方法任意,这里使用在线下载 wget http://download.redis.io/releases/redis-4.0.9.tar.gz</p>
+<p>1.解压然后进到解压的文件里面 2.执行make来编译 3.他会生成src文件夹，进到里面执行redis-server就运行了</p>
+<h1 id="安装docker">安装docker</h1>
 <p>1.卸载之前的docker</p>
-<p>yum remove docker <br />
-docker-client <br />
-docker-client-latest <br />
-docker-common \ <br />
-docker-latest \ <br />
-docker-latest-logrotate \ <br />
-docker-logrotate <br />
-docker-selinux \ <br />
-docker-engine-selinux \ <br />
-docker-engine \ <br />
-docker-ce</p>
+<p>yum remove docker<br />
+docker-client<br />
+docker-client-latest<br />
+docker-common   docker-latest   docker-latest-logrotate   docker-logrotate<br />
+docker-selinux   docker-engine-selinux   docker-engine   docker-ce</p>
 <p>2.建立仓库</p>
-<p>yum install -y yum-utils     //安装docker所需要的工具包</p>
-<p>yum-config-manager --add-repo <a target="_blank" rel="noopener" href="http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo">http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</a>       //建立docker仓库，映射仓库地址</p>
+<p>yum install -y yum-utils //安装docker所需要的工具包</p>
+<p>yum-config-manager –add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo //建立docker仓库，映射仓库地址</p>
 <p>3.安装docker引擎</p>
-<p>yum install docker -ce dockerce-cli <a target="_blank" rel="noopener" href="http://containerd.io">containerd.io</a></p>
+<p>yum install docker -ce dockerce-cli containerd.io</p>
 <p>4.启动docker</p>
 <p>systemctl start docker</p>
 <p>5.测试安装是否成功</p>
 <p>docker pull hello-world</p>
 <p>docker run hello-world</p>
-<h2 id="其他操作"><a class="markdownIt-Anchor" href="#其他操作"></a> 其他操作</h2>
+<h2 id="其他操作">其他操作</h2>
 <p>docker镜像加速器配置(建立仓库时可提前选择镜像)</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="comment">//重启docker</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
 <p>守护进程重启：systemctl daemon-reload</p>
 <p>重启Docker服务：systemctl restart docker / service docker restart</p>
 <p>关闭Docker服务：docker service docker stop / docker systemctl stop docker</p>
-<p>删除docker：yum remove docker-ce<br />
-rm -rf /var/lib/docker</p>
+<p>删除docker：yum remove docker-ce rm -rf /var/lib/docker</p>
 
     </div>
 
@@ -568,7 +432,7 @@ rm -rf /var/lib/docker</p>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AEdhcp%E6%94%B9%E9%9D%99%E6%80%81"><span class="nav-text"> 网络配置(dhcp改静态)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%B2%E7%81%AB%E5%A2%99%E8%AE%BE%E7%BD%AE"><span class="nav-text"> 防火墙设置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F"><span class="nav-text"> 安装方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B2%A1%E6%9C%89vim"><span class="nav-text"> 没有vim</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85jdk"><span class="nav-text"> 安装JDK</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4"><span class="nav-text"> 步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alternatives%E7%AE%A1%E7%90%86"><span class="nav-text"> alternatives管理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85tomcat"><span class="nav-text"> 安装tomcat</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85mysql80"><span class="nav-text"> 安装mysql8.0</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85redis"><span class="nav-text"> 安装redis</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85docker"><span class="nav-text"> 安装docker</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-text"> 其他操作</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AEdhcp%E6%94%B9%E9%9D%99%E6%80%81"><span class="nav-text">网络配置(dhcp改静态)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%B2%E7%81%AB%E5%A2%99%E8%AE%BE%E7%BD%AE"><span class="nav-text">防火墙设置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F"><span class="nav-text">安装方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B2%A1%E6%9C%89vim"><span class="nav-text">没有vim</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85jdk"><span class="nav-text">安装JDK</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4"><span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alternatives%E7%AE%A1%E7%90%86"><span class="nav-text">alternatives管理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85tomcat"><span class="nav-text">安装tomcat</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85mysql8.0"><span class="nav-text">安装mysql8.0</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85redis"><span class="nav-text">安装redis</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85docker"><span class="nav-text">安装docker</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="nav-text">其他操作</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

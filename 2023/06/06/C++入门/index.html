@@ -252,7 +252,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>486</span>
+              <span>484</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -272,20 +272,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="一-指针"><a class="markdownIt-Anchor" href="#一-指针"></a> 一、指针</h3>
-<p>1.使用指针作为函数参数<br />
-主函数定义a，b，通过swap交换两值</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">void swap(int *p,int *q)&#123;</span><br><span class="line">int t;</span><br><span class="line">t=*p;</span><br><span class="line">*p=*q;</span><br><span class="line">*q=t;</span><br><span class="line">return;</span><br><span class="line">&#125;</span><br><span class="line">int main()&#123;</span><br><span class="line">int a=1，b=2；</span><br><span class="line">swap(&amp;a,&amp;b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>2.使用const修饰指针<br />
-<strong>常量指针</strong>：const int *a    指向的内容不可变，不能用解引用修改地址中的值，一般用于函数形参，表示不希望在函数内部修改地址中的值。<br />
-<strong>指针常量（引用）</strong>：int * const a   指向的对象不可变，定义的同时必须初始化<br />
-<strong>常指针常量（常引用）</strong>：const int * const a 指向内容和对象都不可变</p>
-<p>3.函数指针</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int (*fun)(int a,int b)；</span><br><span class="line">int fun1(int a,int b);</span><br><span class="line">fun=fun1;     //对函数指针赋值</span><br><span class="line">fun(a,b);和fun1(a,b);效果一样</span><br></pre></td></tr></table></figure>
-<p>4.动态创建一维数组(静态就是普通创建)<br />
-创建：int *p=new int[4];  //动态创建长度4的int数组，并用指针p指向它<br />
-释放：delete []p</p>
-<h3 id="二-字符串"><a class="markdownIt-Anchor" href="#二-字符串"></a> 二、字符串</h3>
+        <h3 id="一指针">一、指针</h3>
+<p>1.使用指针作为函数参数 主函数定义a，b，通过swap交换两值 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">void swap(int *p,int *q)&#123;</span><br><span class="line">int t;</span><br><span class="line">t=*p;</span><br><span class="line">*p=*q;</span><br><span class="line">*q=t;</span><br><span class="line">return;</span><br><span class="line">&#125;</span><br><span class="line">int main()&#123;</span><br><span class="line">int a=1，b=2；</span><br><span class="line">swap(&amp;a,&amp;b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2.使用const修饰指针 <strong>常量指针</strong>：const int <em>a 指向的内容不可变，不能用解引用修改地址中的值，一般用于函数形参，表示不希望在函数内部修改地址中的值。 <strong>指针常量（引用）</strong>：int </em> const a 指向的对象不可变，定义的同时必须初始化 <strong>常指针常量（常引用）</strong>：const int * const a 指向内容和对象都不可变</p>
+<p>3.函数指针 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int (*fun)(int a,int b)；</span><br><span class="line">int fun1(int a,int b);</span><br><span class="line">fun=fun1;     //对函数指针赋值</span><br><span class="line">fun(a,b);和fun1(a,b);效果一样</span><br></pre></td></tr></table></figure></p>
+<p>4.动态创建一维数组(静态就是普通创建) 创建：int *p=new int[4]; //动态创建长度4的int数组，并用指针p指向它 释放：delete []p</p>
+<h3 id="二字符串">二、字符串</h3>
 
     </div>
 
@@ -366,7 +358,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80-%E6%8C%87%E9%92%88"><span class="nav-text"> 一、指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C-%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-text"> 二、字符串</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E6%8C%87%E9%92%88"><span class="nav-text">一、指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-text">二、字符串</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
