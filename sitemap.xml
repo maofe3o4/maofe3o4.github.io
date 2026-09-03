@@ -171,13 +171,6 @@
   </url>
   
   <url>
-    <loc>https://maofe3o4.github.io/tags/docker/</loc>
-    <lastmod>2026-09-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://maofe3o4.github.io/tags/%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2026-09-03</lastmod>
     <changefreq>weekly</changefreq>
@@ -199,7 +192,7 @@
   </url>
   
   <url>
-    <loc>https://maofe3o4.github.io/tags/%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/</loc>
+    <loc>https://maofe3o4.github.io/tags/docker/</loc>
     <lastmod>2026-09-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -247,17 +240,17 @@
     <priority>0.2</priority>
   </url>
   
-
-  
   <url>
-    <loc>https://maofe3o4.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%AF%AD%E8%A8%80/</loc>
+    <loc>https://maofe3o4.github.io/tags/%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/</loc>
     <lastmod>2026-09-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
+
+  
   <url>
-    <loc>https://maofe3o4.github.io/categories/%E8%BF%90%E7%BB%B4/</loc>
+    <loc>https://maofe3o4.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%AF%AD%E8%A8%80/</loc>
     <lastmod>2026-09-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -271,7 +264,7 @@
   </url>
   
   <url>
-    <loc>https://maofe3o4.github.io/categories/%E6%95%B0%E5%AD%A6/</loc>
+    <loc>https://maofe3o4.github.io/categories/%E8%BF%90%E7%BB%B4/</loc>
     <lastmod>2026-09-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -279,6 +272,13 @@
   
   <url>
     <loc>https://maofe3o4.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <lastmod>2026-09-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://maofe3o4.github.io/categories/%E6%95%B0%E5%AD%A6/</loc>
     <lastmod>2026-09-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
