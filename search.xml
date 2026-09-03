@@ -18,6 +18,944 @@
       </tags>
   </entry>
   <entry>
+    <title>docker使用操作</title>
+    <url>/2024/06/06/docker/docker/</url>
+    <content><![CDATA[<p>[toc]</p>
+<h1 id="简介">简介</h1>
+<p>Docker是一个C/S结构的系统，Docker守护进程运行在主机上， 然后通过Socket连接从客户端访问，守护进程从客户端接受命令并管理运行在主机上的容器。 容器，是一个运行时环境，就是我们前面说到的集装箱。</p>
+<h2 id="组成">组成</h2>
+<h3 id="镜像image一个特殊的文件系统">镜像image：一个特殊的文件系统</h3>
+<p><strong>除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。</strong> 镜像不包含任何动态数据，其内容在构建之后也不会被改变。</p>
+<p>镜像实际是由多层文件系统联合组成。</p>
+<p><strong>镜像构建时，会一层层构建，前一层是后一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。</strong>　比如，删除前一层文件的操作，实际不是真的删除前一层的文件，而是仅在当前层标记为该文件已删除。在最终容器运行的时候，虽然不会看到这个文件，但是实际上该文件会一直跟随镜像。因此，在构建镜像的时候，需要额外小心，每一层尽量只包含该层需要添加的东西，任何额外的东西应该在该层构建结束前清理掉。</p>
+<p>分层存储的特征还使得镜像的复用、定制变的更为容易。甚至可以用之前构建好的镜像作为基础层，然后进一步添加新的层，以定制自己所需的内容，构建新的镜像。</p>
+<h3 id="容器container镜像运行时的实体">容器container：镜像运行时的实体</h3>
+<p><strong>容器可以被创建、启动、停止、删除、暂停等</strong> <strong>。</strong></p>
+<p>　　<strong>容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的</strong> <strong>命名空间。</strong>前面讲过镜像使用的是分层存储，容器也是如此。</p>
+<p>　　<strong>容器存储层的生存周期和容器一样，容器消亡时，容器存储层也随之消亡。因此，任何保存于容器存储层的信息都会随容器删除而丢失。</strong></p>
+<p>　　按照 Docker 最佳实践的要求，<strong>容器不应该向其存储层内写入任何数据</strong> ，容器存储层要保持无状态化。<strong>所有的文件写入操作，都应该使用数据卷（Volume）、或者绑定宿主目录，</strong>在这些位置的读写会跳过容器存储层，直接对宿主(或网络存储)发生读写，其性能和稳定性更高。数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此， <strong>使用数据卷后，容器可以随意删除、重新</strong> <strong>run</strong> <strong>，数据却不会丢失。</strong></p>
+<h3 id="仓库repository集中存放镜像文件的地方">仓库：repository：集中存放镜像文件的地方</h3>
+<p>镜像构建完成后，可以很容易的在当前宿主上运行，但是， <strong>如果需要在其它服务器上使用这个镜像，我们就需要一个集中的存储、分发镜像的服务，Docker Registry就是这样的服务。</strong></p>
+<p>一个 Docker Registry中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。所以说：<a href="https://cloud.tencent.com/product/tcr?from_column=20065&amp;from=20065">镜像仓库</a>是Docker用来集中存放镜像文件的地方类似于我们之前常用的代码仓库。</p>
+<p>通常，<strong>一个仓库会包含同一个软件不同版本的镜像</strong>，而标签就常用于对应该软件的各个版本 。我们可以通过<仓库名>:<标签>的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 latest 作为默认标签.。</p>
+<h1 id="安装">安装</h1>
+<h2 id="指令">指令</h2>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移除旧版本docker</span></span><br><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置docker yum源</span></span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">--add-repo \</span><br><span class="line">http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 最新 docker</span></span><br><span class="line">sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动&amp; 开机启动docker； <span class="built_in">enable</span> + start 二合一</span></span><br><span class="line">systemctl enable docker --now</span><br></pre></td></tr></table></figure>
+<h2 id="配置自己的镜像加速器">配置自己的镜像加速器</h2>
+<p>docker镜像加速器配置需登录阿里云https://cr.console.aliyun.com/cn-hangzhou/instances 我这里配置了两项，一个是阿里云个人的镜像服务，一个是中科大的</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span><br><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://f3fprrzr.mirror.aliyuncs.com&quot;,</span><br><span class="line">  &quot;https://docker.mirrors.ustc.edu.cn&quot;,</span><br><span class="line">  &quot;https://registry.docker-cn.com&quot;,</span><br><span class="line">   &quot;https://hub-mirror.c.163.com&quot;,</span><br><span class="line">   &quot;https://mirror.baidubce.com&quot;,</span><br><span class="line">   &quot;https://ccr.ccs.tencentyun.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+<h1 id="卸载">卸载</h1>
+<p>删除docker：yum remove docker-ce rm -rf /var/lib/docker</p>
+<h1 id="常用命令">常用命令</h1>
+<p><img src="/images/loading/loading.gif" data-original="/images/docker命令.png" alt="docker命令" style="zoom: 200%;" /></p>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>docker search</td>
+<td></td>
+<td>在官方dockerhub搜索镜像</td>
+</tr>
+<tr class="even">
+<td>docker build</td>
+<td></td>
+<td>通过dockerfile创建一个镜像</td>
+</tr>
+<tr class="odd">
+<td>docker pull</td>
+<td></td>
+<td>拉取镜像</td>
+</tr>
+<tr class="even">
+<td>docker push</td>
+<td></td>
+<td>推送镜像到DockerRegistry</td>
+</tr>
+<tr class="odd">
+<td>docker images</td>
+<td></td>
+<td>查看本地镜像</td>
+</tr>
+<tr class="even">
+<td>docker rmi</td>
+<td></td>
+<td>删除本地镜像</td>
+</tr>
+<tr class="odd">
+<td>docker run</td>
+<td>-d后台运行<br>-i交互运行<br>-t伪终端<br>-p指定端口映射<br />-P随机端口映射<br />-v容器卷映射</td>
+<td>创建并运行容器</td>
+</tr>
+<tr class="even">
+<td>docker stop</td>
+<td></td>
+<td>停止指定容器</td>
+</tr>
+<tr class="odd">
+<td>docker start</td>
+<td></td>
+<td>启动指定容器</td>
+</tr>
+<tr class="even">
+<td>docker restart</td>
+<td></td>
+<td>重启指定容器</td>
+</tr>
+<tr class="odd">
+<td>docker rm</td>
+<td>-f强制删除</td>
+<td>强制删除指定容器</td>
+</tr>
+<tr class="even">
+<td>docker ps</td>
+<td>-a查看所有容器<br />-q只显示容器ID</td>
+<td>查看容器基本信息</td>
+</tr>
+<tr class="odd">
+<td>docker logs</td>
+<td>-f标准查看</td>
+<td>查看容器内运行的日志</td>
+</tr>
+<tr class="even">
+<td>docker exec</td>
+<td>-it内部命令行</td>
+<td>进入容器</td>
+</tr>
+<tr class="odd">
+<td>docker save/export</td>
+<td>&gt;tar文件</td>
+<td>保存镜像到本地压缩文件</td>
+</tr>
+<tr class="even">
+<td>docker load/import</td>
+<td>&lt;tar文件</td>
+<td>加载本地压缩文件到镜像</td>
+</tr>
+<tr class="odd">
+<td>docker commit 容器ID 仓库名：版本号</td>
+<td>-m新增功能</td>
+<td>将容器提交到镜像</td>
+</tr>
+<tr class="even">
+<td>docker inspect</td>
+<td></td>
+<td>查看容器详细信息</td>
+</tr>
+<tr class="odd">
+<td>systemctl enable docker</td>
+<td></td>
+<td>设置docker开机自启</td>
+</tr>
+<tr class="even">
+<td>docker update –restart=always [容器名/容器ID]</td>
+<td></td>
+<td>设置docker容器开机自启</td>
+</tr>
+</tbody>
+</table>
+<h1 id="使用docker拉取镜像运行容器">使用docker拉取镜像运行容器</h1>
+<h2 id="mysql">mysql</h2>
+<h2 id="nginx">nginx</h2>
+<p>1.拉取镜像 docker pull nginx</p>
+<p>2.查看镜像 docker images</p>
+<p>3.创建并运行nginx容器 docker run -d –name mynginx -p 80:80 nginx</p>
+<p>5.查看运行的容器 docker ps</p>
+<p>6.通过网页访问nginx docker的宿主机IP:宿主机对应的端口</p>
+<h2 id="redis">redis</h2>
+<p>拉，创，进 合成一句 docker run -itd<br />
+-p 6379:6379<br />
+–name myredis<br />
+-v /home/redis/conf:/etc/redis/<br />
+-v /home/redis/data:/data<br />
+redis redis-server</p>
+<p>docker exec -it 容器名 bash 可以直接执行redis-cli 配置文件在/etc/redis</p>
+<h1 id="镜像的分层">镜像的分层</h1>
+<p>创建一个镜像需要根据dockerfile文件里面的shell脚本来一层一层的构建，这种层级的文件系统称为UnionFS</p>
+<p>1、镜像：轻量级、可执行的独立软件包，包含运行某个软件所需要的所有内容，我们把应用程序和配置依赖打包好形成一个可交付的运行环境（包括代码、运行时环境、环境变量和配置文件等）。</p>
+<p>2、UnionFS(联合文件系统):是一种分层，轻量级高性能的文件系统、支持对文件系统的修改作为一次提交来一层层的叠加，同时将不同目录挂载到同一个虚拟文件系统下。联合文件系统是Docker镜像的基础，镜像可以通过分层进行继承，基于基础镜像可以制作各种具体的应用镜像。</p>
+<p>3、 Docker镜像加载原理</p>
+<ol type="1">
+<li><p>docker的镜像实际上由一层一层的文件系统组成，这种层级的文件系统UnionFS。</p></li>
+<li><p>bootfs(boot file system)主要包含bootloader和kernel, bootloader主要是引导加载kernel, Linux刚启动时会加载bootfs文件系统，在Docker镜像的最底层是bootfs。这一层与我们典型的Linux/Unix系统是一样的，包含boot加载器和内核。当boot加载完成之后整个内核就都在内存中了，此时内存的使用权已由bootfs转交给内核，此时系统也会卸载bootfs。</p></li>
+</ol>
+<h1 id="设置个人或企业版阿里云镜像仓库">设置个人或企业版阿里云镜像仓库</h1>
+<p>https://cr.console.aliyun.com/cn-hangzhou/instances</p>
+<p>① 选择实例列表，点击个人版进入“个人实例”</p>
+<p>② 创建命名空间</p>
+<p>③ 创建镜像仓库–&gt;选择刚刚创建的命名空间—&gt;选择本地仓库，创建</p>
+<p>④ 在成功节目根据第三点“将镜像推送到Registry”</p>
+<p>⑤ 然后尝试下载上传的镜像</p>
+<p>具体命令在阿里云镜像服务里面有</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux常用指令快速入门</title>
+    <url>/2024/08/10/linux/linux%E7%AE%80%E5%8D%95%E6%8C%87%E4%BB%A4/</url>
+    <content><![CDATA[<p><span id="jump1">目录</span></p>
+<p>[toc]</p>
+<h1 id="常用简单指令">常用简单指令</h1>
+<table>
+<thead>
+<tr class="header">
+<th>运行等级</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>init 0</td>
+<td>关机</td>
+</tr>
+<tr class="even">
+<td>init 1</td>
+<td>单用户，root，用于系统维护，禁止远程登陆</td>
+</tr>
+<tr class="odd">
+<td>init 2</td>
+<td>多用户，不支持NFS</td>
+</tr>
+<tr class="even">
+<td>init 3</td>
+<td>命令行模式，完全的多用户，登陆后进入</td>
+</tr>
+<tr class="odd">
+<td>init 4</td>
+<td>安全模式</td>
+</tr>
+<tr class="even">
+<td>init 5</td>
+<td>图形化</td>
+</tr>
+<tr class="odd">
+<td>init 6</td>
+<td>重启</td>
+</tr>
+</tbody>
+</table>
+<p>内存中的数据同步到磁盘：sync 查看当前目录：pwd 切换目录：cd 目录名 （cd只能进入目录） 进入文件：cat 文件路径 显示(当前)目录中的文件：ls [-a包括隐藏文件] [-l列表详细信息] [目录名] 创建目录：mkdir [-p] 目录名/路径 删除空目录(非空删除失败)：rmdir [-p] 目录名 清屏：clear 在终端使用之前用到的命令(历史命令保存在.bash_history文件中)：上下光标调取 命令自动补全：tab 正则表达式：*多个字符,?一个字符 查看/设置时间：date date -s “2024-01-02 09:11:42” 帮助指令：man help 修改主机名：hostname set-hostname 新名称</p>
+<h1 id="linux目录和文件简单介绍">Linux目录和文件(简单介绍)</h1>
+<p><a href="#jump1">回到目录</a></p>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/图片1.png" alt="image-20240604094822494" /><figcaption>image-20240604094822494</figcaption>
+</figure>
+<p>绝对路径：/usr/include/a.h 相对路径：如果当前目录为/usr，则include/a.h为相对路径等同于上面 当前目录：. 上一级目录：.. 家目录：~ 系统启动必须：/boot、/etc、/lib 命令集合：/sbin、/bin 设备相关：/dev、/media、/mnt 临时文件：/run、/lost+found、/tmp 账户相关：/root、/home、/usr 运行过程：/var、/proc 拓展相关：/opt、/srv</p>
+<p>bin执行，lib库，etc是配置，usr和home是’我的’，dev管设备，opt装软件</p>
+<h1 id="vi编辑器">vi编辑器</h1>
+<p><a href="#jump1">回到目录</a></p>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/vim.png" alt="vim工作模式" /><figcaption>vim工作模式</figcaption>
+</figure>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/vim键盘.png" alt="vim键盘" /><figcaption>vim键盘</figcaption>
+</figure>
+<p>命令模式</p>
+<table>
+<thead>
+<tr class="header">
+<th>命令模式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>:set nu</td>
+<td>显示行号</td>
+</tr>
+<tr class="even">
+<td>:set nonu</td>
+<td>取消行号</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>一般模式</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>/字符</td>
+<td>查找指定字符，按n查找下一个</td>
+</tr>
+<tr class="even">
+<td>gg</td>
+<td>查看行首</td>
+</tr>
+<tr class="odd">
+<td>G</td>
+<td>查看行尾</td>
+</tr>
+<tr class="even">
+<td>数字 G</td>
+<td>查看指定行</td>
+</tr>
+</tbody>
+</table>
+<p>i:当前位置开始编辑<br />
+o：在下面插入一行编辑 a：当前位置后一个位置插入<br />
+r：当前位置替换 I:当前行首个位置编辑<br />
+O：在上面插入一行编辑<br />
+A：当前行最后一个位置插入 R：从当位置开始替换</p>
+<h1 id="用户组管理">用户(组)管理</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h3 id="组">组</h3>
+<p>组的信息保存在/etc/group文件 创建组：groupadd 组名 修改组：groupmod [-n 新组] 旧组 删除组：groupdel 组名</p>
+<h3 id="用户">用户</h3>
+<p><strong>创建删除</strong> 用户信息保存在/etc/passwd文件 用户密码保存在/etc/shadow文件 创建用户：useradd [-g 组名] [-d 用户主目录] [-r系统用户不可登录系统] 用户名 修改用户：usermod [-l 新名字] [-g 新组] [-d 新目录] 用户名 删除用户：userdel [-r删除组目录] 用户名 <strong>修改密码</strong> root用户修改其他用户：passwd 用户名 普通用户修改自己：passwd <strong>切换用户</strong> root用户免密码切换：su -用户名 普通用户：su -用户名 然后输入密码 <strong>查看用户信息</strong> id 用户名</p>
+<h1 id="目录文件操作">目录文件操作</h1>
+<p><a href="#jump1">回到目录</a></p>
+<p>目录和文件的详细信息：ls [-l] [目录名] 按时间降序显示ls -lt [目录名] -a:列出全部文件，包括隐藏文件 快捷方式显示按当前目录下详细信息：ll</p>
+<h2 id="文件目录属性">文件/目录属性</h2>
+<p>drwxr-xr-x. 4 root root 80 9月 26 17：05 aaa</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">对应信息</th>
+<th style="text-align: center;">介绍</th>
+<th style="text-align: center;">例子</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">文件类型</td>
+<td style="text-align: center;">d目录-普通文件l链接p管道文件b块设备文件c字符设备文件s套接字文件</td>
+<td style="text-align: center;">d</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">文件权限</td>
+<td style="text-align: center;">r读w写x可执行-无权限；三个为一组代表所有者，同组用户，其他用户</td>
+<td style="text-align: center;">rwxr-xr-x</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">文件硬链接数或目录的子目录数</td>
+<td style="text-align: center;">文件硬链接，初始为1；空目录初始为2；</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">文件拥有者</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">root</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">文件拥有者所在组</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">root</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">目录或文件大小</td>
+<td style="text-align: center;">文件大小单位字节；目录大小不包括目录下的文件和子目录</td>
+<td style="text-align: center;">80</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">最后一次被修改的时间</td>
+<td style="text-align: center;">创建/last修改</td>
+<td style="text-align: center;">9月 26 17：05</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">目录或文件名</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">aaa</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/图片2.png" alt="image-20240604094822494" /><figcaption>image-20240604094822494</figcaption>
+</figure>
+<h2 id="修改目录和文件权限">修改目录和文件权限</h2>
+<p>修改拥有者：chown [-R递归赋予权限] 用户：组 目录和文件列表 设置权限：chmod [-R] whooperatorpermission 目录和文件列表</p>
+<table>
+<thead>
+<tr class="header">
+<th>who</th>
+<th>operator</th>
+<th>permission</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>u所有者</td>
+<td>+增加权限</td>
+<td>x进入目录或执行文件</td>
+</tr>
+<tr class="even">
+<td>g所有者所在组</td>
+<td>-取消权限</td>
+<td>r读取文件或查看目录中有哪些子目录和文件</td>
+</tr>
+<tr class="odd">
+<td>o其他用户</td>
+<td>=重新设置权限</td>
+<td>w修改文件内容或在目录中增删改</td>
+</tr>
+<tr class="even">
+<td>a全部用户</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>r=4 w=2 x=1 rwx=4+2+1=7 chmod -R 777 文件名/目录 给所有人用给rwx权限</p>
+<h2 id="查看查找文件内容">查看/查找文件内容</h2>
+<table>
+<thead>
+<tr class="header">
+<th>查看文件内容</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>cat 文件名</td>
+<td>显示</td>
+</tr>
+<tr class="even">
+<td>less 文件名</td>
+<td>分屏查看，</td>
+</tr>
+<tr class="odd">
+<td>more 文件名</td>
+<td>分页查看，空格下一页，b上一页，q退出</td>
+</tr>
+<tr class="even">
+<td>wc 文件名</td>
+<td>统计文件行数</td>
+</tr>
+<tr class="odd">
+<td>head [-n] 文件</td>
+<td>查看前n行，默认10行</td>
+</tr>
+<tr class="even">
+<td>tail [-n] [-f] 文件</td>
+<td>查看尾n行，默认10行,-f实时跟踪</td>
+</tr>
+<tr class="odd">
+<td>grep [-n]</td>
+<td>过滤查找， 内容|grep 指定查找内容</td>
+</tr>
+<tr class="even">
+<td>find 目录 -name 文件名</td>
+<td>在指定目录下按名字查找文件</td>
+</tr>
+<tr class="odd">
+<td>locate 文件名</td>
+<td>locate之前updatedb</td>
+</tr>
+</tbody>
+</table>
+<h2 id="文件目录的创建删除复制移动">文件/目录的创建删除复制移动</h2>
+<table>
+<thead>
+<tr class="header">
+<th>创建目录/空文件</th>
+<th>删除</th>
+<th>复制</th>
+<th>移动/重命名</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>mkdir [-mp] 目录名</td>
+<td>rm [-rf] 目录和文件</td>
+<td>cp [-r] 旧名 新名</td>
+<td>mv 旧名 新名</td>
+</tr>
+<tr class="even">
+<td>touch 文件名</td>
+<td>-r递归删除-f强制删除不提示</td>
+<td>-r递归复制目录</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>-m配置权限；-p目录递归创建</td>
+<td>rmdir是删空目录</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>在不同的linux服务器之间进行文件传输： scp [-r] 文件 目标用户名@目标服务器名或ip:目标服务器上的保存路径</p>
+<h2 id="安装和打包">安装和打包</h2>
+<h3 id="rpm包管理">rpm包管理</h3>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>rpm</td>
+<td>-q 包名</td>
+<td>查询是否安装</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>-qa</td>
+<td>查询已安装的软件包</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>-ql 包名</td>
+<td>查询软件包中文件</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>-qi 包名</td>
+<td>查询软件包信息</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>-qf 文件全路径名</td>
+<td>查询文件所属软件包</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>-e 包名</td>
+<td>卸载包</td>
+</tr>
+</tbody>
+</table>
+<h3 id="yum安装">yum安装</h3>
+<p>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup</p>
+<p>curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</p>
+<p>yum makecache</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">命令</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">yum [-y/d/n] install 包名</td>
+<td>安装</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">yum -y remove</td>
+<td>删除</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">yum update 包名</td>
+<td>升级</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">yum list | grep 软件名</td>
+<td>查找能够安装的包</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">yum check-update</td>
+<td>显示可更新的包</td>
+</tr>
+</tbody>
+</table>
+<h3 id="打包和压缩">打包和压缩</h3>
+<p>zip命令和tar命令</p>
+<p>压缩：zip [-qrd] 压缩包文件名 目录和文件名列表 解压：unzip [-d 指定放的位置] 压缩包文件名</p>
+<p>压缩：tar [-zcvf] 压缩包文件名.tar.gz 目录和文件名列表 解压：tar [-xzvf] 压缩包文件名 [-C 指定放的位置]</p>
+<table>
+<thead>
+<tr class="header">
+<th>zip</th>
+<th>说明</th>
+<th>tar</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-q</td>
+<td>不显示命令执行过程</td>
+<td>-z</td>
+<td>打包同时压缩</td>
+</tr>
+<tr class="even">
+<td>-r</td>
+<td>递归压缩</td>
+<td>-c/x</td>
+<td>打包/解包</td>
+</tr>
+<tr class="odd">
+<td>-u</td>
+<td>把文件增加/替换到压缩包中</td>
+<td>-v</td>
+<td>显示文件详细信息</td>
+</tr>
+<tr class="even">
+<td>-d</td>
+<td>指定压缩或解压缩后产生的文件放的地方</td>
+<td>-f</td>
+<td>指定压缩/解压的文件名</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td>-t</td>
+<td>列出压缩包里的文件(不用解压)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td>-C</td>
+<td>指定压缩或解压缩后产生的文件放的地方</td>
+</tr>
+</tbody>
+</table>
+<h1 id="链接">链接</h1>
+<p><a href="#jump1">回到目录</a></p>
+<p>硬链接：ln 文件名 链接名 软链接：ln -s 目录或文件 链接名</p>
+<p>硬链接是文件指针；软链接是一个保存了文件路径的文件</p>
+<p>尽量为目录做软链接，为文件做硬链接</p>
+<h1 id="进程">进程</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h2 id="查看进程">查看进程</h2>
+<p>ps [-aux]/[-ef] 选项说明： -a 查全部进程(前台) -x 查全部进程(包括后台) -u 显示该进程的用户 -e 显示所有进程 -f 全格式</p>
+<p>以树状形式显示 pstree [-p]/[-u] 选项说明：p：进程pid；u进程所属用户</p>
+<p>实时显示top [选项]</p>
+<table>
+<thead>
+<tr class="header">
+<th>选项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-d</td>
+<td>每各d秒更新显示内容</td>
+</tr>
+<tr class="even">
+<td>-i</td>
+<td>不显示闲置和僵尸进程</td>
+</tr>
+<tr class="odd">
+<td>-p</td>
+<td>指定进程ID查看</td>
+</tr>
+<tr class="even">
+<td>执行后操作</td>
+<td>说明</td>
+</tr>
+<tr class="odd">
+<td>P</td>
+<td>以CPU使用率排序(默认)</td>
+</tr>
+<tr class="even">
+<td>M</td>
+<td>以内存使用率排序</td>
+</tr>
+<tr class="odd">
+<td>N</td>
+<td>以PID排序</td>
+</tr>
+<tr class="even">
+<td>q</td>
+<td>退出top</td>
+</tr>
+</tbody>
+</table>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/top性能分析.png" alt="top性能分析" /><figcaption>top性能分析</figcaption>
+</figure>
+<table>
+<thead>
+<tr class="header">
+<th>第一行</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>top - 11：03：25</td>
+<td>up 4 min</td>
+<td>3 users</td>
+<td></td>
+<td>load average：0.05,0.18,0.10</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>当前时间</td>
+<td>运行了多久</td>
+<td>当前登录用户数</td>
+<td></td>
+<td>系统负载：一段时间内，CPU正在处理和等待处理的进程数之和<br>上面三个数值分别是1分钟，5分钟，15分钟内的平均值</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>第二行:</td>
+<td>统计进程</td>
+<td>的统计</td>
+<td></td>
+<td>信息</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Tasks:209 total</td>
+<td>2 running</td>
+<td>207 sleeping</td>
+<td></td>
+<td>0</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="终止进程">终止进程</h2>
+<p>kill [-9] 进程号 kill all 进程名称 可用通配符</p>
+<h2 id="按端口查">按端口查</h2>
+<p>lsof -t -i:端口号 -t只显示进程号 杀死某一端口的进程：kill $(lsof -t -i:端口号)</p>
+<h1 id="磁盘分区和挂载">磁盘分区和挂载</h1>
+<p><a href="#jump1">回到目录</a></p>
+<p>linux独特的挂载使得其只有一个根目录 查挂载情况-分区-分区格式化-挂载-查磁盘分区使用情况</p>
+<table>
+<thead>
+<tr class="header">
+<th>分区方式</th>
+<th style="text-align: center;">特点</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>mbr</td>
+<td style="text-align: center;">最多支持4个主分区，系统只能在主分区，扩展分区占一个主分区，最大2TB，兼容性好</td>
+</tr>
+<tr class="even">
+<td>gtp</td>
+<td style="text-align: center;">无限多个主分区(windows限制128个)，最大18EB</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>硬盘</th>
+<th></th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>IDE</td>
+<td></td>
+<td>驱动器标识符hdx~ 例如hda3表示第一个IDE硬盘的第三个分区</td>
+</tr>
+<tr class="even">
+<td>SCSI</td>
+<td></td>
+<td>sdx~</td>
+</tr>
+</tbody>
+</table>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 14%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 2%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>常用指令</th>
+<th>选项</th>
+<th>选项说明</th>
+<th>说明</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>lsblk</td>
+<td>-f</td>
+<td>会显示uuid和挂载点</td>
+<td>查看所有设备挂载情况</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>fdisk /dev/sdb</td>
+<td>m p q w n</td>
+<td>m显示命令;p显示磁盘分区;q不保存退出;w写入并退出;n新增分区;e扩展分区</td>
+<td>对/sdb分区,输入n,新增分区然后选择p ，分区类型为主分区。两次回车默认剩余全部空间。最后w写入分区并退出，或者q。</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>mkfs -t ext4 /dev/sdb1</td>
+<td>-t</td>
+<td>设置分区类型</td>
+<td>对刚刚的主分区格式化</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>mount /dev/sdb1 被挂载的目录</td>
+<td>-a -o</td>
+<td>修改/etc/fstab后mount -a即可永久挂载 o选择何种方式挂载</td>
+<td>不永久挂载重启会失效<br>-o ro 只读方式挂载<br>-o rw 读写方式挂载</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>umount 被挂载的目录/分区</td>
+<td></td>
+<td></td>
+<td>取消挂载</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>df</td>
+<td>-h</td>
+<td>带单位</td>
+<td>查询磁盘、分区使用情况</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>du /目录</td>
+<td>-s -h -a -c –max-depth=1</td>
+<td>s占用大小汇总a含文件c列出明细同时增加汇总值max深度为1查看</td>
+<td>查询指定目录的磁盘使用情况</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="系统服务管理systemctl">系统服务管理systemctl</h1>
+<p><a href="#jump1">回到目录</a></p>
+<p>systemctl start|stop|restart|staus|enable|reload 服务名 Centos7后不再使用service(可以用，会自动重定向到systemctl命令) service 服务名 start|stop|restart</p>
+<p>查看服务名： 方式1：使用seup-&gt;系统服务 方式2：/etc/init.d/服务名称</p>
+<h1 id="防火墙">防火墙</h1>
+<p><a href="#jump1">回到目录</a></p>
+<table>
+<colgroup>
+<col style="width: 54%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>systemctl start|restart|stop firewalld</td>
+<td>启动、重启、关闭防火墙</td>
+</tr>
+<tr class="even">
+<td>firewall-cmd –zone=public –add-port=80-100/tcp –permanent</td>
+<td>开通指定端口<br />也可以设置一个范围的端口80到100</td>
+</tr>
+<tr class="odd">
+<td>firewall-cmd –zone=public –remove-port=80/tcp –permanent</td>
+<td>关闭指定端口</td>
+</tr>
+<tr class="even">
+<td>firewall-cmd –zone=public –add-service=ftp –permanent</td>
+<td>开通服务</td>
+</tr>
+<tr class="odd">
+<td>firewall-cmd –zone=public –remove-service=http –permanent</td>
+<td>移去服务</td>
+</tr>
+<tr class="even">
+<td>firewall-cmd –reload</td>
+<td>重载</td>
+</tr>
+</tbody>
+</table>
+<p>常用服务的端口：ssh(22）、HTTP(80、8080)、MySQL(3306)、Oracle(1521) 、ftp(21）、 telnet(23）。</p>
+<p>查看已经开放端口 firewall-cmd –list-ports #查看已经开放的端口</p>
+<h1 id="环境变量shell">环境变量（shell）</h1>
+<p><a href="#jump1">回到目录</a></p>
+<p>输出内容 echo ‘任务已开启’ echo $PATH 查看环境变量：env</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">命令</th>
+<th style="text-align: left;">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">command &gt; file</td>
+<td style="text-align: left;">将输出重定向到 file。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">command &lt; file</td>
+<td style="text-align: left;">将输入重定向到 file。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">command &gt;&gt; file</td>
+<td style="text-align: left;">将输出以追加的方式重定向到 file。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">n &gt; file</td>
+<td style="text-align: left;">将文件描述符为 n 的文件重定向到 file。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">n &gt;&gt; file</td>
+<td style="text-align: left;">将文件描述符为 n 的文件以追加的方式重定向到 file。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">n &gt;&amp; m</td>
+<td style="text-align: left;">将输出文件 m 和 n 合并。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">n &lt;&amp; m</td>
+<td style="text-align: left;">将输入文件 m 和 n 合并。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">&lt;&lt; tag</td>
+<td style="text-align: left;">将开始标记 tag 和结束标记 tag 之间的内容作为输入。</td>
+</tr>
+</tbody>
+</table>
+<h1 id="任务调度crontab">任务调度crontab</h1>
+<p>分时天月周</p>
+<p><em>任意 ,不连续 -连续 </em>/n</p>
+<p>-e编辑 -r清空任务 -l列出任务</p>
+<h1 id="开机启动程序">开机启动程序</h1>
+<p><a href="#jump1">回到目录</a></p>
+<p>init.d</p>
+<p>systemctl enable 服务名 systemctl disable 服务名</p>
+]]></content>
+      <categories>
+        <category>运维</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>算法海</title>
     <url>/2026/03/05/%E7%AE%97%E6%B3%95/</url>
     <content><![CDATA[<h1 id="tips">tips</h1>
@@ -1657,186 +2595,91 @@
       </tags>
   </entry>
   <entry>
-    <title>docker使用操作</title>
-    <url>/2024/06/06/docker/docker/</url>
+    <title>在linux上安装常用环境和网络配置(vm)</title>
+    <url>/2024/08/10/linux/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%8F%8A%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</url>
     <content><![CDATA[<p>[toc]</p>
-<h1 id="简介">简介</h1>
-<p>Docker是一个C/S结构的系统，Docker守护进程运行在主机上， 然后通过Socket连接从客户端访问，守护进程从客户端接受命令并管理运行在主机上的容器。 容器，是一个运行时环境，就是我们前面说到的集装箱。</p>
-<h2 id="组成">组成</h2>
-<h3 id="镜像image一个特殊的文件系统">镜像image：一个特殊的文件系统</h3>
-<p><strong>除了提供容器运行时所需的程序、库、资源、配置等文件外，还包含了一些为运行时准备的一些配置参数（如匿名卷、环境变量、用户等）。</strong> 镜像不包含任何动态数据，其内容在构建之后也不会被改变。</p>
-<p>镜像实际是由多层文件系统联合组成。</p>
-<p><strong>镜像构建时，会一层层构建，前一层是后一层的基础。每一层构建完就不会再发生改变，后一层上的任何改变只发生在自己这一层。</strong>　比如，删除前一层文件的操作，实际不是真的删除前一层的文件，而是仅在当前层标记为该文件已删除。在最终容器运行的时候，虽然不会看到这个文件，但是实际上该文件会一直跟随镜像。因此，在构建镜像的时候，需要额外小心，每一层尽量只包含该层需要添加的东西，任何额外的东西应该在该层构建结束前清理掉。</p>
-<p>分层存储的特征还使得镜像的复用、定制变的更为容易。甚至可以用之前构建好的镜像作为基础层，然后进一步添加新的层，以定制自己所需的内容，构建新的镜像。</p>
-<h3 id="容器container镜像运行时的实体">容器container：镜像运行时的实体</h3>
-<p><strong>容器可以被创建、启动、停止、删除、暂停等</strong> <strong>。</strong></p>
-<p>　　<strong>容器的实质是进程，但与直接在宿主执行的进程不同，容器进程运行于属于自己的独立的</strong> <strong>命名空间。</strong>前面讲过镜像使用的是分层存储，容器也是如此。</p>
-<p>　　<strong>容器存储层的生存周期和容器一样，容器消亡时，容器存储层也随之消亡。因此，任何保存于容器存储层的信息都会随容器删除而丢失。</strong></p>
-<p>　　按照 Docker 最佳实践的要求，<strong>容器不应该向其存储层内写入任何数据</strong> ，容器存储层要保持无状态化。<strong>所有的文件写入操作，都应该使用数据卷（Volume）、或者绑定宿主目录，</strong>在这些位置的读写会跳过容器存储层，直接对宿主(或网络存储)发生读写，其性能和稳定性更高。数据卷的生存周期独立于容器，容器消亡，数据卷不会消亡。因此， <strong>使用数据卷后，容器可以随意删除、重新</strong> <strong>run</strong> <strong>，数据却不会丢失。</strong></p>
-<h3 id="仓库repository集中存放镜像文件的地方">仓库：repository：集中存放镜像文件的地方</h3>
-<p>镜像构建完成后，可以很容易的在当前宿主上运行，但是， <strong>如果需要在其它服务器上使用这个镜像，我们就需要一个集中的存储、分发镜像的服务，Docker Registry就是这样的服务。</strong></p>
-<p>一个 Docker Registry中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。所以说：<a href="https://cloud.tencent.com/product/tcr?from_column=20065&amp;from=20065">镜像仓库</a>是Docker用来集中存放镜像文件的地方类似于我们之前常用的代码仓库。</p>
-<p>通常，<strong>一个仓库会包含同一个软件不同版本的镜像</strong>，而标签就常用于对应该软件的各个版本 。我们可以通过<仓库名>:<标签>的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 latest 作为默认标签.。</p>
-<h1 id="安装">安装</h1>
-<h2 id="指令">指令</h2>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移除旧版本docker</span></span><br><span class="line">sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置docker yum源</span></span><br><span class="line">sudo yum install -y yum-utils</span><br><span class="line">sudo yum-config-manager \</span><br><span class="line">--add-repo \</span><br><span class="line">http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装 最新 docker</span></span><br><span class="line">sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动&amp; 开机启动docker； <span class="built_in">enable</span> + start 二合一</span></span><br><span class="line">systemctl enable docker --now</span><br></pre></td></tr></table></figure>
-<h2 id="配置自己的镜像加速器">配置自己的镜像加速器</h2>
-<p>docker镜像加速器配置需登录阿里云https://cr.console.aliyun.com/cn-hangzhou/instances 我这里配置了两项，一个是阿里云个人的镜像服务，一个是中科大的</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span><br><span class="line">sudo mkdir -p /etc/docker</span><br><span class="line">sudo tee /etc/docker/daemon.json &lt;&lt;-&#x27;EOF&#x27;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://f3fprrzr.mirror.aliyuncs.com&quot;,</span><br><span class="line">  &quot;https://docker.mirrors.ustc.edu.cn&quot;,</span><br><span class="line">  &quot;https://registry.docker-cn.com&quot;,</span><br><span class="line">   &quot;https://hub-mirror.c.163.com&quot;,</span><br><span class="line">   &quot;https://mirror.baidubce.com&quot;,</span><br><span class="line">   &quot;https://ccr.ccs.tencentyun.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
-<h1 id="卸载">卸载</h1>
-<p>删除docker：yum remove docker-ce rm -rf /var/lib/docker</p>
-<h1 id="常用命令">常用命令</h1>
-<p><img src="/images/loading/loading.gif" data-original="/images/docker命令.png" alt="docker命令" style="zoom: 200%;" /></p>
-<table>
-<thead>
-<tr class="header">
-<th>命令</th>
-<th>选项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>docker search</td>
-<td></td>
-<td>在官方dockerhub搜索镜像</td>
-</tr>
-<tr class="even">
-<td>docker build</td>
-<td></td>
-<td>通过dockerfile创建一个镜像</td>
-</tr>
-<tr class="odd">
-<td>docker pull</td>
-<td></td>
-<td>拉取镜像</td>
-</tr>
-<tr class="even">
-<td>docker push</td>
-<td></td>
-<td>推送镜像到DockerRegistry</td>
-</tr>
-<tr class="odd">
-<td>docker images</td>
-<td></td>
-<td>查看本地镜像</td>
-</tr>
-<tr class="even">
-<td>docker rmi</td>
-<td></td>
-<td>删除本地镜像</td>
-</tr>
-<tr class="odd">
-<td>docker run</td>
-<td>-d后台运行<br>-i交互运行<br>-t伪终端<br>-p指定端口映射<br />-P随机端口映射<br />-v容器卷映射</td>
-<td>创建并运行容器</td>
-</tr>
-<tr class="even">
-<td>docker stop</td>
-<td></td>
-<td>停止指定容器</td>
-</tr>
-<tr class="odd">
-<td>docker start</td>
-<td></td>
-<td>启动指定容器</td>
-</tr>
-<tr class="even">
-<td>docker restart</td>
-<td></td>
-<td>重启指定容器</td>
-</tr>
-<tr class="odd">
-<td>docker rm</td>
-<td>-f强制删除</td>
-<td>强制删除指定容器</td>
-</tr>
-<tr class="even">
-<td>docker ps</td>
-<td>-a查看所有容器<br />-q只显示容器ID</td>
-<td>查看容器基本信息</td>
-</tr>
-<tr class="odd">
-<td>docker logs</td>
-<td>-f标准查看</td>
-<td>查看容器内运行的日志</td>
-</tr>
-<tr class="even">
-<td>docker exec</td>
-<td>-it内部命令行</td>
-<td>进入容器</td>
-</tr>
-<tr class="odd">
-<td>docker save/export</td>
-<td>&gt;tar文件</td>
-<td>保存镜像到本地压缩文件</td>
-</tr>
-<tr class="even">
-<td>docker load/import</td>
-<td>&lt;tar文件</td>
-<td>加载本地压缩文件到镜像</td>
-</tr>
-<tr class="odd">
-<td>docker commit 容器ID 仓库名：版本号</td>
-<td>-m新增功能</td>
-<td>将容器提交到镜像</td>
-</tr>
-<tr class="even">
-<td>docker inspect</td>
-<td></td>
-<td>查看容器详细信息</td>
-</tr>
-<tr class="odd">
-<td>systemctl enable docker</td>
-<td></td>
-<td>设置docker开机自启</td>
-</tr>
-<tr class="even">
-<td>docker update –restart=always [容器名/容器ID]</td>
-<td></td>
-<td>设置docker容器开机自启</td>
-</tr>
-</tbody>
-</table>
-<h1 id="使用docker拉取镜像运行容器">使用docker拉取镜像运行容器</h1>
-<h2 id="mysql">mysql</h2>
-<h2 id="nginx">nginx</h2>
-<p>1.拉取镜像 docker pull nginx</p>
-<p>2.查看镜像 docker images</p>
-<p>3.创建并运行nginx容器 docker run -d –name mynginx -p 80:80 nginx</p>
-<p>5.查看运行的容器 docker ps</p>
-<p>6.通过网页访问nginx docker的宿主机IP:宿主机对应的端口</p>
-<h2 id="redis">redis</h2>
-<p>拉，创，进 合成一句 docker run -itd<br />
--p 6379:6379<br />
-–name myredis<br />
--v /home/redis/conf:/etc/redis/<br />
--v /home/redis/data:/data<br />
-redis redis-server</p>
-<p>docker exec -it 容器名 bash 可以直接执行redis-cli 配置文件在/etc/redis</p>
-<h1 id="镜像的分层">镜像的分层</h1>
-<p>创建一个镜像需要根据dockerfile文件里面的shell脚本来一层一层的构建，这种层级的文件系统称为UnionFS</p>
-<p>1、镜像：轻量级、可执行的独立软件包，包含运行某个软件所需要的所有内容，我们把应用程序和配置依赖打包好形成一个可交付的运行环境（包括代码、运行时环境、环境变量和配置文件等）。</p>
-<p>2、UnionFS(联合文件系统):是一种分层，轻量级高性能的文件系统、支持对文件系统的修改作为一次提交来一层层的叠加，同时将不同目录挂载到同一个虚拟文件系统下。联合文件系统是Docker镜像的基础，镜像可以通过分层进行继承，基于基础镜像可以制作各种具体的应用镜像。</p>
-<p>3、 Docker镜像加载原理</p>
+<h1 id="网络配置dhcp改静态">网络配置(dhcp改静态)</h1>
+<p>nat模式-设置本机vm8的ipv4和网关-修改ifcfg-ens33 -重启-网络图标不见看下面</p>
+<p>网络图标消失不见的解决方案 停止网络配置管理器：systemctl stop NetworkManager.service 删除文件： rm /var/lib/NetworkManager/NetworkManager.state 开启网络配置管理器： systemctl start NetworkManager.service</p>
+<p>vi /etc/sysconfig/network-scripts/ifcfg-ens33</p>
+<p>TYPE=“Ethernet” PROXY_METHOD=“none” BROWSER_ONLY=“no” BOOTPROTO=“static” DEFROUTE=“yes” IPV4_FAILURE_FATAL=“no” IPV6INIT=“yes” IPV6_AUTOCONF=“yes” IPV6_DEFROUTE=“yes” IPV6_FAILURE_FATAL=“no” IPV6_ADDR_GEN_MODE=“stable-privacy” NAME=“ens33” UUID=“5afdee8c-694c-4b47-b78a-9f07ea444acd” DEVICE=“ens33” ONBOOT=“yes” IPADDR=192.168.181.3 NETMASK=255.255.255.0 GATEWAY=192.168.181.2 DNS1=8.8.8.8 DNS2=114.114.114.114</p>
+<h1 id="防火墙设置">防火墙设置</h1>
+<p>打开对应端口</p>
 <ol type="1">
-<li><p>docker的镜像实际上由一层一层的文件系统组成，这种层级的文件系统UnionFS。</p></li>
-<li><p>bootfs(boot file system)主要包含bootloader和kernel, bootloader主要是引导加载kernel, Linux刚启动时会加载bootfs文件系统，在Docker镜像的最底层是bootfs。这一层与我们典型的Linux/Unix系统是一样的，包含boot加载器和内核。当boot加载完成之后整个内核就都在内存中了，此时内存的使用权已由bootfs转交给内核，此时系统也会卸载bootfs。</p></li>
+<li>防火墙打开3306端口号 firewall-cmd –zone=public –add-port=3306/tcp –permanent 下面3行是参数说明 #–zone #作用域 #–add-port=80/tcp #添加端口,格式为:端口/通讯协议 #–permanent #永久生效,没有此参数重启后失效</li>
+<li>重启防火墙 firewall-cmd –reload#重启firewall</li>
+<li>查看是否已经开放3306端口 firewall-cmd –list-ports #查看已经开放的端口</li>
 </ol>
-<h1 id="设置个人或企业版阿里云镜像仓库">设置个人或企业版阿里云镜像仓库</h1>
-<p>https://cr.console.aliyun.com/cn-hangzhou/instances</p>
-<p>① 选择实例列表，点击个人版进入“个人实例”</p>
-<p>② 创建命名空间</p>
-<p>③ 创建镜像仓库–&gt;选择刚刚创建的命名空间—&gt;选择本地仓库，创建</p>
-<p>④ 在成功节目根据第三点“将镜像推送到Registry”</p>
-<p>⑤ 然后尝试下载上传的镜像</p>
-<p>具体命令在阿里云镜像服务里面有</p>
+<p>如果你想再关闭firewall-cmd –zone=public –remove-port=3306/tcp –permanent 然后再重启防火墙</p>
+<h1 id="安装方式">安装方式</h1>
+<p>软件一般安装在根目录下的/usr/local/ | 安装方式 | 特点 | | —————- | ———————————— | | 二进制发布包安装 | 已经编译过只需解压修改配置 | | rpm | 按照包管理规范进行打包，有库依赖问题 | | yum | 本质上还是rpm，需联网，无库依赖问题 | | 源码编译安装 | 将源码工程自行打包发布 |</p>
+<h1 id="没有vim">没有vim</h1>
+<p>apt-get update</p>
+<p>apt-get install vim -y</p>
+<h1 id="安装jdk">安装JDK</h1>
+<h2 id="步骤">步骤</h2>
+<p>下载链接https://www.oracle.com/technetwork/java/javase/downloads/index.html</p>
+<p>1.在/usr/local目录下创建自定义soft目录 2.使用FinalShell自带的上传工具将jdk的二进制发布包上传到Linux 3.切换到soft目录 4.解压安装包 tar -zxvf jdk-8u171-linux-x64.tar.gz 5.配置环境变量：使用vim修改/etc/profile文件 JAVA_HOME=/usr/local/soft/jdk1.8.0_171 JRE_HOME=<span class="math inline">\({JAVA_HOME}/jre CLASSPATH=.:\)</span>JAVA_HOME/lib PATH=<span class="math inline">\(JAVA_HOME/bin:\)</span>PATH export JAVA_HOME JRE_HOME CLASSPATH PATH 6.重新加载profile文件 source /etc/profile 7.检查安装是否成功，java -version</p>
+<h2 id="alternatives管理">alternatives管理</h2>
+<p>如果交给了alternatives来管理java可以不用设置环境变量</p>
+<p>通过alternatives –install [软链接] [链接名] [执行文件路径] [优先级] 例如将自己安装的java交给alternatives管理： alternatives –install /usr/bin/java java ../jdk/bin/java 3 其实就是将安装的java执行文件路径生成软链接放到/usr/bin目录下</p>
+<p>切换java版本:alternatives –config java</p>
+<h1 id="安装tomcat">安装tomcat</h1>
+<p>压缩包直接解压 <a href="https://www.cnblogs.com/wjt-super/p/8018642.html">配置文件</a></p>
+<h1 id="安装mysql8.0">安装mysql8.0</h1>
+<p>tar.gz方式下载路径：https://downloads.mysql.com/archives/community/</p>
+<p>1、ps -ajx |grep mariadb # 先检查是否有mariadb存在 如果存在先停止systemctl stop mariadb.service或者kill -9 进程id 2、检查系统安装包rpm -qa | grep mariadb和rpm -qa | grep mysql 如果存在就删除rpm -e –nodeps 包名或者yum remove mariadb/mysql 3.创建mysql 用户组和用户 groupadd mysql useradd -r -g mysql mysql 4.解压 5.配置文件 /etc/my.cnf [mysql] default-character-set=utf8mb4</p>
+<p>[mysqld] port=3306 #server-id=3306 user=mysql8.0 socket=/tmp/mysql.sock basedir=/opt/mysql8.0 datadir=/opt/mysql8.0/data #字符集，大小写，自动提交事务 character-set-server=utf8mb4 #lower_case_table_names=1 autocommit=1</p>
+<p>#创表默认引擎 default-storage-engine=INNODB lower_case_table_names=1 max_allowed_packet=16M</p>
+<p>#sql模式 sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION</p>
+<p>[mysqld_safe] log-error=/opt/mysql8.0/data/mysql.log pid-file=/opt/mysql8.0/data/mysql.pid</p>
+<p>5、设置权限：chown -R mysql:mysql /opt/ mysql8.0 chmod -R 755 /opt/ mysql8.0</p>
+<p>6、创建data目录:mkdir /opt/mysql8.0/data</p>
+<p>7.初始化并记住初始密码 ./bin/mysqld –initialize –user=mysql8.0 –datadir=/opt/mysql8.0/data –basedir=/opt/mysql8.0 –lower_case_table_names=1</p>
+<p>8.启动 ./support-files/mysql.server start</p>
+<p>9.复制启动脚本文件到init.d下<br />
+cp support-files/mysql.server /etc/init.d/mysqld chmod a+x /etc/init.d/mysqld 设置所有人可以执行权限</p>
+<p>10.启动，停止，重启 service mysqld start #service mysqld stop #service mysqld restart</p>
+<p>11.添加软链接 ln -s /opt/mysql8.0/bin/mysql /usr/bin</p>
+<p>10.登录并改密码，配置远程登陆 mysql -uroot -p 输密码 alter user ‘root’@‘localhost’ identified by ‘123456’; 修改密码 flush privileges; 刷新权限</p>
+<p>配置远程登陆权限(8.0之前直接给root@%赋权就行， 8.0之后需要先新建一个root@%的用户) create user ‘root’@‘%’ IDENTIFIED BY ‘123456’; GRANT ALL PRIVILEGES ON * . * TO ‘root’@‘%’ IDENTIFIED BY ‘111111’ WITH GRANT OPTION; 远程用户用root加密码111111连接</p>
+<p>11.连不上打开3306防火墙 防火墙打开3306端口号 firewall-cmd –zone=public –add-port=3306/tcp –permanent 下面3行是参数说明 #–zone #作用域 #–add-port=80/tcp#添加端口,格式为:端口/通讯协议 #–permanent #永久生效,没有此参数重启后失效</p>
+<p>重启防火墙 firewall-cmd –reload#重启firewall</p>
+<p>查看是否已经开放3306端口 firewall-cmd –list-ports #查看已经开放的端口</p>
+<p>12.mysql开机自启 cp /usr/local/mysql/mysql/support-files/mysql.server /etc/rc.d/init.d/mysqld chmod +x /etc/init.d/mysqld 添加为服务: chkconfig –add mysqld 查看服务列表: chkconfig –list 看到3、4、5状态为开或者为 on 则表示成功。如果是 关或者 off 则执行一下：chkconfig –level 345 mysqld on 重启计算机:reboot</p>
+<h1 id="安装redis">安装redis</h1>
+<p>linux上安装,首先拿到压缩包，方法任意,这里使用在线下载 wget http://download.redis.io/releases/redis-4.0.9.tar.gz</p>
+<p>1.解压然后进到解压的文件里面 2.执行make来编译 3.他会生成src文件夹，进到里面执行redis-server就运行了</p>
+<h1 id="安装docker">安装docker</h1>
+<p>1.卸载之前的docker</p>
+<p>yum remove docker<br />
+docker-client<br />
+docker-client-latest<br />
+docker-common   docker-latest   docker-latest-logrotate   docker-logrotate<br />
+docker-selinux   docker-engine-selinux   docker-engine   docker-ce</p>
+<p>2.建立仓库</p>
+<p>yum install -y yum-utils //安装docker所需要的工具包</p>
+<p>yum-config-manager –add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo //建立docker仓库，映射仓库地址</p>
+<p>3.安装docker引擎</p>
+<p>yum install docker -ce dockerce-cli containerd.io</p>
+<p>4.启动docker</p>
+<p>systemctl start docker</p>
+<p>5.测试安装是否成功</p>
+<p>docker pull hello-world</p>
+<p>docker run hello-world</p>
+<h2 id="其他操作">其他操作</h2>
+<p>docker镜像加速器配置(建立仓库时可提前选择镜像)</p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="comment">//重启docker</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+<p>守护进程重启：systemctl daemon-reload</p>
+<p>重启Docker服务：systemctl restart docker / service docker restart</p>
+<p>关闭Docker服务：docker service docker stop / docker systemctl stop docker</p>
+<p>删除docker：yum remove docker-ce rm -rf /var/lib/docker</p>
 ]]></content>
       <categories>
         <category>运维</category>
       </categories>
       <tags>
-        <tag>docker</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -3781,849 +4624,6 @@ redis redis-server</p>
       </tags>
   </entry>
   <entry>
-    <title>linux常用指令快速入门</title>
-    <url>/2024/08/10/linux/linux%E7%AE%80%E5%8D%95%E6%8C%87%E4%BB%A4/</url>
-    <content><![CDATA[<p><span id="jump1">目录</span></p>
-<p>[toc]</p>
-<h1 id="常用简单指令">常用简单指令</h1>
-<table>
-<thead>
-<tr class="header">
-<th>运行等级</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>init 0</td>
-<td>关机</td>
-</tr>
-<tr class="even">
-<td>init 1</td>
-<td>单用户，root，用于系统维护，禁止远程登陆</td>
-</tr>
-<tr class="odd">
-<td>init 2</td>
-<td>多用户，不支持NFS</td>
-</tr>
-<tr class="even">
-<td>init 3</td>
-<td>命令行模式，完全的多用户，登陆后进入</td>
-</tr>
-<tr class="odd">
-<td>init 4</td>
-<td>安全模式</td>
-</tr>
-<tr class="even">
-<td>init 5</td>
-<td>图形化</td>
-</tr>
-<tr class="odd">
-<td>init 6</td>
-<td>重启</td>
-</tr>
-</tbody>
-</table>
-<p>内存中的数据同步到磁盘：sync 查看当前目录：pwd 切换目录：cd 目录名 （cd只能进入目录） 进入文件：cat 文件路径 显示(当前)目录中的文件：ls [-a包括隐藏文件] [-l列表详细信息] [目录名] 创建目录：mkdir [-p] 目录名/路径 删除空目录(非空删除失败)：rmdir [-p] 目录名 清屏：clear 在终端使用之前用到的命令(历史命令保存在.bash_history文件中)：上下光标调取 命令自动补全：tab 正则表达式：*多个字符,?一个字符 查看/设置时间：date date -s “2024-01-02 09:11:42” 帮助指令：man help 修改主机名：hostname set-hostname 新名称</p>
-<h1 id="linux目录和文件简单介绍">Linux目录和文件(简单介绍)</h1>
-<p><a href="#jump1">回到目录</a></p>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/图片1.png" alt="image-20240604094822494" /><figcaption>image-20240604094822494</figcaption>
-</figure>
-<p>绝对路径：/usr/include/a.h 相对路径：如果当前目录为/usr，则include/a.h为相对路径等同于上面 当前目录：. 上一级目录：.. 家目录：~ 系统启动必须：/boot、/etc、/lib 命令集合：/sbin、/bin 设备相关：/dev、/media、/mnt 临时文件：/run、/lost+found、/tmp 账户相关：/root、/home、/usr 运行过程：/var、/proc 拓展相关：/opt、/srv</p>
-<p>bin执行，lib库，etc是配置，usr和home是’我的’，dev管设备，opt装软件</p>
-<h1 id="vi编辑器">vi编辑器</h1>
-<p><a href="#jump1">回到目录</a></p>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/vim.png" alt="vim工作模式" /><figcaption>vim工作模式</figcaption>
-</figure>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/vim键盘.png" alt="vim键盘" /><figcaption>vim键盘</figcaption>
-</figure>
-<p>命令模式</p>
-<table>
-<thead>
-<tr class="header">
-<th>命令模式</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>:set nu</td>
-<td>显示行号</td>
-</tr>
-<tr class="even">
-<td>:set nonu</td>
-<td>取消行号</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>一般模式</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>/字符</td>
-<td>查找指定字符，按n查找下一个</td>
-</tr>
-<tr class="even">
-<td>gg</td>
-<td>查看行首</td>
-</tr>
-<tr class="odd">
-<td>G</td>
-<td>查看行尾</td>
-</tr>
-<tr class="even">
-<td>数字 G</td>
-<td>查看指定行</td>
-</tr>
-</tbody>
-</table>
-<p>i:当前位置开始编辑<br />
-o：在下面插入一行编辑 a：当前位置后一个位置插入<br />
-r：当前位置替换 I:当前行首个位置编辑<br />
-O：在上面插入一行编辑<br />
-A：当前行最后一个位置插入 R：从当位置开始替换</p>
-<h1 id="用户组管理">用户(组)管理</h1>
-<p><a href="#jump1">回到目录</a></p>
-<h3 id="组">组</h3>
-<p>组的信息保存在/etc/group文件 创建组：groupadd 组名 修改组：groupmod [-n 新组] 旧组 删除组：groupdel 组名</p>
-<h3 id="用户">用户</h3>
-<p><strong>创建删除</strong> 用户信息保存在/etc/passwd文件 用户密码保存在/etc/shadow文件 创建用户：useradd [-g 组名] [-d 用户主目录] [-r系统用户不可登录系统] 用户名 修改用户：usermod [-l 新名字] [-g 新组] [-d 新目录] 用户名 删除用户：userdel [-r删除组目录] 用户名 <strong>修改密码</strong> root用户修改其他用户：passwd 用户名 普通用户修改自己：passwd <strong>切换用户</strong> root用户免密码切换：su -用户名 普通用户：su -用户名 然后输入密码 <strong>查看用户信息</strong> id 用户名</p>
-<h1 id="目录文件操作">目录文件操作</h1>
-<p><a href="#jump1">回到目录</a></p>
-<p>目录和文件的详细信息：ls [-l] [目录名] 按时间降序显示ls -lt [目录名] -a:列出全部文件，包括隐藏文件 快捷方式显示按当前目录下详细信息：ll</p>
-<h2 id="文件目录属性">文件/目录属性</h2>
-<p>drwxr-xr-x. 4 root root 80 9月 26 17：05 aaa</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: center;">对应信息</th>
-<th style="text-align: center;">介绍</th>
-<th style="text-align: center;">例子</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: center;">文件类型</td>
-<td style="text-align: center;">d目录-普通文件l链接p管道文件b块设备文件c字符设备文件s套接字文件</td>
-<td style="text-align: center;">d</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">文件权限</td>
-<td style="text-align: center;">r读w写x可执行-无权限；三个为一组代表所有者，同组用户，其他用户</td>
-<td style="text-align: center;">rwxr-xr-x</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">文件硬链接数或目录的子目录数</td>
-<td style="text-align: center;">文件硬链接，初始为1；空目录初始为2；</td>
-<td style="text-align: center;">4</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">文件拥有者</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">root</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">文件拥有者所在组</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">root</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">目录或文件大小</td>
-<td style="text-align: center;">文件大小单位字节；目录大小不包括目录下的文件和子目录</td>
-<td style="text-align: center;">80</td>
-</tr>
-<tr class="odd">
-<td style="text-align: center;">最后一次被修改的时间</td>
-<td style="text-align: center;">创建/last修改</td>
-<td style="text-align: center;">9月 26 17：05</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">目录或文件名</td>
-<td style="text-align: center;"></td>
-<td style="text-align: center;">aaa</td>
-</tr>
-</tbody>
-</table>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/图片2.png" alt="image-20240604094822494" /><figcaption>image-20240604094822494</figcaption>
-</figure>
-<h2 id="修改目录和文件权限">修改目录和文件权限</h2>
-<p>修改拥有者：chown [-R递归赋予权限] 用户：组 目录和文件列表 设置权限：chmod [-R] whooperatorpermission 目录和文件列表</p>
-<table>
-<thead>
-<tr class="header">
-<th>who</th>
-<th>operator</th>
-<th>permission</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>u所有者</td>
-<td>+增加权限</td>
-<td>x进入目录或执行文件</td>
-</tr>
-<tr class="even">
-<td>g所有者所在组</td>
-<td>-取消权限</td>
-<td>r读取文件或查看目录中有哪些子目录和文件</td>
-</tr>
-<tr class="odd">
-<td>o其他用户</td>
-<td>=重新设置权限</td>
-<td>w修改文件内容或在目录中增删改</td>
-</tr>
-<tr class="even">
-<td>a全部用户</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>r=4 w=2 x=1 rwx=4+2+1=7 chmod -R 777 文件名/目录 给所有人用给rwx权限</p>
-<h2 id="查看查找文件内容">查看/查找文件内容</h2>
-<table>
-<thead>
-<tr class="header">
-<th>查看文件内容</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>cat 文件名</td>
-<td>显示</td>
-</tr>
-<tr class="even">
-<td>less 文件名</td>
-<td>分屏查看，</td>
-</tr>
-<tr class="odd">
-<td>more 文件名</td>
-<td>分页查看，空格下一页，b上一页，q退出</td>
-</tr>
-<tr class="even">
-<td>wc 文件名</td>
-<td>统计文件行数</td>
-</tr>
-<tr class="odd">
-<td>head [-n] 文件</td>
-<td>查看前n行，默认10行</td>
-</tr>
-<tr class="even">
-<td>tail [-n] [-f] 文件</td>
-<td>查看尾n行，默认10行,-f实时跟踪</td>
-</tr>
-<tr class="odd">
-<td>grep [-n]</td>
-<td>过滤查找， 内容|grep 指定查找内容</td>
-</tr>
-<tr class="even">
-<td>find 目录 -name 文件名</td>
-<td>在指定目录下按名字查找文件</td>
-</tr>
-<tr class="odd">
-<td>locate 文件名</td>
-<td>locate之前updatedb</td>
-</tr>
-</tbody>
-</table>
-<h2 id="文件目录的创建删除复制移动">文件/目录的创建删除复制移动</h2>
-<table>
-<thead>
-<tr class="header">
-<th>创建目录/空文件</th>
-<th>删除</th>
-<th>复制</th>
-<th>移动/重命名</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>mkdir [-mp] 目录名</td>
-<td>rm [-rf] 目录和文件</td>
-<td>cp [-r] 旧名 新名</td>
-<td>mv 旧名 新名</td>
-</tr>
-<tr class="even">
-<td>touch 文件名</td>
-<td>-r递归删除-f强制删除不提示</td>
-<td>-r递归复制目录</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>-m配置权限；-p目录递归创建</td>
-<td>rmdir是删空目录</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>在不同的linux服务器之间进行文件传输： scp [-r] 文件 目标用户名@目标服务器名或ip:目标服务器上的保存路径</p>
-<h2 id="安装和打包">安装和打包</h2>
-<h3 id="rpm包管理">rpm包管理</h3>
-<table>
-<thead>
-<tr class="header">
-<th>命令</th>
-<th>选项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>rpm</td>
-<td>-q 包名</td>
-<td>查询是否安装</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>-qa</td>
-<td>查询已安装的软件包</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>-ql 包名</td>
-<td>查询软件包中文件</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>-qi 包名</td>
-<td>查询软件包信息</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>-qf 文件全路径名</td>
-<td>查询文件所属软件包</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>-e 包名</td>
-<td>卸载包</td>
-</tr>
-</tbody>
-</table>
-<h3 id="yum安装">yum安装</h3>
-<p>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup</p>
-<p>curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</p>
-<p>yum makecache</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">命令</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">yum [-y/d/n] install 包名</td>
-<td>安装</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">yum -y remove</td>
-<td>删除</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">yum update 包名</td>
-<td>升级</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">yum list | grep 软件名</td>
-<td>查找能够安装的包</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">yum check-update</td>
-<td>显示可更新的包</td>
-</tr>
-</tbody>
-</table>
-<h3 id="打包和压缩">打包和压缩</h3>
-<p>zip命令和tar命令</p>
-<p>压缩：zip [-qrd] 压缩包文件名 目录和文件名列表 解压：unzip [-d 指定放的位置] 压缩包文件名</p>
-<p>压缩：tar [-zcvf] 压缩包文件名.tar.gz 目录和文件名列表 解压：tar [-xzvf] 压缩包文件名 [-C 指定放的位置]</p>
-<table>
-<thead>
-<tr class="header">
-<th>zip</th>
-<th>说明</th>
-<th>tar</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>-q</td>
-<td>不显示命令执行过程</td>
-<td>-z</td>
-<td>打包同时压缩</td>
-</tr>
-<tr class="even">
-<td>-r</td>
-<td>递归压缩</td>
-<td>-c/x</td>
-<td>打包/解包</td>
-</tr>
-<tr class="odd">
-<td>-u</td>
-<td>把文件增加/替换到压缩包中</td>
-<td>-v</td>
-<td>显示文件详细信息</td>
-</tr>
-<tr class="even">
-<td>-d</td>
-<td>指定压缩或解压缩后产生的文件放的地方</td>
-<td>-f</td>
-<td>指定压缩/解压的文件名</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td>-t</td>
-<td>列出压缩包里的文件(不用解压)</td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td>-C</td>
-<td>指定压缩或解压缩后产生的文件放的地方</td>
-</tr>
-</tbody>
-</table>
-<h1 id="链接">链接</h1>
-<p><a href="#jump1">回到目录</a></p>
-<p>硬链接：ln 文件名 链接名 软链接：ln -s 目录或文件 链接名</p>
-<p>硬链接是文件指针；软链接是一个保存了文件路径的文件</p>
-<p>尽量为目录做软链接，为文件做硬链接</p>
-<h1 id="进程">进程</h1>
-<p><a href="#jump1">回到目录</a></p>
-<h2 id="查看进程">查看进程</h2>
-<p>ps [-aux]/[-ef] 选项说明： -a 查全部进程(前台) -x 查全部进程(包括后台) -u 显示该进程的用户 -e 显示所有进程 -f 全格式</p>
-<p>以树状形式显示 pstree [-p]/[-u] 选项说明：p：进程pid；u进程所属用户</p>
-<p>实时显示top [选项]</p>
-<table>
-<thead>
-<tr class="header">
-<th>选项</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>-d</td>
-<td>每各d秒更新显示内容</td>
-</tr>
-<tr class="even">
-<td>-i</td>
-<td>不显示闲置和僵尸进程</td>
-</tr>
-<tr class="odd">
-<td>-p</td>
-<td>指定进程ID查看</td>
-</tr>
-<tr class="even">
-<td>执行后操作</td>
-<td>说明</td>
-</tr>
-<tr class="odd">
-<td>P</td>
-<td>以CPU使用率排序(默认)</td>
-</tr>
-<tr class="even">
-<td>M</td>
-<td>以内存使用率排序</td>
-</tr>
-<tr class="odd">
-<td>N</td>
-<td>以PID排序</td>
-</tr>
-<tr class="even">
-<td>q</td>
-<td>退出top</td>
-</tr>
-</tbody>
-</table>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/top性能分析.png" alt="top性能分析" /><figcaption>top性能分析</figcaption>
-</figure>
-<table>
-<thead>
-<tr class="header">
-<th>第一行</th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>top - 11：03：25</td>
-<td>up 4 min</td>
-<td>3 users</td>
-<td></td>
-<td>load average：0.05,0.18,0.10</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>当前时间</td>
-<td>运行了多久</td>
-<td>当前登录用户数</td>
-<td></td>
-<td>系统负载：一段时间内，CPU正在处理和等待处理的进程数之和<br>上面三个数值分别是1分钟，5分钟，15分钟内的平均值</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>第二行:</td>
-<td>统计进程</td>
-<td>的统计</td>
-<td></td>
-<td>信息</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Tasks:209 total</td>
-<td>2 running</td>
-<td>207 sleeping</td>
-<td></td>
-<td>0</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h2 id="终止进程">终止进程</h2>
-<p>kill [-9] 进程号 kill all 进程名称 可用通配符</p>
-<h2 id="按端口查">按端口查</h2>
-<p>lsof -t -i:端口号 -t只显示进程号 杀死某一端口的进程：kill $(lsof -t -i:端口号)</p>
-<h1 id="磁盘分区和挂载">磁盘分区和挂载</h1>
-<p><a href="#jump1">回到目录</a></p>
-<p>linux独特的挂载使得其只有一个根目录 查挂载情况-分区-分区格式化-挂载-查磁盘分区使用情况</p>
-<table>
-<thead>
-<tr class="header">
-<th>分区方式</th>
-<th style="text-align: center;">特点</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>mbr</td>
-<td style="text-align: center;">最多支持4个主分区，系统只能在主分区，扩展分区占一个主分区，最大2TB，兼容性好</td>
-</tr>
-<tr class="even">
-<td>gtp</td>
-<td style="text-align: center;">无限多个主分区(windows限制128个)，最大18EB</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr class="header">
-<th>硬盘</th>
-<th></th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>IDE</td>
-<td></td>
-<td>驱动器标识符hdx~ 例如hda3表示第一个IDE硬盘的第三个分区</td>
-</tr>
-<tr class="even">
-<td>SCSI</td>
-<td></td>
-<td>sdx~</td>
-</tr>
-</tbody>
-</table>
-<table style="width:100%;">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 14%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 2%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>常用指令</th>
-<th>选项</th>
-<th>选项说明</th>
-<th>说明</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>lsblk</td>
-<td>-f</td>
-<td>会显示uuid和挂载点</td>
-<td>查看所有设备挂载情况</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>fdisk /dev/sdb</td>
-<td>m p q w n</td>
-<td>m显示命令;p显示磁盘分区;q不保存退出;w写入并退出;n新增分区;e扩展分区</td>
-<td>对/sdb分区,输入n,新增分区然后选择p ，分区类型为主分区。两次回车默认剩余全部空间。最后w写入分区并退出，或者q。</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>mkfs -t ext4 /dev/sdb1</td>
-<td>-t</td>
-<td>设置分区类型</td>
-<td>对刚刚的主分区格式化</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>mount /dev/sdb1 被挂载的目录</td>
-<td>-a -o</td>
-<td>修改/etc/fstab后mount -a即可永久挂载 o选择何种方式挂载</td>
-<td>不永久挂载重启会失效<br>-o ro 只读方式挂载<br>-o rw 读写方式挂载</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>umount 被挂载的目录/分区</td>
-<td></td>
-<td></td>
-<td>取消挂载</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>df</td>
-<td>-h</td>
-<td>带单位</td>
-<td>查询磁盘、分区使用情况</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>du /目录</td>
-<td>-s -h -a -c –max-depth=1</td>
-<td>s占用大小汇总a含文件c列出明细同时增加汇总值max深度为1查看</td>
-<td>查询指定目录的磁盘使用情况</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h1 id="系统服务管理systemctl">系统服务管理systemctl</h1>
-<p><a href="#jump1">回到目录</a></p>
-<p>systemctl start|stop|restart|staus|enable|reload 服务名 Centos7后不再使用service(可以用，会自动重定向到systemctl命令) service 服务名 start|stop|restart</p>
-<p>查看服务名： 方式1：使用seup-&gt;系统服务 方式2：/etc/init.d/服务名称</p>
-<h1 id="防火墙">防火墙</h1>
-<p><a href="#jump1">回到目录</a></p>
-<table>
-<colgroup>
-<col style="width: 54%" />
-<col style="width: 45%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>命令</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>systemctl start|restart|stop firewalld</td>
-<td>启动、重启、关闭防火墙</td>
-</tr>
-<tr class="even">
-<td>firewall-cmd –zone=public –add-port=80-100/tcp –permanent</td>
-<td>开通指定端口<br />也可以设置一个范围的端口80到100</td>
-</tr>
-<tr class="odd">
-<td>firewall-cmd –zone=public –remove-port=80/tcp –permanent</td>
-<td>关闭指定端口</td>
-</tr>
-<tr class="even">
-<td>firewall-cmd –zone=public –add-service=ftp –permanent</td>
-<td>开通服务</td>
-</tr>
-<tr class="odd">
-<td>firewall-cmd –zone=public –remove-service=http –permanent</td>
-<td>移去服务</td>
-</tr>
-<tr class="even">
-<td>firewall-cmd –reload</td>
-<td>重载</td>
-</tr>
-</tbody>
-</table>
-<p>常用服务的端口：ssh(22）、HTTP(80、8080)、MySQL(3306)、Oracle(1521) 、ftp(21）、 telnet(23）。</p>
-<p>查看已经开放端口 firewall-cmd –list-ports #查看已经开放的端口</p>
-<h1 id="环境变量shell">环境变量（shell）</h1>
-<p><a href="#jump1">回到目录</a></p>
-<p>输出内容 echo ‘任务已开启’ echo $PATH 查看环境变量：env</p>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">命令</th>
-<th style="text-align: left;">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">command &gt; file</td>
-<td style="text-align: left;">将输出重定向到 file。</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">command &lt; file</td>
-<td style="text-align: left;">将输入重定向到 file。</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">command &gt;&gt; file</td>
-<td style="text-align: left;">将输出以追加的方式重定向到 file。</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">n &gt; file</td>
-<td style="text-align: left;">将文件描述符为 n 的文件重定向到 file。</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">n &gt;&gt; file</td>
-<td style="text-align: left;">将文件描述符为 n 的文件以追加的方式重定向到 file。</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">n &gt;&amp; m</td>
-<td style="text-align: left;">将输出文件 m 和 n 合并。</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">n &lt;&amp; m</td>
-<td style="text-align: left;">将输入文件 m 和 n 合并。</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">&lt;&lt; tag</td>
-<td style="text-align: left;">将开始标记 tag 和结束标记 tag 之间的内容作为输入。</td>
-</tr>
-</tbody>
-</table>
-<h1 id="任务调度crontab">任务调度crontab</h1>
-<p>分时天月周</p>
-<p><em>任意 ,不连续 -连续 </em>/n</p>
-<p>-e编辑 -r清空任务 -l列出任务</p>
-<h1 id="开机启动程序">开机启动程序</h1>
-<p><a href="#jump1">回到目录</a></p>
-<p>init.d</p>
-<p>systemctl enable 服务名 systemctl disable 服务名</p>
-]]></content>
-      <categories>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>在linux上安装常用环境和网络配置(vm)</title>
-    <url>/2024/08/10/linux/linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%8F%8A%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<p>[toc]</p>
-<h1 id="网络配置dhcp改静态">网络配置(dhcp改静态)</h1>
-<p>nat模式-设置本机vm8的ipv4和网关-修改ifcfg-ens33 -重启-网络图标不见看下面</p>
-<p>网络图标消失不见的解决方案 停止网络配置管理器：systemctl stop NetworkManager.service 删除文件： rm /var/lib/NetworkManager/NetworkManager.state 开启网络配置管理器： systemctl start NetworkManager.service</p>
-<p>vi /etc/sysconfig/network-scripts/ifcfg-ens33</p>
-<p>TYPE=“Ethernet” PROXY_METHOD=“none” BROWSER_ONLY=“no” BOOTPROTO=“static” DEFROUTE=“yes” IPV4_FAILURE_FATAL=“no” IPV6INIT=“yes” IPV6_AUTOCONF=“yes” IPV6_DEFROUTE=“yes” IPV6_FAILURE_FATAL=“no” IPV6_ADDR_GEN_MODE=“stable-privacy” NAME=“ens33” UUID=“5afdee8c-694c-4b47-b78a-9f07ea444acd” DEVICE=“ens33” ONBOOT=“yes” IPADDR=192.168.181.3 NETMASK=255.255.255.0 GATEWAY=192.168.181.2 DNS1=8.8.8.8 DNS2=114.114.114.114</p>
-<h1 id="防火墙设置">防火墙设置</h1>
-<p>打开对应端口</p>
-<ol type="1">
-<li>防火墙打开3306端口号 firewall-cmd –zone=public –add-port=3306/tcp –permanent 下面3行是参数说明 #–zone #作用域 #–add-port=80/tcp #添加端口,格式为:端口/通讯协议 #–permanent #永久生效,没有此参数重启后失效</li>
-<li>重启防火墙 firewall-cmd –reload#重启firewall</li>
-<li>查看是否已经开放3306端口 firewall-cmd –list-ports #查看已经开放的端口</li>
-</ol>
-<p>如果你想再关闭firewall-cmd –zone=public –remove-port=3306/tcp –permanent 然后再重启防火墙</p>
-<h1 id="安装方式">安装方式</h1>
-<p>软件一般安装在根目录下的/usr/local/ | 安装方式 | 特点 | | —————- | ———————————— | | 二进制发布包安装 | 已经编译过只需解压修改配置 | | rpm | 按照包管理规范进行打包，有库依赖问题 | | yum | 本质上还是rpm，需联网，无库依赖问题 | | 源码编译安装 | 将源码工程自行打包发布 |</p>
-<h1 id="没有vim">没有vim</h1>
-<p>apt-get update</p>
-<p>apt-get install vim -y</p>
-<h1 id="安装jdk">安装JDK</h1>
-<h2 id="步骤">步骤</h2>
-<p>下载链接https://www.oracle.com/technetwork/java/javase/downloads/index.html</p>
-<p>1.在/usr/local目录下创建自定义soft目录 2.使用FinalShell自带的上传工具将jdk的二进制发布包上传到Linux 3.切换到soft目录 4.解压安装包 tar -zxvf jdk-8u171-linux-x64.tar.gz 5.配置环境变量：使用vim修改/etc/profile文件 JAVA_HOME=/usr/local/soft/jdk1.8.0_171 JRE_HOME=<span class="math inline">\({JAVA_HOME}/jre CLASSPATH=.:\)</span>JAVA_HOME/lib PATH=<span class="math inline">\(JAVA_HOME/bin:\)</span>PATH export JAVA_HOME JRE_HOME CLASSPATH PATH 6.重新加载profile文件 source /etc/profile 7.检查安装是否成功，java -version</p>
-<h2 id="alternatives管理">alternatives管理</h2>
-<p>如果交给了alternatives来管理java可以不用设置环境变量</p>
-<p>通过alternatives –install [软链接] [链接名] [执行文件路径] [优先级] 例如将自己安装的java交给alternatives管理： alternatives –install /usr/bin/java java ../jdk/bin/java 3 其实就是将安装的java执行文件路径生成软链接放到/usr/bin目录下</p>
-<p>切换java版本:alternatives –config java</p>
-<h1 id="安装tomcat">安装tomcat</h1>
-<p>压缩包直接解压 <a href="https://www.cnblogs.com/wjt-super/p/8018642.html">配置文件</a></p>
-<h1 id="安装mysql8.0">安装mysql8.0</h1>
-<p>tar.gz方式下载路径：https://downloads.mysql.com/archives/community/</p>
-<p>1、ps -ajx |grep mariadb # 先检查是否有mariadb存在 如果存在先停止systemctl stop mariadb.service或者kill -9 进程id 2、检查系统安装包rpm -qa | grep mariadb和rpm -qa | grep mysql 如果存在就删除rpm -e –nodeps 包名或者yum remove mariadb/mysql 3.创建mysql 用户组和用户 groupadd mysql useradd -r -g mysql mysql 4.解压 5.配置文件 /etc/my.cnf [mysql] default-character-set=utf8mb4</p>
-<p>[mysqld] port=3306 #server-id=3306 user=mysql8.0 socket=/tmp/mysql.sock basedir=/opt/mysql8.0 datadir=/opt/mysql8.0/data #字符集，大小写，自动提交事务 character-set-server=utf8mb4 #lower_case_table_names=1 autocommit=1</p>
-<p>#创表默认引擎 default-storage-engine=INNODB lower_case_table_names=1 max_allowed_packet=16M</p>
-<p>#sql模式 sql_mode=ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION</p>
-<p>[mysqld_safe] log-error=/opt/mysql8.0/data/mysql.log pid-file=/opt/mysql8.0/data/mysql.pid</p>
-<p>5、设置权限：chown -R mysql:mysql /opt/ mysql8.0 chmod -R 755 /opt/ mysql8.0</p>
-<p>6、创建data目录:mkdir /opt/mysql8.0/data</p>
-<p>7.初始化并记住初始密码 ./bin/mysqld –initialize –user=mysql8.0 –datadir=/opt/mysql8.0/data –basedir=/opt/mysql8.0 –lower_case_table_names=1</p>
-<p>8.启动 ./support-files/mysql.server start</p>
-<p>9.复制启动脚本文件到init.d下<br />
-cp support-files/mysql.server /etc/init.d/mysqld chmod a+x /etc/init.d/mysqld 设置所有人可以执行权限</p>
-<p>10.启动，停止，重启 service mysqld start #service mysqld stop #service mysqld restart</p>
-<p>11.添加软链接 ln -s /opt/mysql8.0/bin/mysql /usr/bin</p>
-<p>10.登录并改密码，配置远程登陆 mysql -uroot -p 输密码 alter user ‘root’@‘localhost’ identified by ‘123456’; 修改密码 flush privileges; 刷新权限</p>
-<p>配置远程登陆权限(8.0之前直接给root@%赋权就行， 8.0之后需要先新建一个root@%的用户) create user ‘root’@‘%’ IDENTIFIED BY ‘123456’; GRANT ALL PRIVILEGES ON * . * TO ‘root’@‘%’ IDENTIFIED BY ‘111111’ WITH GRANT OPTION; 远程用户用root加密码111111连接</p>
-<p>11.连不上打开3306防火墙 防火墙打开3306端口号 firewall-cmd –zone=public –add-port=3306/tcp –permanent 下面3行是参数说明 #–zone #作用域 #–add-port=80/tcp#添加端口,格式为:端口/通讯协议 #–permanent #永久生效,没有此参数重启后失效</p>
-<p>重启防火墙 firewall-cmd –reload#重启firewall</p>
-<p>查看是否已经开放3306端口 firewall-cmd –list-ports #查看已经开放的端口</p>
-<p>12.mysql开机自启 cp /usr/local/mysql/mysql/support-files/mysql.server /etc/rc.d/init.d/mysqld chmod +x /etc/init.d/mysqld 添加为服务: chkconfig –add mysqld 查看服务列表: chkconfig –list 看到3、4、5状态为开或者为 on 则表示成功。如果是 关或者 off 则执行一下：chkconfig –level 345 mysqld on 重启计算机:reboot</p>
-<h1 id="安装redis">安装redis</h1>
-<p>linux上安装,首先拿到压缩包，方法任意,这里使用在线下载 wget http://download.redis.io/releases/redis-4.0.9.tar.gz</p>
-<p>1.解压然后进到解压的文件里面 2.执行make来编译 3.他会生成src文件夹，进到里面执行redis-server就运行了</p>
-<h1 id="安装docker">安装docker</h1>
-<p>1.卸载之前的docker</p>
-<p>yum remove docker<br />
-docker-client<br />
-docker-client-latest<br />
-docker-common   docker-latest   docker-latest-logrotate   docker-logrotate<br />
-docker-selinux   docker-engine-selinux   docker-engine   docker-ce</p>
-<p>2.建立仓库</p>
-<p>yum install -y yum-utils //安装docker所需要的工具包</p>
-<p>yum-config-manager –add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo //建立docker仓库，映射仓库地址</p>
-<p>3.安装docker引擎</p>
-<p>yum install docker -ce dockerce-cli containerd.io</p>
-<p>4.启动docker</p>
-<p>systemctl start docker</p>
-<p>5.测试安装是否成功</p>
-<p>docker pull hello-world</p>
-<p>docker run hello-world</p>
-<h2 id="其他操作">其他操作</h2>
-<p>docker镜像加速器配置(建立仓库时可提前选择镜像)</p>
-<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="comment">//更改配置文件/etc/docker/daemon.json，如果没有daemon则新建</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;https://docker.mirrors.ustc.edu.cn&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="comment">//重启docker</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
-<p>守护进程重启：systemctl daemon-reload</p>
-<p>重启Docker服务：systemctl restart docker / service docker restart</p>
-<p>关闭Docker服务：docker service docker stop / docker systemctl stop docker</p>
-<p>删除docker：yum remove docker-ce rm -rf /var/lib/docker</p>
-]]></content>
-      <categories>
-        <category>运维</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>redis(未完成)</title>
     <url>/2024/08/12/redis/redis/</url>
     <content><![CDATA[<p>[toc]</p>
@@ -4908,116 +4908,6 @@ docker-selinux   docker-engine-selinux   docker-engine   docker-ce</p>
       </categories>
       <tags>
         <tag>redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>概率论与数理统计</title>
-    <url>/2026/09/02/%E5%85%AC%E5%85%B1%E8%AF%BE/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/</url>
-    <content><![CDATA[<h1 id="概率论">概率论</h1>
-<h2 id="随机事件的关系与运算">随机事件的关系与运算</h2>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">关系</th>
-<th style="text-align: left;">符号</th>
-<th style="text-align: left;">解释</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">包含</td>
-<td style="text-align: left;">(A B)</td>
-<td style="text-align: left;">A发生必然导致B发生</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">相等</td>
-<td style="text-align: left;">(A = B)</td>
-<td style="text-align: left;">A和B相等</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">互斥</td>
-<td style="text-align: left;">(A B = )</td>
-<td style="text-align: left;">A和B不可能同时发生</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">运算</th>
-<th style="text-align: left;">符号</th>
-<th style="text-align: left;">解释</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">并</td>
-<td style="text-align: left;">(A B = A+B)</td>
-<td style="text-align: left;">AB至少有一个发生</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">交</td>
-<td style="text-align: left;">(A B = AB)</td>
-<td style="text-align: left;">AB同时发生</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">差</td>
-<td style="text-align: left;">(A - B=A )</td>
-<td style="text-align: left;">A发生B不发生</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">对立</td>
-<td style="text-align: left;">()</td>
-<td style="text-align: left;">A不发生</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">运算性质</th>
-<th style="text-align: left;">符号表示</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">交换律</td>
-<td style="text-align: left;">(A B = B A A B = B A)</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">结合律</td>
-<td style="text-align: left;">((A B) C = A (B C) (A B) C = A (B C))</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">分配律</td>
-<td style="text-align: left;">(A (B C) = (A B) (A C) A (B C) = (A B) (A C))</td>
-</tr>
-</tbody>
-</table>
-| 对偶律（德摩根公式） | (
-
-<p>) |</p>
-<p><strong>德摩根公式推广</strong>到多个事件以及可列个事件的场合：</p>
-<p><span class="math display">\[
-\begin{aligned}
-\overline{\bigcup_{i=1}^{\infty} A_i} &amp;= \bigcap_{i=1}^{\infty} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{\infty} A_i} &amp;= \bigcup_{i=1}^{\infty} \overline{A_i} \\
-\overline{\bigcup_{i=1}^{n} A_i} &amp;= \bigcap_{i=1}^{n} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{n} A_i} &amp;= \bigcup_{i=1}^{n} \overline{A_i}
-\end{aligned}
-\]</span></p>
-<h2 id="事件域">事件域*</h2>
-<h2 id="条件概率基本公式">条件概率基本公式</h2>
-<p>$ P(A+B) = \begin{cases} P(A)+P(B)-P(AB) &amp; AB \ P(A)+P(B) &amp; AB \ P(A)  P(B) &amp; B A  A B \ P(A)+P(B)-P(A)P(B) &amp; AB \end{cases} $</p>
-<p>$ P(A-B) = \begin{cases} P(A)-P(AB) &amp; AB \ P(A)-P(B) &amp; B A \ P(A) &amp; A B \end{cases} $</p>
-<p>乘法公式 $ P(AB)=P(A)P(BA) $</p>
-<p>全概率公式 $ P(B) = _{i=1}^{n} P(A_i) P(BA_i) $</p>
-<p>贝叶斯公式 $ P(A_iB) =  $ # 数理统计</p>
-]]></content>
-      <categories>
-        <category>数学</category>
-      </categories>
-      <tags>
-        <tag>数学</tag>
-        <tag>数理统计</tag>
       </tags>
   </entry>
   <entry>
@@ -6048,463 +5938,118 @@ auto_increment=起始值 设置起始值</p>
       </tags>
   </entry>
   <entry>
-    <title>Oracle数据库(未完成)</title>
-    <url>/2024/06/10/sql/Oracle/</url>
-    <content><![CDATA[<p><span id="jump1">目录</span></p>
-<p>[toc]</p>
-<p>Oracle内容庞大,推荐看《Oracle 11g数据库基础教程》，此文档只包含常用内容</p>
-<h1 id="安装与卸载">安装与卸载</h1>
-<p><a href="#jump1">回到目录</a></p>
-<h2 id="安装">安装</h2>
-<p>setup-&gt;网络配置(监听器)-&gt;SQL PLUS(查看能否登录，用户名system)</p>
-<h2 id="企业管理器oem">企业管理器OEM</h2>
-<p>浏览器https://本机:1158/em 确保Oracle服务、监听服务和控制台服务打开</p>
-<p>默认控制台服务(即OEM控制台服务)端口为1158 查看在\11.2.0_1.int</p>
-<h1 id="文件体系结构">文件体系结构</h1>
-<p><a href="#jump1">回到目录</a></p>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/oracle数据库系统结构.png" alt="oracle数据库系统结构" /><figcaption>oracle数据库系统结构</figcaption>
-</figure>
-<p>admin:以数据库为单位，存放数据库运行过程中产生的跟踪文件 cfgtoologs:运行dbca、emca和netca图像化程序时产生的日志信息 checkpoint:存放数据库检查点信息 diag:以组件为单位，存储数据库各个组件运行的诊断信息 flash_recovery_area:以数据库为单位，数据库自动备份时，存放备份文件和闪回日志文件 oradata:以数据库为单位，存放数据库的物理文件(数据，控制，重做日志) product:存放数据库管理相关的软件，包括可执行文件、网络配置、脚本</p>
-<pre class="mermaid">graph LR
-Oracle数据库--> 存储结构DB
-存储结构DB--> 物理存储结构
-存储结构DB--> 逻辑存储结构
-Oracle数据库--> 数据库管理系统DBMS
-数据库管理系统DBMS--> 实例instance
-实例instance--> 内存结构--> SGA和PGA
-实例instance--> 后台进程</pre>
-<h2 id="物理存储和逻辑存储">物理存储和逻辑存储</h2>
-<figure>
-<img src="/images/loading/loading.gif" data-original="/images/oracle数据库物理存储结构和逻辑存储结构.png" alt="oracle数据库物理存储结构和逻辑存储结构" /><figcaption>oracle数据库物理存储结构和逻辑存储结构</figcaption>
-</figure>
-<p>表空间：数据文件=1：n 块：OS块=1：n</p>
-<p><strong>物理文件</strong>：参数文件(库名，CTL路径，进程)，跟踪文件(记录运行过程发生的大事)+告警文件（记录后台进程活动） 数据文件：DBF 日志文件：LOG 控制文件：CTL(库名，数据和日志文件路径，建库日期）</p>
-<p>逻辑文件：<strong>表空间</strong>(系统表SYSTEM，辅助系统表SYSAUX，临时表TEMP，撤销表UNDO，USERS)，<strong>段</strong>(数据，索引，临时，回退)，<strong>区</strong>(连续的数据块，存储空间分配的最小单位)，<strong>块</strong>(最小逻辑存储单元)</p>
-<h2 id="内存结构和后台进程">内存结构和后台进程</h2>
-<h3 id="sga和pga">SGA和PGA</h3>
-<p>SGA系统全局区：数据高速缓冲区、共享池（库缓存和数据字典缓存）、重做日志缓冲区、大型池、Java池、流池和其他</p>
-<p>高速缓冲区：脏缓冲块(修改过的数据)+空闲缓冲块(无数据)+命中缓冲块(正在被使用的数据)+干净缓冲块(没被修改的数据)。 库缓存：通过硬解析(未执行的SQL)和软解析(已执行的SQL)来让相同的SQL语句不再编译，提升SQL执行效率。</p>
-<p>PGA程序全局区：排序区、游标信息区、会话信息区、堆栈区(会话变量)</p>
-<h3 id="后台进程">后台进程</h3>
+    <title>概率论与数理统计</title>
+    <url>/2026/09/02/%E5%85%AC%E5%85%B1%E8%AF%BE/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/</url>
+    <content><![CDATA[<h1 id="概率论">概率论</h1>
+<h2 id="随机事件的关系与运算">随机事件的关系与运算</h2>
 <table>
 <thead>
 <tr class="header">
-<th>进程名</th>
-<th>作用</th>
+<th style="text-align: left;">关系</th>
+<th style="text-align: left;">符号</th>
+<th style="text-align: left;">解释</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>数据库写入进程DBWR</td>
-<td>将高速缓冲区的脏缓冲块写入数据文件</td>
+<td style="text-align: left;">包含</td>
+<td style="text-align: left;"><span class="math inline">\(A \subset B\)</span></td>
+<td style="text-align: left;">A发生必然导致B发生</td>
 </tr>
 <tr class="even">
-<td>日志写入进程LGWR</td>
-<td>将重做日志缓冲区的记录写入重做日志文件</td>
+<td style="text-align: left;">相等</td>
+<td style="text-align: left;"><span class="math inline">\(A = B\)</span></td>
+<td style="text-align: left;">A和B相等</td>
 </tr>
 <tr class="odd">
-<td>检查点进程CKPT</td>
-<td>类似时间节点，每到检查点就执行上面的操作，并保存节点</td>
-</tr>
-<tr class="even">
-<td>系统监控进程SMON</td>
-<td>系统崩溃时恢复系统（通过联机重做日志文件）;合并空闲表空间碎片</td>
-</tr>
-<tr class="odd">
-<td>进程监控进程PMON</td>
-<td>同上仅针对用户进程</td>
-</tr>
-<tr class="even">
-<td>归档进程ARCH</td>
-<td>重做日志写满时，复制到归档目标</td>
-</tr>
-<tr class="odd">
-<td>恢复进程RECO</td>
-<td>自动解决分布式数据库出现的事务故障</td>
-</tr>
-<tr class="even">
-<td>锁进程LCKn</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>调度进程Dnnn</td>
-<td></td>
+<td style="text-align: left;">互斥</td>
+<td style="text-align: left;"><span class="math inline">\(A \cap B = \varnothing\)</span></td>
+<td style="text-align: left;">A和B不可能同时发生</td>
 </tr>
 </tbody>
 </table>
-<p>归档模式开启：LOG_ARCHIVE_START=TRUE</p>
-<h1 id="安全管理">安全管理</h1>
-<p><a href="#jump1">回到目录</a></p>
-<h2 id="用户管理">用户管理</h2>
-<h2 id="权限管理">权限管理</h2>
-<h2 id="角色管理">角色管理</h2>
-<h2 id="表空间管理">表空间管理</h2>
-<p><strong>表空间类型、名称、数据文件、表空间管理方式、区分配方式和段管理方式</strong> 表空间管理：字典dictionary管理方式、(默认)本地管理方式local 区分配方式：在表空间本地管理中，区分配有(默认)自动分配autoallocate和定制分配uniform 管管理饭时：(默认)自动管理auto和手动管理manual</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建表空间</span></span><br><span class="line"><span class="keyword">create</span> [temporary<span class="operator">|</span>bigfile<span class="operator">|</span>undo] tablespace 名字</span><br><span class="line">[datafile<span class="operator">|</span>tempfile] <span class="string">&#x27;文件路径\名字.DBF&#x27;</span> size <span class="number">10</span>M</span><br><span class="line">[autoextent <span class="keyword">on</span> next <span class="number">1</span>M maxsize unlimited] <span class="comment">-- 数据文件自动扩展</span></span><br><span class="line">[extent management <span class="keyword">local</span> uniform size <span class="number">10</span>M] <span class="comment">-- 段定制分配</span></span><br><span class="line">[segment space management manual] <span class="comment">-- 区手动管理</span></span><br><span class="line"></span><br><span class="line">大文件表空间 段只能自动管理,临时表空间和撤销表空间 区只能自动分配</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改表空间</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="语法相关">语法相关</h1>
-<p><a href="#jump1">回到目录</a></p>
-<h2 id="求余">求余</h2>
 <table>
 <thead>
 <tr class="header">
-<th>mysql</th>
-<th>sql server</th>
-<th>Oracle</th>
+<th style="text-align: left;">运算</th>
+<th style="text-align: left;">符号</th>
+<th style="text-align: left;">解释</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>%、mod</td>
-<td>%</td>
-<td>mod</td>
-</tr>
-</tbody>
-</table>
-<h2 id="ddldmldql没写的默认和其他sql一样">DDL、DML、DQL(没写的默认和其他sql一样)</h2>
-<table>
-<colgroup>
-<col style="width: 8%" />
-<col style="width: 45%" />
-<col style="width: 45%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>表相关功能</th>
-<th>语法</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>建表1</td>
-<td>create table 表名(。。。。)</td>
-<td>同mysql</td>
+<td style="text-align: left;">并</td>
+<td style="text-align: left;"><span class="math inline">\(A \cup B = A+B\)</span></td>
+<td style="text-align: left;">AB至少有一个发生</td>
 </tr>
 <tr class="even">
-<td>建表2</td>
-<td>craete table 表名(列…..) as select …..</td>
-<td>用子查询建表</td>
+<td style="text-align: left;">交</td>
+<td style="text-align: left;"><span class="math inline">\(A \cap B = AB\)</span></td>
+<td style="text-align: left;">AB同时发生</td>
 </tr>
 <tr class="odd">
-<td>修改表</td>
-<td>alter table 表名<br />[add 新列 类型 约束]<br />[modify 列 类型]<br />[set unused coumn 列]<br />[drop column 列]<br />[rename column 旧列名 to 新列名]<br />[rename to 新表名]</td>
-<td><br />加新列<br />改类型<br />设置不使用列<br />删除列<br />重命名列<br />重命名表</td>
+<td style="text-align: left;">差</td>
+<td style="text-align: left;"><span class="math inline">\(A - B=A \overline{B}\)</span></td>
+<td style="text-align: left;">A发生B不发生</td>
 </tr>
 <tr class="even">
-<td>修改约束</td>
-<td>alter table 表名<br />[add constraint 约束名 主键|唯一|检查|外键]<br />[modify 列 not null]<br />[drop constraint 约束名]<br />[drop unique(列)]</td>
-<td><br />添加主键外键唯一检查约束<br />添加非空约束<br />按约束名删除<br />按列约束删除</td>
-</tr>
-<tr class="odd">
-<td>删除表</td>
-<td>drop table 表名<br />[cascade constraints]<br />[purge]</td>
-<td>在Oracle中删除表会重命名表并放在回收站(用来实现闪回删除flashback drop擦操作，清空回收站purge recyclebin)</td>
+<td style="text-align: left;">对立</td>
+<td style="text-align: left;"><span class="math inline">\(\overline{A}\)</span></td>
+<td style="text-align: left;">A不发生</td>
 </tr>
 </tbody>
 </table>
 <table>
 <colgroup>
-<col style="width: 9%" />
-<col style="width: 45%" />
-<col style="width: 45%" />
+<col style="width: 15%" />
+<col style="width: 84%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th>数据相关功能</th>
-<th>语法</th>
-<th>说明</th>
+<th style="text-align: left;">运算性质</th>
+<th style="text-align: center;">符号表示</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>插入1</td>
-<td>insert into 表(列…) values (列…)</td>
-<td>单条数据</td>
+<td style="text-align: left;">交换律</td>
+<td style="text-align: center;"><span class="math inline">\(A \cup B = B \cup A \\ A \cap B = B \cap A\)</span></td>
 </tr>
 <tr class="even">
-<td>插入2</td>
-<td>insert into 表 select …</td>
-<td>子查询</td>
+<td style="text-align: left;">结合律</td>
+<td style="text-align: center;"><span class="math inline">\((A \cup B) \cup C = A \cup (B \cup C) \\ (A \cap B) \cap C = A \cap (B \cap C)\)</span></td>
 </tr>
 <tr class="odd">
-<td>插入3</td>
-<td>insert all<br />[into 表1 values(列…)]<br />[into 表2 values(列…)]<br />select…</td>
-<td>多条数据</td>
+<td style="text-align: left;">分配律</td>
+<td style="text-align: center;"><span class="math inline">\(A \cap (B \cup C) = (A \cap B) \cup (A \cap C) \\ A \cup (B \cap C) = (A \cup B) \cap (A \cup C)\)</span></td>
 </tr>
 <tr class="even">
-<td>插入4</td>
-<td>insert all|first<br />when 条件1 then into 表1(列…)<br />when 条件2 then into 表2(列…)<br />else into 表3(列…)<br />select …</td>
-<td>条件多表插入<br />all表示只要满足条件就插入<br />first表示只插入满足条件的第一个表</td>
-</tr>
-<tr class="odd">
-<td>插入5</td>
-<td>insert / * +append */ into 表 select…</td>
-<td>插入大量数据使用装载(不写入日志)</td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>数据合并</td>
-<td>merge into 目标表 using 源表<br />on(条件)<br />when matched then update set…<br />when not matched then insert values(…)</td>
-<td>将满足on条件的源表数据更新或插入到目标表</td>
+<td style="text-align: left;">对偶律（德摩根公式）</td>
+<td style="text-align: center;">$ =   \  =   $</td>
 </tr>
 </tbody>
 </table>
-<h2 id="select注意事项">select注意事项</h2>
-<ul>
-<li><p>拼接符号：||</p></li>
-<li><p>交、并、差：intersect、union、minus</p></li>
-<li><p>order by 2 将select结果按第2列排序</p></li>
-<li><p>使用ROWNUM来显示行号，在select结果集里面直接加ROWNUM</p></li>
-<li><p>ROWID是数据的物理地址</p></li>
-</ul>
-<p>rowid=对象编号6+数据文件编号3+块编号6+行编号3</p>
-<h1 id="事务">事务</h1>
-<p>设置事务只读模式(该模式下，开启事务之后只能查询数据) set transaction read only；</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">begin</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">savepoint</span> A;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">rollback</span> <span class="keyword">to</span> [A];<span class="operator">|</span><span class="keyword">commit</span>;<span class="operator">|</span><span class="keyword">rollback</span>;</span><br><span class="line">[exception</span><br><span class="line"> <span class="keyword">when</span> others <span class="keyword">then</span> <span class="keyword">rollback</span> <span class="keyword">to</span> A;]</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
-<p>其他内容同mysql</p>
-<h1 id="序列">序列</h1>
-<p><strong>序列不占用实际存储空间</strong></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建序列</span></span><br><span class="line"><span class="keyword">create</span> sequence 序列名</span><br><span class="line">[<span class="keyword">start</span> <span class="keyword">with</span> n]             <span class="comment">-- 设置初始值，默认1</span></span><br><span class="line">[increment <span class="keyword">by</span> m]           <span class="comment">-- 步长，默认1</span></span><br><span class="line">[maxvalue mm<span class="operator">|</span>nomaxvalue]   <span class="comment">-- 序列最大值mm</span></span><br><span class="line">[minvalue mm<span class="operator">|</span>nominvalue]   <span class="comment">-- 序列最小值mm</span></span><br><span class="line">[<span class="keyword">cycle</span><span class="operator">|</span>nocycle]            <span class="comment">-- 达到最大值或最小值时，循环</span></span><br><span class="line">[cache n<span class="operator">|</span>nocache]   <span class="comment">-- 设置预先分配并保留在内存中的序列个数，默认20</span></span><br><span class="line"><span class="comment">-- 使用序列</span></span><br><span class="line">同rownum伪列，序列有currval和nextval两个伪列</span><br><span class="line">序列名.currval返回当前序列值</span><br><span class="line">序列名.nextval产生新值并返回</span><br><span class="line">使用范围：<span class="keyword">select</span>和<span class="keyword">insert</span>目标列，<span class="keyword">insert</span> <span class="keyword">values</span>子句，<span class="keyword">update</span>的<span class="keyword">set</span>子句</span><br></pre></td></tr></table></figure>
-<h1 id="视图">视图</h1>
-<p>查询简单化、数据安全性、逻辑数据独立性</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace][force<span class="operator">|</span>noforce] <span class="keyword">view</span> 视图名 <span class="comment">-- force不管有无基表强制创建视图</span></span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">select...</span><br><span class="line">[<span class="keyword">with</span> <span class="keyword">check</span> option] <span class="comment">-- 对试图操作时，必须满足子查询中的约束条件</span></span><br><span class="line">[<span class="keyword">with</span> read <span class="keyword">only</span>] <span class="comment">-- 只读</span></span><br></pre></td></tr></table></figure>
-<h1 id="同义词">同义词</h1>
-<p>create synonym 名称 for 表名</p>
-<h1 id="函数">函数</h1>
-<p><a href="#jump1">回到目录</a></p>
-<h2 id="日期函数">日期函数</h2>
-<table>
-<thead>
-<tr class="header">
-<th>函数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>add_months(d,n)</td>
-<td>日期d+n个月,n可为负数</td>
-</tr>
-<tr class="even">
-<td>extract(year from d)</td>
-<td>从日期d中截取,year,month,day,hour,minute,second</td>
-</tr>
-<tr class="odd">
-<td>sysdate</td>
-<td>系统时间</td>
-</tr>
-<tr class="even">
-<td>last_day</td>
-<td>当月最后一天日期</td>
-</tr>
-<tr class="odd">
-<td>months_between(d1,d2)</td>
-<td>相差月数</td>
-</tr>
-</tbody>
-</table>
-<h2 id="其他函数">其他函数</h2>
-<table>
-<thead>
-<tr class="header">
-<th>函数</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>nvl(a,b)</td>
-<td>a为空，返回b,否则返回a</td>
-</tr>
-<tr class="even">
-<td>nvl2(a,b,c)</td>
-<td>a为空,返回c，否则返回b</td>
-</tr>
-<tr class="odd">
-<td>nullif(a,b)</td>
-<td>a=b,返回null，否则返回a</td>
-</tr>
-<tr class="even">
-<td>decode(expr,a,b,a1,b1,…..default)</td>
-<td>表达式expr，为a时返回b，为a1时返回b1,….<br />否则默认</td>
-</tr>
-</tbody>
-</table>
-<h1 id="plsql">PL/SQL</h1>
-<table>
-<colgroup>
-<col style="width: 31%" />
-<col style="width: 68%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>orcle功能函数</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>设置打印(默认开启)</td>
-<td>set serveroutput on</td>
-</tr>
-<tr class="even">
-<td>输出内容并换行</td>
-<td>DBMS_OUTPUT.PUT_LINE()</td>
-</tr>
-<tr class="odd">
-<td>放进缓冲区，不换行输出</td>
-<td>dbms_output.put(‘Hello, Lao An’);<br />dbms_output.put(‘Hello, Lao An’);</td>
-</tr>
-<tr class="even">
-<td>输出换行</td>
-<td>dbms_output.new_line();</td>
-</tr>
-<tr class="odd">
-<td>输入(注意&amp;后可以接任意内容)</td>
-<td>i:=&amp;i</td>
-</tr>
-<tr class="even">
-<td>产生从n到m的随机数</td>
-<td>dbms_random_value(n,m)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="数据类型">数据类型</h2>
-<table>
-<thead>
-<tr class="header">
-<th>类型</th>
-<th>种类</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>数字</td>
-<td>number(p,s)</td>
-<td>p有效位，s小数位</td>
-</tr>
-<tr class="even">
-<td>字符</td>
-<td>char()<br />varchar2()</td>
-<td>定长char；变长varchar2</td>
-</tr>
-<tr class="odd">
-<td>日期</td>
-<td>date<br />timestamp</td>
-<td>日期date；时间点timestamp</td>
-</tr>
-<tr class="even">
-<td>布尔</td>
-<td>boolean</td>
-<td>true，false，null</td>
-</tr>
-<tr class="odd">
-<td>LOB</td>
-<td>blob,clob,nclob,bfile</td>
-<td>二进制blob；文本clob,nclob;操作系统文件指针bfile</td>
-</tr>
-<tr class="even">
-<td>记录</td>
-<td>type 名称 is record(<br />…..)</td>
-<td>类似结构体</td>
-</tr>
-</tbody>
-</table>
-<p>%TYPE和%ROWTYPE 已知存在表emp中的sal列，但不知道数据类型，想要定义一个相同的数据类型 a emp.sal%TYPE b emp%ROWTYPE 定义一个与emp表结构一致的记录类型</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">declare</span></span><br><span class="line">声明各种变量</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">select</span> ...into..;</span><br><span class="line"><span class="keyword">insert</span>,<span class="keyword">update</span>,delete...;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="关键词">关键词</h2>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 选择结构</span></span><br><span class="line"><span class="comment">-- if</span></span><br><span class="line">if 条件 <span class="keyword">then</span> 情况<span class="number">1</span>;</span><br><span class="line">elsif 条件<span class="number">2</span> <span class="keyword">then</span> 情况<span class="number">2</span>;</span><br><span class="line"><span class="keyword">else</span> 情况<span class="number">3</span>;</span><br><span class="line"><span class="keyword">end</span> if;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- case</span></span><br><span class="line"><span class="keyword">case</span></span><br><span class="line"><span class="keyword">when</span> ... <span class="keyword">then</span> ...;</span><br><span class="line"><span class="keyword">when</span> ... <span class="keyword">then</span> ...;</span><br><span class="line"><span class="keyword">else</span> ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">case</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 循环while for loop</span></span><br><span class="line"><span class="comment">-- 循环以end loop结束</span></span><br><span class="line">loop</span><br><span class="line">...;</span><br><span class="line">exit <span class="keyword">when</span> 条件;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line">while 条件 loop</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i [reverse] <span class="keyword">in</span> n..m loop   <span class="comment">-- 变量i从n到m循环,反转后从m到n</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 跳转结构GOTO</span></span><br><span class="line">...;</span><br><span class="line"><span class="operator">&lt;&lt;</span>a<span class="operator">&gt;&gt;</span>    <span class="comment">-- 定义跳转点</span></span><br><span class="line">...;</span><br><span class="line">goto a;  <span class="comment">-- goto跳转到跳转点</span></span><br><span class="line">...;</span><br></pre></td></tr></table></figure>
-<h2 id="游标">游标</h2>
-<p>在PL/SQL块中执行select和DML，分配缓冲区，名为上下文区，游标是<strong>指向该缓冲的指针</strong></p>
-<p>显式游标：用户定义、操作，处理返回多行数据的select查询 隐式游标：由系统自动操作，处理DML和返回单行数据的select查询</p>
-<h3 id="显示游标">显示游标</h3>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义(可带参数)</span></span><br><span class="line"><span class="keyword">CURSOR</span> 游标名 <span class="keyword">IS</span> <span class="keyword">select</span>语句</span><br><span class="line"><span class="keyword">CURSOR</span> 游标名(变量) <span class="keyword">IS</span> <span class="keyword">select</span>语句</span><br><span class="line"><span class="comment">-- 打开(open之后游标指向第一行)</span></span><br><span class="line"><span class="keyword">open</span> 游标名</span><br><span class="line"><span class="keyword">open</span> 游标名(<span class="operator">&amp;</span>变量)</span><br><span class="line"><span class="comment">-- 检索(每执行一次fetch指针后移)</span></span><br><span class="line"><span class="keyword">fetch</span> 游标名 <span class="keyword">into</span> 一个能存一行数据的变量</span><br><span class="line"><span class="comment">-- 关闭</span></span><br><span class="line"><span class="keyword">close</span> 游标名</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 通过loop，while，for来循环检索的区别</span></span><br><span class="line">loop</span><br><span class="line">	fetch...into..;</span><br><span class="line">	exit <span class="keyword">when</span> 游标<span class="operator">%</span>notfound;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line">fetch...into..;</span><br><span class="line">while 游标<span class="operator">%</span>notfound loop</span><br><span class="line">	fetch...into..;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> 记录行变量 <span class="keyword">in</span> 游标名 loop</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr class="header">
-<th>游标属性</th>
-<th>语法</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>%isopen</td>
-<td>是否开启</td>
-</tr>
-<tr class="even">
-<td>%found 或者 %notfound</td>
-<td>上次使用fetch时是否检测到数据,可以作为游标循环检索的判断条件</td>
-</tr>
-<tr class="odd">
-<td>%rowcount</td>
-<td>返回检索个数</td>
-</tr>
-<tr class="even">
-<td>%bulk_rowcount(i)</td>
-<td>取得forall语句执行批绑定时第i个元素影响的行数</td>
-</tr>
-</tbody>
-</table>
-<h3 id="隐式游标">隐式游标</h3>
-<p><strong>指向SQL语句执行的缓冲区的指针</strong>，又称SQL游标(静态游标)</p>
-<p>隐式游标属性同显式游标,相当于一个游标名称为SQL的游标 SQL游标主要用来处理insert、update、delete、单行的select…into</p>
-<h4 id="游标变量">游标变量</h4>
-<p>定义游标引用类型：TYPE 游标引用类型名a IS REF CURSOR [RETURN 返回类型] 引用上面定义：游标变量名 a 在Oracle有一个预定义的游标引用类型sys_refcursor</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义游标变量</span></span><br><span class="line">游标名 sys_refcursor;</span><br><span class="line"><span class="comment">-- 打开游标变量</span></span><br><span class="line"><span class="keyword">open</span> 游标变量名 <span class="keyword">for</span> select...</span><br><span class="line"><span class="comment">-- 检索游标变量</span></span><br><span class="line">loop</span><br><span class="line"><span class="keyword">fetch</span> 游标变量 <span class="keyword">into</span> 变量;</span><br><span class="line">...;</span><br><span class="line">exit <span class="keyword">when</span> ...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"><span class="comment">-- 关闭</span></span><br><span class="line"><span class="keyword">close</span> 游标变量名;</span><br></pre></td></tr></table></figure>
-<h2 id="异常">异常</h2>
-<p>预定义异常，非预定义异常，用户定义异常</p>
-<h2 id="存储过程">存储过程</h2>
-<p>声明形参时<strong>不能定义长度或精度</strong>，有默认值的参数放在参数列表最后。</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">procedure</span> 存储过程名(变量名 <span class="keyword">in</span><span class="operator">|</span><span class="keyword">out</span><span class="operator">|</span><span class="keyword">in</span> <span class="keyword">out</span> 数据类型 [:<span class="operator">=</span>默认值])</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">定义变量;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">执行部分;</span><br><span class="line">exception</span><br><span class="line">when...then...异常处理部分;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line"><span class="keyword">execute</span><span class="operator">|</span><span class="keyword">call</span> 存储过程名;</span><br><span class="line">在PL<span class="operator">/</span><span class="keyword">SQL</span>直接当成函数执行</span><br></pre></td></tr></table></figure>
-<h2 id="存储函数">存储函数</h2>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">function</span> 函数名(变量名 <span class="keyword">in</span><span class="operator">|</span><span class="keyword">out</span><span class="operator">|</span><span class="keyword">in</span> <span class="keyword">out</span> 数据类型 [:<span class="operator">=</span>默认值])</span><br><span class="line"><span class="keyword">return</span> 数据类型;</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">定义变量;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">执行部分;</span><br><span class="line"><span class="keyword">return</span> 变量;</span><br><span class="line">exception</span><br><span class="line">异常处理部分;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line">PL<span class="operator">/</span><span class="keyword">SQL</span>中使用直接调用</span><br><span class="line">在<span class="keyword">SQL</span>语句中直接使用</span><br></pre></td></tr></table></figure>
-<h2 id="触发器">触发器</h2>
-<p>一种特殊的存储过程系统自动调用执行，不能显式调用，不接受参数</p>
-<table>
-<thead>
-<tr class="header">
-<th>作用对象不同类型</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>DML触发器</td>
-<td>在基本表上的触发器，响应增删改操作</td>
-</tr>
-<tr class="even">
-<td>INSTEAD OF触发器</td>
-<td>视图上的触发器，响应增删改操作</td>
-</tr>
-<tr class="odd">
-<td>系统触发器</td>
-<td>系统或模式上的触发器，响应系统事件和DDL操作</td>
-</tr>
-</tbody>
-</table>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建DML触发器(语句级、行级for each row使用到:old、:new)</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">trigger</span> 触发器名</span><br><span class="line">before<span class="operator">|</span>after <span class="keyword">insert</span> <span class="keyword">or</span> <span class="keyword">delete</span> <span class="keyword">or</span> <span class="keyword">update</span></span><br><span class="line">[<span class="keyword">of</span> 列名] <span class="keyword">on</span> 表名</span><br><span class="line">[<span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span>]   <span class="comment">-- 行级触发器</span></span><br><span class="line">[<span class="keyword">declare</span> 变量]</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">...;</span><br><span class="line"><span class="comment">-- 条件谓词：inserting、updating、deleting</span></span><br><span class="line"><span class="comment">-- if 判断词 then或者 when 判断词 then</span></span><br><span class="line"><span class="comment">-- 行级DML标识符   :old.列名  :new.列名  在when中使用不加:</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建变异表触发器</span></span><br><span class="line"><span class="comment">-- 更新变异表同时查询变异表：在行级触发器中获取要修改的记录的信息，存放到一个软件包的全局变量中，然后在语句级后触发器中利用软件包中全局变量信息对变异表的查询</span></span><br></pre></td></tr></table></figure>
-<h1 id="备份与恢复">备份与恢复</h1>
-<p>冷热备份，归档模式</p>
-<h2 id="物理备份">物理备份</h2>
-<h2 id="物理恢复">物理恢复</h2>
-<h2 id="rman备份">RMAN备份</h2>
-<h2 id="rman恢复">RMAN恢复</h2>
-<h2 id="逻辑备份">逻辑备份</h2>
-<p>导出：exp exp 用户名/密码@实例名 file=备份文件路径.dmp full=y 存入一个二进制转储文件：*.dmp</p>
-<h2 id="逻辑恢复">逻辑恢复</h2>
-<p>导入：imp</p>
+<p><strong>德摩根公式推广</strong>到多个事件以及可列个事件的场合：</p>
+<p><span class="math display">\[
+\begin{aligned}
+\overline{\bigcup_{i=1}^{\infty} A_i} &amp;= \bigcap_{i=1}^{\infty} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{\infty} A_i} &amp;= \bigcup_{i=1}^{\infty} \overline{A_i} \\
+\overline{\bigcup_{i=1}^{n} A_i} &amp;= \bigcap_{i=1}^{n} \overline{A_i} \quad &amp; \overline{\bigcap_{i=1}^{n} A_i} &amp;= \bigcup_{i=1}^{n} \overline{A_i}
+\end{aligned}
+\]</span></p>
+<h2 id="事件域">事件域*</h2>
+<h2 id="条件概率基本公式">条件概率基本公式</h2>
+<p>$ P(A+B) = \begin{cases} P(A)+P(B)-P(AB) &amp; AB \ P(A)+P(B) &amp; AB \ P(A)  P(B) &amp; B A  A B \ P(A)+P(B)-P(A)P(B) &amp; AB \end{cases} $</p>
+<p>$ P(A-B) = \begin{cases} P(A)-P(AB) &amp; AB \ P(A)-P(B) &amp; B A \ P(A) &amp; A B \end{cases} $</p>
+<p>乘法公式 $ P(AB)=P(A)P(BA) $</p>
+<p>全概率公式 $ P(B) = _{i=1}^{n} P(A_i) P(BA_i) $</p>
+<p>贝叶斯公式 $ P(A_iB) =  $ # 数理统计</p>
 ]]></content>
       <categories>
-        <category>数据库</category>
+        <category>数学</category>
       </categories>
       <tags>
-        <tag>oracle</tag>
+        <tag>数学</tag>
+        <tag>数理统计</tag>
       </tags>
   </entry>
   <entry>
@@ -7118,6 +6663,466 @@ int:以4个字节来存储正负数.可存储范围为:-2<sup>31至2</sup>31-1. 
       </categories>
       <tags>
         <tag>sql server</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Oracle数据库(未完成)</title>
+    <url>/2024/06/10/sql/Oracle/</url>
+    <content><![CDATA[<p><span id="jump1">目录</span></p>
+<p>[toc]</p>
+<p>Oracle内容庞大,推荐看《Oracle 11g数据库基础教程》，此文档只包含常用内容</p>
+<h1 id="安装与卸载">安装与卸载</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h2 id="安装">安装</h2>
+<p>setup-&gt;网络配置(监听器)-&gt;SQL PLUS(查看能否登录，用户名system)</p>
+<h2 id="企业管理器oem">企业管理器OEM</h2>
+<p>浏览器https://本机:1158/em 确保Oracle服务、监听服务和控制台服务打开</p>
+<p>默认控制台服务(即OEM控制台服务)端口为1158 查看在\11.2.0_1.int</p>
+<h1 id="文件体系结构">文件体系结构</h1>
+<p><a href="#jump1">回到目录</a></p>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/oracle数据库系统结构.png" alt="oracle数据库系统结构" /><figcaption>oracle数据库系统结构</figcaption>
+</figure>
+<p>admin:以数据库为单位，存放数据库运行过程中产生的跟踪文件 cfgtoologs:运行dbca、emca和netca图像化程序时产生的日志信息 checkpoint:存放数据库检查点信息 diag:以组件为单位，存储数据库各个组件运行的诊断信息 flash_recovery_area:以数据库为单位，数据库自动备份时，存放备份文件和闪回日志文件 oradata:以数据库为单位，存放数据库的物理文件(数据，控制，重做日志) product:存放数据库管理相关的软件，包括可执行文件、网络配置、脚本</p>
+<pre class="mermaid">graph LR
+Oracle数据库--> 存储结构DB
+存储结构DB--> 物理存储结构
+存储结构DB--> 逻辑存储结构
+Oracle数据库--> 数据库管理系统DBMS
+数据库管理系统DBMS--> 实例instance
+实例instance--> 内存结构--> SGA和PGA
+实例instance--> 后台进程</pre>
+<h2 id="物理存储和逻辑存储">物理存储和逻辑存储</h2>
+<figure>
+<img src="/images/loading/loading.gif" data-original="/images/oracle数据库物理存储结构和逻辑存储结构.png" alt="oracle数据库物理存储结构和逻辑存储结构" /><figcaption>oracle数据库物理存储结构和逻辑存储结构</figcaption>
+</figure>
+<p>表空间：数据文件=1：n 块：OS块=1：n</p>
+<p><strong>物理文件</strong>：参数文件(库名，CTL路径，进程)，跟踪文件(记录运行过程发生的大事)+告警文件（记录后台进程活动） 数据文件：DBF 日志文件：LOG 控制文件：CTL(库名，数据和日志文件路径，建库日期）</p>
+<p>逻辑文件：<strong>表空间</strong>(系统表SYSTEM，辅助系统表SYSAUX，临时表TEMP，撤销表UNDO，USERS)，<strong>段</strong>(数据，索引，临时，回退)，<strong>区</strong>(连续的数据块，存储空间分配的最小单位)，<strong>块</strong>(最小逻辑存储单元)</p>
+<h2 id="内存结构和后台进程">内存结构和后台进程</h2>
+<h3 id="sga和pga">SGA和PGA</h3>
+<p>SGA系统全局区：数据高速缓冲区、共享池（库缓存和数据字典缓存）、重做日志缓冲区、大型池、Java池、流池和其他</p>
+<p>高速缓冲区：脏缓冲块(修改过的数据)+空闲缓冲块(无数据)+命中缓冲块(正在被使用的数据)+干净缓冲块(没被修改的数据)。 库缓存：通过硬解析(未执行的SQL)和软解析(已执行的SQL)来让相同的SQL语句不再编译，提升SQL执行效率。</p>
+<p>PGA程序全局区：排序区、游标信息区、会话信息区、堆栈区(会话变量)</p>
+<h3 id="后台进程">后台进程</h3>
+<table>
+<thead>
+<tr class="header">
+<th>进程名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>数据库写入进程DBWR</td>
+<td>将高速缓冲区的脏缓冲块写入数据文件</td>
+</tr>
+<tr class="even">
+<td>日志写入进程LGWR</td>
+<td>将重做日志缓冲区的记录写入重做日志文件</td>
+</tr>
+<tr class="odd">
+<td>检查点进程CKPT</td>
+<td>类似时间节点，每到检查点就执行上面的操作，并保存节点</td>
+</tr>
+<tr class="even">
+<td>系统监控进程SMON</td>
+<td>系统崩溃时恢复系统（通过联机重做日志文件）;合并空闲表空间碎片</td>
+</tr>
+<tr class="odd">
+<td>进程监控进程PMON</td>
+<td>同上仅针对用户进程</td>
+</tr>
+<tr class="even">
+<td>归档进程ARCH</td>
+<td>重做日志写满时，复制到归档目标</td>
+</tr>
+<tr class="odd">
+<td>恢复进程RECO</td>
+<td>自动解决分布式数据库出现的事务故障</td>
+</tr>
+<tr class="even">
+<td>锁进程LCKn</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>调度进程Dnnn</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>归档模式开启：LOG_ARCHIVE_START=TRUE</p>
+<h1 id="安全管理">安全管理</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h2 id="用户管理">用户管理</h2>
+<h2 id="权限管理">权限管理</h2>
+<h2 id="角色管理">角色管理</h2>
+<h2 id="表空间管理">表空间管理</h2>
+<p><strong>表空间类型、名称、数据文件、表空间管理方式、区分配方式和段管理方式</strong> 表空间管理：字典dictionary管理方式、(默认)本地管理方式local 区分配方式：在表空间本地管理中，区分配有(默认)自动分配autoallocate和定制分配uniform 管管理饭时：(默认)自动管理auto和手动管理manual</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建表空间</span></span><br><span class="line"><span class="keyword">create</span> [temporary<span class="operator">|</span>bigfile<span class="operator">|</span>undo] tablespace 名字</span><br><span class="line">[datafile<span class="operator">|</span>tempfile] <span class="string">&#x27;文件路径\名字.DBF&#x27;</span> size <span class="number">10</span>M</span><br><span class="line">[autoextent <span class="keyword">on</span> next <span class="number">1</span>M maxsize unlimited] <span class="comment">-- 数据文件自动扩展</span></span><br><span class="line">[extent management <span class="keyword">local</span> uniform size <span class="number">10</span>M] <span class="comment">-- 段定制分配</span></span><br><span class="line">[segment space management manual] <span class="comment">-- 区手动管理</span></span><br><span class="line"></span><br><span class="line">大文件表空间 段只能自动管理,临时表空间和撤销表空间 区只能自动分配</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 修改表空间</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="语法相关">语法相关</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h2 id="求余">求余</h2>
+<table>
+<thead>
+<tr class="header">
+<th>mysql</th>
+<th>sql server</th>
+<th>Oracle</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>%、mod</td>
+<td>%</td>
+<td>mod</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ddldmldql没写的默认和其他sql一样">DDL、DML、DQL(没写的默认和其他sql一样)</h2>
+<table>
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 45%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>表相关功能</th>
+<th>语法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>建表1</td>
+<td>create table 表名(。。。。)</td>
+<td>同mysql</td>
+</tr>
+<tr class="even">
+<td>建表2</td>
+<td>craete table 表名(列…..) as select …..</td>
+<td>用子查询建表</td>
+</tr>
+<tr class="odd">
+<td>修改表</td>
+<td>alter table 表名<br />[add 新列 类型 约束]<br />[modify 列 类型]<br />[set unused coumn 列]<br />[drop column 列]<br />[rename column 旧列名 to 新列名]<br />[rename to 新表名]</td>
+<td><br />加新列<br />改类型<br />设置不使用列<br />删除列<br />重命名列<br />重命名表</td>
+</tr>
+<tr class="even">
+<td>修改约束</td>
+<td>alter table 表名<br />[add constraint 约束名 主键|唯一|检查|外键]<br />[modify 列 not null]<br />[drop constraint 约束名]<br />[drop unique(列)]</td>
+<td><br />添加主键外键唯一检查约束<br />添加非空约束<br />按约束名删除<br />按列约束删除</td>
+</tr>
+<tr class="odd">
+<td>删除表</td>
+<td>drop table 表名<br />[cascade constraints]<br />[purge]</td>
+<td>在Oracle中删除表会重命名表并放在回收站(用来实现闪回删除flashback drop擦操作，清空回收站purge recyclebin)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 45%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>数据相关功能</th>
+<th>语法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>插入1</td>
+<td>insert into 表(列…) values (列…)</td>
+<td>单条数据</td>
+</tr>
+<tr class="even">
+<td>插入2</td>
+<td>insert into 表 select …</td>
+<td>子查询</td>
+</tr>
+<tr class="odd">
+<td>插入3</td>
+<td>insert all<br />[into 表1 values(列…)]<br />[into 表2 values(列…)]<br />select…</td>
+<td>多条数据</td>
+</tr>
+<tr class="even">
+<td>插入4</td>
+<td>insert all|first<br />when 条件1 then into 表1(列…)<br />when 条件2 then into 表2(列…)<br />else into 表3(列…)<br />select …</td>
+<td>条件多表插入<br />all表示只要满足条件就插入<br />first表示只插入满足条件的第一个表</td>
+</tr>
+<tr class="odd">
+<td>插入5</td>
+<td>insert / * +append */ into 表 select…</td>
+<td>插入大量数据使用装载(不写入日志)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>数据合并</td>
+<td>merge into 目标表 using 源表<br />on(条件)<br />when matched then update set…<br />when not matched then insert values(…)</td>
+<td>将满足on条件的源表数据更新或插入到目标表</td>
+</tr>
+</tbody>
+</table>
+<h2 id="select注意事项">select注意事项</h2>
+<ul>
+<li><p>拼接符号：||</p></li>
+<li><p>交、并、差：intersect、union、minus</p></li>
+<li><p>order by 2 将select结果按第2列排序</p></li>
+<li><p>使用ROWNUM来显示行号，在select结果集里面直接加ROWNUM</p></li>
+<li><p>ROWID是数据的物理地址</p></li>
+</ul>
+<p>rowid=对象编号6+数据文件编号3+块编号6+行编号3</p>
+<h1 id="事务">事务</h1>
+<p>设置事务只读模式(该模式下，开启事务之后只能查询数据) set transaction read only；</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">begin</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">savepoint</span> A;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">rollback</span> <span class="keyword">to</span> [A];<span class="operator">|</span><span class="keyword">commit</span>;<span class="operator">|</span><span class="keyword">rollback</span>;</span><br><span class="line">[exception</span><br><span class="line"> <span class="keyword">when</span> others <span class="keyword">then</span> <span class="keyword">rollback</span> <span class="keyword">to</span> A;]</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
+<p>其他内容同mysql</p>
+<h1 id="序列">序列</h1>
+<p><strong>序列不占用实际存储空间</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建序列</span></span><br><span class="line"><span class="keyword">create</span> sequence 序列名</span><br><span class="line">[<span class="keyword">start</span> <span class="keyword">with</span> n]             <span class="comment">-- 设置初始值，默认1</span></span><br><span class="line">[increment <span class="keyword">by</span> m]           <span class="comment">-- 步长，默认1</span></span><br><span class="line">[maxvalue mm<span class="operator">|</span>nomaxvalue]   <span class="comment">-- 序列最大值mm</span></span><br><span class="line">[minvalue mm<span class="operator">|</span>nominvalue]   <span class="comment">-- 序列最小值mm</span></span><br><span class="line">[<span class="keyword">cycle</span><span class="operator">|</span>nocycle]            <span class="comment">-- 达到最大值或最小值时，循环</span></span><br><span class="line">[cache n<span class="operator">|</span>nocache]   <span class="comment">-- 设置预先分配并保留在内存中的序列个数，默认20</span></span><br><span class="line"><span class="comment">-- 使用序列</span></span><br><span class="line">同rownum伪列，序列有currval和nextval两个伪列</span><br><span class="line">序列名.currval返回当前序列值</span><br><span class="line">序列名.nextval产生新值并返回</span><br><span class="line">使用范围：<span class="keyword">select</span>和<span class="keyword">insert</span>目标列，<span class="keyword">insert</span> <span class="keyword">values</span>子句，<span class="keyword">update</span>的<span class="keyword">set</span>子句</span><br></pre></td></tr></table></figure>
+<h1 id="视图">视图</h1>
+<p>查询简单化、数据安全性、逻辑数据独立性</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace][force<span class="operator">|</span>noforce] <span class="keyword">view</span> 视图名 <span class="comment">-- force不管有无基表强制创建视图</span></span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">select...</span><br><span class="line">[<span class="keyword">with</span> <span class="keyword">check</span> option] <span class="comment">-- 对试图操作时，必须满足子查询中的约束条件</span></span><br><span class="line">[<span class="keyword">with</span> read <span class="keyword">only</span>] <span class="comment">-- 只读</span></span><br></pre></td></tr></table></figure>
+<h1 id="同义词">同义词</h1>
+<p>create synonym 名称 for 表名</p>
+<h1 id="函数">函数</h1>
+<p><a href="#jump1">回到目录</a></p>
+<h2 id="日期函数">日期函数</h2>
+<table>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>add_months(d,n)</td>
+<td>日期d+n个月,n可为负数</td>
+</tr>
+<tr class="even">
+<td>extract(year from d)</td>
+<td>从日期d中截取,year,month,day,hour,minute,second</td>
+</tr>
+<tr class="odd">
+<td>sysdate</td>
+<td>系统时间</td>
+</tr>
+<tr class="even">
+<td>last_day</td>
+<td>当月最后一天日期</td>
+</tr>
+<tr class="odd">
+<td>months_between(d1,d2)</td>
+<td>相差月数</td>
+</tr>
+</tbody>
+</table>
+<h2 id="其他函数">其他函数</h2>
+<table>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>nvl(a,b)</td>
+<td>a为空，返回b,否则返回a</td>
+</tr>
+<tr class="even">
+<td>nvl2(a,b,c)</td>
+<td>a为空,返回c，否则返回b</td>
+</tr>
+<tr class="odd">
+<td>nullif(a,b)</td>
+<td>a=b,返回null，否则返回a</td>
+</tr>
+<tr class="even">
+<td>decode(expr,a,b,a1,b1,…..default)</td>
+<td>表达式expr，为a时返回b，为a1时返回b1,….<br />否则默认</td>
+</tr>
+</tbody>
+</table>
+<h1 id="plsql">PL/SQL</h1>
+<table>
+<colgroup>
+<col style="width: 31%" />
+<col style="width: 68%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>orcle功能函数</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>设置打印(默认开启)</td>
+<td>set serveroutput on</td>
+</tr>
+<tr class="even">
+<td>输出内容并换行</td>
+<td>DBMS_OUTPUT.PUT_LINE()</td>
+</tr>
+<tr class="odd">
+<td>放进缓冲区，不换行输出</td>
+<td>dbms_output.put(‘Hello, Lao An’);<br />dbms_output.put(‘Hello, Lao An’);</td>
+</tr>
+<tr class="even">
+<td>输出换行</td>
+<td>dbms_output.new_line();</td>
+</tr>
+<tr class="odd">
+<td>输入(注意&amp;后可以接任意内容)</td>
+<td>i:=&amp;i</td>
+</tr>
+<tr class="even">
+<td>产生从n到m的随机数</td>
+<td>dbms_random_value(n,m)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="数据类型">数据类型</h2>
+<table>
+<thead>
+<tr class="header">
+<th>类型</th>
+<th>种类</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>数字</td>
+<td>number(p,s)</td>
+<td>p有效位，s小数位</td>
+</tr>
+<tr class="even">
+<td>字符</td>
+<td>char()<br />varchar2()</td>
+<td>定长char；变长varchar2</td>
+</tr>
+<tr class="odd">
+<td>日期</td>
+<td>date<br />timestamp</td>
+<td>日期date；时间点timestamp</td>
+</tr>
+<tr class="even">
+<td>布尔</td>
+<td>boolean</td>
+<td>true，false，null</td>
+</tr>
+<tr class="odd">
+<td>LOB</td>
+<td>blob,clob,nclob,bfile</td>
+<td>二进制blob；文本clob,nclob;操作系统文件指针bfile</td>
+</tr>
+<tr class="even">
+<td>记录</td>
+<td>type 名称 is record(<br />…..)</td>
+<td>类似结构体</td>
+</tr>
+</tbody>
+</table>
+<p>%TYPE和%ROWTYPE 已知存在表emp中的sal列，但不知道数据类型，想要定义一个相同的数据类型 a emp.sal%TYPE b emp%ROWTYPE 定义一个与emp表结构一致的记录类型</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">declare</span></span><br><span class="line">声明各种变量</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">select</span> ...into..;</span><br><span class="line"><span class="keyword">insert</span>,<span class="keyword">update</span>,delete...;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="关键词">关键词</h2>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 选择结构</span></span><br><span class="line"><span class="comment">-- if</span></span><br><span class="line">if 条件 <span class="keyword">then</span> 情况<span class="number">1</span>;</span><br><span class="line">elsif 条件<span class="number">2</span> <span class="keyword">then</span> 情况<span class="number">2</span>;</span><br><span class="line"><span class="keyword">else</span> 情况<span class="number">3</span>;</span><br><span class="line"><span class="keyword">end</span> if;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- case</span></span><br><span class="line"><span class="keyword">case</span></span><br><span class="line"><span class="keyword">when</span> ... <span class="keyword">then</span> ...;</span><br><span class="line"><span class="keyword">when</span> ... <span class="keyword">then</span> ...;</span><br><span class="line"><span class="keyword">else</span> ...</span><br><span class="line"><span class="keyword">end</span> <span class="keyword">case</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 循环while for loop</span></span><br><span class="line"><span class="comment">-- 循环以end loop结束</span></span><br><span class="line">loop</span><br><span class="line">...;</span><br><span class="line">exit <span class="keyword">when</span> 条件;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line">while 条件 loop</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i [reverse] <span class="keyword">in</span> n..m loop   <span class="comment">-- 变量i从n到m循环,反转后从m到n</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 跳转结构GOTO</span></span><br><span class="line">...;</span><br><span class="line"><span class="operator">&lt;&lt;</span>a<span class="operator">&gt;&gt;</span>    <span class="comment">-- 定义跳转点</span></span><br><span class="line">...;</span><br><span class="line">goto a;  <span class="comment">-- goto跳转到跳转点</span></span><br><span class="line">...;</span><br></pre></td></tr></table></figure>
+<h2 id="游标">游标</h2>
+<p>在PL/SQL块中执行select和DML，分配缓冲区，名为上下文区，游标是<strong>指向该缓冲的指针</strong></p>
+<p>显式游标：用户定义、操作，处理返回多行数据的select查询 隐式游标：由系统自动操作，处理DML和返回单行数据的select查询</p>
+<h3 id="显示游标">显示游标</h3>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义(可带参数)</span></span><br><span class="line"><span class="keyword">CURSOR</span> 游标名 <span class="keyword">IS</span> <span class="keyword">select</span>语句</span><br><span class="line"><span class="keyword">CURSOR</span> 游标名(变量) <span class="keyword">IS</span> <span class="keyword">select</span>语句</span><br><span class="line"><span class="comment">-- 打开(open之后游标指向第一行)</span></span><br><span class="line"><span class="keyword">open</span> 游标名</span><br><span class="line"><span class="keyword">open</span> 游标名(<span class="operator">&amp;</span>变量)</span><br><span class="line"><span class="comment">-- 检索(每执行一次fetch指针后移)</span></span><br><span class="line"><span class="keyword">fetch</span> 游标名 <span class="keyword">into</span> 一个能存一行数据的变量</span><br><span class="line"><span class="comment">-- 关闭</span></span><br><span class="line"><span class="keyword">close</span> 游标名</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 通过loop，while，for来循环检索的区别</span></span><br><span class="line">loop</span><br><span class="line">	fetch...into..;</span><br><span class="line">	exit <span class="keyword">when</span> 游标<span class="operator">%</span>notfound;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line">fetch...into..;</span><br><span class="line">while 游标<span class="operator">%</span>notfound loop</span><br><span class="line">	fetch...into..;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> 记录行变量 <span class="keyword">in</span> 游标名 loop</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr class="header">
+<th>游标属性</th>
+<th>语法</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>%isopen</td>
+<td>是否开启</td>
+</tr>
+<tr class="even">
+<td>%found 或者 %notfound</td>
+<td>上次使用fetch时是否检测到数据,可以作为游标循环检索的判断条件</td>
+</tr>
+<tr class="odd">
+<td>%rowcount</td>
+<td>返回检索个数</td>
+</tr>
+<tr class="even">
+<td>%bulk_rowcount(i)</td>
+<td>取得forall语句执行批绑定时第i个元素影响的行数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="隐式游标">隐式游标</h3>
+<p><strong>指向SQL语句执行的缓冲区的指针</strong>，又称SQL游标(静态游标)</p>
+<p>隐式游标属性同显式游标,相当于一个游标名称为SQL的游标 SQL游标主要用来处理insert、update、delete、单行的select…into</p>
+<h4 id="游标变量">游标变量</h4>
+<p>定义游标引用类型：TYPE 游标引用类型名a IS REF CURSOR [RETURN 返回类型] 引用上面定义：游标变量名 a 在Oracle有一个预定义的游标引用类型sys_refcursor</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义游标变量</span></span><br><span class="line">游标名 sys_refcursor;</span><br><span class="line"><span class="comment">-- 打开游标变量</span></span><br><span class="line"><span class="keyword">open</span> 游标变量名 <span class="keyword">for</span> select...</span><br><span class="line"><span class="comment">-- 检索游标变量</span></span><br><span class="line">loop</span><br><span class="line"><span class="keyword">fetch</span> 游标变量 <span class="keyword">into</span> 变量;</span><br><span class="line">...;</span><br><span class="line">exit <span class="keyword">when</span> ...;</span><br><span class="line"><span class="keyword">end</span> loop;</span><br><span class="line"><span class="comment">-- 关闭</span></span><br><span class="line"><span class="keyword">close</span> 游标变量名;</span><br></pre></td></tr></table></figure>
+<h2 id="异常">异常</h2>
+<p>预定义异常，非预定义异常，用户定义异常</p>
+<h2 id="存储过程">存储过程</h2>
+<p>声明形参时<strong>不能定义长度或精度</strong>，有默认值的参数放在参数列表最后。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">procedure</span> 存储过程名(变量名 <span class="keyword">in</span><span class="operator">|</span><span class="keyword">out</span><span class="operator">|</span><span class="keyword">in</span> <span class="keyword">out</span> 数据类型 [:<span class="operator">=</span>默认值])</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">定义变量;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">执行部分;</span><br><span class="line">exception</span><br><span class="line">when...then...异常处理部分;</span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line"><span class="keyword">execute</span><span class="operator">|</span><span class="keyword">call</span> 存储过程名;</span><br><span class="line">在PL<span class="operator">/</span><span class="keyword">SQL</span>直接当成函数执行</span><br></pre></td></tr></table></figure>
+<h2 id="存储函数">存储函数</h2>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 定义</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">function</span> 函数名(变量名 <span class="keyword">in</span><span class="operator">|</span><span class="keyword">out</span><span class="operator">|</span><span class="keyword">in</span> <span class="keyword">out</span> 数据类型 [:<span class="operator">=</span>默认值])</span><br><span class="line"><span class="keyword">return</span> 数据类型;</span><br><span class="line"><span class="keyword">as</span></span><br><span class="line">定义变量;</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">执行部分;</span><br><span class="line"><span class="keyword">return</span> 变量;</span><br><span class="line">exception</span><br><span class="line">异常处理部分;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 调用</span></span><br><span class="line">PL<span class="operator">/</span><span class="keyword">SQL</span>中使用直接调用</span><br><span class="line">在<span class="keyword">SQL</span>语句中直接使用</span><br></pre></td></tr></table></figure>
+<h2 id="触发器">触发器</h2>
+<p>一种特殊的存储过程系统自动调用执行，不能显式调用，不接受参数</p>
+<table>
+<thead>
+<tr class="header">
+<th>作用对象不同类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>DML触发器</td>
+<td>在基本表上的触发器，响应增删改操作</td>
+</tr>
+<tr class="even">
+<td>INSTEAD OF触发器</td>
+<td>视图上的触发器，响应增删改操作</td>
+</tr>
+<tr class="odd">
+<td>系统触发器</td>
+<td>系统或模式上的触发器，响应系统事件和DDL操作</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 创建DML触发器(语句级、行级for each row使用到:old、:new)</span></span><br><span class="line"><span class="keyword">create</span> [<span class="keyword">or</span> replace] <span class="keyword">trigger</span> 触发器名</span><br><span class="line">before<span class="operator">|</span>after <span class="keyword">insert</span> <span class="keyword">or</span> <span class="keyword">delete</span> <span class="keyword">or</span> <span class="keyword">update</span></span><br><span class="line">[<span class="keyword">of</span> 列名] <span class="keyword">on</span> 表名</span><br><span class="line">[<span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span>]   <span class="comment">-- 行级触发器</span></span><br><span class="line">[<span class="keyword">declare</span> 变量]</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">...;</span><br><span class="line"><span class="comment">-- 条件谓词：inserting、updating、deleting</span></span><br><span class="line"><span class="comment">-- if 判断词 then或者 when 判断词 then</span></span><br><span class="line"><span class="comment">-- 行级DML标识符   :old.列名  :new.列名  在when中使用不加:</span></span><br><span class="line">...;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建变异表触发器</span></span><br><span class="line"><span class="comment">-- 更新变异表同时查询变异表：在行级触发器中获取要修改的记录的信息，存放到一个软件包的全局变量中，然后在语句级后触发器中利用软件包中全局变量信息对变异表的查询</span></span><br></pre></td></tr></table></figure>
+<h1 id="备份与恢复">备份与恢复</h1>
+<p>冷热备份，归档模式</p>
+<h2 id="物理备份">物理备份</h2>
+<h2 id="物理恢复">物理恢复</h2>
+<h2 id="rman备份">RMAN备份</h2>
+<h2 id="rman恢复">RMAN恢复</h2>
+<h2 id="逻辑备份">逻辑备份</h2>
+<p>导出：exp exp 用户名/密码@实例名 file=备份文件路径.dmp full=y 存入一个二进制转储文件：*.dmp</p>
+<h2 id="逻辑恢复">逻辑恢复</h2>
+<p>导入：imp</p>
+]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>oracle</tag>
       </tags>
   </entry>
 </search>
